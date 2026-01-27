@@ -22,7 +22,7 @@ namespace Si.Engine
         private bool _shutdown = false;
         private bool _isPaused = false;
         private readonly Thread _graphicsThread;
-        private readonly TrackableQueue<TickControllerMethod>? _worldClockSubPool;
+        private readonly DelegateThreadChildPool<TickControllerMethod>? _worldClockSubPool;
 
         private readonly DelegateThreadPool _worldClockThreadPool;
 
@@ -44,7 +44,10 @@ namespace Si.Engine
         public EngineWorldClock(EngineCore engine)
         {
             _engine = engine;
-            _worldClockThreadPool = new(engine.Settings.WorldClockThreads);
+            _worldClockThreadPool = new(new DelegateThreadPoolConfiguration()
+            {
+                InitialThreadCount = engine.Settings.WorldClockThreads
+            });
 
             engine.OnShutdown += (sender) =>
             {
@@ -56,7 +59,7 @@ namespace Si.Engine
             if (_engine.Settings.MultithreadedWorldClock)
             {
                 //Create a collection of threads so we can wait on the ones that we start.
-                _worldClockSubPool ??= _worldClockThreadPool.CreateChildQueue<TickControllerMethod>();
+                _worldClockSubPool ??= _worldClockThreadPool.CreateChildPool<TickControllerMethod>();
             }
 
             #region Cache vectored and unvectored tick controller methods.

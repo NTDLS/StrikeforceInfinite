@@ -4,7 +4,7 @@
 ;-- Main Setup Information
  AppName                         = Strikeforce Infinite
  AppVerName                      = Strikeforce Infinite {#Version}
- AppCopyright                    = Copyright © 1995-2024 NetworkDLS.
+ AppCopyright                    = Copyright © 1995-2026 NetworkDLS.
  DefaultDirName                  = {commonpf}\NetworkDLS\Strikeforce Infinite
  DefaultGroupName                = NetworkDLS\Strikeforce Infinite
  UninstallDisplayIcon            = {app}\Si.Client.exe
@@ -14,8 +14,8 @@
  Compression                     = ZIP/9
  ChangesAssociations             = Yes
  OutputBaseFilename              = Si.Installer-{#Version}
- ArchitecturesInstallIn64BitMode = x64
- ArchitecturesAllowed            = x64
+ ArchitecturesInstallIn64BitMode = x64os
+ ArchitecturesAllowed            = x64os
 
 ;-- Windows 2000 & XP (Support Dialog)
  AppPublisher    = NetworkDLS
@@ -29,10 +29,8 @@
  Name: "FontAsset";    Description: "Fonts";                Types: Full Compact Custom; Flags: Fixed;
  
 [Files]
- Source: "../Si.Client\bin\Release\net8.0-windows7.0\*.exe";   DestDir: "{app}"; Components: Client;   Flags: IgnoreVersion; 
- Source: "../Si.Client\bin\Release\net8.0-windows7.0\*.dll";   DestDir: "{app}"; Components: Client;   Flags: IgnoreVersion;
- Source: "../Si.Client\bin\Release\net8.0-windows7.0\*.json";  DestDir: "{app}"; Components: Client;   Flags: IgnoreVersion;
- Source: "Si.Assets.rez";                                      DestDir: "{app}"; Components: Assets; Flags: IgnoreVersion recursesubdirs;
+ Source: "publish\*.*";                DestDir: "{app}"; Components: Client; Flags: IgnoreVersion; 
+ Source: "Si.Assets.rez";              DestDir: "{app}"; Components: Assets; Flags: IgnoreVersion recursesubdirs;
 
  Source: "Fonts\Digital-7 (Mono).ttf"; DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Digital-7 Mono";  Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\Digital-7.ttf";        DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "digital-7";       Flags: onlyifdoesntexist uninsneveruninstall

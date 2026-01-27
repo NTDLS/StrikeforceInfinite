@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using static NTDLS.DelegateThreadPooling.DelegateThreadPool;
 
 namespace Si.Engine.Manager
 {
@@ -192,8 +191,11 @@ namespace Si.Engine.Manager
             loadingHeader.SetTextAndCenterX("Hydrating asset cache...");
 
             using var archive = ArchiveFactory.Open(_assetPackagePath);
-            using var dtp = new DelegateThreadPool(Environment.ProcessorCount);
-            var threadPoolTracker = dtp.CreateChildQueue();
+            using var dtp = new DelegateThreadPool( new DelegateThreadPoolConfiguration()
+            {
+                 InitialThreadCount = Environment.ProcessorCount
+            });
+            var threadPoolTracker = dtp.CreateChildPool();
 
             int statusIndex = 0;
             float statusEntryCount = archive.Entries.Count();

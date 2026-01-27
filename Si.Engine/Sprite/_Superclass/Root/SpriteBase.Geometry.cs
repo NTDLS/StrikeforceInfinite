@@ -70,7 +70,8 @@ namespace Si.Engine.Sprite._Superclass._Root
                 {
                     closestDistance = distance;
                     closestSprite = to;
-                };
+                }
+                ;
             }
 
             return closestSprite;
@@ -92,7 +93,8 @@ namespace Si.Engine.Sprite._Superclass._Root
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                };
+                }
+                ;
             }
 
             return closestDistance;

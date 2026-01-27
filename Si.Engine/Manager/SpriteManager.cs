@@ -100,7 +100,13 @@ namespace Si.Engine.Manager
             => collectionAccessor(All());
 
         public void QueueAllForDeletionOfType<T>() where T : SpriteBase
-            => OfType<T>().ForEach(c => c.QueueForDelete());
+        {
+            var sprites = OfType<T>();
+            foreach (var sprite in sprites)
+            {
+                sprite.QueueForDelete();
+            }
+        }
 
         public void Dispose()
         {

@@ -38,7 +38,10 @@ namespace Si.GameEngine.TickController.VectoredTickController.Uncollidable
         public MunitionSpriteTickController(EngineCore engine, SpriteManager manager)
             : base(engine, manager)
         {
-            _munitionTraversalThreadPool = new(engine.Settings.MunitionTraversalThreads);
+            _munitionTraversalThreadPool = new(new DelegateThreadPoolConfiguration()
+            {
+                InitialThreadCount = engine.Settings.MunitionTraversalThreads
+            });
 
             engine.OnShutdown += (engine) =>
             {
@@ -56,7 +59,7 @@ namespace Si.GameEngine.TickController.VectoredTickController.Uncollidable
                 var objectsEnemyCanHit = interactiveSprites.Where(o => o is SpritePlayerBase).ToArray();
 
                 //Create a collection of threads so we can wait on the ones that we start.
-                var threadPoolTracker = _munitionTraversalThreadPool.CreateChildQueue();
+                var threadPoolTracker = _munitionTraversalThreadPool.CreateChildPool();
 
                 var hitObjects = new ConcurrentBag<MunitionObjectHit>();
 
