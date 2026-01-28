@@ -4,6 +4,12 @@
     {
         public static string FriendlyName = "Strikeforce Infinite";
 
+        public enum RenderLoopInterjectionLifetime
+        {
+            Infinite,
+            Once
+        }
+
         public enum MunitionType
         {
             Energy,     //These are going to be particle weapons.

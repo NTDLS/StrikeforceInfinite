@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using NTDLS.Helpers;
+using NTDLS.Semaphore;
 using Si.Engine.EngineLibrary;
 using Si.Engine.Interrogation._Superclass;
 using Si.Engine.Manager;
@@ -13,7 +14,9 @@ using Si.Library;
 using Si.Library.Mathematics;
 using Si.Rendering;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using static Si.Library.SiConstants;
 
@@ -27,6 +30,8 @@ namespace Si.Engine
         #region Backend variables.
 
         private readonly EngineWorldClock _worldClock;
+        private readonly PessimisticCriticalResource<List<RenderLoopInterjection>> _renderLoopInterjections = new();
+        private int _interjectionCounter = 0;
 
         #endregion
 
@@ -69,6 +74,33 @@ namespace Si.Engine
 
         public delegate void ShutdownEvent(EngineCore engine);
         public event ShutdownEvent? OnShutdown;
+
+        #endregion
+
+        #region Render-Loop Interjection.
+
+        public RenderLoopInterjection AddRenderLoopInterjection(RenderLoopInterjectionLifetime lifetime, Action action)
+        {
+            var interjection = new RenderLoopInterjection(this, lifetime, action);
+            _renderLoopInterjections.Use(o =>
+            {
+                o.Add(interjection);
+                Interlocked.Increment(ref _interjectionCounter);
+            });
+            return interjection;
+        }
+
+        public void RemoveRenderLoopInterjection(RenderLoopInterjection interjection)
+        {
+            _renderLoopInterjections.Use(o =>
+            {
+                int count = o.RemoveAll(o => o.Id == interjection.Id);
+                for (int i = 0; i < count; i++)
+                {
+                    Interlocked.Decrement(ref _interjectionCounter);
+                }
+            });
+        }
 
         #endregion
 
@@ -169,6 +201,18 @@ namespace Si.Engine
                         }
 
                         Sprites.RenderPreScaling(o.IntermediateRenderTarget);
+
+                        //Render-Loop Interjections are not meant to be performant. They are meant for one-off tasks
+                        //  that need to be done in the render loop which is why we attempt to optimize them out with _interjectionCounter.
+                        if (_interjectionCounter > 0)
+                        {
+                            var interjectionsToExecute = new List<RenderLoopInterjection>();
+                            _renderLoopInterjections.Use(o => interjectionsToExecute.AddRange(o));
+                            foreach (var interjection in interjectionsToExecute)
+                            {
+                                interjection.Execute();
+                            }
+                        }
 
                         #region Render Collisions.
 

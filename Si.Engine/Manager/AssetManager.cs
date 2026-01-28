@@ -191,9 +191,9 @@ namespace Si.Engine.Manager
             loadingHeader.SetTextAndCenterX("Hydrating asset cache...");
 
             using var archive = ArchiveFactory.Open(_assetPackagePath);
-            using var dtp = new DelegateThreadPool( new DelegateThreadPoolConfiguration()
+            using var dtp = new DelegateThreadPool(new DelegateThreadPoolConfiguration()
             {
-                 InitialThreadCount = Environment.ProcessorCount
+                InitialThreadCount = Environment.ProcessorCount
             });
             var threadPoolTracker = dtp.CreateChildPool();
 

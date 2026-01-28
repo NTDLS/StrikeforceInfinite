@@ -1,5 +1,4 @@
 ﻿using NTDLS.Helpers;
-using SharpCompress;
 using SharpDX.Mathematics.Interop;
 using Si.Engine.Menu;
 using Si.Engine.Sprite;
@@ -264,25 +263,11 @@ namespace Si.Engine.Manager
             return objects.ToArray();
         }
 
-        public SpriteBase[] RenderLocationIntersectionsEvenInvisible(SiVector location, SiVector size)
+        public SpriteBase[] RenderLocationIntersections(SiVector location, SiVector size, bool includeInvisible = false)
         {
             var objects = new List<SpriteBase>();
 
-            foreach (var obj in _collection)
-            {
-                if (obj.RenderLocationIntersectsAABB(location, size))
-                {
-                    objects.Add(obj);
-                }
-            }
-            return objects.ToArray();
-        }
-
-        public SpriteBase[] RenderLocationIntersections(SiVector location, SiVector size)
-        {
-            var objects = new List<SpriteBase>();
-
-            foreach (var obj in _collection.Where(o => o.Visible == true))
+            foreach (var obj in _collection.Where(o => o.Visible == true || includeInvisible))
             {
                 if (obj.RenderLocationIntersectsAABB(location, size))
                 {

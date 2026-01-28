@@ -2,13 +2,11 @@ using Si.Client.Forms;
 using Si.Client.Hardware;
 using Si.Engine;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using static Si.Library.SiConstants;
@@ -90,29 +88,32 @@ namespace Si.Client
         #region Debug interactions.
         private void FormRenderTarget_MouseMove(object? sender, MouseEventArgs e)
         {
-            float x = e.X + _engine.Display.OverdrawSize.Width / 2;
-            float y = e.Y + _engine.Display.OverdrawSize.Height / 2;
-
-            //Debug.Print($"x{x:n1}, y{y:n1} => Player x{_engine.Player.Sprite.X:n1},x{_engine.Player.Sprite.Y:n1}");
-
-            foreach (var sprite in highlightedSprites)
+            _engine.AddRenderLoopInterjection(RenderLoopInterjectionLifetime.Once, () =>
             {
-                sprite.IsHighlighted = false;
-            }
+                float x = e.X + _engine.Display.OverdrawSize.Width / 2;
+                float y = e.Y + _engine.Display.OverdrawSize.Height / 2;
 
-            highlightedSprites.Clear();
+                //Debug.Print($"x{x:n1}, y{y:n1} => Player x{_engine.Player.Sprite.X:n1},x{_engine.Player.Sprite.Y:n1}");
 
-            var sprites = _engine.Sprites.RenderLocationIntersections(new SiVector(x, y), new SiVector(1, 1)).ToList();
-            if (_engine.Player.Sprite.RenderLocationIntersectsAABB(new SiVector(x, y), new SiVector(1, 1)))
-            {
-                sprites.Add(_engine.Player.Sprite);
-            }
+                foreach (var sprite in highlightedSprites)
+                {
+                    sprite.IsHighlighted = false;
+                }
 
-            foreach (var sprite in sprites.Where(o => o.IsHighlighted == false))
-            {
-                highlightedSprites.Add(sprite);
-                sprite.IsHighlighted = true;
-            }
+                highlightedSprites.Clear();
+
+                var sprites = _engine.Sprites.RenderLocationIntersections(new SiVector(x, y), new SiVector(1, 1)).ToList();
+                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(new SiVector(x, y), new SiVector(1, 1)))
+                {
+                    sprites.Add(_engine.Player.Sprite);
+                }
+
+                foreach (var sprite in sprites.Where(o => o.IsHighlighted == false))
+                {
+                    highlightedSprites.Add(sprite);
+                    sprite.IsHighlighted = true;
+                }
+            });
         }
 
         private void FormRenderTarget_MouseDown(object? sender, MouseEventArgs e)
@@ -120,34 +121,45 @@ namespace Si.Client
             float x = e.X + _engine.Display.OverdrawSize.Width / 2;
             float y = e.Y + _engine.Display.OverdrawSize.Height / 2;
 
-            var sprites = _engine.Sprites.RenderLocationIntersectionsEvenInvisible(new SiVector(x, y), new SiVector(1, 1)).ToList();
-            if (_engine.Player.Sprite.RenderLocationIntersectsAABB(new SiVector(x, y), new SiVector(1, 1)))
+            List<SpriteBase>? sprites = null;
+
+            _engine.AddRenderLoopInterjection(RenderLoopInterjectionLifetime.Once, () =>
             {
-                sprites.Add(_engine.Player.Sprite);
-            }
+                sprites = _engine.Sprites.RenderLocationIntersections(new SiVector(x, y), new SiVector(1, 1), true).ToList();
+                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(new SiVector(x, y), new SiVector(1, 1)))
+                {
+                    sprites.Add(_engine.Player.Sprite);
+                }
+            }).Wait();
 
-            var sprite = sprites.FirstOrDefault();
-
-            if (sprite != null)
+            if (sprites?.Count > 0)
             {
                 if (e.Button == MouseButtons.Right)
                 {
                     var menu = new ContextMenuStrip();
 
-                    menu.ItemClicked += Menu_ItemClicked;
-                    if (sprite is SpriteEnemyBase)
+                    var watchMenu = new ToolStripMenuItem("Watch");
+                    watchMenu.DropDownItemClicked += WatchMenu_ItemClicked;
+                    menu.Items.Add(watchMenu);
+                    foreach (var sprite in sprites)
                     {
-                        menu.Items.Add("Save Brain").Tag = sprite;
-                        menu.Items.Add("View Brain").Tag = sprite;
+                        watchMenu.DropDownItems.Add(sprite.GetType().Name).Tag = sprite;
                     }
-                    menu.Items.Add("Delete").Tag = sprite;
-                    menu.Items.Add("Watch").Tag = sprite;
+
+                    var deleteMenu = new ToolStripMenuItem("Delete");
+                    deleteMenu.DropDownItemClicked += DeleteMenu_ItemClicked;
+                    menu.Items.Add(deleteMenu);
+                    foreach (var sprite in sprites)
+                    {
+                        deleteMenu.DropDownItems.Add(sprite.GetType().Name).Tag = sprite;
+                    }
 
                     var location = new Point((int)e.X + 10, (int)e.Y);
                     menu.Show(_engine.Display.DrawingSurface, location);
                 }
                 else if (e.Button == MouseButtons.Left)
                 {
+                    /*
                     var text = new StringBuilder();
 
                     text.AppendLine($"Type: {sprite.GetType().Name}");
@@ -175,99 +187,29 @@ namespace Si.Client
                         var location = new Point((int)e.X, (int)e.Y - sprite.Size.Height);
                         _interrogationTip.Show(text.ToString(), _engine.Display.DrawingSurface, location, 5000);
                     }
+                    */
                 }
             }
         }
 
-        private void Menu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
+        private void WatchMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
-            if (sender == null) return;
-            var menu = (ContextMenuStrip)sender;
+            (sender as ToolStripDropDown)?.Close();
+            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
 
-            menu.Close();
-
-            var sprite = e.ClickedItem?.Tag as SpriteBase;
-            if (sprite == null) return;
-
-            if (e.ClickedItem?.Text == "Delete")
+            new Thread(o =>
             {
-                sprite.QueueForDelete();
-            }
-            else if (e.ClickedItem?.Text == "Watch")
-            {
-                new Thread(o =>
-                {
-                    using var form = new FormInterrogationSpriteWatch(_engine, sprite);
-                    form.ShowDialog();
-                }).Start();
-            }
-            /*
-            else if (e.ClickedItem?.Text == "Save Brain")
-            {
-                if (sprite is SpriteEnemyBase enemy)
-                {
-                    bool wasPaused = _engine.IsPaused();
-                    if (wasPaused == false)
-                    {
-                        _engine.TogglePause();
-                    }
+                using var form = new FormInterrogationSpriteWatch(_engine, sprite);
+                form.ShowDialog();
+            }).Start();
+        }
 
-                    using (var fbd = new FolderBrowserDialog())
-                    {
-                        if (fbd.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
-                        {
-                            foreach (var aiController in enemy.AIControllers)
-                            {
-                                if (aiController.Value is IIANeuralNetworkController nn)
-                                {
-                                    var fullPath = Path.Combine(fbd.SelectedPath, $"{aiController.Key}.txt");
-                                    nn.Network.Save(fullPath);
-                                }
-                            }
-                        }
-                    }
+        private void DeleteMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
+        {
+            (sender as ToolStripDropDown)?.Close();
+            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
 
-                    if (wasPaused == false)
-                    {
-                        _engine.TogglePause();
-                    }
-                }
-            }
-            */
-            /*
-            else if (e.ClickedItem?.Text == "View Brain")
-            {
-                if (sprite is SpriteEnemyBase enemy)
-                {
-                    bool wasPaused = _engine.IsPaused();
-                    if (wasPaused == false)
-                    {
-                        _engine.TogglePause();
-                    }
-
-                    var builder = new StringBuilder();
-
-                    foreach (var aiController in enemy.AIControllers)
-                    {
-                        builder.AppendLine($"<!-- {aiController.Key} -->");
-                        if (aiController.Value is IIANeuralNetworkController nn)
-                        {
-                            builder.AppendLine(nn.Network.Serialize());
-                        }
-                    }
-
-                    using (var form = new FormViewBrain(builder.ToString()))
-                    {
-                        form.ShowDialog();
-                    }
-
-                    if (wasPaused == false)
-                    {
-                        _engine.TogglePause();
-                    }
-                }
-            }
-            */
+            sprite.QueueForDelete();
         }
 
         #endregion
