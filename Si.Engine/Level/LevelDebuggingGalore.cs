@@ -20,8 +20,8 @@ namespace Si.Engine.Level
         public LevelDebuggingGalore(EngineCore engine)
             : base(engine,
                   "Debugging Galore",
-                  "The level is dire, the explosions here typically\r\n"
-                  + "cause the entire universe to end - as well as the program."
+                    "The situation is dire. Explosions here can cause\r\n"
+                  + " the entire universe to end - as well as the program."
                   )
         {
             TotalWaves = 100;
