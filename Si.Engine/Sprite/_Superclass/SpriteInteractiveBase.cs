@@ -53,8 +53,7 @@ namespace Si.Engine.Sprite._Superclass
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="imagePath"></param>
-        /// <param name="useDetachedMetadata">Metadata is shared between sprites of the same image, sometimes it is useful for a sprite to have its own copy.</param>
-        public SpriteInteractiveBase(EngineCore engine, string? imagePath, bool useDetachedMetadata = false)
+        public SpriteInteractiveBase(EngineCore engine, string? imagePath)
             : base(engine)
         {
             _engine = engine;
@@ -64,7 +63,7 @@ namespace Si.Engine.Sprite._Superclass
 
             if (imagePath != null)
             {
-                SetImageAndLoadMetadata(imagePath, useDetachedMetadata);
+                SetImageAndLoadMetadata(imagePath);
             }
         }
 
@@ -84,9 +83,9 @@ namespace Si.Engine.Sprite._Superclass
         /// from a .json file in the same path with the same name as the sprite image.
         /// </summary>
         /// <param name="spriteImagePath"></param>
-        private void SetImageAndLoadMetadata(string spriteImagePath, bool useDetachedMetadata = false)
+        private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            _metadata = _engine.Assets.GetMetaData<InteractiveSpriteMetadata>(spriteImagePath, useDetachedMetadata);
+            _metadata = _engine.Assets.GetMetaData<InteractiveSpriteMetadata>(spriteImagePath);
 
             SetImage(spriteImagePath);
 

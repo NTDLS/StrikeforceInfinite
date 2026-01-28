@@ -7,8 +7,8 @@ namespace Si.GameEngine.Sprite.Enemy.Starbase.Garrison
 {
     internal class SpriteEnemyBossDevastatorRightJet : SpriteAttachment
     {
-        public SpriteEnemyBossDevastatorRightJet(EngineCore engine, bool useDetachedMetadata = false)
-            : base(engine, $@"Sprites\Enemy\Boss\Devastator\Jet.Right.png", useDetachedMetadata)
+        public SpriteEnemyBossDevastatorRightJet(EngineCore engine)
+            : base(engine, $@"Sprites\Enemy\Boss\Devastator\Jet.Right.png")
         {
         }
 

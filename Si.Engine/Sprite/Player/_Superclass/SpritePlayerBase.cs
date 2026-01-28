@@ -39,8 +39,8 @@ namespace Si.Engine.Sprite.Player._Superclass
         public WeaponBase? PrimaryWeapon { get; private set; }
         public WeaponBase? SelectedSecondaryWeapon { get; private set; }
 
-        public SpritePlayerBase(EngineCore engine, string imagePath, bool useDetachedMetadata = false)
-            : base(engine, imagePath, useDetachedMetadata)
+        public SpritePlayerBase(EngineCore engine, string imagePath)
+            : base(engine, imagePath)
         {
             OnHit += SpritePlayer_OnHit;
 

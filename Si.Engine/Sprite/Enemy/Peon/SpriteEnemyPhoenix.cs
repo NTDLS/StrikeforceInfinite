@@ -13,8 +13,8 @@ namespace Si.Engine.Sprite.Enemy.Peon
         private DateTime _behaviorChangeTimestamp = DateTime.UtcNow;
         private float _behaviorChangeDelayMilliseconds = 0;
 
-        public SpriteEnemyPhoenix(EngineCore engine, bool useDetachedMetadata = false)
-            : base(engine, @"Sprites\Enemy\Peon\Phoenix.png", useDetachedMetadata)
+        public SpriteEnemyPhoenix(EngineCore engine)
+            : base(engine, @"Sprites\Enemy\Peon\Phoenix.png")
         {
             AddAIController(new AILogisticsHostileEngagement(_engine, this, _engine.Player.Sprite));
             AddAIController(new AILogisticsTaunt(_engine, this, _engine.Player.Sprite));

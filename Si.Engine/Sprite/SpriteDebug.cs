@@ -19,8 +19,8 @@ namespace Si.Engine.Sprite
             Y = y;
         }
 
-        public SpriteDebug(EngineCore engine, float x, float y, string imagePath, bool useDetachedMetadata = false)
-            : base(engine, imagePath, useDetachedMetadata)
+        public SpriteDebug(EngineCore engine, float x, float y, string imagePath)
+            : base(engine, imagePath)
         {
             Initialize();
             X = x;

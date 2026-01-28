@@ -39,11 +39,10 @@ namespace Si.Engine.TickController._Superclass
         /// </summary>
         /// <param name="bitmapPath"></param>
         /// <param name="location"></param>
-        /// <param name="useDetachedMetadata">Metadata is shared between sprites of the same image, sometimes it is useful for a sprite to have its own copy.</param>
         /// <returns></returns>
-        public T Add(string bitmapPath, SiVector location, bool useDetachedMetadata = false)
+        public T Add(string bitmapPath, SiVector location)
         {
-            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath, useDetachedMetadata).EnsureNotNull();
+            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
             obj.Location = location.Clone();
             SpriteManager.Add(obj);
             return obj;
@@ -55,11 +54,10 @@ namespace Si.Engine.TickController._Superclass
         /// <param name="bitmapPath"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="useDetachedMetadata">Metadata is shared between sprites of the same image, sometimes it is useful for a sprite to have its own copy.</param>
         /// <returns></returns>
-        public T Add(string bitmapPath, float x, float y, bool useDetachedMetadata = false)
+        public T Add(string bitmapPath, float x, float y)
         {
-            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath, useDetachedMetadata).EnsureNotNull();
+            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
             obj.X = x;
             obj.Y = y;
             SpriteManager.Add(obj);
@@ -78,11 +76,10 @@ namespace Si.Engine.TickController._Superclass
         /// Adds a sprite with the specified bitmap.
         /// </summary>
         /// <param name="bitmapPath"></param>
-        /// <param name="useDetachedMetadata">Metadata is shared between sprites of the same image, sometimes it is useful for a sprite to have its own copy.</param>
         /// <returns></returns>
-        public T AddAtCenterScreen(string bitmapPath, bool useDetachedMetadata = false)
+        public T AddAtCenterScreen(string bitmapPath)
         {
-            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath, useDetachedMetadata).EnsureNotNull();
+            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
             obj.Location = Engine.Display.CenterOfCurrentScreen;
             SpriteManager.Add(obj);
             return obj;
@@ -102,11 +99,10 @@ namespace Si.Engine.TickController._Superclass
         /// Adds a sprite with the specified bitmap.
         /// </summary>
         /// <param name="bitmapPath"></param>
-        /// <param name="useDetachedMetadata">Metadata is shared between sprites of the same image, sometimes it is useful for a sprite to have its own copy.</param>
         /// <returns></returns>
-        public T AddAtCenterUniverse(string bitmapPath, bool useDetachedMetadata = false)
+        public T AddAtCenterUniverse(string bitmapPath)
         {
-            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath, useDetachedMetadata).EnsureNotNull();
+            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
             obj.X = Engine.Display.TotalCanvasSize.Width / 2;
             obj.Y = Engine.Display.TotalCanvasSize.Height / 2;
 
@@ -166,11 +162,10 @@ namespace Si.Engine.TickController._Superclass
         /// Adds a sprite with the specified bitmap.
         /// </summary>
         /// <param name="bitmapPath"></param>
-        /// <param name="useDetachedMetadata">Metadata is shared between sprites of the same image, sometimes it is useful for a sprite to have its own copy.</param>
         /// <returns></returns>
-        public T Add(string bitmapPath, bool useDetachedMetadata = false)
+        public T Add(string bitmapPath)
         {
-            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath, useDetachedMetadata).EnsureNotNull();
+            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
             SpriteManager.Add(obj);
             return obj;
         }

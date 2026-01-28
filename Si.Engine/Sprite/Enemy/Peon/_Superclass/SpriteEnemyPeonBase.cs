@@ -12,8 +12,8 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
         public SpriteAnimation ThrusterAnimation { get; internal set; }
         public SpriteAnimation BoosterAnimation { get; internal set; }
 
-        public SpriteEnemyPeonBase(EngineCore engine, string imagePath, bool useDetachedMetadata = false)
-            : base(engine, imagePath, useDetachedMetadata)
+        public SpriteEnemyPeonBase(EngineCore engine, string imagePath)
+            : base(engine, imagePath)
         {
             RecalculateMovementVector();
 

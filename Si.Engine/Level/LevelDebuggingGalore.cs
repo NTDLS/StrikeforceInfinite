@@ -89,7 +89,7 @@ namespace Si.Engine.Level
             */
 
             /*
-            var asteroid1 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png", useDetachedMetadata: true);
+            var asteroid1 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
             asteroid1.SpriteTag = "asteroid1";
             asteroid1.Location = new SiVector(1000, 1000);
             asteroid1.Orientation = SiVector.Zero;
@@ -98,7 +98,7 @@ namespace Si.Engine.Level
             asteroid1.VectorType = ParticleVectorType.Default;
             asteroid1.Metadata.Mass = 100f;
 
-            var asteroid2 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png", useDetachedMetadata: true);
+            var asteroid2 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
             asteroid2.SpriteTag = "asteroid2";
             asteroid2.Location = new SiVector(1200, 1000);
             asteroid2.Orientation = SiVector.Zero;
@@ -107,7 +107,7 @@ namespace Si.Engine.Level
             asteroid2.VectorType = ParticleVectorType.Default;
             asteroid2.Metadata.Mass = 10f;
 
-            var asteroid3 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png", useDetachedMetadata: true);
+            var asteroid3 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
             asteroid3.SpriteTag = "asteroid3";
             asteroid3.Location = new SiVector(1400, 1000);
             asteroid3.Orientation = SiVector.Zero;

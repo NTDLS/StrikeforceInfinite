@@ -10,8 +10,8 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// </summary>
     internal class SpriteEnemyDebug : SpriteEnemyPeonBase
     {
-        public SpriteEnemyDebug(EngineCore engine, bool useDetachedMetadata = false)
-            : base(engine, @"Sprites\Enemy\Debug\Hull.png", useDetachedMetadata)
+        public SpriteEnemyDebug(EngineCore engine)
+            : base(engine, @"Sprites\Enemy\Debug\Hull.png")
         {
             Throttle = 0;
 

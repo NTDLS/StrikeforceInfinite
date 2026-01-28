@@ -28,8 +28,8 @@ namespace Si.Engine.Sprite
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteInteractiveBitmap(EngineCore engine, string imagePath, bool useDetachedMetadata = false)
-            : base(engine, imagePath, useDetachedMetadata)
+        public SpriteInteractiveBitmap(EngineCore engine, string imagePath)
+            : base(engine, imagePath)
         {
         }
 
