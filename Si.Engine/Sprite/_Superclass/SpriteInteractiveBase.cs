@@ -393,38 +393,40 @@ namespace Si.Engine.Sprite._Superclass
         /// <param name="collisionPair"></param>
         public void RespondToCollisions(OverlappingKinematicBodyPair collisionPair)
         {
-            //We have to save the movement vectors because the calls to RespondToCollision is going to change them.
-            var originalSprite1Velocity = collisionPair.Body1.Sprite.MovementVector;
-            var originalSprite2Velocity = collisionPair.Body2.Sprite.MovementVector;
+            var A = collisionPair.Body1.Sprite;
+            var B = collisionPair.Body2.Sprite;
 
-            RespondToCollision(collisionPair.Body1, originalSprite1Velocity, collisionPair.Body2, originalSprite2Velocity);
-            RespondToCollision(collisionPair.Body2, originalSprite2Velocity, collisionPair.Body1, originalSprite1Velocity);
-        }
+            float mA = A.Metadata.Mass;
+            float mB = B.Metadata.Mass;
 
-        /// <summary>
-        /// Changes the movement vector of the action sprite in response to a collision with collideWithSprite.
-        /// </summary>
-        /// <param name="actionBody">The sprite which will have its movement vector modified in response to the collision.</param>
-        /// <param name="actionSpriteVelocity">The movement vector of the actionSprite</param>
-        /// <param name="collideWithBody">The sprite that the actionSprite is colliding with. This sprite will not be altered.</param>
-        /// <param name="collideWithSpriteVelocity">The movement vector of the collideWithSprite</param>
-        public void RespondToCollision(PredictedKinematicBody actionBody, SiVector actionSpriteVelocity,
-                                        PredictedKinematicBody collideWithBody, SiVector collideWithSpriteVelocity)
-        {
-            float massA = actionBody.Sprite.Metadata.Mass;
-            float massB = collideWithBody.Sprite.Metadata.Mass;
+            // normal from A -> B (pick one direction and stick to it).
+            var n = (B.Location - A.Location).Normalize();
 
-            var collisionNormal = (actionBody.Location - collideWithBody.Location).Normalize();
+            var vA = A.MovementVector;
+            var vB = B.MovementVector;
 
-            var relativeVelocity = actionSpriteVelocity - collideWithSpriteVelocity;
+            var rv = vB - vA; // relative velocity of B w.r.t A
+            float velAlongNormal = rv.Dot(n);
 
-            if (collisionNormal.Dot(relativeVelocity) < 0) // Sprites are moving towards each other
-            {
-                var vA_prime = actionSpriteVelocity - (2 * massB / (massA + massB))
-                    * (actionSpriteVelocity - collideWithSpriteVelocity).Dot(collisionNormal) / collisionNormal.Magnitude() * collisionNormal;
+            if (velAlongNormal > 0f)
+                return; // separating
 
-                actionBody.Sprite.MovementVector = vA_prime * actionBody.Sprite.Throttle;
-            }
+            float restitution = 1.0f; // 1=perfectly elastic; try 0.2..0.8 for game-feel
+            float invMassA = (mA <= 0f) ? 0f : 1f / mA;
+            float invMassB = (mB <= 0f) ? 0f : 1f / mB;
+
+            float j = -(1f + restitution) * velAlongNormal;
+            j /= (invMassA + invMassB);
+
+            var impulse = j * n;
+
+            // Apply impulses
+            A.MovementVector = vA - impulse * invMassA;
+            B.MovementVector = vB + impulse * invMassB;
+
+            // I don't want players to bounce too much.
+            if (A is SpritePlayerBase) A.MovementVector = (A.MovementVector + vA) * 0.5f;
+            if (B is SpritePlayerBase) B.MovementVector = (B.MovementVector + vB) * 0.5f;
         }
     }
 }

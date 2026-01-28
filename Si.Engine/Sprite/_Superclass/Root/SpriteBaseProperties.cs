@@ -31,7 +31,8 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         /// <summary>
-        /// Omni-directional velocity.
+        /// Vector representing both speed and direction (Orientation * Speed * Throttle).
+        /// Typically set by a call to RecalculateMovementVector()
         /// </summary>
         public SiVector MovementVector { get; set; } = new();
 

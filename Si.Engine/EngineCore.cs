@@ -231,11 +231,11 @@ namespace Si.Engine
 
                                 Rendering.DrawRectangle(o.IntermediateRenderTarget,
                                     collision.Value.Body1.RawRenderBounds,
-                                    Rendering.Materials.Colors.Red, 1, 1, collision.Value.Body1.Direction.RadiansSigned);
+                                    Rendering.Materials.Colors.Red, 1, 1, collision.Value.Body1.PredictedDirection.RadiansSigned);
 
                                 Rendering.DrawRectangle(o.IntermediateRenderTarget,
                                     collision.Value.Body2.RawRenderBounds,
-                                    Rendering.Materials.Colors.LawnGreen, 1, 1, collision.Value.Body2.Direction.RadiansSigned);
+                                    Rendering.Materials.Colors.LawnGreen, 1, 1, collision.Value.Body2.PredictedDirection.RadiansSigned);
                             }
                         }
                         #endregion

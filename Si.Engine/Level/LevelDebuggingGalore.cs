@@ -88,7 +88,9 @@ namespace Si.Engine.Level
                 new SiVector(100, 100), true, "", "Test");
             */
 
+            /*
             var asteroid1 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png", useDetachedMetadata: true);
+            asteroid1.SpriteTag = "asteroid1";
             asteroid1.Location = new SiVector(1000, 1000);
             asteroid1.Orientation = SiVector.Zero;
             asteroid1.Speed = 0f;
@@ -97,13 +99,23 @@ namespace Si.Engine.Level
             asteroid1.Metadata.Mass = 100f;
 
             var asteroid2 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png", useDetachedMetadata: true);
-            asteroid2.Location = new SiVector(1150, 1000);
+            asteroid2.SpriteTag = "asteroid2";
+            asteroid2.Location = new SiVector(1200, 1000);
             asteroid2.Orientation = SiVector.Zero;
-            asteroid2.Speed = 0.20f;
+            asteroid2.Speed = 0.80f;
             asteroid2.RecalculateMovementVector(180.ToRadians());
             asteroid2.VectorType = ParticleVectorType.Default;
             asteroid2.Metadata.Mass = 10f;
 
+            var asteroid3 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png", useDetachedMetadata: true);
+            asteroid3.SpriteTag = "asteroid3";
+            asteroid3.Location = new SiVector(1400, 1000);
+            asteroid3.Orientation = SiVector.Zero;
+            asteroid3.Speed = 0f;
+            asteroid3.RecalculateMovementVector(0.ToRadians());
+            asteroid3.VectorType = ParticleVectorType.Default;
+            asteroid3.Metadata.Mass = 100f;
+            */
 
             //var debugEnemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyDebug>();
             //debugEnemy.Orientation = SiVector.FromDegrees(0);
@@ -116,7 +128,7 @@ namespace Si.Engine.Level
 
             //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>().Location = new(500, 500);
 
-            //AddAsteroidField(new SiVector(), 8, 8);
+            AddAsteroidField(new SiVector(1000, 1000), 8, 8);
 
             //AddSingleAsteroid();
 
@@ -176,6 +188,8 @@ namespace Si.Engine.Level
                     asteroid.Orientation = SiVector.FromDegrees(SiRandom.Between(0, 359));
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
+                    asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Variance(0.01f, 0.90f));
+                    asteroid.Metadata.Mass = Mass.Large;
 
                     asteroid.RecalculateMovementVector(SiRandom.Variance(-45, 0.10f).ToRadians());
                     asteroid.VectorType = ParticleVectorType.Default;

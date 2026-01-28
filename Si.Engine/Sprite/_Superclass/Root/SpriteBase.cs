@@ -56,7 +56,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         public virtual void AddHullHealth(int pointsToAdd)
-            => HullHealth = (HullHealth + pointsToAdd).Clamp(1, _engine.Settings.MaxHullHealth);
+            => HullHealth = (HullHealth + pointsToAdd).Clamp(0, _engine.Settings.MaxHullHealth);
 
         public virtual void SetShieldHealth(int points)
         {
@@ -65,7 +65,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         public virtual void AddShieldHealth(int pointsToAdd)
-            => ShieldHealth = (ShieldHealth + pointsToAdd).Clamp(1, _engine.Settings.MaxShieldHealth);
+            => ShieldHealth = (ShieldHealth + pointsToAdd).Clamp(0, _engine.Settings.MaxShieldHealth);
 
         public void SetImage(SharpDX.Direct2D1.Bitmap bitmap)
         {

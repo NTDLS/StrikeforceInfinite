@@ -4,6 +4,16 @@
     {
         public static string FriendlyName = "Strikeforce Infinite";
 
+        public static class Mass
+        {
+            public const float Minuscule = 0.1f;
+            public const float Tiny = 1f;
+            public const float Small = 10f;
+            public const float Medium = 100f;
+            public const float Large = 1000f;
+            public const float Huge = 10000f;
+        }
+
         public enum RenderLoopInterjectionLifetime
         {
             Infinite,
