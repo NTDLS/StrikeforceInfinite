@@ -12,7 +12,6 @@ namespace Si.Library.Mathematics
     {
         public delegate void OnChange(SiVector vector);
         public event OnChange? OnChangeEvent;
-
         public static readonly SiVector Zero = new();
         public static readonly SiVector UnitOfX = new(1f, 0f);
         public static readonly SiVector UnitOfY = new(0f, 1f);
@@ -505,17 +504,11 @@ namespace Si.Library.Mathematics
         /// positive indicated right (starboard) side.</param>
         /// <returns>The calculated angle in the range of 180--180.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float DeltaAngleInSignedDegrees(SiVector toLocation, float offsetAngle = 0)
+        public float DeltaAngleInSignedDegrees(SiVector toLocation, float offsetAngle = 0f)
         {
-            var angle = DeltaAngleInUnsignedDegrees(toLocation, offsetAngle);
-            if (angle > 180)
-            {
-                angle -= 180;
-                angle = 180 - angle;
-                angle *= -1;
-            }
-
-            return -angle;
+            float fromAngle = SiMath.WrapDegreesUnsigned(Degrees + offsetAngle);
+            float toAngle = this.AngleToInUnsignedDegrees(toLocation);
+            return SiMath.WrapDegreesSigned(toAngle - fromAngle);
         }
 
         /// <summary>
@@ -527,26 +520,11 @@ namespace Si.Library.Mathematics
         /// positive indicated right (starboard) side.</param>
         /// <returns>The calculated angle in the range of 0-360.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float DeltaAngleInUnsignedDegrees(SiVector toLocation, float offsetAngle = 0)
+        public float DeltaAngleInUnsignedDegrees(SiVector toLocation, float offsetAngle = 0f)
         {
-            float fromAngle = Degrees + offsetAngle;
-
-            float angleTo = this.AngleToInUnsignedDegrees(toLocation);
-
-            if (fromAngle < 0) fromAngle = 0 - fromAngle;
-            if (angleTo < 0)
-            {
-                angleTo = 0 - angleTo;
-            }
-
-            angleTo = fromAngle - angleTo;
-
-            if (angleTo < 0)
-            {
-                angleTo = 360.0f - Math.Abs(angleTo) % 360.0f;
-            }
-
-            return angleTo;
+            float fromAngle = SiMath.WrapDegreesUnsigned(Degrees + offsetAngle);
+            float toAngle = this.AngleToInUnsignedDegrees(toLocation);
+            return SiMath.WrapDegreesUnsigned(toAngle - fromAngle);
         }
 
         #region Sprite Math.

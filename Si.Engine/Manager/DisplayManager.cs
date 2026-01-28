@@ -23,7 +23,7 @@ namespace Si.Engine.Manager
         /// The X,Y of the top left of the render window. This is the corner of the total
         /// canvas which includes offscreen locations when not zoomed out. The local player
         /// will be centered in this window and the window will moved with the players movements.
-        /// This can be though of as the camera.
+        /// This can be thought of as the camera.
         /// </summary>
         public SiVector RenderWindowPosition { get; set; } = new();
         public Control DrawingSurface { get; private set; }
@@ -62,7 +62,6 @@ namespace Si.Engine.Manager
         public SiVector CenterCanvas;
         public SiVector CenterOfCurrentScreen => RenderWindowPosition + CenterCanvas;
 
-
         /// <summary>
         /// The size of the screen with no scaling.
         /// </summary>
@@ -72,7 +71,7 @@ namespace Si.Engine.Manager
         /// The bounds of the screen with no scaling.
         /// </summary>
         public RectangleF NaturalScreenBounds =>
-            new RectangleF(OverdrawSize.Width / 2.0f, OverdrawSize.Height / 2.0f, NaturalScreenSize.Width, NaturalScreenSize.Height);
+            new(OverdrawSize.Width / 2.0f, OverdrawSize.Height / 2.0f, NaturalScreenSize.Width, NaturalScreenSize.Height);
 
         /// <summary>
         /// The total bounds of the drawing surface (canvas) natural + overdraw (with no scaling).

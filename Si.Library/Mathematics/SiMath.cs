@@ -108,6 +108,21 @@ namespace Si.Library.Mathematics
         public static float CardinalToRad(float x, float y)
             => (float)Math.Atan2(y, x);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float WrapDegreesUnsigned(float degrees)
+        {
+            degrees %= 360f;
+            if (degrees < 0f) degrees += 360f;
+            return degrees; // [0, 360)
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float WrapDegreesSigned(float degrees)
+        {
+            degrees = WrapDegreesUnsigned(degrees); // [0, 360)
+            if (degrees >= 180f) degrees -= 360f;
+            return degrees; // [-180, 180)
+        }
 
         /// <summary>
         /// Converts radians to cardinal x,y.

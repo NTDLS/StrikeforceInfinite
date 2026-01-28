@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Si.Library.SiConstants;
@@ -57,6 +56,10 @@ namespace Si.Client
 
             _engine.EnableDebugging(new FormInterrogation(_engine));
 
+#if !DEBUG
+            statusStripDebug.Visible = false;
+#endif
+
             _engine.OnShutdown += (EngineCore sender) =>
             {   //If the engine is stopped, close the main form.
                 Invoke((MethodInvoker)delegate
@@ -87,12 +90,18 @@ namespace Si.Client
         }
 
         #region Debug interactions.
+
         private void FormRenderTarget_MouseMove(object? sender, MouseEventArgs e)
         {
             _engine.AddRenderLoopInterjection(RenderLoopInterjectionLifetime.Once, () =>
             {
-                float x = e.X + _engine.Display.OverdrawSize.Width / 2;
-                float y = e.Y + _engine.Display.OverdrawSize.Height / 2;
+                var src = _engine.Display.GetCurrentScaledScreenBounds();
+
+                // map mouse pixel -> TotalCanvas coordinate (inside src rectangle)
+                var x = src.Left + (e.X * (src.Width / _engine.Display.NaturalScreenSize.Width));
+                var y = src.Top + (e.Y * (src.Height / _engine.Display.NaturalScreenSize.Height));
+
+                toolStripStatusLabelXY.Text = $"Pointer: X: {x:n1}, Y: {y:n1}";
 
                 //Debug.Print($"x{x:n1}, y{y:n1} => Player x{_engine.Player.Sprite.X:n1},x{_engine.Player.Sprite.Y:n1}");
 
@@ -119,8 +128,11 @@ namespace Si.Client
 
         private void FormRenderTarget_MouseDown(object? sender, MouseEventArgs e)
         {
-            float x = e.X + _engine.Display.OverdrawSize.Width / 2;
-            float y = e.Y + _engine.Display.OverdrawSize.Height / 2;
+            var src = _engine.Display.GetCurrentScaledScreenBounds();
+
+            // map mouse pixel -> TotalCanvas coordinate (inside src rectangle)
+            var x = src.Left + (e.X * (src.Width / _engine.Display.NaturalScreenSize.Width));
+            var y = src.Top + (e.Y * (src.Height / _engine.Display.NaturalScreenSize.Height));
 
             List<SpriteBase>? sprites = null;
 

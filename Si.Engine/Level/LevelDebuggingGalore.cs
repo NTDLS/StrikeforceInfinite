@@ -1,4 +1,5 @@
-﻿using Si.Engine.Core.Types;
+﻿using SharpCompress.Compressors.ZStandard.Unsafe;
+using Si.Engine.Core.Types;
 using Si.Engine.Level._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.Sprite.Enemy.Peon;
@@ -6,6 +7,8 @@ using Si.GameEngine.Sprite.Enemy.Starbase.Garrison;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Sprite;
+using Si.Rendering;
 using System;
 using System.Linq;
 using static Si.Library.SiConstants;
@@ -73,14 +76,18 @@ namespace Si.Engine.Level
         {
             for (int i = 0; i < 1; i++)
             {
-                _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
             }
 
-            var debug = _engine.Sprites.Debugs.Add();
-            debug.Orientation = SiVector.FromDegrees(-90);
-            debug.Location = new SiVector(1000, 1000);
+            _engine.Sprites.Debugs.AddAt(new SiVector(1000, 1000));
 
             //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+
+            /*
+            _engine.Sprites.TextBlocks.Add(_engine.Rendering.TextFormats.Debug,
+                _engine.Rendering.Materials.Brushes.Red,
+                new SiVector(100, 100), true, "", "Test");
+            */
 
             //var debugEnemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyDebug>();
             //debugEnemy.Orientation = SiVector.FromDegrees(0);
@@ -93,7 +100,7 @@ namespace Si.Engine.Level
 
             _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>();
 
-            //AddAsteroidField(new SiVector(), 8, 8);
+            AddAsteroidField(new SiVector(), 8, 8);
 
             //AddSingleAsteroid();
 

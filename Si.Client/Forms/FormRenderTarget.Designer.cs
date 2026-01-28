@@ -29,7 +29,26 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRenderTarget));
+            statusStripDebug = new System.Windows.Forms.StatusStrip();
+            toolStripStatusLabelXY = new System.Windows.Forms.ToolStripStatusLabel();
+            statusStripDebug.SuspendLayout();
             SuspendLayout();
+            // 
+            // statusStripDebug
+            // 
+            statusStripDebug.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripStatusLabelXY });
+            statusStripDebug.Location = new System.Drawing.Point(0, 539);
+            statusStripDebug.Name = "statusStripDebug";
+            statusStripDebug.Size = new System.Drawing.Size(784, 22);
+            statusStripDebug.TabIndex = 0;
+            statusStripDebug.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelXY
+            // 
+            toolStripStatusLabelXY.ForeColor = System.Drawing.Color.White;
+            toolStripStatusLabelXY.Name = "toolStripStatusLabelXY";
+            toolStripStatusLabelXY.Size = new System.Drawing.Size(126, 17);
+            toolStripStatusLabelXY.Text = "toolStripStatusLabelXY";
             // 
             // FormRenderTarget
             // 
@@ -37,6 +56,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.Black;
             ClientSize = new System.Drawing.Size(784, 561);
+            Controls.Add(statusStripDebug);
             ForeColor = System.Drawing.SystemColors.ControlText;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
@@ -45,9 +65,15 @@
             SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Strikeforce Infinite";
+            statusStripDebug.ResumeLayout(false);
+            statusStripDebug.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private System.Windows.Forms.StatusStrip statusStripDebug;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelXY;
     }
 }
