@@ -279,7 +279,7 @@ namespace Si.Engine
                 Rendering.Materials.Brushes.Red, new SiVector(100, 100), true);
 
             var loadingDetail = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
-                Rendering.Materials.Brushes.Gray, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
+                Rendering.Materials.Brushes.OrangeRed, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
 
             IsInitializing = true;
 

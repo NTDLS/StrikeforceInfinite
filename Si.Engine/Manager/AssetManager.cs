@@ -222,7 +222,7 @@ namespace Si.Engine.Manager
                 }
             }
 
-            threadPoolTracker.WaitForCompletion(TimeSpan.FromMilliseconds(10), () =>
+            threadPoolTracker.WaitForCompletion(TimeSpan.FromMilliseconds(100), () =>
             {
                 loadingDetail.SetTextAndCenterX($"{statusIndex / statusEntryCount * 100.0:n0}%");
                 return true;

@@ -11,6 +11,7 @@ namespace Si.Library
         public int MunitionTraversalThreads { get; set; } = SiUtility.LesserOf(Environment.ProcessorCount * 2, 16);
         public int WorldClockThreads { get; set; } = 10;
         public bool EnableSpriteInterrogation { get; set; } = false;
+        public bool EnableDeveloperMode { get; set; } = false;
         public bool HighlightNaturalBounds { get; set; } = false;
         public bool HighlightAllSprites { get; set; } = false;
         public bool HighlightCollisions { get; set; } = false;

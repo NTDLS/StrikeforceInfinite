@@ -33,7 +33,9 @@ namespace Si.Client
             checkBoxHighlightAllSprites.Checked = settings.HighlightAllSprites;
             checkBoxHighlightNaturalBounds.Checked = settings.HighlightNaturalBounds;
             checkBoxEnableSpriteInterrogation.Checked = settings.EnableSpriteInterrogation;
+            checkBoxEnableDeveloperMode.Checked = settings.EnableDeveloperMode;
             checkBoxPreCacheAllAssets.Checked = settings.PreCacheAllAssets;
+            checkBoxElevatedWorldClockThreadPriority.Checked = settings.ElevatedWorldClockThreadPriority;
             textBoxTargetFrameRate.Text = $"{settings.TargetFrameRate:n0}";
             textBoxOverdrawScale.Text = $"{settings.OverdrawScale:n0}";
             textBoxInitialFrameStarCount.Text = $"{settings.InitialFrameStarCount:n0}";
@@ -146,7 +148,9 @@ namespace Si.Client
                 settings.HighlightAllSprites = checkBoxHighlightAllSprites.Checked;
                 settings.HighlightNaturalBounds = checkBoxHighlightNaturalBounds.Checked;
                 settings.EnableSpriteInterrogation = checkBoxEnableSpriteInterrogation.Checked;
+                settings.EnableDeveloperMode = checkBoxEnableDeveloperMode.Checked;
                 settings.PreCacheAllAssets = checkBoxPreCacheAllAssets.Checked;
+                settings.ElevatedWorldClockThreadPriority = checkBoxElevatedWorldClockThreadPriority.Checked;
 
                 settings.TargetFrameRate = GetAndValidate(textBoxTargetFrameRate, 10, settings.WorldTicksPerSecond, "Frame Limiter");
                 settings.OverdrawScale = GetAndValidate(textBoxOverdrawScale, 1.0f, 10.0f, "Overdraw scale");

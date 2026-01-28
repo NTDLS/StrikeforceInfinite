@@ -50,10 +50,12 @@
             textBoxOverdrawScale = new System.Windows.Forms.TextBox();
             textBoxTargetFrameRate = new System.Windows.Forms.TextBox();
             tabPageDebug = new System.Windows.Forms.TabPage();
+            checkBoxEnableDeveloperMode = new System.Windows.Forms.CheckBox();
             checkBoxEnableSpriteInterrogation = new System.Windows.Forms.CheckBox();
             checkBoxHighlightAllSprites = new System.Windows.Forms.CheckBox();
             checkBoxHighlightNaturalBounds = new System.Windows.Forms.CheckBox();
             tabPageAdvanced = new System.Windows.Forms.TabPage();
+            checkBoxElevatedWorldClockThreadPriority = new System.Windows.Forms.CheckBox();
             checkBoxPreCacheAllAssets = new System.Windows.Forms.CheckBox();
             tabPageAudio = new System.Windows.Forms.TabPage();
             checkBoxPlayMusic = new System.Windows.Forms.CheckBox();
@@ -119,7 +121,7 @@
             trackBarResolution.LargeChange = 1;
             trackBarResolution.Location = new System.Drawing.Point(15, 100);
             trackBarResolution.Name = "trackBarResolution";
-            trackBarResolution.Size = new System.Drawing.Size(223, 45);
+            trackBarResolution.Size = new System.Drawing.Size(511, 45);
             trackBarResolution.TabIndex = 1;
             // 
             // labelResolutionLabel
@@ -136,7 +138,7 @@
             labelResolution.AutoSize = true;
             labelResolution.Location = new System.Drawing.Point(90, 82);
             labelResolution.Name = "labelResolution";
-            labelResolution.Size = new System.Drawing.Size(61, 15);
+            labelResolution.Size = new System.Drawing.Size(60, 15);
             labelResolution.TabIndex = 10;
             labelResolution.Text = "0000x0000";
             // 
@@ -240,7 +242,7 @@
             label2.AutoSize = true;
             label2.Location = new System.Drawing.Point(17, 16);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(101, 15);
+            label2.Size = new System.Drawing.Size(102, 15);
             label2.TabIndex = 27;
             label2.Text = "Target Frame rate:";
             // 
@@ -269,20 +271,32 @@
             // 
             // tabPageDebug
             // 
+            tabPageDebug.Controls.Add(checkBoxEnableDeveloperMode);
             tabPageDebug.Controls.Add(checkBoxEnableSpriteInterrogation);
             tabPageDebug.Controls.Add(checkBoxHighlightAllSprites);
             tabPageDebug.Controls.Add(checkBoxHighlightNaturalBounds);
             tabPageDebug.Location = new System.Drawing.Point(4, 24);
             tabPageDebug.Name = "tabPageDebug";
+            tabPageDebug.Padding = new System.Windows.Forms.Padding(3);
             tabPageDebug.Size = new System.Drawing.Size(542, 304);
             tabPageDebug.TabIndex = 2;
             tabPageDebug.Text = "Debug";
             tabPageDebug.UseVisualStyleBackColor = true;
             // 
+            // checkBoxEnableDeveloperMode
+            // 
+            checkBoxEnableDeveloperMode.AutoSize = true;
+            checkBoxEnableDeveloperMode.Location = new System.Drawing.Point(6, 81);
+            checkBoxEnableDeveloperMode.Name = "checkBoxEnableDeveloperMode";
+            checkBoxEnableDeveloperMode.Size = new System.Drawing.Size(232, 19);
+            checkBoxEnableDeveloperMode.TabIndex = 4;
+            checkBoxEnableDeveloperMode.Text = "Enable developer mode (access with ~)";
+            checkBoxEnableDeveloperMode.UseVisualStyleBackColor = true;
+            // 
             // checkBoxEnableSpriteInterrogation
             // 
             checkBoxEnableSpriteInterrogation.AutoSize = true;
-            checkBoxEnableSpriteInterrogation.Location = new System.Drawing.Point(13, 63);
+            checkBoxEnableSpriteInterrogation.Location = new System.Drawing.Point(6, 56);
             checkBoxEnableSpriteInterrogation.Name = "checkBoxEnableSpriteInterrogation";
             checkBoxEnableSpriteInterrogation.Size = new System.Drawing.Size(175, 19);
             checkBoxEnableSpriteInterrogation.TabIndex = 3;
@@ -292,7 +306,7 @@
             // checkBoxHighlightAllSprites
             // 
             checkBoxHighlightAllSprites.AutoSize = true;
-            checkBoxHighlightAllSprites.Location = new System.Drawing.Point(13, 38);
+            checkBoxHighlightAllSprites.Location = new System.Drawing.Point(6, 31);
             checkBoxHighlightAllSprites.Name = "checkBoxHighlightAllSprites";
             checkBoxHighlightAllSprites.Size = new System.Drawing.Size(133, 19);
             checkBoxHighlightAllSprites.TabIndex = 2;
@@ -302,7 +316,7 @@
             // checkBoxHighlightNaturalBounds
             // 
             checkBoxHighlightNaturalBounds.AutoSize = true;
-            checkBoxHighlightNaturalBounds.Location = new System.Drawing.Point(13, 13);
+            checkBoxHighlightNaturalBounds.Location = new System.Drawing.Point(6, 6);
             checkBoxHighlightNaturalBounds.Name = "checkBoxHighlightNaturalBounds";
             checkBoxHighlightNaturalBounds.Size = new System.Drawing.Size(164, 19);
             checkBoxHighlightNaturalBounds.TabIndex = 1;
@@ -311,6 +325,7 @@
             // 
             // tabPageAdvanced
             // 
+            tabPageAdvanced.Controls.Add(checkBoxElevatedWorldClockThreadPriority);
             tabPageAdvanced.Controls.Add(checkBoxPreCacheAllAssets);
             tabPageAdvanced.Location = new System.Drawing.Point(4, 24);
             tabPageAdvanced.Name = "tabPageAdvanced";
@@ -320,10 +335,20 @@
             tabPageAdvanced.Text = "Advanced";
             tabPageAdvanced.UseVisualStyleBackColor = true;
             // 
+            // checkBoxElevatedWorldClockThreadPriority
+            // 
+            checkBoxElevatedWorldClockThreadPriority.AutoSize = true;
+            checkBoxElevatedWorldClockThreadPriority.Location = new System.Drawing.Point(6, 31);
+            checkBoxElevatedWorldClockThreadPriority.Name = "checkBoxElevatedWorldClockThreadPriority";
+            checkBoxElevatedWorldClockThreadPriority.Size = new System.Drawing.Size(180, 19);
+            checkBoxElevatedWorldClockThreadPriority.TabIndex = 2;
+            checkBoxElevatedWorldClockThreadPriority.Text = "Elevated world clock priority?";
+            checkBoxElevatedWorldClockThreadPriority.UseVisualStyleBackColor = true;
+            // 
             // checkBoxPreCacheAllAssets
             // 
             checkBoxPreCacheAllAssets.AutoSize = true;
-            checkBoxPreCacheAllAssets.Location = new System.Drawing.Point(6, 20);
+            checkBoxPreCacheAllAssets.Location = new System.Drawing.Point(6, 6);
             checkBoxPreCacheAllAssets.Name = "checkBoxPreCacheAllAssets";
             checkBoxPreCacheAllAssets.Size = new System.Drawing.Size(133, 19);
             checkBoxPreCacheAllAssets.TabIndex = 1;
@@ -344,7 +369,7 @@
             // checkBoxPlayMusic
             // 
             checkBoxPlayMusic.AutoSize = true;
-            checkBoxPlayMusic.Location = new System.Drawing.Point(6, 16);
+            checkBoxPlayMusic.Location = new System.Drawing.Point(6, 6);
             checkBoxPlayMusic.Name = "checkBoxPlayMusic";
             checkBoxPlayMusic.Size = new System.Drawing.Size(88, 19);
             checkBoxPlayMusic.TabIndex = 0;
@@ -433,5 +458,7 @@
         private System.Windows.Forms.CheckBox checkBoxPlayMusic;
         private System.Windows.Forms.CheckBox checkBoxFineTuneFrameRate;
         private System.Windows.Forms.CheckBox checkBoxEnableVerticalSync;
+        private System.Windows.Forms.CheckBox checkBoxEnableDeveloperMode;
+        private System.Windows.Forms.CheckBox checkBoxElevatedWorldClockThreadPriority;
     }
 }
