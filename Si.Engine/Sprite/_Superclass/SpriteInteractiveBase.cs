@@ -48,7 +48,13 @@ namespace Si.Engine.Sprite._Superclass
         public InteractiveSpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
         public List<WeaponBase> Weapons { get; private set; } = new();
 
-        public SpriteInteractiveBase(EngineCore engine, string? imagePath)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="imagePath"></param>
+        /// <param name="useDetachedMetadata">Metadata is shared between sprites of the same image, sometimes it is useful for a sprite to have its own copy.</param>
+        public SpriteInteractiveBase(EngineCore engine, string? imagePath, bool useDetachedMetadata = false)
             : base(engine)
         {
             _engine = engine;
@@ -58,7 +64,7 @@ namespace Si.Engine.Sprite._Superclass
 
             if (imagePath != null)
             {
-                SetImageAndLoadMetadata(imagePath);
+                SetImageAndLoadMetadata(imagePath, useDetachedMetadata);
             }
         }
 
@@ -78,9 +84,9 @@ namespace Si.Engine.Sprite._Superclass
         /// from a .json file in the same path with the same name as the sprite image.
         /// </summary>
         /// <param name="spriteImagePath"></param>
-        private void SetImageAndLoadMetadata(string spriteImagePath)
+        private void SetImageAndLoadMetadata(string spriteImagePath, bool useDetachedMetadata = false)
         {
-            _metadata = _engine.Assets.GetMetaData<InteractiveSpriteMetadata>(spriteImagePath);
+            _metadata = _engine.Assets.GetMetaData<InteractiveSpriteMetadata>(spriteImagePath, useDetachedMetadata);
 
             SetImage(spriteImagePath);
 
@@ -351,7 +357,7 @@ namespace Si.Engine.Sprite._Superclass
             //      velocities off... right?
             // - [x] Note that thisCollidable also contains the predicted location after the move.
             // - [] How the hell do we handle collateral collisions? Please tell me we don't have to iterate.... 
-            // - [x] Turns out a big problem is going to be that each colliding sprite will have two seperate handlers.
+            // - [x] Turns out a big problem is going to be that each colliding sprite will have two separate handlers.
             //      this might make it difficult.... not sure yet.
             // - [x] I think we need to determine the angle of the "collider" and do the bounce math on that.
             // - [x] I added sprite mass, velocity and momentum. This should help us determine who's gonna get moved and by what amount.
@@ -387,7 +393,7 @@ namespace Si.Engine.Sprite._Superclass
         /// <param name="collisionPair"></param>
         public void RespondToCollisions(OverlappingKinematicBodyPair collisionPair)
         {
-            //We have to save the movement vectors because the calls to sssssss is going to change then.
+            //We have to save the movement vectors because the calls to RespondToCollision is going to change them.
             var originalSprite1Velocity = collisionPair.Body1.Sprite.MovementVector;
             var originalSprite2Velocity = collisionPair.Body2.Sprite.MovementVector;
 

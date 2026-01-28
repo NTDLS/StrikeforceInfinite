@@ -16,8 +16,8 @@ namespace Si.Engine.Sprite._Superclass
         public SpriteRadarPositionIndicator? RadarPositionIndicator { get; protected set; }
         public SpriteRadarPositionTextBlock? RadarPositionText { get; protected set; }
 
-        public SpriteInteractiveShipBase(EngineCore engine, string imagePath)
-            : base(engine, imagePath)
+        public SpriteInteractiveShipBase(EngineCore engine, string imagePath, bool useDetachedMetadata = false)
+            : base(engine, imagePath, useDetachedMetadata)
         {
             _engine = engine;
         }

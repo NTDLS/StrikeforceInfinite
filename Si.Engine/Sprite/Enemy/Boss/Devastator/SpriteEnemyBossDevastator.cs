@@ -7,8 +7,8 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 {
     internal class SpriteEnemyBossDevastator : SpriteEnemyBossBase
     {
-        public SpriteEnemyBossDevastator(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Boss\Devastator\Hull.png")
+        public SpriteEnemyBossDevastator(EngineCore engine, bool useDetachedMetadata = false)
+            : base(engine, @"Sprites\Enemy\Boss\Devastator\Hull.png", useDetachedMetadata)
         {
             Orientation.Degrees = SiRandom.Between(0, 359);
 

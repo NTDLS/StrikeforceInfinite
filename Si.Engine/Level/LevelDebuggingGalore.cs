@@ -75,15 +75,35 @@ namespace Si.Engine.Level
                 //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
             }
 
-            _engine.Sprites.Debugs.AddAt(new SiVector(1000, 1000));
+            //_engine.Sprites.Debugs.AddAt(new SiVector(1000, 1000));
 
             //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
 
             /*
             _engine.Sprites.TextBlocks.Add(_engine.Rendering.TextFormats.Debug,
-                _engine.Rendering.Materials.Brushes.Red,
+                _engine.Rendering.Materials.Brushes.
+            
+            
+            Red,
                 new SiVector(100, 100), true, "", "Test");
             */
+
+            var asteroid1 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png", useDetachedMetadata: true);
+            asteroid1.Location = new SiVector(1000, 1000);
+            asteroid1.Orientation = SiVector.Zero;
+            asteroid1.Speed = 0f;
+            asteroid1.RecalculateMovementVector(0.ToRadians());
+            asteroid1.VectorType = ParticleVectorType.Default;
+            asteroid1.Metadata.Mass = 100f;
+
+            var asteroid2 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png", useDetachedMetadata: true);
+            asteroid2.Location = new SiVector(1150, 1000);
+            asteroid2.Orientation = SiVector.Zero;
+            asteroid2.Speed = 0.20f;
+            asteroid2.RecalculateMovementVector(180.ToRadians());
+            asteroid2.VectorType = ParticleVectorType.Default;
+            asteroid2.Metadata.Mass = 10f;
+
 
             //var debugEnemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyDebug>();
             //debugEnemy.Orientation = SiVector.FromDegrees(0);
@@ -94,9 +114,9 @@ namespace Si.Engine.Level
             //debug.Location = new SiVector(900, 900);
             //debug.MovementVector = debug.CalculateMovementVector();
 
-            _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>();
+            //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>().Location = new(500, 500);
 
-            AddAsteroidField(new SiVector(), 8, 8);
+            //AddAsteroidField(new SiVector(), 8, 8);
 
             //AddSingleAsteroid();
 

@@ -7,8 +7,8 @@ namespace Si.Engine.Sprite.Enemy.Starbase._Superclass
     /// </summary>
     internal class SpriteEnemyStarbase : SpriteEnemyBase
     {
-        public SpriteEnemyStarbase(EngineCore engine, string imagePath)
-            : base(engine, imagePath)
+        public SpriteEnemyStarbase(EngineCore engine, string imagePath, bool useDetachedMetadata = false)
+            : base(engine, imagePath, useDetachedMetadata)
         {
             RecalculateMovementVector();
         }

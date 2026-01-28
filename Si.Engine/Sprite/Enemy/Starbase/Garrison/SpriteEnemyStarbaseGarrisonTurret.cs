@@ -10,8 +10,8 @@ namespace Si.GameEngine.Sprite.Enemy.Starbase.Garrison
     {
         public bool FireToggler { get; set; }
 
-        public SpriteEnemyStarbaseGarrisonTurret(EngineCore engine)
-            : base(engine, $@"Sprites\Enemy\Starbase\Garrison\Turret.png")
+        public SpriteEnemyStarbaseGarrisonTurret(EngineCore engine, bool useDetachedMetadata = false)
+            : base(engine, $@"Sprites\Enemy\Starbase\Garrison\Turret.png", useDetachedMetadata)
         {
         }
 

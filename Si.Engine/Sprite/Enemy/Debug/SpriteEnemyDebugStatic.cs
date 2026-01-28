@@ -7,8 +7,8 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// </summary>
     internal class SpriteEnemyDebugStatic : SpriteEnemyPeonBase
     {
-        public SpriteEnemyDebugStatic(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Debug\Hull.png")
+        public SpriteEnemyDebugStatic(EngineCore engine, bool useDetachedMetadata = false)
+            : base(engine, @"Sprites\Enemy\Debug\Hull.png", useDetachedMetadata)
         {
         }
     }

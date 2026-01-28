@@ -4,8 +4,8 @@ using Si.Library.Mathematics;
 
 namespace Si.GameEngine.Sprite.Enemy.Starbase.Garrison
 {
-    internal class SpriteEnemyStarbaseGarrison(EngineCore engine)
-        : SpriteEnemyStarbase(engine, @"Sprites\Enemy\Starbase\Garrison\Hull.png")
+    internal class SpriteEnemyStarbaseGarrison(EngineCore engine, bool useDetachedMetadata = false)
+        : SpriteEnemyStarbase(engine, @"Sprites\Enemy\Starbase\Garrison\Hull.png", useDetachedMetadata)
     {
         public override void ApplyMotion(float epoch, SiVector displacementVector)
         {

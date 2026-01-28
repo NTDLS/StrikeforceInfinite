@@ -48,9 +48,15 @@ namespace Si.Engine.Manager
             _archive?.Dispose();
         }
 
-        public T GetMetaData<T>(string spriteImagePath)
+        public T GetMetaData<T>(string spriteImagePath, bool avoidCache = false)
         {
-            string metadataFile = $"{spriteImagePath}.json".Replace('\\', '/'); ;
+            string metadataFile = $"{spriteImagePath}.json".Replace('\\', '/');
+
+            if (avoidCache)
+            {
+                return JsonConvert.DeserializeObject<T>(GetText(metadataFile)).EnsureNotNull();
+            }
+
             string key = $"meta:{metadataFile.ToLower()}";
 
             var cached = _collection.Read(o =>

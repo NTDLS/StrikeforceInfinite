@@ -4,8 +4,8 @@ namespace Si.Engine.Sprite.Enemy.Peon
 {
     internal class SpriteEnemyScav : SpriteEnemyPeonBase
     {
-        public SpriteEnemyScav(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Peon\Scav.png")
+        public SpriteEnemyScav(EngineCore engine, bool useDetachedMetadata = false)
+            : base(engine, @"Sprites\Enemy\Peon\Scav.png", useDetachedMetadata)
         {
         }
     }
