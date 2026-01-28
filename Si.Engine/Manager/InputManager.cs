@@ -408,7 +408,7 @@ namespace Si.Engine.Manager
         {
             if (key == Keys.Oem3)
             {
-                _engine.Debug?.ToggleVisibility();
+                _engine.Development?.ToggleVisibility();
             }
 
             else if (key == Keys.P)

@@ -51,7 +51,7 @@ namespace Si.Engine
         public SpriteManager Sprites { get; private set; } //Also contains all of the sprite tick controllers.
         public AudioManager Audio { get; private set; }
         public AssetManager Assets { get; private set; }
-        public InterrogationManager? Debug { get; private set; }
+        public DevelopmentManager? Development { get; private set; }
         public CollisionManager Collisions { get; private set; }
 
         #endregion
@@ -130,9 +130,9 @@ namespace Si.Engine
             _worldClock = new EngineWorldClock(this);
         }
 
-        public void EnableDebugging(IInterrogationForm debugForm)
+        public void EnableDevelopment(IInterrogationForm interrogationForm)
         {
-            Debug = new InterrogationManager(this, debugForm);
+            Development = new DevelopmentManager(this, interrogationForm);
         }
 
         public static SiEngineSettings LoadSettings()

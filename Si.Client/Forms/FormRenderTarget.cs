@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Si.Library.SiConstants;
@@ -54,7 +55,7 @@ namespace Si.Client
 
             _engine = new EngineCore(drawingSurface, SiEngineInitializationType.Play);
 
-            _engine.EnableDebugging(new FormInterrogation(_engine));
+            _engine.EnableDevelopment(new FormInterrogation(_engine));
 
 #if !DEBUG
             statusStripDebug.Visible = false;
@@ -95,15 +96,8 @@ namespace Si.Client
         {
             _engine.AddRenderLoopInterjection(RenderLoopInterjectionLifetime.Once, () =>
             {
-                var src = _engine.Display.GetCurrentScaledScreenBounds();
-
-                // map mouse pixel -> TotalCanvas coordinate (inside src rectangle)
-                var x = src.Left + (e.X * (src.Width / _engine.Display.NaturalScreenSize.Width));
-                var y = src.Top + (e.Y * (src.Height / _engine.Display.NaturalScreenSize.Height));
-
-                toolStripStatusLabelXY.Text = $"Pointer: X: {x:n1}, Y: {y:n1}";
-
-                //Debug.Print($"x{x:n1}, y{y:n1} => Player x{_engine.Player.Sprite.X:n1},x{_engine.Player.Sprite.Y:n1}");
+                var translatedPosition = _engine.Display.TranslateScreenPosition(e.Location);
+                toolStripStatusLabelXY.Text = $"Pointer: X: {translatedPosition.X:n1}, Y: {translatedPosition.Y:n1}";
 
                 foreach (var sprite in highlightedSprites)
                 {
@@ -112,8 +106,8 @@ namespace Si.Client
 
                 highlightedSprites.Clear();
 
-                var sprites = _engine.Sprites.RenderLocationIntersections(new SiVector(x, y), new SiVector(1, 1)).ToList();
-                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(new SiVector(x, y), new SiVector(1, 1)))
+                var sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One).ToList();
+                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One))
                 {
                     sprites.Add(_engine.Player.Sprite);
                 }
@@ -128,18 +122,14 @@ namespace Si.Client
 
         private void FormRenderTarget_MouseDown(object? sender, MouseEventArgs e)
         {
-            var src = _engine.Display.GetCurrentScaledScreenBounds();
-
-            // map mouse pixel -> TotalCanvas coordinate (inside src rectangle)
-            var x = src.Left + (e.X * (src.Width / _engine.Display.NaturalScreenSize.Width));
-            var y = src.Top + (e.Y * (src.Height / _engine.Display.NaturalScreenSize.Height));
+            var translatedPosition = _engine.Display.TranslateScreenPosition(e.Location);
 
             List<SpriteBase>? sprites = null;
 
             _engine.AddRenderLoopInterjection(RenderLoopInterjectionLifetime.Once, () =>
             {
-                sprites = _engine.Sprites.RenderLocationIntersections(new SiVector(x, y), new SiVector(1, 1), true).ToList();
-                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(new SiVector(x, y), new SiVector(1, 1)))
+                sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One, true).ToList();
+                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One))
                 {
                     sprites.Add(_engine.Player.Sprite);
                 }
@@ -156,7 +146,27 @@ namespace Si.Client
                     menu.Items.Add(watchMenu);
                     foreach (var sprite in sprites)
                     {
-                        watchMenu.DropDownItems.Add(sprite.GetType().Name).Tag = sprite;
+                        var label = $"UID: {sprite.UID}, Type: {sprite.GetType().Name}";
+                        if (!string.IsNullOrEmpty(sprite.SpriteTag))
+                        {
+                            label += $", Tag: {sprite.SpriteTag}";
+                        }
+
+                        watchMenu.DropDownItems.Add(label).Tag = sprite;
+                    }
+
+                    var inspectMenu = new ToolStripMenuItem("Inspect");
+                    inspectMenu.DropDownItemClicked += InspectMenu_ItemClicked;
+                    menu.Items.Add(inspectMenu);
+                    foreach (var sprite in sprites)
+                    {
+                        var label = $"UID: {sprite.UID}, Type: {sprite.GetType().Name}";
+                        if (!string.IsNullOrEmpty(sprite.SpriteTag))
+                        {
+                            label += $", Tag: {sprite.SpriteTag}";
+                        }
+
+                        inspectMenu.DropDownItems.Add(label).Tag = sprite;
                     }
 
                     var deleteMenu = new ToolStripMenuItem("Delete");
@@ -164,7 +174,13 @@ namespace Si.Client
                     menu.Items.Add(deleteMenu);
                     foreach (var sprite in sprites)
                     {
-                        deleteMenu.DropDownItems.Add(sprite.GetType().Name).Tag = sprite;
+                        var label = $"UID: {sprite.UID}, Type: {sprite.GetType().Name}";
+                        if (!string.IsNullOrEmpty(sprite.SpriteTag))
+                        {
+                            label += $", Tag: {sprite.SpriteTag}";
+                        }
+
+                        deleteMenu.DropDownItems.Add(label).Tag = sprite;
                     }
 
                     var location = new Point((int)e.X + 10, (int)e.Y);
@@ -172,37 +188,56 @@ namespace Si.Client
                 }
                 else if (e.Button == MouseButtons.Left)
                 {
-                    /*
                     var text = new StringBuilder();
 
-                    text.AppendLine($"Type: {sprite.GetType().Name}");
-                    text.AppendLine($"UID: {sprite.UID}");
-                    text.AppendLine($"Location: {sprite.Location}");
-
-                    if (sprite is SpriteEnemyBase enemy)
+                    foreach (var sprite in sprites)
                     {
-                        text.AppendLine($"Hit Points: {enemy.HullHealth:n0}");
-                        text.AppendLine($"Is Locked-on: {enemy.IsLockedOnHard}");
-                        text.AppendLine($"Is Locked-on (Soft): {enemy.IsLockedOnSoft:n0}");
-                        text.AppendLine($"Shield Points: {enemy.ShieldHealth:n0}");
-                        text.AppendLine($"Speed: {enemy.Speed:n2}");
-                        text.AppendLine($"Angle: {enemy.Orientation.Degrees:n2}° {enemy.Orientation:n2}");
-                        //text.AppendLine($"Throttle Percent: {enemy.Velocity.ForwardVelocity:n2}");
-
-                        if (enemy.CurrentAIController != null)
+                        if (text.Length > 0)
                         {
-                            text.AppendLine($"AI: {enemy.CurrentAIController.GetType().Name}");
+                            text.AppendLine();
                         }
+                        text.AppendLine($"UID: {sprite.UID}");
+                        text.AppendLine($"    Type: {sprite.GetType().Name}");
+                        text.AppendLine($"    Tag: {sprite.SpriteTag}");
+                        text.AppendLine($"    Location: {sprite.Location}");
+
+                        /*
+                        if (sprite is SpriteEnemyBase enemy)
+                        {
+                            text.AppendLine($"Hit Points: {enemy.HullHealth:n0}");
+                            text.AppendLine($"Is Locked-on: {enemy.IsLockedOnHard}");
+                            text.AppendLine($"Is Locked-on (Soft): {enemy.IsLockedOnSoft:n0}");
+                            text.AppendLine($"Shield Points: {enemy.ShieldHealth:n0}");
+                            text.AppendLine($"Speed: {enemy.Speed:n2}");
+                            text.AppendLine($"Angle: {enemy.Orientation.Degrees:n2}° {enemy.Orientation:n2}");
+                            //text.AppendLine($"Throttle Percent: {enemy.Velocity.ForwardVelocity:n2}");
+
+                            if (enemy.CurrentAIController != null)
+                            {
+                                text.AppendLine($"AI: {enemy.CurrentAIController.GetType().Name}");
+                            }
+                        }
+                        */
                     }
+
 
                     if (text.Length > 0)
                     {
-                        var location = new Point((int)e.X, (int)e.Y - sprite.Size.Height);
+                        var location = new Point((int)e.X + 10, (int)e.Y);
                         _interrogationTip.Show(text.ToString(), _engine.Display.DrawingSurface, location, 5000);
                     }
-                    */
+
                 }
             }
+        }
+
+        private void InspectMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
+        {
+            (sender as ToolStripDropDown)?.Close();
+            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+
+            _engine.Development?.EnsureVisibility();
+            _engine.Development?.EnqueueCommand($"Sprite-Inspect {sprite.UID}");
         }
 
         private void WatchMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)

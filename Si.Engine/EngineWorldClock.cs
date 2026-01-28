@@ -163,7 +163,7 @@ namespace Si.Engine
 
                 if (!_isPaused) ExecuteWorldClockTick(epoch);
 
-                _engine.Debug?.ProcessCommand();
+                _engine.Development?.ProcessCommand();
                 _engine.RenderEverything();
 
                 if (_engine.Settings.VerticalSync == false)

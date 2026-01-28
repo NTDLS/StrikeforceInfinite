@@ -95,7 +95,7 @@ namespace Si.Engine.Manager
         /// This is to be used ONLY for the debugger to access the collection. Otherwise, this class managed all access to the internal collection,
         /// </summary>
         /// <param name="collectionAccessor"></param>
-        public void DebugOnlyAccess(CollectionAccessor collectionAccessor)
+        public void DeveloperOnlyAccess(CollectionAccessor collectionAccessor)
             => collectionAccessor(All());
 
         public void QueueAllForDeletionOfType<T>() where T : SpriteBase

@@ -78,6 +78,22 @@ namespace Si.Engine.Manager
         /// </summary>
         public RectangleF TotalCanvasBounds => new RectangleF(0, 0, TotalCanvasSize.Width, TotalCanvasSize.Height);
 
+        /// <summary>
+        /// Translates the given screen position (pixel coordinates) into TotalCanvas coordinates.
+        /// </summary>
+        /// <param name="screenPosition"></param>
+        /// <returns></returns>
+        public SiVector TranslateScreenPosition(Point screenPosition)
+        {
+            var src = _engine.Display.GetCurrentScaledScreenBounds();
+
+            // Map mouse pixel to TotalCanvas coordinate (inside src rectangle)
+            var x = src.Left + (screenPosition.X * (src.Width / _engine.Display.NaturalScreenSize.Width));
+            var y = src.Top + (screenPosition.Y * (src.Height / _engine.Display.NaturalScreenSize.Height));
+
+            return new SiVector(x, y);
+        }
+
         public RectangleF GetCurrentScaledScreenBounds()
         {
             var scale = SpeedOrientedFrameScalingFactor();

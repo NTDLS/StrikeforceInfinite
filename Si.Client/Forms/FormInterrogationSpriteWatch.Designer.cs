@@ -90,14 +90,14 @@ namespace Si.Client.Forms
             richTexLog.TabIndex = 0;
             richTexLog.Text = "";
             // 
-            // FormDebugSpriteWatch
+            // FormInterrogationSpriteWatch
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(659, 563);
             Controls.Add(splitContainerBody);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            Name = "FormDebugSpriteWatch";
+            Name = "FormInterrogationSpriteWatch";
             Text = "Strikeforce Infinite : Sprite Watch";
             splitContainerBody.Panel1.ResumeLayout(false);
             splitContainerBody.Panel2.ResumeLayout(false);

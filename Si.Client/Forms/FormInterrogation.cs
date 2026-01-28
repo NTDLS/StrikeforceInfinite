@@ -20,9 +20,9 @@ namespace Si.Client.Forms
         private DateTime _lastTabKeyTimestamp = DateTime.UtcNow;
         private bool _IsInHistoryBrowseMode = false;
 
-        private void FormDebug_Load(object sender, EventArgs e)
+        private void FormInterrogation_Load(object sender, EventArgs e)
         {
-            foreach (var command in _engine.Debug.EnsureNotNull().CommandParser.Commands.OrderBy(o => o.Name))
+            foreach (var command in _engine.Development.EnsureNotNull().CommandParser.Commands.OrderBy(o => o.Name))
             {
                 var item = new ListViewItem(command.Name);
 
@@ -60,7 +60,7 @@ namespace Si.Client.Forms
                 listViewCommands.Items.Add(item);
             }
 
-            var suggestions = _engine.Debug.CommandParser.Commands.Select(o => o.Name).ToArray();
+            var suggestions = _engine.Development.CommandParser.Commands.Select(o => o.Name).ToArray();
 
             var allowedTypes = new AutoCompleteStringCollection();
             allowedTypes.AddRange(suggestions);
@@ -87,7 +87,7 @@ namespace Si.Client.Forms
 
             FormClosing += (object? sender, FormClosingEventArgs e) =>
             {
-                engine.Debug.EnsureNotNull().ToggleVisibility();
+                engine.Development.EnsureNotNull().ToggleVisibility();
                 e.Cancel = true;
             };
 
@@ -171,7 +171,7 @@ namespace Si.Client.Forms
                 _commandHistory.Add(command);
                 _commandHistoryIndex = _commandHistory.Count;
 
-                _engine.Debug.EnsureNotNull().EnqueueCommand(command);
+                _engine.Development.EnsureNotNull().EnqueueCommand(command);
             }
         }
 

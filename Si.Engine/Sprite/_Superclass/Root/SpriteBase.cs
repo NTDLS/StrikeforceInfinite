@@ -118,37 +118,37 @@ namespace Si.Engine.Sprite._Superclass._Root
             if (this is SpriteEnemyBase enemy)
             {
                 extraInfo =
-                      $"           AI Controller: {enemy.CurrentAIController}\r\n";
+                  $"\t           AI Controller: {enemy.CurrentAIController}\r\n";
             }
 
             return
-                  $">                    UID: {UID}\r\n"
-                + $"               Owner UID: {OwnerUID:n0}\r\n"
-                + $"                    Type: {GetType().Name}\r\n"
-                + $"                     Tag: {SpriteTag:n0}\r\n"
-                + $"             Is Visible?: {Visible:n0}\r\n"
-                + $"                    Size: {Size:n0}\r\n"
-                + $"                  Bounds: {Bounds:n0}\r\n"
-                + $"       Ready for Delete?: {IsQueuedForDeletion}\r\n"
-                + $"                Is Dead?: {IsDeadOrExploded}\r\n"
-                + $"         Render-Location: {RenderLocation}\r\n"
-                + $"                Location: {Location}\r\n"
-                + $"                   Angle: {Orientation}\r\n"
-                + $"                          {Orientation.DegreesSigned:n2}deg\r\n"
-                + $"                          {Orientation.RadiansSigned:n2}rad\r\n"
+                  $"\t                     UID: {UID}\r\n"
+                + $"\t               Owner UID: {OwnerUID:n0}\r\n"
+                + $"\t                    Type: {GetType().Name}\r\n"
+                + $"\t                     Tag: {SpriteTag:n0}\r\n"
+                + $"\t             Is Visible?: {Visible:n0}\r\n"
+                + $"\t                    Size: {Size:n0}\r\n"
+                + $"\t                  Bounds: {Bounds:n0}\r\n"
+                + $"\t       Ready for Delete?: {IsQueuedForDeletion}\r\n"
+                + $"\t                Is Dead?: {IsDeadOrExploded}\r\n"
+                + $"\t         Render-Location: {RenderLocation}\r\n"
+                + $"\t                Location: {Location}\r\n"
+                + $"\t                   Angle: {Orientation}\r\n"
+                + $"\t                          {Orientation.DegreesSigned:n2}deg\r\n"
+                + $"\t                          {Orientation.RadiansSigned:n2}rad\r\n"
                 + extraInfo
-                + $"       Background Offset: {_engine.Display.RenderWindowPosition}\r\n"
-                + $"                  Thrust: {MovementVector * 100:n2}\r\n"
-                + $"                   Boost: {Throttle * 100:n2}\r\n"
-                + $"                    Hull: {HullHealth:n0}\r\n"
-                + $"                  Shield: {ShieldHealth:n0}\r\n"
-                + $"             Attachments: {Attachments?.Count ?? 0:n0}\r\n"
-                + $"               Highlight: {IsHighlighted}\r\n"
-                + $"       Is Fixed Position: {IsFixedPosition}\r\n"
-                //+ $"            Is Locked On: {IsLockedOnHard}\r\n"
-                //+ $"     Is Locked On (Soft): {IsLockedOnSoft:n0}\r\n"
-                + $"In Current Scaled Bounds: {IsWithinCurrentScaledScreenBounds}\r\n"
-                + $"          Visible Bounds: {Bounds}\r\n";
+                + $"\t       Background Offset: {_engine.Display.RenderWindowPosition}\r\n"
+                + $"\t                  Thrust: {MovementVector * 100:n2}\r\n"
+                + $"\t                   Boost: {Throttle * 100:n2}\r\n"
+                + $"\t                    Hull: {HullHealth:n0}\r\n"
+                + $"\t                  Shield: {ShieldHealth:n0}\r\n"
+                + $"\t             Attachments: {Attachments?.Count ?? 0:n0}\r\n"
+                + $"\t               Highlight: {IsHighlighted}\r\n"
+                + $"\t       Is Fixed Position: {IsFixedPosition}\r\n"
+                //+ $"\t            Is Locked On: {IsLockedOnHard}\r\n"
+                //+ $"\t     Is Locked On (Soft): {IsLockedOnSoft:n0}\r\n"
+                + $"\tIn Current Scaled Bounds: {IsWithinCurrentScaledScreenBounds}\r\n"
+                + $"\t          Visible Bounds: {Bounds}\r\n";
         }
 
     }

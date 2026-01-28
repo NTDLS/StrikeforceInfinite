@@ -49,7 +49,7 @@
             labelOverdrawScale = new System.Windows.Forms.Label();
             textBoxOverdrawScale = new System.Windows.Forms.TextBox();
             textBoxTargetFrameRate = new System.Windows.Forms.TextBox();
-            tabPageDebug = new System.Windows.Forms.TabPage();
+            tabPageDevelopment = new System.Windows.Forms.TabPage();
             checkBoxEnableDeveloperMode = new System.Windows.Forms.CheckBox();
             checkBoxEnableSpriteInterrogation = new System.Windows.Forms.CheckBox();
             checkBoxHighlightAllSprites = new System.Windows.Forms.CheckBox();
@@ -65,7 +65,7 @@
             tabPageDisplay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarResolution).BeginInit();
             tabPageDisplayAdvanced.SuspendLayout();
-            tabPageDebug.SuspendLayout();
+            tabPageDevelopment.SuspendLayout();
             tabPageAdvanced.SuspendLayout();
             tabPageAudio.SuspendLayout();
             SuspendLayout();
@@ -74,7 +74,7 @@
             // 
             tabControl1.Controls.Add(tabPageDisplay);
             tabControl1.Controls.Add(tabPageDisplayAdvanced);
-            tabControl1.Controls.Add(tabPageDebug);
+            tabControl1.Controls.Add(tabPageDevelopment);
             tabControl1.Controls.Add(tabPageAdvanced);
             tabControl1.Controls.Add(tabPageAudio);
             tabControl1.Location = new System.Drawing.Point(12, 12);
@@ -269,34 +269,34 @@
             textBoxTargetFrameRate.Size = new System.Drawing.Size(133, 23);
             textBoxTargetFrameRate.TabIndex = 1;
             // 
-            // tabPageDebug
+            // tabPageDevelopment
             // 
-            tabPageDebug.Controls.Add(checkBoxEnableDeveloperMode);
-            tabPageDebug.Controls.Add(checkBoxEnableSpriteInterrogation);
-            tabPageDebug.Controls.Add(checkBoxHighlightAllSprites);
-            tabPageDebug.Controls.Add(checkBoxHighlightNaturalBounds);
-            tabPageDebug.Location = new System.Drawing.Point(4, 24);
-            tabPageDebug.Name = "tabPageDebug";
-            tabPageDebug.Padding = new System.Windows.Forms.Padding(3);
-            tabPageDebug.Size = new System.Drawing.Size(542, 304);
-            tabPageDebug.TabIndex = 2;
-            tabPageDebug.Text = "Debug";
-            tabPageDebug.UseVisualStyleBackColor = true;
+            tabPageDevelopment.Controls.Add(checkBoxEnableDeveloperMode);
+            tabPageDevelopment.Controls.Add(checkBoxEnableSpriteInterrogation);
+            tabPageDevelopment.Controls.Add(checkBoxHighlightAllSprites);
+            tabPageDevelopment.Controls.Add(checkBoxHighlightNaturalBounds);
+            tabPageDevelopment.Location = new System.Drawing.Point(4, 24);
+            tabPageDevelopment.Name = "tabPageDevelopment";
+            tabPageDevelopment.Padding = new System.Windows.Forms.Padding(3);
+            tabPageDevelopment.Size = new System.Drawing.Size(542, 304);
+            tabPageDevelopment.TabIndex = 2;
+            tabPageDevelopment.Text = "Development";
+            tabPageDevelopment.UseVisualStyleBackColor = true;
             // 
             // checkBoxEnableDeveloperMode
             // 
             checkBoxEnableDeveloperMode.AutoSize = true;
-            checkBoxEnableDeveloperMode.Location = new System.Drawing.Point(6, 81);
+            checkBoxEnableDeveloperMode.Location = new System.Drawing.Point(6, 6);
             checkBoxEnableDeveloperMode.Name = "checkBoxEnableDeveloperMode";
-            checkBoxEnableDeveloperMode.Size = new System.Drawing.Size(232, 19);
+            checkBoxEnableDeveloperMode.Size = new System.Drawing.Size(234, 19);
             checkBoxEnableDeveloperMode.TabIndex = 4;
-            checkBoxEnableDeveloperMode.Text = "Enable developer mode (access with ~)";
+            checkBoxEnableDeveloperMode.Text = "Enable developer mode? (Access via: ~)";
             checkBoxEnableDeveloperMode.UseVisualStyleBackColor = true;
             // 
             // checkBoxEnableSpriteInterrogation
             // 
             checkBoxEnableSpriteInterrogation.AutoSize = true;
-            checkBoxEnableSpriteInterrogation.Location = new System.Drawing.Point(6, 56);
+            checkBoxEnableSpriteInterrogation.Location = new System.Drawing.Point(6, 81);
             checkBoxEnableSpriteInterrogation.Name = "checkBoxEnableSpriteInterrogation";
             checkBoxEnableSpriteInterrogation.Size = new System.Drawing.Size(175, 19);
             checkBoxEnableSpriteInterrogation.TabIndex = 3;
@@ -306,7 +306,7 @@
             // checkBoxHighlightAllSprites
             // 
             checkBoxHighlightAllSprites.AutoSize = true;
-            checkBoxHighlightAllSprites.Location = new System.Drawing.Point(6, 31);
+            checkBoxHighlightAllSprites.Location = new System.Drawing.Point(6, 56);
             checkBoxHighlightAllSprites.Name = "checkBoxHighlightAllSprites";
             checkBoxHighlightAllSprites.Size = new System.Drawing.Size(133, 19);
             checkBoxHighlightAllSprites.TabIndex = 2;
@@ -316,7 +316,7 @@
             // checkBoxHighlightNaturalBounds
             // 
             checkBoxHighlightNaturalBounds.AutoSize = true;
-            checkBoxHighlightNaturalBounds.Location = new System.Drawing.Point(6, 6);
+            checkBoxHighlightNaturalBounds.Location = new System.Drawing.Point(6, 31);
             checkBoxHighlightNaturalBounds.Name = "checkBoxHighlightNaturalBounds";
             checkBoxHighlightNaturalBounds.Size = new System.Drawing.Size(164, 19);
             checkBoxHighlightNaturalBounds.TabIndex = 1;
@@ -418,8 +418,8 @@
             ((System.ComponentModel.ISupportInitialize)trackBarResolution).EndInit();
             tabPageDisplayAdvanced.ResumeLayout(false);
             tabPageDisplayAdvanced.PerformLayout();
-            tabPageDebug.ResumeLayout(false);
-            tabPageDebug.PerformLayout();
+            tabPageDevelopment.ResumeLayout(false);
+            tabPageDevelopment.PerformLayout();
             tabPageAdvanced.ResumeLayout(false);
             tabPageAdvanced.PerformLayout();
             tabPageAudio.ResumeLayout(false);
@@ -445,7 +445,7 @@
         private System.Windows.Forms.TextBox textBoxInitialFrameStarCount;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.TabPage tabPageDebug;
+        private System.Windows.Forms.TabPage tabPageDevelopment;
         private System.Windows.Forms.CheckBox checkBoxEnableSpriteInterrogation;
         private System.Windows.Forms.CheckBox checkBoxHighlightAllSprites;
         private System.Windows.Forms.CheckBox checkBoxHighlightNaturalBounds;
