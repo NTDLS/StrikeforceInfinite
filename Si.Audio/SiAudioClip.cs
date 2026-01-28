@@ -93,7 +93,7 @@ namespace Si.Audio
             if (_isPlaying && _isFading == false)
             {
                 _isFading = true;
-                new Thread(FadeThread).Start();
+                Task.Run(FadeThread);
             }
         }
 

@@ -21,7 +21,7 @@ namespace Si.Engine
         private readonly EngineCore _engine;
         private bool _shutdown = false;
         private bool _isPaused = false;
-        private readonly Thread _graphicsThread;
+        private readonly Thread _worldClockThread;
         private readonly DelegateThreadChildPool<TickControllerMethod>? _worldClockSubPool;
 
         private readonly DelegateThreadPool _worldClockThreadPool;
@@ -54,7 +54,12 @@ namespace Si.Engine
                 _worldClockThreadPool.Stop();
             };
 
-            _graphicsThread = new Thread(GraphicsThreadProc);
+            _worldClockThread = new Thread(WorldClockThreadProc);
+            _worldClockThread.IsBackground = true;
+            if (_engine.Settings.ElevatedWorldClockThreadPriority)
+            {
+                _worldClockThread.Priority = ThreadPriority.AboveNormal;
+            }
 
             if (_engine.Settings.MultithreadedWorldClock)
             {
@@ -100,7 +105,7 @@ namespace Si.Engine
         public void Start()
         {
             _shutdown = false;
-            _graphicsThread.Start();
+            _worldClockThread.Start();
 
             _engine.Events.Add(10, UpdateStatusText, SiDefermentEvent.SiDefermentEventMode.Recurring);
         }
@@ -108,7 +113,7 @@ namespace Si.Engine
         public void Dispose()
         {
             _shutdown = true;
-            _graphicsThread.Join();
+            _worldClockThread.Join();
         }
 
         public bool IsPaused() => _isPaused;
@@ -134,7 +139,7 @@ namespace Si.Engine
 
         #endregion
 
-        private void GraphicsThreadProc()
+        private void WorldClockThreadProc()
         {
             #region Add initial stars.
 

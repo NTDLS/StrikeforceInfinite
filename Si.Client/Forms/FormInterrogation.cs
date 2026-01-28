@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Si.Client.Forms
@@ -231,13 +232,11 @@ namespace Si.Client.Forms
 
         public void StartWatch(EngineCore engine, ISprite sprite)
         {
-            new Thread(o =>
+            Task.Run(() =>
             {
-                using (var form = new FormInterrogationSpriteWatch(_engine, sprite))
-                {
-                    form.ShowDialog();
-                }
-            }).Start();
+                using var form = new FormInterrogationSpriteWatch(_engine, sprite);
+                form.ShowDialog();
+            });
         }
     }
 }

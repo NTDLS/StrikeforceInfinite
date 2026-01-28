@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Si.Library.SiConstants;
 
@@ -197,11 +198,11 @@ namespace Si.Client
             (sender as ToolStripDropDown)?.Close();
             if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
 
-            new Thread(o =>
+            Task.Run(() =>
             {
                 using var form = new FormInterrogationSpriteWatch(_engine, sprite);
                 form.ShowDialog();
-            }).Start();
+            });
         }
 
         private void DeleteMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)

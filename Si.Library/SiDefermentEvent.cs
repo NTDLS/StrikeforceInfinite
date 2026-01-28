@@ -128,16 +128,16 @@
 
                     if (_threadModel == SiDefermentEventThreadModel.Asynchronous)
                     {
-                        new Thread(() =>
+                        Task.Run(() =>
                         {
-                            if (_executionCallback != null) _executionCallback(this, _parameter);
-                            if (_simpleExecutionCallback != null) _simpleExecutionCallback();
-                        }).Start();
+                            _executionCallback?.Invoke(this, _parameter);
+                            _simpleExecutionCallback?.Invoke();
+                        });
                     }
                     else
                     {
-                        if (_executionCallback != null) _executionCallback(this, _parameter);
-                        if (_simpleExecutionCallback != null) _simpleExecutionCallback();
+                        _executionCallback?.Invoke(this, _parameter);
+                        _simpleExecutionCallback?.Invoke();
                     }
 
                     if (_eventMode == SiDefermentEventMode.Recurring)
