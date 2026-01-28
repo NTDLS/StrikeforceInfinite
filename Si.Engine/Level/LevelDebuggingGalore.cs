@@ -176,7 +176,7 @@ namespace Si.Engine.Level
             {
                 for (int col = 0; col < colCount; col++)
                 {
-                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
+                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 23)}.png");
 
                     var asteroidSize = asteroid.Size.Width + asteroid.Size.Height;
 
