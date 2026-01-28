@@ -279,7 +279,7 @@ namespace Si.Engine
                 Rendering.Materials.Brushes.Red, new SiVector(100, 100), true);
 
             var loadingDetail = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
-                Rendering.Materials.Brushes.Green, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
+                Rendering.Materials.Brushes.Gray, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
 
             IsInitializing = true;
 
@@ -307,9 +307,9 @@ namespace Si.Engine
 
         private void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
         {
-            loadingHeader.SetTextAndCenterX("Hydrating cache...");
+            loadingHeader.SetTextAndCenterX("Loading assets...");
 
-            loadingHeader.SetTextAndCenterX("Hydrating reflection cache...");
+            loadingHeader.SetTextAndCenterX("Loading reflection cache...");
             SiReflection.BuildReflectionCacheOfType<SpriteBase>();
             SiReflection.BuildReflectionCacheOfType<AIStateMachine>();
 

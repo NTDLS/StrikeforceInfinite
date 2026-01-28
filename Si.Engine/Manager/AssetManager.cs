@@ -188,7 +188,7 @@ namespace Si.Engine.Manager
 
         public void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
         {
-            loadingHeader.SetTextAndCenterX("Hydrating asset cache...");
+            loadingHeader.SetTextAndCenterX("Loading packed assets...");
 
             using var archive = ArchiveFactory.Open(_assetPackagePath);
             using var dtp = new DelegateThreadPool(new DelegateThreadPoolConfiguration()
@@ -222,7 +222,7 @@ namespace Si.Engine.Manager
                 }
             }
 
-            threadPoolTracker.WaitForCompletion(TimeSpan.FromSeconds(60), () =>
+            threadPoolTracker.WaitForCompletion(TimeSpan.FromMilliseconds(10), () =>
             {
                 loadingDetail.SetTextAndCenterX($"{statusIndex / statusEntryCount * 100.0:n0}%");
                 return true;

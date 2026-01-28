@@ -405,7 +405,7 @@ namespace Si.Engine.Manager
         public void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
         {
             float statusIndex = 0;
-            loadingHeader.SetTextAndCenterX("Hydrating sprite cache...");
+            loadingHeader.SetTextAndCenterX("Loading sprites...");
 
             var assembly = Assembly.GetExecutingAssembly();
             var baseType = typeof(SpriteBase);
@@ -429,7 +429,7 @@ namespace Si.Engine.Manager
             }
 
             statusIndex = 0;
-            loadingHeader.SetTextAndCenterX("Hydrating animation cache...");
+            loadingHeader.SetTextAndCenterX("Loading animations...");
 
             // Create instances of derived types
             foreach (var type in derivedTypes)

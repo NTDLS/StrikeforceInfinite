@@ -26,7 +26,7 @@ namespace Si.Engine.Menu
             float offsetX = currentScaledScreenBounds.X + 40;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
-            var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Select a Ship Class");
+            var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Select a Class");
             itemTitle.X = offsetX + 200;
             itemTitle.Y = offsetY - itemTitle.Size.Height;
 
