@@ -32,7 +32,6 @@ namespace Si.Engine.Sprite
             SetHullHealth(100000);
             Speed = 1.5f;
             Throttle = 0.05f;
-            RecalculateOrientationMovementVector();
         }
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)

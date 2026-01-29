@@ -13,41 +13,41 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateOrientationMovementVector() => OrientationMovementVector = MakeMovementVector();
+        public void RecalculateOrientationMovementVector() => OrientationMovementVector = MakeOrientationMovementVector();
 
         /// <summary>
         /// Sets the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateOrientationMovementVector(float angleInRadians) => OrientationMovementVector = MakeMovementVector(angleInRadians);
+        public void RecalculateMovementVectorFromAngle(float angleInRadians) => OrientationMovementVector = MakeMovementVectorFromAngle(angleInRadians);
 
         /// <summary>
         /// Sets the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateOrientationMovementVector(SiVector angle) => OrientationMovementVector = MakeMovementVector(angle);
+        public void RecalculateMovementVectorFromAngle(SiVector angle) => OrientationMovementVector = MakeMovementVectorFromAngle(angle);
 
         /// <summary>
         /// Returns the movement vector in the direction of the sprite taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public SiVector MakeMovementVector() => Orientation * Speed * Throttle;
+        public SiVector MakeOrientationMovementVector() => Orientation * Speed * Throttle;
 
         /// <summary>
         /// Returns the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public SiVector MakeMovementVector(float angleInRadians) => new SiVector(angleInRadians) * Speed * Throttle;
+        public SiVector MakeMovementVectorFromAngle(float angleInRadians) => new SiVector(angleInRadians) * Speed * Throttle;
 
         /// <summary>
         /// Returns the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public SiVector MakeMovementVector(SiVector angle) => angle.Normalize() * Speed * Throttle;
+        public SiVector MakeMovementVectorFromAngle(SiVector angle) => angle.Normalize() * Speed * Throttle;
     }
 }

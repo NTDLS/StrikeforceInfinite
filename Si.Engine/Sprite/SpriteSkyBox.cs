@@ -24,8 +24,6 @@ namespace Si.Engine.Sprite
 
             Speed = 0.10f;
 
-            RecalculateOrientationMovementVector();
-
             if (selectedImageIndex >= 0 && selectedImageIndex <= 0)
             {
                 Throttle = SiRandom.Between(8, 10) / 10.0f;

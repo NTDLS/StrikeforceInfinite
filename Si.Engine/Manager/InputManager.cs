@@ -393,7 +393,7 @@ namespace Si.Engine.Manager
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
 
-                    asteroid.RecalculateOrientationMovementVector(SiRandom.Variance(-45, 0.10f).ToRadians());
+                    asteroid.RecalculateMovementVectorFromAngle(SiRandom.Variance(-45, 0.10f).ToRadians());
                     asteroid.VectorType = ParticleVectorType.Default;
 
                     //asteroid.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-1.5f, -0.4f) : SiRandom.Between(0.4f, 1.5f);
@@ -453,7 +453,6 @@ namespace Si.Engine.Manager
                     asteroid.Location = _engine.Player.Sprite.Location + new SiVector(100, 100);
                     asteroid.Speed = 1.0f;
                     asteroid.Orientation = SiVector.FromDegrees(-45);
-                    asteroid.RecalculateOrientationMovementVector();
 
                     asteroid.SetHullHealth(100);
                 });

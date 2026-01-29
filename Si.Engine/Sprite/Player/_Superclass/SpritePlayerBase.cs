@@ -60,7 +60,6 @@ namespace Si.Engine.Sprite.Player._Superclass
             ShipEngineBoostSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Boost.wav", 0.5f, true);
 
             Orientation = new SiVector(0);
-            RecalculateOrientationMovementVector();
             Throttle = 0;
 
             RenewableResources.Create(BoostResourceName, _engine.Settings.MaxPlayerBoostAmount,

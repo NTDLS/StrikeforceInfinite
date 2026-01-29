@@ -21,7 +21,6 @@ namespace Si.Engine.Sprite.Enemy.Debug
             _particle1.Shape = Library.SiConstants.ParticleShape.HollowEllipse;
             _particle1.Throttle = 0;
             _particle1.RotationSpeed = 0;
-            _particle1.RecalculateOrientationMovementVector();
 
             _particle2 = _engine.Sprites.Particles.AddAt(SiVector.Zero, new Size(5, 5));
             _particle2.Pattern = Library.SiConstants.ParticleColorType.Solid;
@@ -29,7 +28,6 @@ namespace Si.Engine.Sprite.Enemy.Debug
             _particle2.Shape = Library.SiConstants.ParticleShape.FilledEllipse;
             _particle2.Throttle = 0;
             _particle2.RotationSpeed = 0;
-            _particle2.RecalculateOrientationMovementVector();
 
             _particle3 = _engine.Sprites.Particles.AddAt(SiVector.Zero, new Size(10, 10));
             _particle3.Pattern = Library.SiConstants.ParticleColorType.Solid;
@@ -37,7 +35,6 @@ namespace Si.Engine.Sprite.Enemy.Debug
             _particle3.Shape = Library.SiConstants.ParticleShape.HollowRectangle;
             _particle3.Throttle = 0;
             _particle3.RotationSpeed = 0.02f;
-            _particle3.RecalculateOrientationMovementVector();
 
             _particle4 = _engine.Sprites.Particles.AddAt(SiVector.Zero, new Size(10, 10));
             _particle4.Pattern = Library.SiConstants.ParticleColorType.Solid;
@@ -45,7 +42,6 @@ namespace Si.Engine.Sprite.Enemy.Debug
             _particle4.Shape = Library.SiConstants.ParticleShape.Triangle;
             _particle4.Throttle = 0;
             _particle4.RotationSpeed = 0.02f;
-            _particle4.RecalculateOrientationMovementVector();
         }
 
         SpriteParticle _particle1;

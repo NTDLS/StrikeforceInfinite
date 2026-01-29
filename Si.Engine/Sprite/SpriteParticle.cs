@@ -57,8 +57,6 @@ namespace Si.Engine.Sprite
             Orientation.Degrees = SiRandom.Between(0, 359);
             Throttle = 1;
 
-            RecalculateOrientationMovementVector();
-
             _engine = engine;
         }
 
@@ -68,7 +66,7 @@ namespace Si.Engine.Sprite
 
             if (VectorType == ParticleVectorType.FollowOrientation)
             {
-                RecalculateOrientationMovementVector(Orientation.RadiansSigned);
+                RecalculateMovementVectorFromAngle(Orientation.RadiansSigned);
             }
 
             base.ApplyMotion(epoch, displacementVector);

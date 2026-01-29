@@ -96,7 +96,7 @@ namespace Si.Engine.Level
             asteroid1.Location = new SiVector(1000, 1000);
             asteroid1.Orientation = SiVector.Zero;
             asteroid1.Speed = 0f;
-            asteroid1.RecalculateOrientationMovementVector(0.ToRadians());
+            asteroid1.RecalculateMovementVectorFromAngle(0.ToRadians());
             asteroid1.VectorType = ParticleVectorType.Default;
             asteroid1.Metadata.Mass = 100f;
 
@@ -105,7 +105,7 @@ namespace Si.Engine.Level
             asteroid2.Location = new SiVector(1200, 1000);
             asteroid2.Orientation = SiVector.Zero;
             asteroid2.Speed = 0.80f;
-            asteroid2.RecalculateOrientationMovementVector(180.ToRadians());
+            asteroid2.RecalculateMovementVectorFromAngle(180.ToRadians());
             asteroid2.VectorType = ParticleVectorType.Default;
             asteroid2.Metadata.Mass = 10f;
 
@@ -114,7 +114,7 @@ namespace Si.Engine.Level
             asteroid3.Location = new SiVector(1400, 1000);
             asteroid3.Orientation = SiVector.Zero;
             asteroid3.Speed = 0f;
-            asteroid3.RecalculateOrientationMovementVector(0.ToRadians());
+            asteroid3.RecalculateMovementVectorFromAngle(0.ToRadians());
             asteroid3.VectorType = ParticleVectorType.Default;
             asteroid3.Metadata.Mass = 100f;
             */
@@ -167,7 +167,6 @@ namespace Si.Engine.Level
             asteroid.Location = new SiVector(800, 800);
             asteroid.Speed = 1.0f;
             asteroid.Orientation = SiVector.FromDegrees(-45);
-            asteroid.RecalculateOrientationMovementVector();
 
             asteroid.SetHullHealth(100);
         }
@@ -193,7 +192,7 @@ namespace Si.Engine.Level
                     asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Variance(0.01f, 0.90f));
                     asteroid.Metadata.Mass = Mass.Large;
 
-                    asteroid.RecalculateOrientationMovementVector(SiRandom.Variance(-45, 0.10f).ToRadians());
+                    asteroid.RecalculateMovementVectorFromAngle(SiRandom.Variance(-45, 0.10f).ToRadians());
                     asteroid.VectorType = ParticleVectorType.Default;
 
                     //asteroid.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-1.5f, -0.4f) : SiRandom.Between(0.4f, 1.5f);

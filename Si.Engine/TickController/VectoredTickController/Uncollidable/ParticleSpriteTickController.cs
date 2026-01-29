@@ -146,7 +146,6 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                 p.Orientation.Degrees = SiMath.WrapDegreesUnsigned(angle);
 
                 p.Speed = SiRandom.Between(minSpeed, maxSpeed);
-                p.RecalculateOrientationMovementVector();
 
                 // common thruster look settings (tweak)
                 p.Shape = ParticleShape.FilledEllipse;
@@ -185,7 +184,6 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                 particle.VectorType = ParticleVectorType.FollowOrientation;
                 particle.Orientation.Degrees = SiRandom.Between(0.0f, 359.0f);
                 particle.Speed = SiRandom.Between(2, 3.5f);
-                particle.RecalculateOrientationMovementVector();
             }
         }
     }
