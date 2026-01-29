@@ -1,5 +1,4 @@
 ﻿using SharpDX;
-using Si.Engine;
 using Si.Engine.Manager;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
@@ -8,10 +7,11 @@ using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 using Si.Rendering;
+using System;
 using System.Drawing;
 using static Si.Library.SiConstants;
 
-namespace Si.GameEngine.TickController.VectoredTickController.Uncollidable
+namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class ParticleSpriteTickController : VectoredTickControllerBase<SpriteParticleBase>
     {
@@ -95,6 +95,65 @@ namespace Si.GameEngine.TickController.VectoredTickController.Uncollidable
                 particle.FadeToBlackReductionAmount = SiRandom.Between(0.001f, 0.01f);
                 particle.Speed *= SiRandom.Between(1, 3.5f);
                 particle.VectorType = ParticleVectorType.Default;
+            }
+        }
+
+        /// <summary>
+        /// Emits a cone-shaped burst of particles from the specified world position, with configurable direction,
+        /// spread, speed, color, and other properties.
+        /// </summary>
+        /// <remarks>The spread and center bias parameters allow for fine control over the appearance of
+        /// the particle cone, enabling effects ranging from wide sprays to tightly focused bursts.</remarks>
+        /// <param name="nozzleWorldPos">The world position from which the particles are emitted.</param>
+        /// <param name="centerDirectionDeg">The central direction, in degrees, along which the cone is oriented. Particles are emitted around this
+        /// direction.</param>
+        /// <param name="spreadDeg">The half-angle of the cone, in degrees. Determines how widely the particles spread from the center
+        /// direction.</param>
+        /// <param name="count">The number of particles to emit in the cone.</param>
+        /// <param name="minSpeed">The minimum speed assigned to emitted particles.</param>
+        /// <param name="maxSpeed">The maximum speed assigned to emitted particles.</param>
+        /// <param name="color">The color applied to each emitted particle.</param>
+        /// <param name="size">The size of each particle. If null, a default size is used.</param>
+        /// <param name="centerBias">Controls how tightly particles cluster around the center direction. A value of 1 emits particles uniformly
+        /// within the cone; values greater than 1 bias particles more toward the center.</param>
+        public void EmitConeAt(
+            SiVector nozzleWorldPos,
+            float centerDirectionDeg,   // direction the particles should travel
+            float spreadDeg,            // half-angle of cone
+            int count,
+            float minSpeed,
+            float maxSpeed,
+            Color4 color,
+            Size? size = null,
+            float centerBias = 2.0f     // 1 = uniform, >1 = tighter around center
+        )
+        {
+            for (int i = 0; i < count; i++)
+            {
+                // Bias the angle toward 0 (centerline) if desired
+                float t = (float)SiRandom.Between(0, 10000) / 10000f;  // 0..1
+                float signed = (float)SiRandom.Between(-10000, 10000) / 10000f; // -1..1
+
+                // bias: raise to power -> more weight near 0
+                float biased = MathF.Sign(signed) * MathF.Pow(MathF.Abs(signed), centerBias);
+
+                float angle = centerDirectionDeg + biased * spreadDeg;
+
+                var p = AddAt(nozzleWorldPos, color, size ?? new Size(2, 2));
+                p.Visible = true;
+
+                p.VectorType = ParticleVectorType.FollowOrientation;
+                p.Orientation.Degrees = SiMath.WrapDegreesUnsigned(angle);
+
+                p.Speed = SiRandom.Between(minSpeed, maxSpeed);
+                p.RecalculateMovementVector();
+
+                // common thruster look settings (tweak)
+                p.Shape = ParticleShape.FilledEllipse;
+                p.Pattern = ParticleColorType.Solid;
+                p.CleanupMode = ParticleCleanupMode.FadeToBlack;
+                p.FadeToBlackReductionAmount = SiRandom.Between(0.01f, 0.02f);
+                p.RotationSpeed = SiRandom.Between(-6f, 6f);
             }
         }
 

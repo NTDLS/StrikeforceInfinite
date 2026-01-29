@@ -1,4 +1,4 @@
-﻿namespace Si.GameEngine.Persistent
+﻿namespace Si.Engine.Persistent
 {
     public class PlayerStats
     {

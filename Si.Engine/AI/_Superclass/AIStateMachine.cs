@@ -1,9 +1,8 @@
-﻿using Si.Engine;
-using Si.Engine.Sprite._Superclass;
+﻿using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.Mathematics;
 
-namespace Si.GameEngine.AI._Superclass
+namespace Si.Engine.AI._Superclass
 {
     /// <summary>
     /// A sprite that is controlled by an AI state-machine.

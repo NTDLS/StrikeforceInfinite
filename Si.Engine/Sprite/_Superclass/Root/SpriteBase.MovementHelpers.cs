@@ -6,7 +6,7 @@ namespace Si.Engine.Sprite._Superclass._Root
     public partial class SpriteBase
     {
         /// <summary>
-        /// Instantly rotates this objects movement vector by the given radians and then recalculates the PointingAngle.
+        /// Instantly rotates this objects movement vector by the given radians and then recalculates the Orientation.
         /// </summary>
         public void RotatePointingDirection(float radians)
         {
@@ -14,7 +14,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         /// <summary>
-        /// Instantly rotates this objects movement vector by the given radians and then recalculates the PointingAngle.
+        /// Instantly rotates this objects movement vector by the given radians and then recalculates the Orientation.
         /// </summary>
         public void RotateMovementVector(float radians)
         {
@@ -23,7 +23,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         /// <summary>
-        /// Instantly points a sprite at another by rotating the movement vector and then recalculates the PointingAngle.
+        /// Instantly points a sprite at another by rotating the movement vector and then recalculates the Orientation.
         /// </summary>
         public void RotateMovementVector(SiVector toLocationOf)
         {
@@ -35,7 +35,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         /// <summary>
         /// Rotates the objects movement vector by the specified amount if it not pointing at the target
-        ///     angle (with given tolerance) then recalculates PointingAngle.
+        ///     angle (with given tolerance) then recalculates Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
         public bool RotateMovementVectorIfNotPointingAt(SpriteBase obj, float rotationAmountDegrees, float varianceDegrees = 10)
@@ -62,7 +62,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         /// <summary>
         /// Rotates the objects movement vector by the specified amount if it not pointing at the target
-        /// angle (with given tolerance) then recalculates the PointingAngle.
+        /// angle (with given tolerance) then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
         public bool RotateMovementVectorIfNotPointingAt(SiVector toLocation, float rotationAmountDegrees, float varianceDegrees = 10)
@@ -88,7 +88,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         /// <summary>
         /// Rotates the objects movement vector by the specified amount if it not pointing at the target angle
-        /// (with given tolerance) then recalculates the PointingAngle.
+        /// (with given tolerance) then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
         public bool RotateMovementVectorIfNotPointingAt(float toDegrees, float rotationAmountDegrees, float tolerance = 10)
@@ -106,7 +106,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         /// <summary>
-        /// Rotates the objects movement vector by the given amount if it is pointing in the given direction then recalculates the PointingAngle.
+        /// Rotates the objects movement vector by the given amount if it is pointing in the given direction then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if the object is not pointing in the given direction.
         public bool RotateMovementVectorIfPointingAt(SpriteBase obj, float rotationAmountDegrees, float varianceDegrees = 10)

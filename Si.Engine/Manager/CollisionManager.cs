@@ -1,6 +1,5 @@
 ﻿using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.SupportingClasses;
-using Si.GameEngine.Sprite.SupportingClasses;
 using System.Collections.Generic;
 
 namespace Si.Engine.Manager
@@ -8,7 +7,7 @@ namespace Si.Engine.Manager
     /// <summary>
     /// This class is used to keep track of which sprites are collidable and which collisions have been handled.
     /// I do no yet know how to really "handle" collisions, but I do know that if we detect a collision with
-    ///     sprite "A" then we will also detect a seperate collision with sprite "B" and I wanted a way to determine
+    ///     sprite "A" then we will also detect a separate collision with sprite "B" and I wanted a way to determine
     ///     if that "collision" interaction had already been addressed with the first objects detection.
     ///     
     /// Each time the game loop begins, CollisionManager.Reset() is called to (1) clear all the detected collisions,

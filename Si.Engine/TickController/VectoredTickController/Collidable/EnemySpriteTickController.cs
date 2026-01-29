@@ -1,5 +1,4 @@
 ﻿using NTDLS.Helpers;
-using Si.Engine;
 using Si.Engine.Manager;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.TickController._Superclass;
@@ -7,7 +6,7 @@ using Si.Library;
 using Si.Library.Mathematics;
 using System;
 
-namespace Si.GameEngine.TickController.VectoredTickController.Collidable
+namespace Si.Engine.TickController.VectoredTickController.Collidable
 {
     public class EnemySpriteTickController : VectoredCollidableTickControllerBase<SpriteEnemyBase>
     {

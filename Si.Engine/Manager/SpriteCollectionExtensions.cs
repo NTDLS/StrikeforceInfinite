@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Si.GameEngine.Manager
+namespace Si.Engine.Manager
 {
     internal static class SpriteCollectionExtensions
     {

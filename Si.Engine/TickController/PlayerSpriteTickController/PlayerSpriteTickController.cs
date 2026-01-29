@@ -1,7 +1,7 @@
-﻿using Si.Engine.Sprite.Player;
+﻿using Si.Engine.Persistent;
+using Si.Engine.Sprite.Player;
 using Si.Engine.Sprite.Player._Superclass;
 using Si.Engine.TickController._Superclass;
-using Si.GameEngine.Persistent;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;

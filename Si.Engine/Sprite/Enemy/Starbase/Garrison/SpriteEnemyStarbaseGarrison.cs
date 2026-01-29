@@ -1,8 +1,7 @@
-﻿using Si.Engine;
-using Si.Engine.Sprite.Enemy.Starbase._Superclass;
+﻿using Si.Engine.Sprite.Enemy.Starbase._Superclass;
 using Si.Library.Mathematics;
 
-namespace Si.GameEngine.Sprite.Enemy.Starbase.Garrison
+namespace Si.Engine.Sprite.Enemy.Starbase.Garrison
 {
     internal class SpriteEnemyStarbaseGarrison(EngineCore engine)
         : SpriteEnemyStarbase(engine, @"Sprites\Enemy\Starbase\Garrison\Hull.png")

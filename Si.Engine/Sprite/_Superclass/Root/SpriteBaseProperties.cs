@@ -26,7 +26,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _speed = value;
-                //RecalculateMovementVector(); //Seems like unneeded overhead.
+                RecalculateMovementVector();
             }
         }
 
@@ -47,7 +47,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _throttle = value.Clamp(0, float.MaxValue);
-                //RecalculateMovementVector(); //Seems like unneeded overhead.
+                RecalculateMovementVector();
             }
         }
 
@@ -62,7 +62,6 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         #endregion
-
 
         /// <summary>
         /// Number or radians to rotate the sprite Orientation along its center at each call to ApplyMotion().
@@ -85,6 +84,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 _orientation = value;
                 _orientation.OnChangeEvent += (SiVector vector) => RotationChanged();
                 RotationChanged();
+                RecalculateMovementVector();
             }
         }
 

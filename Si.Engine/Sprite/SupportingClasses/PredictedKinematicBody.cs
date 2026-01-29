@@ -5,7 +5,7 @@ using Si.Library.Mathematics;
 using System.Drawing;
 using System.Linq;
 
-namespace Si.GameEngine.Sprite.SupportingClasses
+namespace Si.Engine.Sprite.SupportingClasses
 {
     /// <summary>
     /// Contains the prediction of sprite location, bounds, velocity and direction after the up comming call to ApplyMotion()

@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using static Si.Library.SiConstants;
 
-namespace Si.GameEngine.Sprite.SupportingClasses.Metadata
+namespace Si.Engine.Sprite.SupportingClasses.Metadata
 {
     /// <summary>
     /// Contains sprite metadata.

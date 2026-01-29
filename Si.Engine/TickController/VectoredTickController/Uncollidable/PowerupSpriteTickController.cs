@@ -1,12 +1,11 @@
 ﻿using NTDLS.Helpers;
-using Si.Engine;
 using Si.Engine.Manager;
 using Si.Engine.Sprite.PowerUp._Superclass;
 using Si.Engine.TickController._Superclass;
 using Si.Library.Mathematics;
 using System;
 
-namespace Si.GameEngine.TickController.VectoredTickController.Uncollidable
+namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class PowerupSpriteTickController : VectoredTickControllerBase<SpritePowerupBase>
     {

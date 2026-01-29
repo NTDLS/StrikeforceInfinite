@@ -283,6 +283,21 @@ namespace Si.Library.Mathematics
                 : amount * amount * (3 - 2 * amount);
 
         /// <summary>
+        /// Exponential damping (best "physics feel", FPS independent)
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="target"></param>
+        /// <param name="decayRate"></param>
+        /// <param name="epoch"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Damp(float current, float target, float decayRate, float epoch)
+        {
+            // decayRate ~ "per second". Example: 6 means pretty quick.
+            return target + (current - target) * (float)Math.Exp(-decayRate * epoch);
+        }
+
+        /// <summary>
         /// Performs a smooth(er) interpolation between 0 and 1 with 1st and 2nd order derivatives of zero at endpoints.
         /// </summary>
         /// <remarks>

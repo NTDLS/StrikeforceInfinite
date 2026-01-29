@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using NTDLS.Helpers;
 using NTDLS.Semaphore;
+using Si.Engine.AI._Superclass;
 using Si.Engine.EngineLibrary;
 using Si.Engine.Interrogation._Superclass;
 using Si.Engine.Manager;
@@ -9,7 +10,6 @@ using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController.PlayerSpriteTickController;
 using Si.Engine.TickController.UnvectoredTickController;
-using Si.GameEngine.AI._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 using Si.Rendering;

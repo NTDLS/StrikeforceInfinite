@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Si.GameEngine.Sprite.SupportingClasses.Metadata
+namespace Si.Engine.Sprite.SupportingClasses.Metadata
 {
     public class InteractiveSpriteWeapon
     {

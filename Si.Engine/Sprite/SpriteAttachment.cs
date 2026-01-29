@@ -26,25 +26,47 @@ namespace Si.Engine.Sprite
         {
         }
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public SiVector CalculatedLocation
         {
-            if (PositionType == AttachmentPositionType.FixedToOwner)
+            get
             {
-                if (LocationRelativeToOwner != null)
+                if (PositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
                 {
                     // Since the attachment BaseLocation is relative to the top-left corner of the base sprite, we need
                     // to get the position relative to the center of the base sprite image so that we can rotate around that.
                     var attachmentOffset = LocationRelativeToOwner - (RootOwner.Size / 2.0f);
 
                     // Apply the rotated offset to get the new attachment location relative to the base sprite center.
-                    Location = RootOwner.Location + attachmentOffset.RotatedBy(RootOwner.Orientation.RadiansSigned);
+                    return RootOwner.Location + attachmentOffset.RotatedBy(RootOwner.Orientation.RadiansSigned);
                 }
+
+                return Location;
+            }
+        }
+
+        public SiVector CalculatedOrientation
+        {
+            get
+            {
+                if (OrientationType == AttachmentOrientationType.FixedToOwner)
+                {
+                    //Make sure the attachment faces forwards.
+                    return RootOwner.Orientation.Clone();
+                }
+                return Orientation;
+            }
+        }
+
+        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        {
+            if (PositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
+            {
+                Location = CalculatedLocation;
             }
 
             if (OrientationType == AttachmentOrientationType.FixedToOwner)
             {
-                //Make sure the attachment faces forwards.
-                Orientation = RootOwner.Orientation.Clone();
+                Orientation = CalculatedOrientation;
             }
 
             base.ApplyMotion(epoch, displacementVector);

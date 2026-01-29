@@ -1,4 +1,4 @@
-﻿namespace Si.GameEngine.AI._Superclass
+﻿namespace Si.Engine.AI._Superclass
 {
     public class AIState
     {

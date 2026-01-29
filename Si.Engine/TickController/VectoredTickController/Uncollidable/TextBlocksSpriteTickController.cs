@@ -1,13 +1,12 @@
 ﻿using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
-using Si.Engine;
 using Si.Engine.Manager;
 using Si.Engine.Sprite;
 using Si.Engine.TickController._Superclass;
 using Si.Library.Mathematics;
 using System.Linq;
 
-namespace Si.GameEngine.TickController.VectoredTickController.Uncollidable
+namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class TextBlocksSpriteTickController : VectoredTickControllerBase<SpriteTextBlock>
     {

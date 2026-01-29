@@ -1,10 +1,9 @@
-﻿using Si.Engine;
-using Si.Engine.Manager;
+﻿using Si.Engine.Manager;
 using Si.Engine.Sprite;
 using Si.Engine.TickController._Superclass;
 using Si.Library.Mathematics;
 
-namespace Si.GameEngine.TickController.VectoredTickController.Collidable
+namespace Si.Engine.TickController.VectoredTickController.Collidable
 {
     /// <summary>
     /// These are generic collidable, interactive bitmap sprites. They can take damage and even shoot back.

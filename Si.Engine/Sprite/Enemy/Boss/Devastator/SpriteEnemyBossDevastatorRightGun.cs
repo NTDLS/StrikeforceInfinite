@@ -1,9 +1,7 @@
-﻿using Si.Engine;
-using Si.Engine.Sprite;
-using Si.Engine.Sprite.Weapon;
+﻿using Si.Engine.Sprite.Weapon;
 using Si.Library.Mathematics;
 
-namespace Si.GameEngine.Sprite.Enemy.Starbase.Garrison
+namespace Si.Engine.Sprite.Enemy.Boss.Garrison
 {
     internal class SpriteEnemyBossDevastatorRightGun : SpriteAttachment
     {

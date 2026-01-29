@@ -1,7 +1,7 @@
 ﻿using Si.Engine.Core.Types;
 using Si.Engine.Level._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.GameEngine.Sprite.Enemy.Starbase.Garrison;
+using Si.Engine.Sprite.Enemy.Boss.Devastator;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -77,7 +77,7 @@ namespace Si.Engine.Level
 
             //_engine.Sprites.Debugs.AddAt(new SiVector(1000, 1000));
 
-            //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+            _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
 
             /*
             _engine.Sprites.TextBlocks.Add(_engine.Rendering.TextFormats.Debug,
@@ -128,7 +128,7 @@ namespace Si.Engine.Level
 
             //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>().Location = new(500, 500);
 
-            AddAsteroidField(new SiVector(1000, 1000), 8, 8);
+            //AddAsteroidField(new SiVector(1000, 1000), 8, 8);
 
             //AddSingleAsteroid();
 

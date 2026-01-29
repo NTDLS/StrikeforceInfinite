@@ -1,10 +1,9 @@
-﻿using Si.Engine;
-using Si.Engine.Manager;
+﻿using Si.Engine.Manager;
 using Si.Engine.Sprite;
 using Si.Engine.TickController._Superclass;
 using Si.Library.Mathematics;
 
-namespace Si.GameEngine.TickController.VectoredTickController.Collidable
+namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
     /// <summary>
     /// These are just minimal non-collidable, non interactive, generic bitmap sprites.

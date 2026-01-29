@@ -1,5 +1,4 @@
-﻿using Si.GameEngine.Sprite.SupportingClasses;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Si.Engine.Sprite.SupportingClasses
 {

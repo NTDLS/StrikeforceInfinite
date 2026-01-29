@@ -1,5 +1,4 @@
-﻿using Si.Engine;
-using Si.Engine.Manager;
+﻿using Si.Engine.Manager;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController._Superclass;
@@ -7,7 +6,7 @@ using Si.Library;
 using Si.Library.Mathematics;
 using System.IO;
 
-namespace Si.GameEngine.TickController.VectoredTickController.Uncollidable
+namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class AnimationSpriteTickController : VectoredTickControllerBase<SpriteAnimation>
     {

@@ -2,7 +2,7 @@
 using Si.Library.Mathematics;
 using System.Collections.Generic;
 
-namespace Si.GameEngine.Sprite.SupportingClasses.Metadata
+namespace Si.Engine.Sprite.SupportingClasses.Metadata
 {
     public class InteractiveSpriteAttachment
     {

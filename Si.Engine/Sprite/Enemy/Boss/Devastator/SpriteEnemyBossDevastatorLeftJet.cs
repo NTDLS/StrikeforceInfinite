@@ -1,9 +1,7 @@
-﻿using Si.Engine;
-using Si.Engine.Sprite;
-using Si.Library.ExtensionMethods;
+﻿using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 
-namespace Si.GameEngine.Sprite.Enemy.Starbase.Garrison
+namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 {
     internal class SpriteEnemyBossDevastatorLeftJet : SpriteAttachment
     {
