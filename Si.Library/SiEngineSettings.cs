@@ -27,21 +27,17 @@ namespace Si.Library
 
         public bool EnableSpeedScaleFactoring { get; set; } = true;
 
-        public float WorldTicksPerSecond { get; set; } = 120; //MillisecondPerEpochs = 1000 / WorldTicksPerSecond
+        public float EnemyVelocityRampUp { get; set; } = 3.75f;
+        public float EnemyVelocityRampDown { get; set; } = 0.75f;
 
-        public float MillisecondPerEpoch => 1000f / WorldTicksPerSecond;
-
-        public float EnemyVelocityRampUp { get; set; } = 0.0375f;
-        public float EnemyVelocityRampDown { get; set; } = 0.0075f;
-
-        public float PlayerVelocityRampUp { get; set; } = 0.0375f;
-        public float PlayerVelocityRampDown { get; set; } = 0.0075f;
+        public float PlayerVelocityRampUp { get; set; } = 3.75f;
+        public float PlayerVelocityRampDown { get; set; } = 0.75f;
 
         public int MaxHullHealth { get; set; } = 100000;
         public int MaxShieldHealth { get; set; } = 100000;
 
         public float MaxPlayerBoostAmount { get; set; } = 10000;
-        public float MaxPlayerRotationSpeedDegrees { get; set; } = 1.40f;
+        public float MaxPlayerRotationSpeedDegrees { get; set; } = 140.0f;
 
         public int InitialFrameStarCount { get; set; } = 100;
         public int DeltaFrameTargetStarCount { get; set; } = 200;

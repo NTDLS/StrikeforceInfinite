@@ -1,6 +1,6 @@
 {
   "Description": "",
-  "Speed": 3.5,
+  "Speed": 250,
   "MaxThrottle": 1.5,
   "Hull": 100000,
   "MunitionDetection": true,

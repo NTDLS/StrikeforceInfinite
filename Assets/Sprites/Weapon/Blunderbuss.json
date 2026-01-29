@@ -6,7 +6,7 @@
   "SpritePaths": ["Sprites\\Weapon\\Blunderbuss.png"],
   "SoundVolumne": 0.4,
   "Damage": 2,
-  "Speed": 22.5,
+  "Speed": 2000,
   "FireDelayMilliseconds": 250,
   "AngleVarianceDegrees": 10.0,
   "SpeedVariancePercent": 0.10

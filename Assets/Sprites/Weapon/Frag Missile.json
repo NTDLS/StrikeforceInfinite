@@ -8,7 +8,7 @@
   "MunitionType": "Seeking",
 
   "Damage": 10,
-  "Speed": 8.25,
+  "Speed": 700,
   "ExplodesOnImpact": true,
   "FireDelayMilliseconds": 250,
   "AngleVarianceDegrees": 0,

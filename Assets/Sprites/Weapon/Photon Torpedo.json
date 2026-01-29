@@ -7,7 +7,7 @@
   "SoundVolumne": 0.4,
   "Damage": 500,
   "FireDelayMilliseconds": 1000,
-  "Speed": 18.75,
+  "Speed": 1600,
   "AngleVarianceDegrees": 0.00,
   "SpeedVariancePercent": 0.00
 }

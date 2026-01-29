@@ -10,7 +10,7 @@
 
   "Damage": 5,
   "FireDelayMilliseconds": 500,
-  "Speed": 8.25,
+  "Speed": 700,
   "SpeedVariancePercent": 0.10,
 
   "MinLockDistance": 50,

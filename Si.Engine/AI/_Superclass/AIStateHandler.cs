@@ -2,6 +2,6 @@
 {
     public interface AIStateHandler
     {
-        void Execute(float epoch, float deltaSeconds);
+        void Execute(float epoch);
     }
 }

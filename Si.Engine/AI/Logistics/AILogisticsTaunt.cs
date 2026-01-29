@@ -27,7 +27,7 @@ namespace Si.Engine.AI.Logistics
         private class AIStateApproaching : AIStateHandler
         {
             public float VarianceAngle = SiRandom.Variance(45, 0.2f);
-            public void Execute(float epoch, float deltaSeconds)
+            public void Execute(float epoch)
             {
             }
         }
@@ -35,7 +35,7 @@ namespace Si.Engine.AI.Logistics
         private class AIStateDeparting : AIStateHandler
         {
             public float VarianceAngle = SiRandom.Variance(45, 0.2f);
-            public void Execute(float epoch, float deltaSeconds)
+            public void Execute(float epoch)
             {
             }
         }
@@ -44,7 +44,7 @@ namespace Si.Engine.AI.Logistics
         {
             public float VarianceAngle = SiRandom.Variance(45, 0.2f);
             public float Rotation = SiRandom.PositiveOrNegative();
-            public void Execute(float epoch, float deltaSeconds)
+            public void Execute(float epoch)
             {
             }
         }
@@ -53,7 +53,7 @@ namespace Si.Engine.AI.Logistics
         {
             public float VarianceAngle = SiRandom.Variance(45, 0.2f);
             public float Rotation = SiRandom.PositiveOrNegative();
-            public void Execute(float epoch, float deltaSeconds)
+            public void Execute(float epoch)
             {
             }
         }
@@ -68,7 +68,7 @@ namespace Si.Engine.AI.Logistics
             {
                 TargetAngle.Degrees = machine.Owner.Orientation.Degrees + 180;
             }
-            public void Execute(float epoch, float deltaSeconds)
+            public void Execute(float epoch)
             {
             }
         }
@@ -77,7 +77,7 @@ namespace Si.Engine.AI.Logistics
         {
             public float VarianceAngle = SiRandom.Variance(45, 0.2f);
             public float Rotation = SiRandom.PositiveOrNegative();
-            public void Execute(float epoch, float deltaSeconds)
+            public void Execute(float epoch)
             {
             }
         }
@@ -111,7 +111,7 @@ namespace Si.Engine.AI.Logistics
             }
         }
 
-        private void AILogistics_OnApplyIntelligence(float epoch, float deltaSeconds, SiVector displacementVector, AIStateHandler state)
+        private void AILogistics_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler state)
         {
             var distanceToObservedObject = Owner.DistanceTo(ObservedObject);
 

@@ -155,13 +155,11 @@ namespace Si.Engine
                 : _engine.Settings.TargetFrameRate;
 
             float targetTimePerFrameMicroseconds = 1000000.0f / framePerSecondLimit;
-            float elapsedEpochMilliseconds = 100;
+            float elapsedEpochMilliseconds = 16.7f; //Just need a good starting value: (16.7ms == 0.0167s == ~60fps).
 
             while (_shutdown == false)
             {
-                var epoch = (float)(elapsedEpochMilliseconds / _engine.Settings.MillisecondPerEpoch);
-
-                if (!_isPaused) ExecuteWorldClockTick(epoch);
+                if (!_isPaused) ExecuteWorldClockTick(elapsedEpochMilliseconds / 1000.0f);
 
                 _engine.Development?.ProcessCommand();
                 _engine.RenderEverything();
@@ -181,7 +179,6 @@ namespace Si.Engine
                 if (_isPaused) Thread.Yield();
 
                 elapsedEpochMilliseconds = _engine.Display.FrameCounter.ElapsedMilliseconds;
-
                 _engine.Display.FrameCounter.Calculate();
             }
         }

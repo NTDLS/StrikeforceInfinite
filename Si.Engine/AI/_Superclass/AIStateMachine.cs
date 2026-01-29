@@ -1,6 +1,7 @@
 ﻿using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.Mathematics;
+using System;
 
 namespace Si.Engine.AI._Superclass
 {
@@ -29,6 +30,10 @@ namespace Si.Engine.AI._Superclass
         /// </summary>
         public AIStateHandler? CurrentState { get; private set; }
 
+        public DateTime StateChangeDateTime { get; set; }
+
+        public double TimeInStateSeconds => (DateTime.UtcNow - StateChangeDateTime).TotalSeconds;
+
         #region Events.
 
         /// <summary>
@@ -41,7 +46,7 @@ namespace Si.Engine.AI._Superclass
         /// Fired when the engine wants the sprite to make a decision based on the current AI state.
         /// </summary>
         public event ApplyIntelligenceProc? OnApplyIntelligence;
-        public delegate void ApplyIntelligenceProc(float epoch, float deltaSeconds, SiVector displacementVector, AIStateHandler state);
+        public delegate void ApplyIntelligenceProc(float epoch, SiVector displacementVector, AIStateHandler state);
 
         #endregion
 
@@ -62,7 +67,7 @@ namespace Si.Engine.AI._Superclass
         {
             if (CurrentState != null)
             {
-                OnApplyIntelligence?.Invoke(epoch, epoch / 1000.0f, displacementVector, CurrentState);
+                OnApplyIntelligence?.Invoke(epoch, displacementVector, CurrentState);
             }
         }
 
@@ -72,6 +77,7 @@ namespace Si.Engine.AI._Superclass
         /// <param name="state"></param>
         public void ChangeState(AIStateHandler state)
         {
+            StateChangeDateTime = DateTime.UtcNow;
             CurrentState = state;
             OnStateChanged?.Invoke(this);
         }

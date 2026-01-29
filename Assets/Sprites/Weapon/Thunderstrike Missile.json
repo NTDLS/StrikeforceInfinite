@@ -9,7 +9,7 @@
   
   "Damage": 20,
   "FireDelayMilliseconds": 250,
-  "Speed": 11.25,
+  "Speed": 950,
   "SpeedVariancePercent": 0.10,
   "ExplodesOnImpact": true,
   

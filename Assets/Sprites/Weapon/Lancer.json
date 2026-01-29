@@ -6,7 +6,7 @@
   "SpritePaths": ["Sprites\\Weapon\\Lancer.png"],
   
   "SoundVolumne": 0.4,
-  "Speed": 26.25,
+  "Speed": 2200,
   "Damage": 15,
   "FireDelayMilliseconds": 100,
   "AngleVarianceDegrees": 2.0

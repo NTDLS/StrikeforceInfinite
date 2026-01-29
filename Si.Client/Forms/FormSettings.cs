@@ -152,7 +152,7 @@ namespace Si.Client
                 settings.PreCacheAllAssets = checkBoxPreCacheAllAssets.Checked;
                 settings.ElevatedWorldClockThreadPriority = checkBoxElevatedWorldClockThreadPriority.Checked;
 
-                settings.TargetFrameRate = GetAndValidate(textBoxTargetFrameRate, 10, settings.WorldTicksPerSecond, "Frame Limiter");
+                settings.TargetFrameRate = GetAndValidate(textBoxTargetFrameRate, 10, settings.TargetFrameRate, "Frame Limiter");
                 settings.OverdrawScale = GetAndValidate(textBoxOverdrawScale, 1.0f, 10.0f, "Overdraw scale");
                 settings.InitialFrameStarCount = GetAndValidate(textBoxInitialFrameStarCount, 0, 1000, "Initial frame star count");
                 settings.DeltaFrameTargetStarCount = GetAndValidate(textBoxDeltaFrameTargetStarCount, 0, 1000, "Delta-frame target star count");
