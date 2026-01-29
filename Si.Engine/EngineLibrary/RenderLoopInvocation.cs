@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Threading;
-using static Si.Library.SiConstants;
 
 namespace Si.Engine.EngineLibrary
 {
-    public class RenderLoopInterjection
+    public class RenderLoopInvocation
     {
         public AutoResetEvent Event = new(false);
         public Guid Id { get; set; }
         public Action Action { get; set; }
         public EngineCore Engine { get; set; }
-        public RenderLoopInterjectionLifetime Lifetime { get; set; }
 
-        public RenderLoopInterjection(EngineCore engine, RenderLoopInterjectionLifetime lifetime, Action action)
+        public RenderLoopInvocation(EngineCore engine, Action action)
         {
             Id = Guid.NewGuid();
             Engine = engine;
-            Lifetime = lifetime;
             Action = action;
         }
 
@@ -24,10 +21,7 @@ namespace Si.Engine.EngineLibrary
         {
             Action();
             Event.Set();
-            if (Lifetime == RenderLoopInterjectionLifetime.Once)
-            {
-                Engine.RemoveRenderLoopInterjection(this);
-            }
+            Engine.RemoveRenderLoopInvocation(this);
         }
 
         public void Wait()

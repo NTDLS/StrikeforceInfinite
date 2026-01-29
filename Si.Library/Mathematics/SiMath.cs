@@ -288,13 +288,13 @@ namespace Si.Library.Mathematics
         /// <param name="current"></param>
         /// <param name="target"></param>
         /// <param name="decayRate"></param>
-        /// <param name="epoch"></param>
+        /// <param name="secondsDelta"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float Damp(float current, float target, float decayRate, float epoch)
+        public static float Damp(float current, float target, float decayRate, float secondsDelta)
         {
             // decayRate ~ "per second". Example: 6 means pretty quick.
-            return target + (current - target) * (float)Math.Exp(-decayRate * epoch);
+            return target + (current - target) * (float)Math.Exp(-decayRate * secondsDelta);
         }
 
         /// <summary>

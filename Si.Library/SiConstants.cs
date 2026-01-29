@@ -14,10 +14,11 @@
             public const float Huge = 10000f;
         }
 
-        public enum RenderLoopInterjectionLifetime
+        public enum SimpleDirection
         {
-            Infinite,
-            Once
+            None,
+            Left,
+            Right
         }
 
         public enum MunitionType

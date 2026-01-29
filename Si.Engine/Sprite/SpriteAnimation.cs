@@ -12,7 +12,11 @@ namespace Si.Engine.Sprite
 {
     public class SpriteAnimation : SpriteMinimalBitmap
     {
+#if DEBUG
+        private string? _debug_imageName;
+#endif
         private SharpDX.Direct2D1.Bitmap? _sheetImage;
+        private bool _isComplete = false;
         private int _frameCount;
         private int _currentFrame = 0;
         private int _currentRow = 0;
@@ -27,6 +31,10 @@ namespace Si.Engine.Sprite
         public SpriteAnimation(EngineCore engine, string spriteSheetFileName)
             : base(engine)
         {
+#if DEBUG
+            _debug_imageName = spriteSheetFileName;
+#endif
+
             Location = new SiVector();
 
             var metadata = _engine.Assets.GetMetaData<SpriteAnimationMetadata>(spriteSheetFileName);
@@ -56,6 +64,10 @@ namespace Si.Engine.Sprite
         /// <param name="imagePath"></param>
         public new void SetImage(string imagePath)
         {
+#if DEBUG
+            _debug_imageName = imagePath;
+#endif
+
             _sheetImage = _engine.Assets.GetBitmap(imagePath);
         }
 
@@ -72,6 +84,7 @@ namespace Si.Engine.Sprite
 
         public void Play()
         {
+            _isComplete = false;
             _currentFrame = 0;
             _currentRow = 0;
             _currentColumn = 0;
@@ -100,7 +113,7 @@ namespace Si.Engine.Sprite
 
         public void AdvanceImage()
         {
-            if ((DateTime.Now - _lastFrameChange).TotalMilliseconds > _frameDelayMilliseconds)
+            if (!_isComplete && (DateTime.Now - _lastFrameChange).TotalMilliseconds > _frameDelayMilliseconds)
             {
                 _lastFrameChange = DateTime.Now;
 
@@ -114,6 +127,7 @@ namespace Si.Engine.Sprite
 
                 if (_currentFrame == _frameCount)
                 {
+                    _isComplete = true;
                     switch (PlayMode)
                     {
                         case SiAnimationPlayMode.DeleteAfterPlay:
@@ -125,6 +139,7 @@ namespace Si.Engine.Sprite
                             _currentFrame = 0;
                             _currentColumn = 0;
                             _currentRow = 0;
+                            _isComplete = false;
                             break;
                         case SiAnimationPlayMode.Single:
                             //Nothing to do unless the player calls Play() again.

@@ -18,6 +18,8 @@ namespace Si.Engine.AI.Logistics
         private readonly float _idealMaxDistance = SiRandom.Variance(2500, 0.20f);
         private readonly float _idealMinDistance = SiRandom.Variance(800, 0.10f);
 
+        private SimpleDirection _lastDirection;
+
         #endregion
 
         #region AI States.
@@ -75,6 +77,12 @@ namespace Si.Engine.AI.Logistics
             Owner.RecalculateMovementVector();
 
             OnApplyIntelligence += AILogistics_OnApplyIntelligence;
+            OnStateChanged += AILogisticsTaunt_OnStateChanged;
+        }
+
+        private void AILogisticsTaunt_OnStateChanged(AIStateMachine sender)
+        {
+            _lastDirection = SimpleDirection.None;
         }
 
         private void Owner_OnHit(SpriteBase sender, SiDamageType damageType, int damageAmount)
@@ -95,7 +103,7 @@ namespace Si.Engine.AI.Logistics
                 //The object is moving towards the observed object.
                 case AIStateApproaching approaching:
                     //Attempt to follow the observed object.
-                    Owner.RotateMovementVectorIfNotPointingAt(ObservedObject, 1, approaching.VarianceAngle);
+                    Owner.RotateMovementVectorIfNotPointingAt(ObservedObject, 1, ref _lastDirection, approaching.VarianceAngle);
 
                     if (Owner.DistanceTo(ObservedObject) < _idealMinDistance)
                     {
@@ -109,7 +117,7 @@ namespace Si.Engine.AI.Logistics
                     var rotationRadians = new SiVector((1 - (distanceToObservedObject / _idealMinDistance)) * 2.0f).RadiansSigned;
 
                     //Rotate as long as we are facing the observed object. If we are no longer facing, then depart.
-                    if (Owner.RotateMovementVectorIfPointingAt(ObservedObject, rotationRadians * transitionToDepart.Rotation, transitionToDepart.VarianceAngle) == false)
+                    if (Owner.RotateMovementVectorIfPointingAt(ObservedObject, rotationRadians * transitionToDepart.Rotation, ref _lastDirection, transitionToDepart.VarianceAngle) == false)
                     {
                         ChangeState(new AIStateDeparting());
                     }
@@ -130,7 +138,7 @@ namespace Si.Engine.AI.Logistics
                 //The object is rotating towards the observed object.
                 case AIStateTransitionToApproach transitionToApproach:
                     //Once we find the correct angle, we go into approaching mode.
-                    if (Owner.RotateMovementVectorIfNotPointingAt(ObservedObject, transitionToApproach.Rotation, transitionToApproach.VarianceAngle) == false)
+                    if (Owner.RotateMovementVectorIfNotPointingAt(ObservedObject, transitionToApproach.Rotation, ref _lastDirection, transitionToApproach.VarianceAngle) == false)
                     {
                         ChangeState(new AIStateApproaching());
                     }

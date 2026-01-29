@@ -30,8 +30,8 @@ namespace Si.Engine
         #region Backend variables.
 
         private readonly EngineWorldClock _worldClock;
-        private readonly PessimisticCriticalResource<List<RenderLoopInterjection>> _renderLoopInterjections = new();
-        private int _interjectionCounter = 0;
+        private readonly PessimisticCriticalResource<List<RenderLoopInvocation>> _renderLoopInvocations = new();
+        private int _renderLoopInvocationCount = 0;
 
         #endregion
 
@@ -77,27 +77,32 @@ namespace Si.Engine
 
         #endregion
 
-        #region Render-Loop Interjection.
+        #region Render-Loop Invocation.
 
-        public RenderLoopInterjection AddRenderLoopInterjection(RenderLoopInterjectionLifetime lifetime, Action action)
+        /// <summary>
+        /// Executes code within the engine render loop. Safe for adding sprites, etc.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public RenderLoopInvocation Invoke(Action action)
         {
-            var interjection = new RenderLoopInterjection(this, lifetime, action);
-            _renderLoopInterjections.Use(o =>
+            var invocation = new RenderLoopInvocation(this, action);
+            _renderLoopInvocations.Use(o =>
             {
-                o.Add(interjection);
-                Interlocked.Increment(ref _interjectionCounter);
+                o.Add(invocation);
+                Interlocked.Increment(ref _renderLoopInvocationCount);
             });
-            return interjection;
+            return invocation;
         }
 
-        public void RemoveRenderLoopInterjection(RenderLoopInterjection interjection)
+        public void RemoveRenderLoopInvocation(RenderLoopInvocation invocation)
         {
-            _renderLoopInterjections.Use(o =>
+            _renderLoopInvocations.Use(o =>
             {
-                int count = o.RemoveAll(o => o.Id == interjection.Id);
+                int count = o.RemoveAll(o => o.Id == invocation.Id);
                 for (int i = 0; i < count; i++)
                 {
-                    Interlocked.Decrement(ref _interjectionCounter);
+                    Interlocked.Decrement(ref _renderLoopInvocationCount);
                 }
             });
         }
@@ -202,15 +207,15 @@ namespace Si.Engine
 
                         Sprites.RenderPreScaling(o.IntermediateRenderTarget);
 
-                        //Render-Loop Interjections are not meant to be performant. They are meant for one-off tasks
-                        //  that need to be done in the render loop which is why we attempt to optimize them out with _interjectionCounter.
-                        if (_interjectionCounter > 0)
+                        //Render-Loop invocations are not meant to be performant. They are meant for one-off tasks that need to
+                        //  be done in the render loop - which is why we attempt to optimize them out with _renderLoopInvocationCount.
+                        if (_renderLoopInvocationCount > 0)
                         {
-                            var interjectionsToExecute = new List<RenderLoopInterjection>();
-                            _renderLoopInterjections.Use(o => interjectionsToExecute.AddRange(o));
-                            foreach (var interjection in interjectionsToExecute)
+                            var invocationsToExecute = new List<RenderLoopInvocation>();
+                            _renderLoopInvocations.Use(o => invocationsToExecute.AddRange(o));
+                            foreach (var invocation in invocationsToExecute)
                             {
-                                interjection.Execute();
+                                invocation.Execute();
                             }
                         }
 

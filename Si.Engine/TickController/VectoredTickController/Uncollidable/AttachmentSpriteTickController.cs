@@ -26,13 +26,14 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
         public SpriteAttachment Add(SpriteBase owner, string? imagePath = null)
         {
-            var obj = new SpriteAttachment(Engine, imagePath)
+            var sprite = new SpriteAttachment(Engine, imagePath)
             {
                 Z = owner.Z + 1, //We want to make sure these go on top of the parent.
                 OwnerUID = owner.UID
             };
-            SpriteManager.Add(obj);
-            return obj;
+
+            SpriteManager.Add(sprite);
+            return sprite;
         }
 
         public SpriteAttachment AddTypeOf<T>(SpriteBase owner, string? imagePath = null) where T : SpriteAttachment

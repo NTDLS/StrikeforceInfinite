@@ -94,7 +94,7 @@ namespace Si.Client
 
         private void FormRenderTarget_MouseMove(object? sender, MouseEventArgs e)
         {
-            _engine.AddRenderLoopInterjection(RenderLoopInterjectionLifetime.Once, () =>
+            _engine.Invoke(() =>
             {
                 var translatedPosition = _engine.Display.TranslateScreenPosition(e.Location);
                 toolStripStatusLabelXY.Text = $"Pointer: X: {translatedPosition.X:n1}, Y: {translatedPosition.Y:n1}";
@@ -126,7 +126,7 @@ namespace Si.Client
 
             List<SpriteBase>? sprites = null;
 
-            _engine.AddRenderLoopInterjection(RenderLoopInterjectionLifetime.Once, () =>
+            _engine.Invoke(() =>
             {
                 sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One, true).ToList();
                 if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One))

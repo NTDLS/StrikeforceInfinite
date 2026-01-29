@@ -75,11 +75,34 @@ namespace Si.Engine.Level
                 //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
             }
 
-            //_engine.Sprites.Debugs.AddAt(new SiVector(1000, 1000));
+			//_engine.Sprites.Debugs.AddAt(new SiVector(1000, 1000));
 
-            _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
 
-            /*
+			/*
             _engine.Sprites.TextBlocks.Add(_engine.Rendering.TextFormats.Debug,
                 _engine.Rendering.Materials.Brushes.
             
@@ -88,7 +111,7 @@ namespace Si.Engine.Level
                 new SiVector(100, 100), true, "", "Test");
             */
 
-            /*
+			/*
             var asteroid1 = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
             asteroid1.SpriteTag = "asteroid1";
             asteroid1.Location = new SiVector(1000, 1000);
@@ -117,48 +140,48 @@ namespace Si.Engine.Level
             asteroid3.Metadata.Mass = 100f;
             */
 
-            //var debugEnemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyDebug>();
-            //debugEnemy.Orientation = SiVector.FromDegrees(0);
-            //debugEnemy.Location = new SiVector(1000, 1000);
+			//var debugEnemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyDebug>();
+			//debugEnemy.Orientation = SiVector.FromDegrees(0);
+			//debugEnemy.Location = new SiVector(1000, 1000);
 
-            //var debug = _engine.Sprites.Debugs.Add(1000, 1000);
-            //debug.Speed = 0.5f;
-            //debug.Location = new SiVector(900, 900);
-            //debug.MovementVector = debug.CalculateMovementVector();
+			//var debug = _engine.Sprites.Debugs.Add(1000, 1000);
+			//debug.Speed = 0.5f;
+			//debug.Location = new SiVector(900, 900);
+			//debug.MovementVector = debug.CalculateMovementVector();
 
-            //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>().Location = new(500, 500);
+			//_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>().Location = new(500, 500);
 
-            //AddAsteroidField(new SiVector(1000, 1000), 8, 8);
+			//AddAsteroidField(new SiVector(1000, 1000), 8, 8);
 
-            //AddSingleAsteroid();
+			//AddSingleAsteroid();
 
-            //_engine.Sprites.Enemies.Create<EnemyRepulsor>();
-            //_engine.Sprites.Enemies.Create<EnemyRepulsor>();
-            //_engine.Sprites.Enemies.Create<EnemyRepulsor>();
-            //_engine.Sprites.Enemies.Create<EnemyRepulsor>();
+			//_engine.Sprites.Enemies.Create<EnemyRepulsor>();
+			//_engine.Sprites.Enemies.Create<EnemyRepulsor>();
+			//_engine.Sprites.Enemies.Create<EnemyRepulsor>();
+			//_engine.Sprites.Enemies.Create<EnemyRepulsor>();
 
-            //_engine.Sprites.Enemies.Create<SpriteEnemyPhoenix>();
-            //_engine.Sprites.Enemies.Create<SpriteEnemyPhoenix>();
-            //_engine.Sprites.Enemies.Create<SpriteEnemyPhoenix>();
+			//_engine.Sprites.Enemies.Create<SpriteEnemyPhoenix>();
+			//_engine.Sprites.Enemies.Create<SpriteEnemyPhoenix>();
+			//_engine.Sprites.Enemies.Create<SpriteEnemyPhoenix>();
 
-            //_engine.Sprites.Debugs.CreateAtCenterScreen();
-            //_engine.Sprites.Enemies.Create<SpriteEnemyDebug>();
-            //_engine.Sprites.Enemies.Create<EnemyDebug>();
-            //_engine.Sprites.Enemies.Create<EnemyDebug>();
-            //_engine.Sprites.Enemies.Create<EnemyDebug>();
-            //_engine.Sprites.Enemies.Create<EnemyDebug>();
-            //_engine.Sprites.Enemies.Create<EnemyDebug>();
-            //_engine.Sprites.Enemies.Create<EnemyPhoenix>();
-            //_engine.Sprites.Enemies.Create<EnemyPhoenix>();
-            //_engine.Sprites.Enemies.Create<EnemyPhoenix>();
-            //_engine.Sprites.Enemies.Create<EnemyDevastator>();
-            //_engine.Sprites.Enemies.Create<EnemyRepulsor>();
-            //_engine.Sprites.Enemies.Create<EnemySpectre>();
-            //_engine.Sprites.Enemies.Create<EnemyDevastator>();
-            //_engine.Sprites.Enemies.Create<EnemyDevastator>();
-        }
+			//_engine.Sprites.Debugs.CreateAtCenterScreen();
+			//_engine.Sprites.Enemies.Create<SpriteEnemyDebug>();
+			//_engine.Sprites.Enemies.Create<EnemyDebug>();
+			//_engine.Sprites.Enemies.Create<EnemyDebug>();
+			//_engine.Sprites.Enemies.Create<EnemyDebug>();
+			//_engine.Sprites.Enemies.Create<EnemyDebug>();
+			//_engine.Sprites.Enemies.Create<EnemyDebug>();
+			//_engine.Sprites.Enemies.Create<EnemyPhoenix>();
+			//_engine.Sprites.Enemies.Create<EnemyPhoenix>();
+			//_engine.Sprites.Enemies.Create<EnemyPhoenix>();
+			//_engine.Sprites.Enemies.Create<EnemyDevastator>();
+			//_engine.Sprites.Enemies.Create<EnemyRepulsor>();
+			//_engine.Sprites.Enemies.Create<EnemySpectre>();
+			//_engine.Sprites.Enemies.Create<EnemyDevastator>();
+			//_engine.Sprites.Enemies.Create<EnemyDevastator>();
+		}
 
-        public void AddSingleAsteroid()
+		public void AddSingleAsteroid()
         {
             var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
 

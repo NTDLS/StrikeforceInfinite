@@ -2,6 +2,7 @@
   "Name":"Devastator",
   "Description": "TODO: Add a description",
   "MunitionDetection": true,
+  "CollisionDetection": true,
   "Speed": 2.0,
   "Mass": 200,
   "Hull": 200,

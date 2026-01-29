@@ -417,34 +417,47 @@ namespace Si.Engine.Manager
             }
             else if (key == Keys.F1)
             {
-                if (_engine.Sprites.OfType<SpriteEnemyBase>().Count() > 0)
+                _engine.Invoke(() =>
                 {
-                    _engine.Sprites.OfType<SpriteEnemyBase>()[0].Explode();
-                }
+                    if (_engine.Sprites.OfType<SpriteEnemyBase>().Count() > 0)
+                    {
+                        _engine.Sprites.OfType<SpriteEnemyBase>()[0].Explode();
+                    }
+                });
             }
             else if (key == Keys.F2)
             {
-                _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                _engine.Invoke(() =>
+                {
+
+                    _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                });
             }
             else if (key == Keys.F3)
             {
-                _engine.Sprites.QueueAllForDeletionByTag("DEBUG_ASTEROID");
-                AddAsteroidField(new SiVector(), 4, 4);
-                //_engine.Rendering.AddScreenShake(4, 100);
+                _engine.Invoke(() =>
+                {
+                    _engine.Sprites.QueueAllForDeletionByTag("DEBUG_ASTEROID");
+                    AddAsteroidField(new SiVector(), 4, 4);
+                    //_engine.Rendering.AddScreenShake(4, 100);
+                });
             }
             else if (key == Keys.F4)
             {
-                _engine.Sprites.QueueAllForDeletionByTag("DEBUG_ASTEROID");
+                _engine.Invoke(() =>
+                {
+                    _engine.Sprites.QueueAllForDeletionByTag("DEBUG_ASTEROID");
 
-                var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
+                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
 
-                asteroid.SpriteTag = "DEBUG_ASTEROID";
-                asteroid.Location = _engine.Player.Sprite.Location + new SiVector(100, 100);
-                asteroid.Speed = 1.0f;
-                asteroid.Orientation = SiVector.FromDegrees(-45);
-                asteroid.RecalculateMovementVector();
+                    asteroid.SpriteTag = "DEBUG_ASTEROID";
+                    asteroid.Location = _engine.Player.Sprite.Location + new SiVector(100, 100);
+                    asteroid.Speed = 1.0f;
+                    asteroid.Orientation = SiVector.FromDegrees(-45);
+                    asteroid.RecalculateMovementVector();
 
-                asteroid.SetHullHealth(100);
+                    asteroid.SetHullHealth(100);
+                });
             }
             else if (key == Keys.F5)
             {
@@ -472,13 +485,19 @@ namespace Si.Engine.Manager
             }
             else if (key == Keys.F6)
             {
-                _engine.Sprites.Particles.ParticleCloud(500, _engine.Player.Sprite);
+                _engine.Invoke(() =>
+                {
+                    _engine.Sprites.Particles.ParticleCloud(500, _engine.Player.Sprite);
+                });
             }
             else if (key == Keys.F7)
             {
-                var enemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-                enemy.Orientation = SiVector.FromDegrees(-90);
-                enemy.Location = new SiVector(1000, 1000);
+                _engine.Invoke(() =>
+                {
+                    var enemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+                    enemy.Orientation = SiVector.FromDegrees(-90);
+                    enemy.Location = new SiVector(1000, 1000);
+                });
             }
         }
     }
