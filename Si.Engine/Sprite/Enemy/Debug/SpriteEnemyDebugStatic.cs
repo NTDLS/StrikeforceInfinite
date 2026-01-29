@@ -8,7 +8,7 @@ namespace Si.Engine.Sprite.Enemy.Debug
     internal class SpriteEnemyDebugStatic : SpriteEnemyPeonBase
     {
         public SpriteEnemyDebugStatic(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Debug\Hull.png")
+            : base(engine, @"Sprites\Enemy\DebugStatic\Hull.png")
         {
         }
     }
