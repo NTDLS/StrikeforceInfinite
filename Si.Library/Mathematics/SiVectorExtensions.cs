@@ -7,6 +7,13 @@ namespace Si.Library.Mathematics
 
         /// <summary>
         /// Rotate a point around another point by a certain angle.
+        /// 
+        /// Why you’d use it
+        /// orbiting behavior (“circle around target”)
+        /// rotating formation points around a leader
+        /// rotating a vertex around an object’s center
+        /// computing “offset points” for thrusters/guns that rotate with a ship
+        /// 
         /// </summary>
         /// <param name="pointToRotate"></param>
         /// <param name="centerPoint"></param>
@@ -20,6 +27,29 @@ namespace Si.Library.Mathematics
             var x = cosTheta * (pointToRotate.X - centerPoint.X) - sinTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.X;
             var y = sinTheta * (pointToRotate.X - centerPoint.X) + cosTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.Y;
             return new SiVector(x, y);
+        }
+
+        /// <summary>
+        /// Uniform random point in an annulus (between minDist and maxDist)
+        ///This gives a uniform area distribution(no “clumping” toward the center):
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="minDist"></param>
+        /// <param name="maxDist"></param>
+        /// <returns></returns>
+        public static SiVector RandomAtDistance(this SiVector center, float minDist, float maxDist)
+        {
+            // random angle [0, 2π)
+            float a = SiRandom.Between(0f, SiMath.TwoPi);
+
+            // uniform-in-area radius in [minDist, maxDist]
+            float r2 = SiRandom.Between(minDist * minDist, maxDist * maxDist);
+            float r = (float)Math.Sqrt(r2);
+
+            return new SiVector(
+                center.X + (float)Math.Cos(a) * r,
+                center.Y + (float)Math.Sin(a) * r
+            );
         }
 
         /// <summary>

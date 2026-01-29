@@ -17,8 +17,8 @@
         public enum SimpleDirection
         {
             None,
-            Left,
-            Right
+            Clockwise,
+            CounterClockwise
         }
 
         public enum MunitionType

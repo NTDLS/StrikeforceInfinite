@@ -1,5 +1,6 @@
 ﻿using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using System;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite._Superclass._Root
@@ -39,30 +40,17 @@ namespace Si.Engine.Sprite._Superclass._Root
         ///     angle (with given tolerance) then recalculates Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
-        public bool RotateMovementVectorIfNotPointingAt(SpriteBase obj, float rotationAmountDegrees, ref SimpleDirection simpleDirection, float varianceDegrees = 10)
+        public bool RotateMovementVectorIfNotPointingAt(SpriteBase obj, float rotationAmountDegrees, SimpleDirection simpleDirection, float varianceDegrees = 10)
         {
-            var deltaAngle = this.HeadingAngleToInUnsignedDegrees(obj);
+            var deltaAngle = this.HeadingAngleToInSignedDegrees(obj);
 
-            if (deltaAngle > varianceDegrees)
+            if (Math.Abs(deltaAngle) > varianceDegrees)
             {
-                if (simpleDirection == SimpleDirection.None)
-                {
-                    if (deltaAngle >= 180)
-                    {
-                        simpleDirection = SimpleDirection.Left;
-                        RotateMovementVector(-SiMath.DegToRad(rotationAmountDegrees));
-                    }
-                    else
-                    {
-                        simpleDirection = SimpleDirection.Right;
-                        RotateMovementVector(+SiMath.DegToRad(rotationAmountDegrees));
-                    }
-                }
-                else if (simpleDirection == SimpleDirection.Left)
+                if (simpleDirection == SimpleDirection.CounterClockwise)
                 {
                     RotateMovementVector(-SiMath.DegToRad(rotationAmountDegrees));
                 }
-                else if (simpleDirection == SimpleDirection.Right)
+                else if (simpleDirection == SimpleDirection.Clockwise)
                 {
                     RotateMovementVector(SiMath.DegToRad(rotationAmountDegrees));
                 }
@@ -79,30 +67,17 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// angle (with given tolerance) then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
-        public bool RotateMovementVectorIfNotPointingAt(SiVector toLocation, float rotationAmountDegrees,  ref SimpleDirection simpleDirection, float varianceDegrees = 10)
+        public bool RotateMovementVectorIfNotPointingAt(SiVector toLocation, float rotationAmountDegrees, SimpleDirection simpleDirection, float varianceDegrees = 10)
         {
-            var deltaAngle = this.HeadingAngleToInUnsignedDegrees(toLocation);
+            var deltaAngle = this.HeadingAngleToInSignedDegrees(toLocation);
 
-            if (deltaAngle > varianceDegrees)
+            if (Math.Abs(deltaAngle) > varianceDegrees)
             {
-                if (simpleDirection == SimpleDirection.None)
-                {
-                    if (deltaAngle >= 180)
-                    {
-                        simpleDirection = SimpleDirection.Left;
-                        RotateMovementVector(-SiMath.DegToRad(rotationAmountDegrees));
-                    }
-                    else
-                    {
-                        simpleDirection = SimpleDirection.Right;
-                        RotateMovementVector(+SiMath.DegToRad(rotationAmountDegrees));
-                    }
-                }
-                else if (simpleDirection == SimpleDirection.Left)
+                if (simpleDirection == SimpleDirection.CounterClockwise)
                 {
                     RotateMovementVector(-SiMath.DegToRad(rotationAmountDegrees));
                 }
-                else if (simpleDirection == SimpleDirection.Right)
+                else if (simpleDirection == SimpleDirection.Clockwise)
                 {
                     RotateMovementVector(SiMath.DegToRad(rotationAmountDegrees));
                 }
@@ -136,30 +111,17 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// Rotates the objects movement vector by the given amount if it is pointing in the given direction then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if the object is not pointing in the given direction.
-        public bool RotateMovementVectorIfPointingAt(SpriteBase obj, float rotationAmountDegrees, ref SimpleDirection simpleDirection, float varianceDegrees = 10)
+        public bool RotateMovementVectorIfPointingAt(SpriteBase obj, float rotationAmountDegrees, SimpleDirection simpleDirection, float varianceDegrees = 10)
         {
             var deltaAngle = this.HeadingAngleToInSignedDegrees(obj);
 
             if (deltaAngle.IsNotBetween(0, varianceDegrees))
             {
-                if (simpleDirection == SimpleDirection.None)
-                {
-                    if (deltaAngle >= 180)
-                    {
-                        simpleDirection = SimpleDirection.Left;
-                        RotateMovementVector(-SiMath.DegToRad(rotationAmountDegrees));
-                    }
-                    else
-                    {
-                        simpleDirection = SimpleDirection.Right;
-                        RotateMovementVector(+SiMath.DegToRad(rotationAmountDegrees));
-                    }
-                }
-                else if (simpleDirection == SimpleDirection.Left)
+                if (simpleDirection == SimpleDirection.CounterClockwise)
                 {
                     RotateMovementVector(-SiMath.DegToRad(rotationAmountDegrees));
                 }
-                else if (simpleDirection == SimpleDirection.Right)
+                else if (simpleDirection == SimpleDirection.Clockwise)
                 {
                     RotateMovementVector(SiMath.DegToRad(rotationAmountDegrees));
                 }

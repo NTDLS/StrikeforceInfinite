@@ -78,30 +78,7 @@ namespace Si.Engine.Level
 			//_engine.Sprites.Debugs.AddAt(new SiVector(1000, 1000));
 
 			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-			_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-
+	
 			/*
             _engine.Sprites.TextBlocks.Add(_engine.Rendering.TextFormats.Debug,
                 _engine.Rendering.Materials.Brushes.
