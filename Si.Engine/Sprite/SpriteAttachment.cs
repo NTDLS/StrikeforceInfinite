@@ -26,6 +26,10 @@ namespace Si.Engine.Sprite
         {
         }
 
+        /// <summary>
+        /// We expose the CalculatedLocation because the actual Location is not updated when the sprite is dead.
+        /// This allows us to still get the correct location of the attachment even when dead.
+        /// </summary>
         public SiVector CalculatedLocation
         {
             get
@@ -44,6 +48,10 @@ namespace Si.Engine.Sprite
             }
         }
 
+        /// <summary>
+        /// We expose the CalculatedOrientation because the actual Orientation is not updated when the sprite is dead.
+        /// This allows us to still get the correct Orientation of the attachment even when dead.
+        /// </summary>
         public SiVector CalculatedOrientation
         {
             get

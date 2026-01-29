@@ -71,9 +71,9 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
-        public void ParticleBlastAt(int maxParticleCount, SpriteBase at)
+        public void ParticleBlastAt(SpriteBase at, int maxParticleCount)
         {
-            Engine.Events.Add(() => ParticleBlastAt(maxParticleCount, at.Location));
+            Engine.Events.Add(() => ParticleBlastAt(at.Location, maxParticleCount));
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         /// </summary>
         /// <param name="maxParticleCount"></param>
         /// <param name="at"></param>
-        public void ParticleBlastAt(int maxParticleCount, SiVector location)
+        public void ParticleBlastAt(SiVector location, int maxParticleCount)
         {
             for (int i = 0; i < SiRandom.Between(maxParticleCount / 2, maxParticleCount); i++)
             {

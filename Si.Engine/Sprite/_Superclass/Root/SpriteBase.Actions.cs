@@ -1,5 +1,6 @@
 ﻿using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library.Mathematics;
+using System.Linq;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite._Superclass._Root
@@ -80,7 +81,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public virtual void Explode()
         {
-            foreach (var attachment in Attachments)
+            foreach (var attachment in Attachments.Where(o => o._isVisible))
             {
                 attachment.Explode();
             }

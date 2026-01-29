@@ -315,7 +315,7 @@ namespace Si.Engine.Sprite._Superclass
             _engine.Events.Add(() =>
             {
                 _engine.Sprites.Animations.AddRandomExplosionAt(this);
-                _engine.Sprites.Particles.ParticleBlastAt(SiRandom.Between(200, 800), this);
+                _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(200, 800));
                 _engine.Sprites.CreateFragmentsOf(this);
                 _engine.Rendering.AddScreenShake(4, 800);
                 _engine.Audio.PlayRandomExplosion();

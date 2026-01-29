@@ -53,11 +53,16 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 
             if (_thrusterLeft.IsDeadOrExploded)
             {
-                _engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 5, 1.5f, 2.5f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+                _engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 2, 1.5f, 2.5f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
             }
             if (_thrusterRight.IsDeadOrExploded)
             {
-                _engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 5, 1.5f, 2.5f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+                _engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 2, 1.5f, 2.5f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+            }
+
+            if (HullHealth <= Metadata.Hull / 2)
+            {
+                _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(0, 1));
             }
 
             base.ApplyMotion(epoch, displacementVector);
