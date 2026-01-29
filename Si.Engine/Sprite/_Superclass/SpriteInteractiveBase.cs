@@ -140,7 +140,7 @@ namespace Si.Engine.Sprite._Superclass
         /// Number that defines how much motion a sprite is in.
         /// </summary>
         public float TotalVelocity
-            => MovementVector.SumAbs();
+            => OrientationMovementVector.SumAbs();
 
         /// <summary>
         /// The total velocity multiplied by the given mass, except for the mass is returned when the velocity is 0;
@@ -400,8 +400,8 @@ namespace Si.Engine.Sprite._Superclass
             // normal from A -> B (pick one direction and stick to it).
             var n = (B.Location - A.Location).Normalize();
 
-            var vA = A.MovementVector;
-            var vB = B.MovementVector;
+            var vA = A.OrientationMovementVector;
+            var vB = B.OrientationMovementVector;
 
             var rv = vB - vA; // relative velocity of B w.r.t A
             float velAlongNormal = rv.Dot(n);
@@ -419,12 +419,12 @@ namespace Si.Engine.Sprite._Superclass
             var impulse = j * n;
 
             // Apply impulses
-            A.MovementVector = vA - impulse * invMassA;
-            B.MovementVector = vB + impulse * invMassB;
+            A.OrientationMovementVector = vA - impulse * invMassA;
+            B.OrientationMovementVector = vB + impulse * invMassB;
 
             // I don't want players to bounce too much.
-            if (A is SpritePlayerBase) A.MovementVector = (A.MovementVector + vA) * 0.5f;
-            if (B is SpritePlayerBase) B.MovementVector = (B.MovementVector + vB) * 0.5f;
+            if (A is SpritePlayerBase) A.OrientationMovementVector = (A.OrientationMovementVector + vA) * 0.5f;
+            if (B is SpritePlayerBase) B.OrientationMovementVector = (B.OrientationMovementVector + vB) * 0.5f;
         }
     }
 }

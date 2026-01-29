@@ -398,7 +398,7 @@ namespace Si.Engine.Manager
                 fragment.Orientation.Degrees = SiRandom.Between(0.0f, 359.0f);
                 fragment.Speed = SiRandom.Between(1, 3.5f);
                 fragment.Throttle = 1;
-                fragment.RecalculateMovementVector();
+                fragment.RecalculateOrientationMovementVector();
             }
         }
 

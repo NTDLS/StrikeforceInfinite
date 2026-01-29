@@ -92,7 +92,7 @@ namespace Si.Engine.AI.Logistics
             Owner.RenewableResources.Create(_boostResourceName, 800, 0, 10);
 
             ChangeState(new AIStateDeparting());
-            Owner.RecalculateMovementVector();
+            Owner.RecalculateOrientationMovementVector();
 
             OnApplyIntelligence += AILogistics_OnApplyIntelligence;
             OnStateChanged += AILogisticsTaunt_OnStateChanged;

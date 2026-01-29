@@ -10,7 +10,7 @@ namespace Si.Engine.Sprite.Enemy.Starbase._Superclass
         public SpriteEnemyStarbase(EngineCore engine, string imagePath)
             : base(engine, imagePath)
         {
-            RecalculateMovementVector();
+            RecalculateOrientationMovementVector();
         }
 
         public override void Cleanup()

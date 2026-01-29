@@ -67,7 +67,7 @@ namespace Si.Engine.AI.Logistics
             Owner.RenewableResources.Create(_boostResourceName, 800, 0, 10);
 
             ChangeState(new StateGoToRandomLocation(this));
-            Owner.RecalculateMovementVector();
+            Owner.RecalculateOrientationMovementVector();
 
             OnApplyIntelligence += AILogistics_OnApplyIntelligence;
         }

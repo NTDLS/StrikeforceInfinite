@@ -96,7 +96,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             Orientation.Radians += RotationSpeed * epoch;
 
             //Move the sprite based on its vector.
-            Location += MovementVector * epoch;
+            Location += OrientationMovementVector * epoch;
         }
 
         public virtual void Cleanup()
@@ -138,7 +138,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 + $"\t                          {Orientation.RadiansSigned:n2}rad\r\n"
                 + extraInfo
                 + $"\t       Background Offset: {_engine.Display.RenderWindowPosition}\r\n"
-                + $"\t                  Thrust: {MovementVector * 100:n2}\r\n"
+                + $"\t                  Thrust: {OrientationMovementVector * 100:n2}\r\n"
                 + $"\t                   Boost: {Throttle * 100:n2}\r\n"
                 + $"\t                    Hull: {HullHealth:n0}\r\n"
                 + $"\t                  Shield: {ShieldHealth:n0}\r\n"

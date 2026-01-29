@@ -44,7 +44,7 @@ namespace Si.Engine.Sprite
 
             if (VectorType == ParticleVectorType.FollowOrientation)
             {
-                RecalculateMovementVector(Orientation.RadiansSigned);
+                RecalculateOrientationMovementVector(Orientation.RadiansSigned);
             }
 
             base.ApplyMotion(epoch, displacementVector);

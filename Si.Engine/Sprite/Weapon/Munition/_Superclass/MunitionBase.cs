@@ -69,7 +69,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             Location = location ?? firedFrom.Location;
             Orientation = new SiVector(headingRadians);
             Speed = initialSpeed;
-            MovementVector = Orientation * initialSpeed;
+            OrientationMovementVector = Orientation * initialSpeed;
 
             if (firedFrom is SpriteAttachment attachment)
             {
@@ -108,7 +108,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
                 return;
             }
 
-            Location += MovementVector * epoch;
+            Location += OrientationMovementVector * epoch;
         }
 
         public override void Explode()

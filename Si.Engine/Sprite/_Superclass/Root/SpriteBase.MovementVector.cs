@@ -13,21 +13,21 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateMovementVector() => MovementVector = MakeMovementVector();
+        public void RecalculateOrientationMovementVector() => OrientationMovementVector = MakeMovementVector();
 
         /// <summary>
         /// Sets the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateMovementVector(float angleInRadians) => MovementVector = MakeMovementVector(angleInRadians);
+        public void RecalculateOrientationMovementVector(float angleInRadians) => OrientationMovementVector = MakeMovementVector(angleInRadians);
 
         /// <summary>
         /// Sets the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateMovementVector(SiVector angle) => MovementVector = MakeMovementVector(angle);
+        public void RecalculateOrientationMovementVector(SiVector angle) => OrientationMovementVector = MakeMovementVector(angle);
 
         /// <summary>
         /// Returns the movement vector in the direction of the sprite taking into account the speed and throttle percentage.

@@ -22,7 +22,7 @@ namespace Si.Library.Sprite
         /// <summary>
         /// The angle in which the sprite is pointing, note that this is NOT the travel angle.
         /// The travel angle is baked into the MovementVector. If you need the movement vector
-        /// to follow this direction angle then call RecalculateMovementVector() after modifying
+        /// to follow this direction angle then call RecalculateOrientationMovementVector() after modifying
         /// the PointingAngle.
         /// </summary>
         public SiVector Orientation { get; set; }

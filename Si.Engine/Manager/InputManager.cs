@@ -393,7 +393,7 @@ namespace Si.Engine.Manager
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
 
-                    asteroid.RecalculateMovementVector(SiRandom.Variance(-45, 0.10f).ToRadians());
+                    asteroid.RecalculateOrientationMovementVector(SiRandom.Variance(-45, 0.10f).ToRadians());
                     asteroid.VectorType = ParticleVectorType.Default;
 
                     //asteroid.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-1.5f, -0.4f) : SiRandom.Between(0.4f, 1.5f);
@@ -429,7 +429,6 @@ namespace Si.Engine.Manager
             {
                 _engine.Invoke(() =>
                 {
-
                     _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
                 });
             }
@@ -454,7 +453,7 @@ namespace Si.Engine.Manager
                     asteroid.Location = _engine.Player.Sprite.Location + new SiVector(100, 100);
                     asteroid.Speed = 1.0f;
                     asteroid.Orientation = SiVector.FromDegrees(-45);
-                    asteroid.RecalculateMovementVector();
+                    asteroid.RecalculateOrientationMovementVector();
 
                     asteroid.SetHullHealth(100);
                 });
@@ -497,6 +496,13 @@ namespace Si.Engine.Manager
                     var enemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
                     enemy.Orientation = SiVector.FromDegrees(-90);
                     enemy.Location = new SiVector(1000, 1000);
+                });
+            }
+            else if (key == Keys.F8)
+            {
+                _engine.Invoke(() =>
+                {
+                    _engine.Situations.AdvanceLevel();
                 });
             }
         }

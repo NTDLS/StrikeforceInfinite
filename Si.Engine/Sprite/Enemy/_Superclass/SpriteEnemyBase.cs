@@ -17,7 +17,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
         public SpriteEnemyBase(EngineCore engine, string imagePath)
                 : base(engine, imagePath)
         {
-            RecalculateMovementVector();
+            RecalculateOrientationMovementVector();
 
             RadarPositionIndicator = _engine.Sprites.RadarPositions.Add();
             RadarPositionIndicator.Visible = false;

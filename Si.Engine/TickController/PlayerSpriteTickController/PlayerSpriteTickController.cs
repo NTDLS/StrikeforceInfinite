@@ -262,12 +262,12 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
 
             Sprite.Throttle = 1 + _boostForwardVelocity;
 
-            Sprite.MovementVector = (Sprite.MakeMovementVector() * _forwardVelocity) //Forward / Reverse
+            Sprite.OrientationMovementVector = (Sprite.MakeMovementVector() * _forwardVelocity) //Forward / Reverse
                 + (Sprite.MakeMovementVector(Sprite.Orientation.RadiansSigned + 90.ToRadians()) * _lateralVelocity);  //Lateral strafing.
 
             Sprite.PerformCollisionDetection(epoch);
 
-            var displacementVector = Sprite.MovementVector * epoch;
+            var displacementVector = Sprite.OrientationMovementVector * epoch;
 
             //Scroll the background.
             Engine.Display.RenderWindowPosition += displacementVector;

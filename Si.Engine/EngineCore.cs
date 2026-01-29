@@ -278,6 +278,15 @@ namespace Si.Engine
 
             IsRunning = true;
             //Sprites.ResetPlayer();
+
+            #region Add initial stars.
+
+            for (int i = 0; i < Settings.InitialFrameStarCount; i++)
+            {
+                Sprites.Stars.Add(Display.RandomOnScreenLocation());
+            }
+
+            #endregion
             _worldClock.Start();
 
             var loadingHeader = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,

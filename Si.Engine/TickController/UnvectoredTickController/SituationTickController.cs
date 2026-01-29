@@ -29,7 +29,7 @@ namespace Si.Engine.TickController.UnvectoredTickController
             {
                 if (CurrentSituation.CurrentLevel.State == SiConstants.SiLevelState.Ended)
                 {
-                    CurrentSituation?.AdvanceLevel();
+                    AdvanceLevel();
                 }
             }
         }

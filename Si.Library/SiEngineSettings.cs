@@ -39,7 +39,7 @@ namespace Si.Library
         public float MaxPlayerBoostAmount { get; set; } = 10000;
         public float MaxPlayerRotationSpeedDegrees { get; set; } = 140.0f;
 
-        public int InitialFrameStarCount { get; set; } = 100;
+        public int InitialFrameStarCount { get; set; } = 25;
         public int DeltaFrameTargetStarCount { get; set; } = 200;
 
         /// <summary>

@@ -20,8 +20,8 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         public void RotateMovementVector(float radians)
         {
-            MovementVector.Rotate(radians);
-            Orientation.Radians = MovementVector.OrientationInRadians();
+            OrientationMovementVector.Rotate(radians);
+            Orientation.Radians = OrientationMovementVector.OrientationInRadians();
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             var radians = Location.AngleToInSignedRadians(toLocationOf);
 
-            MovementVector.SetDirectionMaintainMagnitude(radians);
-            Orientation.Radians = MovementVector.OrientationInRadians();
+            OrientationMovementVector.SetDirectionMaintainMagnitude(radians);
+            Orientation.Radians = OrientationMovementVector.OrientationInRadians();
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                     RotateMovementVector(SiMath.DegToRad(rotationAmountDegrees));
                 }
 
-                RecalculateMovementVector();
+                RecalculateOrientationMovementVector();
 
                 return true;
             }

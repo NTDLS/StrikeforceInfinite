@@ -141,15 +141,6 @@ namespace Si.Engine
 
         private void WorldClockThreadProc()
         {
-            #region Add initial stars.
-
-            for (int i = 0; i < _engine.Settings.InitialFrameStarCount; i++)
-            {
-                _engine.Sprites.Stars.Add();
-            }
-
-            #endregion
-
             var framePerSecondLimit = _engine.Settings.VerticalSync ?
                 SiRenderingUtility.GetScreenRefreshRate(_engine.Display.Screen, _engine.Settings.GraphicsAdapterId)
                 : _engine.Settings.TargetFrameRate;

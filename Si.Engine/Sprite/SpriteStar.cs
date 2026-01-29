@@ -22,8 +22,7 @@ namespace Si.Engine.Sprite
 
             Z = int.MinValue + 1000;
 
-            Speed = 0.5f;
-            RecalculateMovementVector();
+            Speed = 100;
 
             if (selectedImageIndex >= 0 && selectedImageIndex <= 0)
             {
@@ -37,7 +36,8 @@ namespace Si.Engine.Sprite
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)
         {
-            Location -= displacementVector * MovementVector * Speed * epoch;
+            //We omit orientation for stars since they are point-like.
+            Location -= displacementVector * Speed * Throttle * epoch;
         }
     }
 }
