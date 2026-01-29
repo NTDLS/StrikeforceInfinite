@@ -63,6 +63,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         /// <summary>
         /// Returns the first collision (if any) the sprite made on is current movement vector.
+        /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
         /// <returns></returns>
         public SpriteBase? FindFirstReverseCollisionAlongMovementVectorAABB(float epoch)
@@ -70,6 +71,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         /// <summary>
         /// Returns the first collision (if any) the sprite made on is current movement vector.
+        /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
         /// <param name="objectsThatCanBeHit"></param>
         /// <returns></returns>
@@ -114,6 +116,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         /// <summary>
         /// Returns a list of all collisions the sprite will make on is current movement vector, in the order in which they would be encountered.
+        /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
         /// <returns></returns>
         public List<SpriteBase> FindForwardCollisionsAlongMovementVectorAABB(float epoch)
@@ -121,6 +124,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         /// <summary>
         /// Returns a list of all collisions the sprite will make on is current movement vector, in the order in which they would be encountered.
+        /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
         /// <param name="objectsThatCanBeHit"></param>
         /// <returns></returns>
@@ -394,6 +398,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         /// <summary>
         /// Determines if two axis-aligned bounding boxes (AABB) intersect.
+        /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
         /// <returns></returns>
         public bool IntersectsAABB(SiVector location)
