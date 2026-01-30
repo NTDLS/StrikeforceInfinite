@@ -22,7 +22,7 @@ namespace Si.Engine.Sprite
 
             Z = int.MinValue + 1000;
 
-            Speed = 100;
+            Speed = 10;
 
             if (selectedImageIndex >= 0 && selectedImageIndex <= 0)
             {

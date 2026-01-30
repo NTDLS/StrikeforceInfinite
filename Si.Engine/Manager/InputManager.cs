@@ -380,7 +380,7 @@ namespace Si.Engine.Manager
             {
                 for (int col = 0; col < colCount; col++)
                 {
-                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
+                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 23)}.png");
 
                     var asteroidSize = asteroid.Size.Width + asteroid.Size.Height;
 
@@ -391,10 +391,11 @@ namespace Si.Engine.Manager
 
                     asteroid.Orientation = SiVector.FromDegrees(SiRandom.Between(0, 359));
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
+                    asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
                     asteroid.Throttle = 1;
+                    asteroid.VectorType = ParticleVectorType.Default;
 
                     asteroid.RecalculateMovementVectorFromAngle(SiRandom.Variance(-45, 0.10f).ToRadians());
-                    asteroid.VectorType = ParticleVectorType.Default;
 
                     //asteroid.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-1.5f, -0.4f) : SiRandom.Between(0.4f, 1.5f);
                     //asteroid.RotationSpeed = 0;
@@ -452,6 +453,7 @@ namespace Si.Engine.Manager
                     asteroid.SpriteTag = "DEBUG_ASTEROID";
                     asteroid.Location = _engine.Player.Sprite.Location + new SiVector(100, 100);
                     asteroid.Speed = 1.0f;
+                    asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
                     asteroid.Orientation = SiVector.FromDegrees(-45);
 
                     asteroid.SetHullHealth(100);

@@ -13,6 +13,7 @@ using Si.Engine.TickController.UnvectoredTickController;
 using Si.Engine.TickController.VectoredTickController.Collidable;
 using Si.Engine.TickController.VectoredTickController.Uncollidable;
 using Si.Library;
+using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -392,11 +393,11 @@ namespace Si.Engine.Manager
                 var fragment = _engine.Sprites.GenericBitmaps.AddAt(fragmentImage, sprite);
                 fragment.CleanupMode = ParticleCleanupMode.DistanceOffScreen;
                 fragment.FadeToBlackReductionAmount = SiRandom.Between(0.001f, 0.01f); //TODO: Can we implement this?
-                fragment.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-0.05f, -0.02f) : SiRandom.Between(0.02f, 0.05f);
+                fragment.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(45f, 180f).ToRadians());
                 fragment.VectorType = ParticleVectorType.Default;
 
                 fragment.Orientation.Degrees = SiRandom.Between(0.0f, 359.0f);
-                fragment.Speed = SiRandom.Between(1, 3.5f);
+                fragment.Speed = SiRandom.Between(100, 350f);
                 fragment.Throttle = 1;
             }
         }

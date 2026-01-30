@@ -130,7 +130,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
             for (int i = 0; i < count; i++)
             {
-                // Bias the angle toward 0 (centerline) if desired
+                // Bias the angle toward 0 (centerline).
                 float t = (float)SiRandom.Between(0, 10000) / 10000f;  // 0..1
                 float signed = (float)SiRandom.Between(-10000, 10000) / 10000f; // -1..1
 
@@ -140,19 +140,16 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                 float angle = centerDirectionDeg + biased * spreadDeg;
 
                 var p = AddAt(nozzleWorldPos, color, size ?? new Size(2, 2));
-                p.Visible = true;
 
+                p.Visible = true;
                 p.VectorType = ParticleVectorType.FollowOrientation;
                 p.Orientation.Degrees = SiMath.WrapDegreesUnsigned(angle);
-
                 p.Speed = SiRandom.Between(minSpeed, maxSpeed);
-
-                // common thruster look settings (tweak)
                 p.Shape = ParticleShape.FilledEllipse;
                 p.Pattern = ParticleColorType.Solid;
                 p.CleanupMode = ParticleCleanupMode.FadeToBlack;
                 p.FadeToBlackReductionAmount = SiRandom.Between(0.01f, 0.02f);
-                p.RotationSpeed = SiRandom.Between(-6f, 6f);
+                p.RotationSpeed = SiRandom.Between(-250f, 250f);
             }
         }
 
@@ -180,10 +177,10 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
                 particle.CleanupMode = ParticleCleanupMode.FadeToBlack;
                 particle.FadeToBlackReductionAmount = 0.001f;
-                particle.RotationSpeed = SiRandom.Between(-3f, 3f);
+                particle.RotationSpeed = SiRandom.Between(-25f, 25f);
                 particle.VectorType = ParticleVectorType.FollowOrientation;
                 particle.Orientation.Degrees = SiRandom.Between(0.0f, 359.0f);
-                particle.Speed = SiRandom.Between(2, 3.5f);
+                particle.Speed = SiRandom.Between(20, 350f);
             }
         }
     }

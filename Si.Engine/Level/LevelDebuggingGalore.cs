@@ -189,10 +189,10 @@ namespace Si.Engine.Level
                     asteroid.Orientation = SiVector.FromDegrees(SiRandom.Between(0, 359));
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
-                    asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Variance(0.01f, 0.90f));
+                    asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
                     asteroid.Metadata.Mass = Mass.Large;
 
-                    asteroid.RecalculateMovementVectorFromAngle(SiRandom.Variance(-45, 0.10f).ToRadians());
+                    asteroid.RecalculateMovementVectorFromAngle(SiRandom.Between(1f, 360f).ToRadians());
                     asteroid.VectorType = ParticleVectorType.Default;
 
                     //asteroid.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-1.5f, -0.4f) : SiRandom.Between(0.4f, 1.5f);

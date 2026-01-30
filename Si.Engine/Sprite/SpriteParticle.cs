@@ -53,7 +53,7 @@ namespace Si.Engine.Sprite
             Color = color ?? engine.Rendering.Materials.Colors.White;
             RotationSpeed = SiRandom.Between(0.01f, 0.09f) * SiRandom.PositiveOrNegative();
 
-            Speed = SiRandom.Between(1.0f, 4.0f);
+            Speed = SiRandom.Between(100f, 400f);
             Orientation.Degrees = SiRandom.Between(0, 359);
             Throttle = 1;
 

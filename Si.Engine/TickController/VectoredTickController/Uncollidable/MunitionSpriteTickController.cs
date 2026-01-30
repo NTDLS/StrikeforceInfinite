@@ -39,7 +39,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
             _munitionTraversalThreadPool = new(new DelegateThreadPoolConfiguration()
             {
-                InitialThreadCount = engine.Settings.MunitionTraversalThreads
+                InitialThreadCount = engine.Settings.MunitionTraversalThreads,
+                MaximumThreadCount = engine.Settings.MunitionTraversalThreads * 4
             });
 
             engine.OnShutdown += (engine) =>

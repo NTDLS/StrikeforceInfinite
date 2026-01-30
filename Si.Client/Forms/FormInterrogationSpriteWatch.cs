@@ -1,6 +1,7 @@
 ﻿using Si.Engine;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
+using Si.Library.Mathematics;
 using Si.Library.Sprite;
 using System;
 using System.Drawing;
@@ -60,13 +61,17 @@ namespace Si.Client.Forms
             UpsertVariable("Location", $"{sprite.Location}");
             UpsertVariable("Location (Render)", $"{sprite.RenderLocation}");
             UpsertVariable("Background Offset", $"{_engine.Display.RenderWindowPosition}");
+            UpsertVariable("Rotation Speed", $"{sprite.RotationSpeed:n2}");
+            UpsertVariable("Speed", $"{sprite.Speed:n2}");
+            UpsertVariable("Throttle", $"{sprite.Throttle:n2}");
+            UpsertVariable("Movement Vector", $"{sprite.OrientationMovementVector}");
+            UpsertVariable("Angle to Player", $"{sprite.AngleToInSignedDegrees(_engine.Player.Sprite):n2}");
             UpsertVariable("Angle", $"{sprite.Orientation:n2}");
             UpsertVariable("Angle Degrees", $"{sprite.Orientation.Degrees:n2}");
             UpsertVariable("Angle Degrees (Signed)", $"{sprite.Orientation.DegreesSigned:n2}");
             UpsertVariable("Angle Radians", $"{sprite.Orientation.RadiansSigned:n2}");
             UpsertVariable("Angle Radians (Signed)", $"{sprite.Orientation.RadiansSigned:n2}");
             //UpsertVariable("Thrust %", $"{(sprite.Velocity.ForwardVelocity * 100):n2}");
-            UpsertVariable("Boost %", $"{(sprite.Throttle * 100):n2}");
             UpsertVariable("Hull", $"{sprite.HullHealth:n0}");
             UpsertVariable("Shield", $"{sprite.ShieldHealth:n0}");
             UpsertVariable("Attachments", $"{sprite.Attachments?.Count ?? 0:n0}");

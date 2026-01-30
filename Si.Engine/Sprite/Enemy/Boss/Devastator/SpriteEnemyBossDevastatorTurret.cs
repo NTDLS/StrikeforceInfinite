@@ -29,11 +29,11 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
                 var deltaAngleToPlayer = this.HeadingAngleToInSignedDegrees(_engine.Player.Sprite);
                 if (deltaAngleToPlayer < 1)
                 {
-                    Orientation.Degrees -= 1.5f;
+                    Orientation.Degrees -= 45f * epoch;
                 }
                 else if (deltaAngleToPlayer > 1)
                 {
-                    Orientation.Degrees += 1.5f;
+                    Orientation.Degrees += 45f * epoch;
                 }
 
                 if (deltaAngleToPlayer.IsBetween(-10, 10))

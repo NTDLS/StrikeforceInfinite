@@ -21,20 +21,19 @@ namespace Si.Engine.AI.Logistics
 
         #region AI States.
 
-        private class StateGoToRandomLocation : AIStateHandler
+        private class GotoRadiusOfObservedObject : AIStateHandler
         {
             private readonly AILogisticsHostileEngagement _stateMachine;
             private SimpleDirection _rotateDirection;
             private float _rotationAngle = SiRandom.Variance(5, 10f);
+            private readonly SiVector _targetLocation;
 
-            public SiVector TargetLocation { get; set; }
-
-            public StateGoToRandomLocation(AILogisticsHostileEngagement stateMachine)
+            public GotoRadiusOfObservedObject(AILogisticsHostileEngagement stateMachine)
             {
                 _stateMachine = stateMachine;
-                TargetLocation = stateMachine.ObservedObject.Location.RandomAtDistance(10, 50);
+                _targetLocation = stateMachine.ObservedObject.Location.RandomAtDistance(10, 50);
 
-                var deltaAngle = stateMachine.Owner.HeadingAngleToInSignedDegrees(TargetLocation);
+                var deltaAngle = stateMachine.Owner.HeadingAngleToInSignedDegrees(_targetLocation);
                 _rotateDirection = deltaAngle >= 0 ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
             }
 
@@ -45,6 +44,9 @@ namespace Si.Engine.AI.Logistics
                     _rotationAngle = SiMath.Damp(_rotationAngle, 25, decayRatePerSecond: 4.5f, epoch);
                 }
 
+                //Throttle up during the turn.
+                _stateMachine.Owner.Throttle = SiMath.Damp(_stateMachine.Owner.Throttle, 1.5f, 0.2f, epoch);
+
                 if (_rotationAngle >= 4.9f)
                 {
                     //Lets just change the state....
@@ -52,7 +54,31 @@ namespace Si.Engine.AI.Logistics
 
                 if (_stateMachine.Owner.RotateMovementVectorIfNotPointingAt(_stateMachine.ObservedObject, _rotationAngle * epoch, _rotateDirection, 10.0f) == false)
                 {
-                    _stateMachine.ChangeState(new StateGoToRandomLocation(_stateMachine));
+                    _stateMachine.ChangeState(new SteadyOnCurrentPath(_stateMachine));
+                }
+            }
+        }
+
+        private class SteadyOnCurrentPath : AIStateHandler
+        {
+            private readonly AILogisticsHostileEngagement _stateMachine;
+            private float _burndownEpochs = 3;
+
+            public SteadyOnCurrentPath(AILogisticsHostileEngagement stateMachine)
+            {
+                _stateMachine = stateMachine;
+            }
+
+            public void Execute(float epoch)
+            {
+                //Throttle down during the steady path.
+                _stateMachine.Owner.Throttle = SiMath.Damp(_stateMachine.Owner.Throttle, 0, 0.2f, epoch);
+
+                _burndownEpochs -= epoch;
+
+                if (_burndownEpochs <= 0)
+                {
+                    _stateMachine.ChangeState(new GotoRadiusOfObservedObject(_stateMachine));
                 }
             }
         }
@@ -66,7 +92,7 @@ namespace Si.Engine.AI.Logistics
 
             Owner.RenewableResources.Create(_boostResourceName, 800, 0, 10);
 
-            ChangeState(new StateGoToRandomLocation(this));
+            ChangeState(new GotoRadiusOfObservedObject(this));
             Owner.RecalculateOrientationMovementVector();
 
             OnApplyIntelligence += AILogistics_OnApplyIntelligence;
@@ -83,22 +109,12 @@ namespace Si.Engine.AI.Logistics
             */
         }
 
-        float burndownSeconds = 1;
-
         private void AILogistics_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler state)
         {
             //var deltaAngle = Owner.HeadingAngleToInUnsignedDegrees(ObservedObject);
             //Console.WriteLine($"deltaAngle {deltaAngle}");
 
             //var distanceToObservedObject = Owner.DistanceTo(ObservedObject);
-
-            burndownSeconds -= epoch;
-
-            if (burndownSeconds <= 0)
-            {
-                burndownSeconds = 1;
-                //ChangeState(new StateGoToRandomLocation(this));
-            }
 
             state.Execute(epoch);
 
