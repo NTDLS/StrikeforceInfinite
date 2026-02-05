@@ -27,6 +27,8 @@ namespace Si.MpDummyClient
 
         public void Run()
         {
+            Console.WriteLine("Starting multiplay client...");
+
             Console.WriteLine("Starting reliable messaging client.");
             _rmClient.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
@@ -37,15 +39,15 @@ namespace Si.MpDummyClient
             Console.WriteLine("MP Dummy Client is running...");
 
 
-            _rmClient.Query(new CreateLobbyQuery()).ContinueWith(task =>
+            _rmClient.Query(new StartServerSessionQuery()).ContinueWith(task =>
             {
                 if (task.IsFaulted)
                 {
                     Console.WriteLine($"CreateLobbyQuery failed: {task.Exception?.GetBaseException().Message}");
                     return;
                 }
-                CreateLobbyQueryReply reply = task.Result;
-                //Console.WriteLine($"Lobby created with ID: {reply.LobbyId}");
+
+                Console.WriteLine($"Session started with SessionId: {task.Result.SessionId}");
             });
 
             Console.WriteLine("Press ENTER to stop.");

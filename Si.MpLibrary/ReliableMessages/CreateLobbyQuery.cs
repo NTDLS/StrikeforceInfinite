@@ -2,7 +2,8 @@
 
 namespace Si.MpLibrary.ReliableMessages
 {
-    public class CreateLobbyQuery: IRmQuery<CreateLobbyQueryReply>
+    public class CreateLobbyQuery
+        : IRmQuery<CreateLobbyQueryReply>
     {
     }
 
