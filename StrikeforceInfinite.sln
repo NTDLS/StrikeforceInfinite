@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.6.33829.357
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{5E60224E-A4A6-47B6-A293-F24A5EFE403F}"
 	ProjectSection(SolutionItems) = preProject
@@ -29,6 +29,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Si.Client", "Si.Client\Si.Client.csproj", "{1CE2CAE3-1522-4AD8-AF32-BFAEC6069069}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Si.Engine", "Si.Engine\Si.Engine.csproj", "{7816F662-44AA-4B79-BFF5-2FCB1983AD17}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MuliPlay", "MuliPlay", "{4F4F1428-3130-462A-A440-6C99FC3C0051}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

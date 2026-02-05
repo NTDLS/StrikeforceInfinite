@@ -4,6 +4,9 @@
     {
         public static string FriendlyName = "Strikeforce Infinite";
 
+        public const string MultiplayServerAddress = "127.0.0.1";
+        public const int MultiplayServerTCPPort = 6785;
+
         public static class Mass
         {
             public const float Minuscule = 0.1f;
@@ -14,11 +17,26 @@
             public const float Huge = 10000f;
         }
 
+        public enum SiPlayMode
+        {
+            SinglePlayer,
+            MutiPlayerHost,
+            MutiPlayerClient
+        }
+
         public enum SimpleDirection
         {
             None,
             Clockwise,
             CounterClockwise
+        }
+
+        public enum SiLogSeverity
+        {
+            Trace = 0, //Super-verbose, debug-like information.
+            Verbose = 1, //General status messages.
+            Warning = 2, //Something the user might want to be aware of.
+            Exception = 3 //An actual exception has been thrown.
         }
 
         public enum MunitionType
