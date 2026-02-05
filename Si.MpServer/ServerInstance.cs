@@ -1,18 +1,18 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.ReliableMessaging;
-using NTDLS.Semaphore;
 using Si.MpLibrary;
-using System.Threading.Tasks;
 
 namespace Si.MpServer
 {
-    internal class MpServerInstance
+    internal class ServerInstance
     {
         private readonly DmClient _dmClient;
         private readonly RmServer _rmServer;
-        private readonly OptimisticCriticalResource<Dictionary<Guid, MpServerSession>> _sessions = new();
 
-        public MpServerInstance()
+        internal SessionManager Sessions { get; set; }
+        internal LobbyManager Lobbies { get; set; }
+
+        public ServerInstance()
         {
             _dmClient = new DmClient();
             _dmClient.OnException += (DmContext? context, Exception ex) =>
@@ -28,20 +28,14 @@ namespace Si.MpServer
             _rmServer.OnDisconnected += _rmServer_OnDisconnected;
 
             _rmServer.AddHandler(new ReliableMessageHandler(this));
+
+            Sessions = new SessionManager(this);
+            Lobbies = new LobbyManager(this);
         }
 
         private void _rmServer_OnDisconnected(RmContext context)
         {
-            _sessions.Write(o =>
-            {
-                if (o.TryGetValue(context.ConnectionId, out var session))
-                {
-                    //TODO: Clean up session resources if needed.
-
-                    Console.WriteLine($"Session ended with SessionId: {session.SessionId}");
-                    o.Remove(context.ConnectionId);
-                }
-            });
+            Sessions.Delete(context.ConnectionId);
         }
 
         public void Run()
@@ -59,17 +53,5 @@ namespace Si.MpServer
             Console.WriteLine("Press ENTER to stop.");
         }
 
-        public MpServerSession CreateSession(Guid rmConnectionId)
-        {
-            var session = new MpServerSession();
-
-            _sessions.Write(o =>
-            {
-                Console.WriteLine($"Session started with SessionId: {session.SessionId}");
-                o.Add(rmConnectionId, session);
-            });
-
-            return session;
-        }
     }
 }

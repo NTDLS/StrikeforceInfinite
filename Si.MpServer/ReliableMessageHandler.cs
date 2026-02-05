@@ -3,7 +3,7 @@ using Si.MpLibrary.ReliableMessages;
 
 namespace Si.MpServer
 {
-    internal class ReliableMessageHandler(MpServerInstance mpServerInstance) : IRmMessageHandler
+    internal class ReliableMessageHandler(ServerInstance mpServerInstance) : IRmMessageHandler
     {
         public CreateLobbyQueryReply CreateLobbyQuery(RmContext context, CreateLobbyQuery payload)
         {
@@ -12,7 +12,7 @@ namespace Si.MpServer
 
         public StartServerSessionQueryReply StartServerSessionQuery(RmContext context, StartServerSessionQuery payload)
         {
-            var sessionId = mpServerInstance.CreateSession(context.ConnectionId).SessionId;
+            var sessionId = mpServerInstance.Sessions.Create(context.ConnectionId).SessionId;
             return new StartServerSessionQueryReply(sessionId);
         }
     }

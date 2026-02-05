@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            var serverInstance = new MpServerInstance();
+            var serverInstance = new ServerInstance();
             serverInstance.Run();
         }
     }
