@@ -153,9 +153,15 @@ namespace Si.Engine
                 if (!_isPaused) ExecuteWorldClockTick(elapsedEpochMilliseconds / 1000.0f);
 
                 _engine.Development?.ProcessCommand();
-                _engine.RenderEverything();
 
-                if (_engine.Settings.VerticalSync == false)
+                //We only render if we are in play or edit mode.
+                if (_engine.ExecutionMode == SiEngineExecutionMode.Play || _engine.ExecutionMode == SiEngineExecutionMode.Edit)
+                {
+                    _engine.RenderEverything();
+                }
+
+                //When running as a server host or VSync is disabled, we need to enforce the framerate ourselves.
+                if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost || _engine.Settings.VerticalSync == false)
                 {
                     var elapsedFrameTime = _engine.Display.FrameCounter.ElapsedMicroseconds;
 
@@ -168,6 +174,11 @@ namespace Si.Engine
                 }
 
                 if (_isPaused) Thread.Yield();
+
+                if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
+                {
+                    _engine.MultiplayLobby?.ActionBuffer.FlushSpriteVectorsToClients();
+                }
 
                 elapsedEpochMilliseconds = _engine.Display.FrameCounter.ElapsedMilliseconds;
                 _engine.Display.FrameCounter.Calculate();

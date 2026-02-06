@@ -17,10 +17,12 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
         public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
         {
-            foreach (var animation in Visible())
+            foreach (var sprite in Visible())
             {
-                animation.ApplyMotion(epoch, displacementVector);
-                animation.AdvanceImage();
+                sprite.ApplyMotion(epoch, displacementVector);
+                sprite.AdvanceImage();
+
+                Engine.MultiplayLobby?.ActionBuffer.RecordVector(sprite.GetActionVector());
             }
         }
 

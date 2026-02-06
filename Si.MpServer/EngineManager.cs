@@ -1,6 +1,7 @@
 ﻿using NTDLS.Semaphore;
 using Si.Engine;
 using Si.MpLibrary;
+using System.Diagnostics.CodeAnalysis;
 using static Si.Library.SiConstants;
 
 namespace Si.MpServer
@@ -21,6 +22,25 @@ namespace Si.MpServer
             });
 
             return engine;
+        }
+
+        public bool TryGet(Guid lobbyId, [NotNullWhen(true)] out EngineCore? engine)
+        {
+            engine = _collection.Read(o =>
+            {
+                o.TryGetValue(lobbyId, out var engine);
+                return engine;
+            });
+            return engine != null;
+        }
+
+        public EngineCore? Get(Guid lobbyId)
+        {
+            return _collection.Read(o =>
+            {
+                o.TryGetValue(lobbyId, out var engine);
+                return engine;
+            });
         }
 
         public void Delete(Guid lobbyId)

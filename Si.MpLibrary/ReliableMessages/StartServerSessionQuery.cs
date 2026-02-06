@@ -8,7 +8,7 @@ namespace Si.MpLibrary.ReliableMessages
     }
 
     public class StartServerSessionQueryReply
-        : IRmQueryReply
+        : IRmQueryReply, IMultiPlayQueryReply
     {
         public Guid SessionId { get; set; }
         public string? ErrorMessage { get; set; }

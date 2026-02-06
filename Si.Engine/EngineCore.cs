@@ -39,9 +39,10 @@ namespace Si.Engine
         #region Public properties.
 
         public SiEngineExecutionMode ExecutionMode { get; private set; }
-
         public bool IsRunning { get; private set; } = false;
         public bool IsInitializing { get; private set; } = false;
+
+        public Lobby? MultiplayLobby { get; set; }
 
         #endregion
 
@@ -143,13 +144,13 @@ namespace Si.Engine
             //_worldClock = new EngineWorldClock(this);
         }
 
-
         /// <summary>
         /// Initializes a new instance of the game engine.
         /// </summary>
         /// <param name="drawingSurface">The window that the game will be rendered to.</param>
         public EngineCore(Lobby lobby, EngineCore sharedEngine, SiEngineExecutionMode executionMode)
         {
+            MultiplayLobby = lobby;
             ExecutionMode = executionMode;
 
             Settings = LoadSettings();
@@ -354,7 +355,10 @@ namespace Si.Engine
                 {
                     Sprites.Stars.Add(Display.RandomOnScreenLocation());
                 }
+            }
 
+            if (ExecutionMode == SiEngineExecutionMode.Play || ExecutionMode == SiEngineExecutionMode.ServerHost)
+            {
                 _worldClock?.Start();
             }
 

@@ -8,7 +8,7 @@ namespace Si.MpLibrary.ReliableMessages
     }
 
     public class CreateLobbyQueryReply
-        : IRmQueryReply
+        : IRmQueryReply, IMultiPlayQueryReply
     {
         public Guid LobbyId { get; set; }
         public string? ErrorMessage { get; set; }

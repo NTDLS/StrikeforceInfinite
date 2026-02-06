@@ -36,7 +36,6 @@ namespace Si.MpServer
             Sessions = new SessionManager(this);
             Lobbies = new LobbyManager(this);
             Engines = new EngineManager(this);
-
         }
 
         private void _rmServer_OnDisconnected(RmContext context)

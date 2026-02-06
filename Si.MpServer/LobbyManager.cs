@@ -1,6 +1,7 @@
 ﻿using NTDLS.Semaphore;
 using Si.Engine;
 using Si.MpLibrary;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Si.MpServer
 {
@@ -20,6 +21,25 @@ namespace Si.MpServer
             });
 
             return lobby;
+        }
+
+        public bool TryGet(Guid lobbyId, [NotNullWhen(true)] out Lobby? lobby)
+        {
+            lobby = _collection.Read(o =>
+            {
+                o.TryGetValue(lobbyId, out var lobby);
+                return lobby;
+            });
+            return lobby != null;
+        }
+
+        public Lobby? Get(Guid lobbyId)
+        {
+            return _collection.Read(o =>
+            {
+                o.TryGetValue(lobbyId, out var lobby);
+                return lobby;
+            });
         }
 
         public void Delete(Guid lobbyId)

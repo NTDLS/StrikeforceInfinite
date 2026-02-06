@@ -20,12 +20,14 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
 
         public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
         {
-            foreach (var enemy in Visible())
+            foreach (var sprite in Visible())
             {
-                enemy.ApplyIntelligence(epoch, displacementVector);
-                enemy.ApplyMotion(epoch, displacementVector);
-                enemy.PerformCollisionDetection(epoch);
-                enemy.RenewableResources.RenewAllResources(epoch);
+                sprite.ApplyIntelligence(epoch, displacementVector);
+                sprite.ApplyMotion(epoch, displacementVector);
+                sprite.PerformCollisionDetection(epoch);
+                sprite.RenewableResources.RenewAllResources(epoch);
+
+                Engine.MultiplayLobby?.ActionBuffer.RecordVector(sprite.GetActionVector());
             }
         }
 

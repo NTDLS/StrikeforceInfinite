@@ -20,6 +20,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             foreach (var sprite in Visible())
             {
                 sprite.ApplyMotion(epoch, displacementVector);
+
+                Engine.MultiplayLobby?.ActionBuffer.RecordVector(sprite.GetActionVector());
             }
         }
     }

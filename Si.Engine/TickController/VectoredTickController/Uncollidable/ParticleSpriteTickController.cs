@@ -10,6 +10,7 @@ using Si.Rendering;
 using System;
 using System.Drawing;
 using static Si.Library.SiConstants;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
@@ -25,6 +26,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             foreach (var particle in Visible())
             {
                 particle.ApplyMotion(epoch, displacementVector);
+                Engine.MultiplayLobby?.ActionBuffer.RecordVector(particle.GetActionVector());
             }
         }
 

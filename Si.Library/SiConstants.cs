@@ -17,13 +17,6 @@
             public const float Huge = 10000f;
         }
 
-        public enum SiPlayMode
-        {
-            SinglePlayer,
-            MutiPlayerHost,
-            MutiPlayerClient
-        }
-
         public enum SimpleDirection
         {
             None,
