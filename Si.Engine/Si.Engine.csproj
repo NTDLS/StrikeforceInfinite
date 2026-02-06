@@ -69,6 +69,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Si.Audio\Si.Audio.csproj" />
     <ProjectReference Include="..\Si.Library\Si.Library.csproj" />
+    <ProjectReference Include="..\Si.MpLibrary\Si.MpLibrary.csproj" />
     <ProjectReference Include="..\Si.Rendering\Si.Rendering.csproj" />
   </ItemGroup>
 

@@ -80,11 +80,19 @@
             Independent
         }
 
-        public enum SiEngineInitializationType
+        public enum SiEngineExecutionMode
         {
             None,
             Play,
-            Edit
+            Edit,
+            /// <summary>
+            /// The engine instance is intended to run a level on the server for multiplayer games.
+            /// </summary>
+            ServerHost,
+            /// <summary>
+            /// This engine instance is intended to be shared content only, not to run a level.
+            /// </summary>
+            SharedEngineContent
         }
 
         public enum SiWeaponsLockType

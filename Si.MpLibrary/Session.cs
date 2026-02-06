@@ -1,6 +1,6 @@
-﻿namespace Si.MpServer
+﻿namespace Si.MpLibrary
 {
-    internal class Session
+    public class Session
     {
         public Guid SessionId { get; private set; } = Guid.NewGuid();
     }

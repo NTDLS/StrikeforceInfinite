@@ -1,4 +1,6 @@
 ﻿using NTDLS.Semaphore;
+using Si.MpLibrary;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Si.MpServer
 {
@@ -18,6 +20,25 @@ namespace Si.MpServer
             });
 
             return session;
+        }
+
+        public bool TryGet(Guid rmConnectionId, [NotNullWhen(true)] out Session? session)
+        {
+            session = _collection.Read(o =>
+            {
+                o.TryGetValue(rmConnectionId, out var session);
+                return session;
+            });
+            return session != null;
+        }
+
+        public Session? Get(Guid rmConnectionId)
+        {
+            return _collection.Read(o =>
+            {
+                o.TryGetValue(rmConnectionId, out var session);
+                return session;
+            });
         }
 
         public void Delete(Guid rmConnectionId)

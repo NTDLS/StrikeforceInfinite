@@ -1,6 +1,8 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.ReliableMessaging;
+using Si.Engine;
 using Si.MpLibrary;
+using static Si.Library.SiConstants;
 
 namespace Si.MpServer
 {
@@ -11,6 +13,8 @@ namespace Si.MpServer
 
         internal SessionManager Sessions { get; set; }
         internal LobbyManager Lobbies { get; set; }
+        internal EngineManager Engines { get; set; }
+        internal EngineCore SharedEngine { get; set; } = new(SiEngineExecutionMode.SharedEngineContent);
 
         public ServerInstance()
         {
@@ -31,6 +35,8 @@ namespace Si.MpServer
 
             Sessions = new SessionManager(this);
             Lobbies = new LobbyManager(this);
+            Engines = new EngineManager(this);
+
         }
 
         private void _rmServer_OnDisconnected(RmContext context)
@@ -41,6 +47,9 @@ namespace Si.MpServer
         public void Run()
         {
             Console.WriteLine("Starting multiplay server...");
+
+            Console.WriteLine("Starting shared engine.");
+            SharedEngine.StartEngine();
 
             Console.WriteLine("Starting reliable messaging server.");
             _rmServer.Start(MpLibraryConstants.DefaultPort);

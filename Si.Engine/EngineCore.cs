@@ -12,6 +12,7 @@ using Si.Engine.TickController.PlayerSpriteTickController;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Library;
 using Si.Library.Mathematics;
+using Si.MpLibrary;
 using Si.Rendering;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Si.Engine
     {
         #region Backend variables.
 
-        private readonly EngineWorldClock _worldClock;
+        private readonly EngineWorldClock? _worldClock;
         private readonly PessimisticCriticalResource<List<RenderLoopInvocation>> _renderLoopInvocations = new();
         private int _renderLoopInvocationCount = 0;
 
@@ -37,7 +38,7 @@ namespace Si.Engine
 
         #region Public properties.
 
-        public SiEngineInitializationType ExecutionType { get; private set; }
+        public SiEngineExecutionMode ExecutionMode { get; private set; }
 
         public bool IsRunning { get; private set; } = false;
         public bool IsInitializing { get; private set; } = false;
@@ -113,9 +114,76 @@ namespace Si.Engine
         /// Initializes a new instance of the game engine.
         /// </summary>
         /// <param name="drawingSurface">The window that the game will be rendered to.</param>
-        public EngineCore(Control drawingSurface, SiEngineInitializationType executionType)
+        public EngineCore(SiEngineExecutionMode executionMode = SiEngineExecutionMode.SharedEngineContent)
         {
-            ExecutionType = executionType;
+            ExecutionMode = executionMode;
+
+            Settings = LoadSettings();
+
+            var drawingSurface = new Control()
+            {
+                Height = 1080,
+                Width = 1920
+            };
+
+            Display = new DisplayManager(this, drawingSurface);
+            Rendering = new SiRendering(Settings, drawingSurface, Display.TotalCanvasSize);
+            Assets = new AssetManager(this);
+            Events = new EventTickController(this);
+            Sprites = new SpriteManager(this);
+            Input = new InputManager(this);
+            Collisions = new CollisionManager(this);
+
+            Situations = new SituationTickController(this);
+            Audio = new AudioManager(this);
+            Menus = new MenuTickController(this);
+            Player = new PlayerSpriteTickController(this);
+
+            //No clock for shared engine content mode.
+            //_worldClock = new EngineWorldClock(this);
+        }
+
+
+        /// <summary>
+        /// Initializes a new instance of the game engine.
+        /// </summary>
+        /// <param name="drawingSurface">The window that the game will be rendered to.</param>
+        public EngineCore(Lobby lobby, EngineCore sharedEngine, SiEngineExecutionMode executionMode)
+        {
+            ExecutionMode = executionMode;
+
+            Settings = LoadSettings();
+
+            var drawingSurface = new Control()
+            {
+                Height = 1080,
+                Width = 1920
+            };
+
+            Display = sharedEngine.Display;
+            Rendering = sharedEngine.Rendering;
+            Assets = sharedEngine.Assets;
+
+            Events = new EventTickController(this);
+            Sprites = new SpriteManager(this);
+            Input = new InputManager(this);
+            Collisions = new CollisionManager(this);
+
+            Situations = new SituationTickController(this);
+            Audio = new AudioManager(this);
+            Menus = new MenuTickController(this);
+            Player = new PlayerSpriteTickController(this);
+
+            _worldClock = new EngineWorldClock(this);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the game engine.
+        /// </summary>
+        /// <param name="drawingSurface">The window that the game will be rendered to.</param>
+        public EngineCore(Control drawingSurface, SiEngineExecutionMode executionMode)
+        {
+            ExecutionMode = executionMode;
 
             Settings = LoadSettings();
 
@@ -196,7 +264,7 @@ namespace Si.Engine
                     {
                         o.IntermediateRenderTarget.BeginDraw();
 
-                        if (ExecutionType == SiEngineInitializationType.Play)
+                        if (ExecutionMode == SiEngineExecutionMode.Play)
                         {
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Black);
                         }
@@ -279,34 +347,42 @@ namespace Si.Engine
             IsRunning = true;
             //Sprites.ResetPlayer();
 
-            #region Add initial stars.
-
-            for (int i = 0; i < Settings.InitialFrameStarCount; i++)
+            if (ExecutionMode == SiEngineExecutionMode.Play)
             {
-                Sprites.Stars.Add(Display.RandomOnScreenLocation());
+                //Add initial stars.
+                for (int i = 0; i < Settings.InitialFrameStarCount; i++)
+                {
+                    Sprites.Stars.Add(Display.RandomOnScreenLocation());
+                }
+
+                _worldClock?.Start();
             }
 
-            #endregion
-            _worldClock.Start();
-
-            var loadingHeader = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
+            if (ExecutionMode == SiEngineExecutionMode.Play)
+            {
+                var loadingHeader = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
                 Rendering.Materials.Brushes.Red, new SiVector(100, 100), true);
 
-            var loadingDetail = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
-                Rendering.Materials.Brushes.OrangeRed, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
+                var loadingDetail = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
+                    Rendering.Materials.Brushes.OrangeRed, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
 
-            IsInitializing = true;
+                IsInitializing = true;
 
-            HydrateCache(loadingHeader, loadingDetail);
+                HydrateCache(loadingHeader, loadingDetail);
 
-            loadingHeader.QueueForDelete();
-            loadingDetail.QueueForDelete();
+                loadingHeader.QueueForDelete();
+                loadingDetail.QueueForDelete();
+            }
+            else if (ExecutionMode == SiEngineExecutionMode.SharedEngineContent)
+            {
+                HydrateCache();
+            }
 
             OnInitialization?.Invoke(this);
 
             IsInitializing = false;
 
-            if (ExecutionType == SiEngineInitializationType.Play)
+            if (ExecutionMode == SiEngineExecutionMode.Play)
             {
                 if (Settings.PlayMusic)
                 {
@@ -319,11 +395,11 @@ namespace Si.Engine
             }
         }
 
-        private void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
+        private void HydrateCache(SpriteTextBlock? loadingHeader = null, SpriteTextBlock? loadingDetail = null)
         {
-            loadingHeader.SetTextAndCenterX("Loading assets...");
+            loadingHeader?.SetTextAndCenterX("Loading assets...");
+            loadingHeader?.SetTextAndCenterX("Loading reflection cache...");
 
-            loadingHeader.SetTextAndCenterX("Loading reflection cache...");
             SiReflection.BuildReflectionCacheOfType<SpriteBase>();
             SiReflection.BuildReflectionCacheOfType<AIStateMachine>();
 
@@ -342,16 +418,16 @@ namespace Si.Engine
 
                 OnShutdown?.Invoke(this);
 
-                _worldClock.Dispose();
+                _worldClock?.Dispose();
                 Sprites.Dispose();
                 Rendering.Dispose();
                 Assets.Dispose();
             }
         }
 
-        public bool IsPaused() => _worldClock.IsPaused();
-        public void TogglePause() => _worldClock.TogglePause();
-        public void Pause() => _worldClock.Pause();
-        public void Resume() => _worldClock.Resume();
+        public bool IsPaused() => _worldClock?.IsPaused() == true;
+        public void TogglePause() => _worldClock?.TogglePause();
+        public void Pause() => _worldClock?.Pause();
+        public void Resume() => _worldClock?.Resume();
     }
 }

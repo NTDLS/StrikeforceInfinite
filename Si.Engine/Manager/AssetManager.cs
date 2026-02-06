@@ -192,9 +192,9 @@ namespace Si.Engine.Manager
             return bitmap;
         }
 
-        public void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
+        public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
         {
-            loadingHeader.SetTextAndCenterX("Loading packed assets...");
+            loadingHeader?.SetTextAndCenterX("Loading packed assets...");
 
             using var archive = ArchiveFactory.Open(_assetPackagePath);
             using var dtp = new DelegateThreadPool(new DelegateThreadPoolConfiguration()
@@ -230,11 +230,11 @@ namespace Si.Engine.Manager
 
             threadPoolTracker.WaitForCompletion(TimeSpan.FromMilliseconds(100), () =>
             {
-                loadingDetail.SetTextAndCenterX($"{statusIndex / statusEntryCount * 100.0:n0}%");
+                loadingDetail?.SetTextAndCenterX($"{statusIndex / statusEntryCount * 100.0:n0}%");
                 return true;
             });
 
-            loadingDetail.SetTextAndCenterX($"100%");
+            loadingDetail?.SetTextAndCenterX($"100%");
         }
 
         private string GetCompressedText(string path)

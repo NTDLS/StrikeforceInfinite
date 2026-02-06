@@ -1,39 +1,39 @@
 ﻿using NTDLS.Semaphore;
+using Si.Engine;
+using Si.MpLibrary;
 
 namespace Si.MpServer
 {
     internal class LobbyManager(ServerInstance mpServerInstance)
     {
-        //Dictionary of RmConnectionId to Lobby
+        //Dictionary of LobbyId to Lobby
         private readonly OptimisticCriticalResource<Dictionary<Guid, Lobby>> _collection = new();
 
-        /*
-        public ServerSession CreateSession(Guid rmConnectionId)
+        public Lobby Create(Session session)
         {
-            var session = new ServerSession();
+            var lobby = new Lobby(session);
 
-            _sessions.Write(o =>
+            _collection.Write(o =>
             {
-                Console.WriteLine($"Session started with SessionId: {session.SessionId}");
-                o.Add(rmConnectionId, session);
+                Console.WriteLine($"Lobby created LobbyId: {lobby.LobbyId}");
+                o.Add(lobby.LobbyId, lobby);
             });
 
-            return session;
+            return lobby;
         }
 
-        public void DeleteSession(Guid rmConnectionId)
+        public void Delete(Guid lobbyId)
         {
-            _sessions.Write(o =>
+            _collection.Write(o =>
             {
-                if (o.TryGetValue(rmConnectionId, out var session))
+                if (o.TryGetValue(lobbyId, out var lobby))
                 {
-                    //TODO: Clean up session resources if needed.
+                    //TODO: Clean up lobby resources if needed.
 
-                    Console.WriteLine($"Session ended with SessionId: {session.SessionId}");
-                    o.Remove(rmConnectionId);
+                    Console.WriteLine($"Deleting lobby with LobbyId: {lobby.LobbyId}");
+                    o.Remove(lobby.LobbyId);
                 }
             });
         }
-    */
     }
 }

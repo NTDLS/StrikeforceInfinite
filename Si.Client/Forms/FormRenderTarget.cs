@@ -27,7 +27,7 @@ namespace Si.Client
 
             var drawingSurface = new Control();
             Controls.Add(drawingSurface);
-            _engine = new EngineCore(drawingSurface, SiEngineInitializationType.None);
+            _engine = new EngineCore(drawingSurface, SiEngineExecutionMode.None);
         }
 
         public FormRenderTarget(Screen screen)
@@ -53,7 +53,7 @@ namespace Si.Client
             };
             Controls.Add(drawingSurface);
 
-            _engine = new EngineCore(drawingSurface, SiEngineInitializationType.Play);
+            _engine = new EngineCore(drawingSurface, SiEngineExecutionMode.Play);
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 

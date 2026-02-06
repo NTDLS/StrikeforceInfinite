@@ -402,10 +402,10 @@ namespace Si.Engine.Manager
             }
         }
 
-        public void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
+        public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
         {
             float statusIndex = 0;
-            loadingHeader.SetTextAndCenterX("Loading sprites...");
+            loadingHeader?.SetTextAndCenterX("Loading sprites...");
 
             var assembly = Assembly.GetExecutingAssembly();
             var baseType = typeof(SpriteBase);
@@ -415,7 +415,7 @@ namespace Si.Engine.Manager
 
             foreach (var type in allTypes)
             {
-                loadingDetail.SetTextAndCenterX($"{statusIndex++ / allTypes.Length * 100.0:n0}%");
+                loadingDetail?.SetTextAndCenterX($"{statusIndex++ / allTypes.Length * 100.0:n0}%");
 
                 if (baseType.IsAssignableFrom(type) && type != baseType)
                 {
@@ -429,7 +429,7 @@ namespace Si.Engine.Manager
             }
 
             statusIndex = 0;
-            loadingHeader.SetTextAndCenterX("Loading animations...");
+            loadingHeader?.SetTextAndCenterX("Creating instance types...");
 
             // Create instances of derived types
             foreach (var type in derivedTypes)
@@ -437,10 +437,11 @@ namespace Si.Engine.Manager
                 //Creating the instance of the sprite loads and caches the metadata and images.
                 dynamic instance = Activator.CreateInstance(type, _engine).EnsureNotNull();
 
-                loadingDetail.SetTextAndCenterX($"{statusIndex++ / derivedTypes.Count * 100.0:n0}%");
+                loadingDetail?.SetTextAndCenterX($"{statusIndex++ / derivedTypes.Count * 100.0:n0}%");
                 instance.QueueForDelete();
             }
 
+            loadingHeader?.SetTextAndCenterX("Loading animations...");
             //Pre-cache animations:
             //Animations do not have their own classes, so we need to look for them in the assets and load them.
             var animations = _engine.Assets.Entries.Select(o => o.Value.Key.EnsureNotNull())

@@ -2,6 +2,7 @@
 using NTDLS.ReliableMessaging;
 using Si.MpLibrary;
 using Si.MpLibrary.ReliableMessages;
+using System.Globalization;
 
 namespace Si.MpDummyClient
 {
@@ -27,6 +28,9 @@ namespace Si.MpDummyClient
 
         public void Run()
         {
+            Console.WriteLine("Waiting on server to init...");
+            Thread.Sleep(10000);
+
             Console.WriteLine("Starting multiplay client...");
 
             Console.WriteLine("Starting reliable messaging client.");
@@ -38,7 +42,6 @@ namespace Si.MpDummyClient
 
             Console.WriteLine("MP Dummy Client is running...");
 
-
             _rmClient.Query(new StartServerSessionQuery()).ContinueWith(task =>
             {
                 if (task.IsFaulted)
@@ -46,8 +49,30 @@ namespace Si.MpDummyClient
                     Console.WriteLine($"CreateLobbyQuery failed: {task.Exception?.GetBaseException().Message}");
                     return;
                 }
+                if (!string.IsNullOrEmpty(task.Result.ErrorMessage))
+                {
+                    Console.WriteLine($"CreateLobbyQuery failed: {task.Result.ErrorMessage}");
+                    return;
+                }
 
                 Console.WriteLine($"Session started with SessionId: {task.Result.SessionId}");
+            });
+
+            _rmClient.Query(new CreateLobbyQuery()).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Console.WriteLine($"CreateLobbyQuery failed: {task.Exception?.GetBaseException().Message}");
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(task.Result.ErrorMessage))
+                {
+                    Console.WriteLine($"CreateLobbyQuery failed: {task.Result.ErrorMessage}");
+                    return;
+                }
+
+                Console.WriteLine($"Lobby started for SessionId: {task.Result.LobbyId}");
             });
 
             Console.WriteLine("Press ENTER to stop.");
