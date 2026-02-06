@@ -27,7 +27,7 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
                 sprite.PerformCollisionDetection(epoch);
                 sprite.RenewableResources.RenewAllResources(epoch);
 
-                Engine.MultiplayLobby?.ActionBuffer.RecordVector(sprite.GetActionVector());
+                Engine.MultiplayLobby?.ActionBuffer.RecordVector(sprite.GetMultiPlayActionVector());
             }
         }
 

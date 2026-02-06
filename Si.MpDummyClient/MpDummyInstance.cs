@@ -1,9 +1,8 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.ReliableMessaging;
 using Si.MpLibrary;
+using Si.MpLibrary.DatagramMessages;
 using Si.MpLibrary.ReliableMessages;
-using System.Globalization;
-using System.Threading.Tasks;
 
 namespace Si.MpDummyClient
 {
@@ -15,6 +14,7 @@ namespace Si.MpDummyClient
         public MpDummyInstance()
         {
             _dmClient = new DmClient();
+            _dmClient.AddHandler(new DatagramMessageHandler(this));
             _dmClient.OnException += (DmContext? context, Exception ex) =>
             {
                 Console.WriteLine($"[Client - DM Client] Exception: {ex.GetBaseException().Message}");
@@ -37,8 +37,9 @@ namespace Si.MpDummyClient
             Console.WriteLine("Starting reliable messaging client.");
             _rmClient.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
-            Console.WriteLine("Starting datagram messaging client.");
-            _dmClient.Listen(DmClient.GetRandomUnusedUdpPort());
+            var udpPort = DmClient.GetRandomUnusedUdpPort();
+            Console.WriteLine($"Starting datagram messaging client, listening on port {udpPort}.");
+            _dmClient.Listen(udpPort);
             _dmClient.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
             Console.WriteLine("MP Dummy Client is running...");
@@ -48,6 +49,11 @@ namespace Si.MpDummyClient
 
             var lobby = _rmClient.Query(new CreateLobbyQuery()).EnsureQuerySuccess();
             Console.WriteLine($"Lobby created: {lobby.LobbyId}");
+
+            var attachMessage = new AttachDatagramEndpointToSessionMessage(session.SessionId, lobby.LobbyId);
+            _dmClient.Dispatch(attachMessage);
+            Console.WriteLine($"Datagram session attached to session: {session.SessionId}");
+
 
             _rmClient.Query(new SetSituationQuery(lobby.LobbyId, "SituationDebuggingGalore")).EnsureQuerySuccess();
             Console.WriteLine($"Situation set");

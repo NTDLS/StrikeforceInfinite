@@ -22,7 +22,19 @@ namespace Si.MpServer
             return session;
         }
 
-        public bool TryGet(Guid rmConnectionId, [NotNullWhen(true)] out Session? session)
+        public bool TryGetBySessionId(Guid sessionId, [NotNullWhen(true)] out Session? session)
+        {
+            session = _collection.Read(o => o.FirstOrDefault(kv => kv.Value.SessionId == sessionId).Value);
+            return session != default;
+        }
+
+        public Session? GetBySessionId(Guid sessionId)
+        {
+            var session = _collection.Read(o => o.FirstOrDefault(kv => kv.Value.SessionId == sessionId).Value);
+            return session == default ? null : session;
+        }
+
+        public bool TryGetByConnectionId(Guid rmConnectionId, [NotNullWhen(true)] out Session? session)
         {
             session = _collection.Read(o =>
             {
@@ -32,7 +44,7 @@ namespace Si.MpServer
             return session != null;
         }
 
-        public Session? Get(Guid rmConnectionId)
+        public Session? GetByConnectionId(Guid rmConnectionId)
         {
             return _collection.Read(o =>
             {

@@ -1,4 +1,4 @@
-﻿namespace Si.MpLibrary.SpriteActions
+﻿namespace Si.MpLibrary.DatagramMessages.SpriteActions
 {    public class SiSpriteActionExplode : SiSpriteAction
     {
         public SiSpriteActionExplode(uint spriteUID)

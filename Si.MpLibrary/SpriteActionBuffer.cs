@@ -1,4 +1,5 @@
-﻿using Si.MpLibrary.SpriteActions;
+﻿using NTDLS.DatagramMessaging;
+using Si.MpLibrary.DatagramMessages.SpriteActions;
 using System;
 
 namespace Si.MpLibrary
@@ -22,10 +23,16 @@ namespace Si.MpLibrary
         public void RecordVector(SiSpriteActionVector? action)
             => AppendBuffer(action);
 
+        public void RecordSpawn(SiSpriteActionSpawn? action)
+            => AppendBuffer(action);
+
         public void RecordExplode(uint spriteUID)
             => AppendBuffer(new SiSpriteActionExplode(spriteUID));
 
-        public void FlushSpriteVectorsToClients()
+        public void RecordDelete(uint spriteUID)
+            => AppendBuffer(new SiSpriteActionDelete(spriteUID));
+
+        public void FlushSpriteVectorsToClients(DmClient dmClient, IEnumerable<Session> sessions)
         {
             if (_spriteActionBuffer.Count > 0)
             {
@@ -37,9 +44,18 @@ namespace Si.MpLibrary
                 //System.Diagnostics.Debug.WriteLine($"MultiplayUID: {_spriteVectors.Select(o=>o.MultiplayUID).Distinct().Count()}");
                 //UdpManager.WriteMessage(SiConstants.MultiplayServerAddress, SiConstants.MultiplayServerTCPPort, spriteActions);
 
-                foreach(var vectorAction in _spriteActionBuffer.OfType< SiSpriteActionVector>())
+                foreach (var vectorAction in _spriteActionBuffer)
                 {
-                    Console.WriteLine($"Action: x{vectorAction.X}, y{vectorAction.Y}");
+                    //Task.Run(() => ??
+                    //Parallel.ForEach(sessions, session => ??
+
+                    foreach (var session in sessions)
+                    {
+                        if (session.DatagramEndPoint != null)
+                        {
+                            dmClient.Dispatch(vectorAction, session.DatagramEndPoint);
+                        }
+                    }
                 }
 
                 Console.WriteLine($"Flushed {_spriteActionBuffer.Count} sprite actions to clients.");

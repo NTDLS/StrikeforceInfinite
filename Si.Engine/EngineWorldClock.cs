@@ -177,7 +177,7 @@ namespace Si.Engine
 
                 if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
                 {
-                    _engine.MultiplayLobby?.ActionBuffer.FlushSpriteVectorsToClients();
+                    _engine.MultiplayLobby?.FlushActionBuffer();
                 }
 
                 elapsedEpochMilliseconds = _engine.Display.FrameCounter.ElapsedMilliseconds;

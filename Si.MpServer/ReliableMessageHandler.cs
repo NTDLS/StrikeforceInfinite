@@ -3,18 +3,19 @@ using Si.MpLibrary.ReliableMessages;
 
 namespace Si.MpServer
 {
-    internal class ReliableMessageHandler(ServerInstance mpServerInstance) : IRmMessageHandler
+    internal class ReliableMessageHandler(ServerInstance mpServerInstance)
+        : IRmMessageHandler
     {
         public CreateLobbyQueryReply CreateLobbyQuery(RmContext context, CreateLobbyQuery payload)
         {
             try
             {
-                if (!mpServerInstance.Sessions.TryGet(context.ConnectionId, out var session))
+                if (!mpServerInstance.Sessions.TryGetByConnectionId(context.ConnectionId, out var session))
                 {
                     throw new Exception($"Session not found for ConnectionId {context.ConnectionId}.");
                 }
 
-                var lobby = mpServerInstance.Lobbies.Create(session);
+                var lobby = mpServerInstance.Lobbies.Create(session, mpServerInstance.DmClient);
 
                 var engine = mpServerInstance.Engines.Create(lobby)
                     ?? throw new Exception("Failed to create game for lobby.");

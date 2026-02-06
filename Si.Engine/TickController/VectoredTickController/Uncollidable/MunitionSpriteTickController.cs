@@ -80,7 +80,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                             }
                             else
                             {
-                                Engine.MultiplayLobby?.ActionBuffer.RecordVector(munition.GetActionVector());
+                                Engine.MultiplayLobby?.ActionBuffer.RecordVector(munition.GetMultiPlayActionVector());
                             }
                         });
                     }

@@ -117,7 +117,7 @@ namespace Si.Engine.Manager
             return (T)Activator.CreateInstance(typeof(T), [_engine]).EnsureNotNull();
         }
 
-        public void Add(SpriteBase item)
+        public void Add(SpriteBase sprite)
         {
             if (_engine.IsInitializing == true)
             {
@@ -126,22 +126,32 @@ namespace Si.Engine.Manager
                 return;
             }
 
-            if (item == null)
+            if (sprite == null)
             {
                 throw new Exception("NULL sprites cannot be added to the manager.");
             }
-            _engine.Events.Add(() => _collection.Add(item));
+            _engine.Events.Add(() => _collection.Add(sprite));
+
+            _engine.MultiplayLobby?.ActionBuffer.RecordSpawn(sprite.GetMultiPlayActionSpawn());
         }
 
-        public void HardDelete(SpriteBase item)
-        {
-            item.Cleanup();
-            _collection.Remove(item);
-        }
+        //public void HardDelete(SpriteBase sprite)
+        //{
+        //    _engine.MultiplayLobby?.ActionBuffer.RecordDelete(sprite.UID);
+
+        //    sprite.Cleanup();
+        //    _collection.Remove(sprite);
+        //}
 
         public void HardDeleteAllQueuedDeletions()
         {
-            _collection.Where(o => o.IsQueuedForDeletion).ToList().ForEach(p => p.Cleanup());
+            _collection.Where(o => o.IsQueuedForDeletion).ToList().ForEach(sprite =>
+            {
+                _engine.MultiplayLobby?.ActionBuffer.RecordDelete(sprite.UID);
+
+                sprite.Cleanup();
+            });
+
             _collection.RemoveAll(o => o.IsQueuedForDeletion);
 
             _engine.Events.CleanupQueuedForDeletion();

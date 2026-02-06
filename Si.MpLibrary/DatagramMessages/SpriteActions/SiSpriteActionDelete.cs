@@ -1,4 +1,4 @@
-﻿namespace Si.MpLibrary.SpriteActions
+﻿namespace Si.MpLibrary.DatagramMessages.SpriteActions
 {
     /// <summary>
     /// Drone needs to be deleted, not exploded.

@@ -21,7 +21,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                 sprite.ApplyIntelligence(epoch, displacementVector);
                 sprite.ApplyMotion(epoch, displacementVector);
 
-                Engine.MultiplayLobby?.ActionBuffer.RecordVector(sprite.GetActionVector());
+                Engine.MultiplayLobby?.ActionBuffer.RecordVector(sprite.GetMultiPlayActionVector());
             }
         }
 
