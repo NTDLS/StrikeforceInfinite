@@ -1,4 +1,5 @@
-﻿using NTDLS.Semaphore;
+﻿using NTDLS.DatagramMessaging;
+using NTDLS.Semaphore;
 using Si.MpLibrary;
 using System.Diagnostics.CodeAnalysis;
 
@@ -6,13 +7,12 @@ namespace Si.MpServer
 {
     internal class LobbyManager(ServerInstance mpServerInstance)
     {
-
         //Dictionary of LobbyId to Lobby
         private readonly OptimisticCriticalResource<Dictionary<Guid, Lobby>> _collection = new();
 
-        public Lobby Create(Session session, DmClient dmClient)
+        public Lobby Create(Session session, DmMessenger dmMessenger)
         {
-            var lobby = new Lobby(session, dmClient);
+            var lobby = new Lobby(session, dmMessenger);
 
             _collection.Write(o =>
             {

@@ -1,10 +1,11 @@
-﻿using NTDLS.Semaphore;
+﻿using NTDLS.DatagramMessaging;
+using NTDLS.Semaphore;
 
 namespace Si.MpLibrary
 {
     public class Lobby
     {
-        public DmClient _dmClient;
+        public DmMessenger _dmMessenger;
 
         public Guid LobbyId { get; private set; } = Guid.NewGuid();
 
@@ -17,10 +18,10 @@ namespace Si.MpLibrary
 
         public SpriteActionBuffer ActionBuffer { get; private set; } = new();
 
-        public Lobby(Session ownerSession, DmClient dmClient)
+        public Lobby(Session ownerSession, DmMessenger dmMessenger)
         {
             OwnerSession = ownerSession;
-            _dmClient = dmClient;
+            _dmMessenger = dmMessenger;
             AddSession(ownerSession);
         }
 
@@ -33,7 +34,7 @@ namespace Si.MpLibrary
         {
             var sessions = Sessions.Read(o => o.Select(u => u.Value));
 
-            ActionBuffer.FlushSpriteVectorsToClients(_dmClient, sessions);
+            ActionBuffer.FlushSpriteVectorsToClients(_dmMessenger, sessions);
         }
     }
 }

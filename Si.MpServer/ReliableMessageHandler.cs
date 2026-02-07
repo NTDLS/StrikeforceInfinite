@@ -15,7 +15,7 @@ namespace Si.MpServer
                     throw new Exception($"Session not found for ConnectionId {context.ConnectionId}.");
                 }
 
-                var lobby = mpServerInstance.Lobbies.Create(session, mpServerInstance.DmClient);
+                var lobby = mpServerInstance.Lobbies.Create(session, mpServerInstance.DmMessenger);
 
                 var engine = mpServerInstance.Engines.Create(lobby)
                     ?? throw new Exception("Failed to create game for lobby.");

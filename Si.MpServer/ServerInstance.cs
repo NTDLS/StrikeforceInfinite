@@ -8,7 +8,7 @@ namespace Si.MpServer
 {
     internal class ServerInstance
     {
-        public DmClient DmClient { get; private set; }
+        public DmMessenger DmMessenger { get; private set; }
         public RmServer RmServer { get; private set; }
         internal SessionManager Sessions { get; private set; }
         internal LobbyManager Lobbies { get; private set; }
@@ -17,9 +17,9 @@ namespace Si.MpServer
 
         public ServerInstance()
         {
-            DmClient = new DmClient();
-            DmClient.AddHandler(new DatagramMessageHandler(this));
-            DmClient.OnException += (DmContext? context, Exception ex) =>
+            DmMessenger = new DmMessenger(MpLibraryConstants.DefaultPort);
+            DmMessenger.AddHandler(new DatagramMessageHandler(this));
+            DmMessenger.OnException += (DmContext? context, Exception ex) =>
             {
                 Console.WriteLine($"[Server - DM Client] Exception: {ex.GetBaseException().Message}");
             };
@@ -52,13 +52,11 @@ namespace Si.MpServer
             Console.WriteLine("Starting reliable messaging server.");
             RmServer.Start(MpLibraryConstants.DefaultPort);
 
-            Console.WriteLine("Starting datagram messaging client.");
-            DmClient.Listen(MpLibraryConstants.DefaultPort);
+            Console.WriteLine($"Datagram messaging client listening on port {DmMessenger.ListenPort}.");
 
             Console.WriteLine("MP Server is running...");
 
             Console.WriteLine("Press ENTER to stop.");
         }
-
     }
 }
