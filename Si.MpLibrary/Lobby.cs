@@ -22,7 +22,6 @@ namespace Si.MpLibrary
         {
             OwnerSession = ownerSession;
             _dmMessenger = dmMessenger;
-            AddSession(ownerSession);
         }
 
         public void AddSession(Session session)

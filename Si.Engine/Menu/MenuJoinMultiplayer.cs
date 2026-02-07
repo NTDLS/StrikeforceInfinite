@@ -21,7 +21,7 @@ namespace Si.Engine.Menu
             itemTitle.X -= itemTitle.Size.Width / 2;
             offsetY += itemTitle.Size.Height + 60;
 
-            var menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "????", " ???? ");
+            var menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "JOIN_DEBUG_SERVER", " * Debug Server ");
             menuItem.Selected = true;
             menuItem.X -= menuItem.Size.Width / 2;
             offsetY += menuItem.Size.Height + 5;

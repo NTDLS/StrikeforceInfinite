@@ -6,16 +6,14 @@ namespace Si.MpLibrary.DatagramMessages
         : IDmDatagram
     {
         public Guid SessionId { get; set; }
-        public Guid LobbyId { get; set; }
 
         public AttachDatagramEndpointToSessionMessage()
         {
         }
 
-        public AttachDatagramEndpointToSessionMessage(Guid sessionId, Guid lobbyId)
+        public AttachDatagramEndpointToSessionMessage(Guid sessionId)
         {
             SessionId = sessionId;
-            LobbyId = lobbyId;
         }
     }
 }

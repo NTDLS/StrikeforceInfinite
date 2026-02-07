@@ -1,8 +1,6 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.ReliableMessaging;
 using Si.MpLibrary;
-using Si.MpLibrary.DatagramMessages;
-using Si.MpLibrary.ReliableMessages;
 using System;
 
 namespace Si.Engine.MultiPlay
@@ -40,20 +38,19 @@ namespace Si.Engine.MultiPlay
 
             var serverEndpointCtx = _dmMessenger.GetEndpointContext(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
-            var session = _rmClient.Query(new StartServerSessionQuery()).EnsureQuerySuccess();
+            var session = _rmClient.StartServerSession();
             Console.WriteLine($"Session created: {session.SessionId}");
 
-            var lobby = _rmClient.Query(new CreateLobbyQuery()).EnsureQuerySuccess();
+            var lobby = _rmClient.CreateLobby("LobbyName", 4);
             Console.WriteLine($"Lobby created: {lobby.LobbyId}");
 
-            var attachMessage = new AttachDatagramEndpointToSessionMessage(session.SessionId, lobby.LobbyId);
-            _dmMessenger.Dispatch(attachMessage, serverEndpointCtx);
+            _dmMessenger.AttachDatagramEndpointToSession(serverEndpointCtx, session.SessionId);
             Console.WriteLine($"Datagram session attached to session: {session.SessionId}");
 
-            _rmClient.Query(new SetSituationQuery(lobby.LobbyId, "SituationDebuggingGalore")).EnsureQuerySuccess();
+            _rmClient.SetSituation(lobby.LobbyId, "SituationDebuggingGalore");
             Console.WriteLine($"Situation set");
 
-            _rmClient.Query(new StartGameQuery(lobby.LobbyId)).EnsureQuerySuccess();
+            _rmClient.StartGame(lobby.LobbyId);
             Console.WriteLine($"Game started.");
         }
 

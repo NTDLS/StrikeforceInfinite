@@ -44,17 +44,16 @@ namespace Si.MpLibrary
                 //System.Diagnostics.Debug.WriteLine($"MultiplayUID: {_spriteVectors.Select(o=>o.MultiplayUID).Distinct().Count()}");
                 //UdpManager.WriteMessage(SiConstants.MultiplayServerAddress, SiConstants.MultiplayServerTCPPort, spriteActions);
 
-                foreach (var vectorAction in _spriteActionBuffer)
-                {
-                    //Task.Run(() => ??
-                    //Parallel.ForEach(sessions, session => ??
+                var actionCollection = new SiSpriteActionCollection(_spriteActionBuffer.ToArray());
 
-                    foreach (var iPEndPoint in iPEndPoints)
+                //Task.Run(() => ??
+                //Parallel.ForEach(sessions, session => ??
+
+                foreach (var iPEndPoint in iPEndPoints)
+                {
+                    if (iPEndPoint != null)
                     {
-                        if (iPEndPoint != null)
-                        {
-                            dmMessenger.Dispatch(vectorAction, iPEndPoint);
-                        }
+                        dmMessenger.Dispatch(actionCollection, iPEndPoint);
                     }
                 }
 

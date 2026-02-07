@@ -1,18 +1,17 @@
-﻿using NTDLS.DatagramMessaging;
-using NTDLS.ReliableMessaging;
+﻿using NTDLS.ReliableMessaging;
 using Si.MpLibrary;
-using Si.MpLibrary.DatagramMessages;
 using Si.MpLibrary.ReliableMessages;
 
-namespace Si.MpDummyClient
+namespace Si.MpHeadlessLobby
 {
-    internal class MpDummyInstance
+    internal class MpLobbyHost
     {
-        private readonly DmMessenger _dmMessenger;
+        //private readonly DmMessenger _dmMessenger;
         private readonly RmClient _rmClient;
 
-        public MpDummyInstance()
+        public MpLobbyHost()
         {
+            /*
             var udpPort = DmMessenger.GetRandomUnusedUdpPort();
 
             _dmMessenger = new DmMessenger(udpPort);
@@ -21,6 +20,7 @@ namespace Si.MpDummyClient
             {
                 Console.WriteLine($"[Client - DM Client] Exception: {ex.GetBaseException().Message}");
             };
+            */
 
             _rmClient = new RmClient();
             _rmClient.OnException += (RmContext? context, Exception ex, IRmPayload? payload) =>
@@ -39,24 +39,23 @@ namespace Si.MpDummyClient
             Console.WriteLine("Starting reliable messaging client.");
             _rmClient.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
-            Console.WriteLine($"Datagram messaging client listening on port {_dmMessenger.ListenPort}.");
+            //Console.WriteLine($"Datagram messaging client listening on port {_dmMessenger.ListenPort}.");
             //_dmMessenger.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
-            var serverEndpointCtx = _dmMessenger.GetEndpointContext(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
+            //var serverEndpointCtx = _dmMessenger.GetEndpointContext(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
             Console.WriteLine("MP Dummy Client is running...");
 
-            var session = _rmClient.Query(new StartServerSessionQuery()).EnsureQuerySuccess();
+            var session = _rmClient.StartServerSession();
             Console.WriteLine($"Session created: {session.SessionId}");
 
-            var lobby = _rmClient.Query(new CreateLobbyQuery()).EnsureQuerySuccess();
+            var lobby = _rmClient.CreateLobby("Dire Debugging", 10);
             Console.WriteLine($"Lobby created: {lobby.LobbyId}");
 
-            var attachMessage = new AttachDatagramEndpointToSessionMessage(session.SessionId, lobby.LobbyId);
-            _dmMessenger.Dispatch(attachMessage, serverEndpointCtx);
-            Console.WriteLine($"Datagram session attached to session: {session.SessionId}");
+            //_dmMessenger.AttachDatagramEndpointToSession(serverEndpointCtx, session.SessionId);
+            //Console.WriteLine($"Datagram session attached to session: {session.SessionId}");
 
-            _rmClient.Query(new SetSituationQuery(lobby.LobbyId, "SituationDebuggingGalore")).EnsureQuerySuccess();
+            _rmClient.SetSituation(lobby.LobbyId, "SituationDebuggingGalore");
             Console.WriteLine($"Situation set");
 
             _rmClient.Query(new StartGameQuery(lobby.LobbyId)).EnsureQuerySuccess();

@@ -5,6 +5,18 @@ namespace Si.MpLibrary.ReliableMessages
     public class CreateLobbyQuery
         : IRmQuery<CreateLobbyQueryReply>
     {
+        public string LobbyName { get; set; } = string.Empty;
+        public int MaxPlayers { get; set; }
+
+        public CreateLobbyQuery()
+        {
+        }
+
+        public CreateLobbyQuery(string lobbyName, int maxPlayers)
+        {
+            LobbyName = lobbyName;
+            MaxPlayers = maxPlayers;
+        }
     }
 
     public class CreateLobbyQueryReply
