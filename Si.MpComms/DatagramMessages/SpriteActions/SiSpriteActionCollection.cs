@@ -1,6 +1,6 @@
 ﻿using NTDLS.DatagramMessaging;
 
-namespace Si.MpLibrary.DatagramMessages.SpriteActions
+namespace Si.MpComms.DatagramMessages.SpriteActions
 {
     public class SiSpriteActionCollection
         : IDmDatagram

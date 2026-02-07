@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Si.MpLibrary
+namespace Si.MpComms
 {
     public class Session
     {

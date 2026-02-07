@@ -1,9 +1,6 @@
 ﻿using Si.Engine.Menu._Superclass;
 using Si.Engine.Sprite.MenuItem;
-using Si.Engine.Sprite.Weapon._Superclass;
-using Si.Library;
 using Si.Library.Mathematics;
-using System.Linq;
 
 namespace Si.Engine.Menu
 {

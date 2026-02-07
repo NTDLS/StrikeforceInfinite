@@ -1,5 +1,4 @@
-﻿using NTDLS.DatagramMessaging;
-using NTDLS.ReliableMessaging;
+﻿using Si.MpComms;
 using Si.MpLibrary;
 using System;
 
@@ -7,8 +6,7 @@ namespace Si.Engine.MultiPlay
 {
     internal class MultiPlayClient
     {
-        private readonly DmMessenger _dmMessenger;
-        private readonly RmClient _rmClient;
+        private readonly MpCommsManager _commsManager;
         private readonly EngineCore _engineCore;
 
         public MultiPlayClient(EngineCore engineCore)
@@ -17,47 +15,29 @@ namespace Si.Engine.MultiPlay
 
             Console.WriteLine("Starting multiplay client...");
 
-            var udpPort = DmMessenger.GetRandomUnusedUdpPort();
+            _commsManager = new MpCommsManager(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
-            _dmMessenger = new DmMessenger(udpPort);
-            _dmMessenger.AddHandler(new DatagramMessageHandler(this));
-            _dmMessenger.OnException += (DmContext? context, Exception ex) =>
-            {
-                Console.WriteLine($"[Client - DM Client] Exception: {ex.GetBaseException().Message}");
-            };
-            Console.WriteLine($"Datagram messaging client listening on port {_dmMessenger.ListenPort}.");
+            _commsManager.AddHandler(new DatagramMessageHandler(this));
 
-            _rmClient = new RmClient();
-            _rmClient.OnException += (RmContext? context, Exception ex, IRmPayload? payload) =>
-            {
-                Console.WriteLine($"[Client - RM Client] Exception: {ex.GetBaseException().Message}");
-            };
-
-            Console.WriteLine("Starting reliable messaging client.");
-            _rmClient.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
-
-            var serverEndpointCtx = _dmMessenger.GetEndpointContext(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
-
-            var session = _rmClient.StartServerSession();
+            var session = _commsManager.StartServerSession();
             Console.WriteLine($"Session created: {session.SessionId}");
 
-            var lobby = _rmClient.CreateLobby("LobbyName", 4);
+            var lobby = _commsManager.CreateLobby("LobbyName", 4);
             Console.WriteLine($"Lobby created: {lobby.LobbyId}");
 
-            _dmMessenger.AttachDatagramEndpointToSession(serverEndpointCtx, session.SessionId);
+            _commsManager.AttachDatagramEndpointToSession(session.SessionId);
             Console.WriteLine($"Datagram session attached to session: {session.SessionId}");
 
-            _rmClient.SetSituation(lobby.LobbyId, "SituationDebuggingGalore");
+            _commsManager.SetSituation(lobby.LobbyId, "SituationDebuggingGalore");
             Console.WriteLine($"Situation set");
 
-            _rmClient.StartGame(lobby.LobbyId);
+            _commsManager.StartGame(lobby.LobbyId);
             Console.WriteLine($"Game started.");
         }
 
         public void Shutdown()
         {
-            _rmClient.Disconnect();
-            _dmMessenger.Dispose();
+            _commsManager.Dispose();
         }
     }
 }

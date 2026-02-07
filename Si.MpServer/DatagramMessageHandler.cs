@@ -1,5 +1,5 @@
 ﻿using NTDLS.DatagramMessaging;
-using Si.MpLibrary.DatagramMessages;
+using Si.MpComms.DatagramMessages;
 
 namespace Si.MpServer
 {

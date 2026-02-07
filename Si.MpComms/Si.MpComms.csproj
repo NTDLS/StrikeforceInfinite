@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NTDLS.DatagramMessaging" Version="1.9.0" />
+    <PackageReference Include="NTDLS.ReliableMessaging" Version="3.2.13" />
+  </ItemGroup>
+
 </Project>

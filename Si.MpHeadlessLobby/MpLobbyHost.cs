@@ -1,13 +1,14 @@
-﻿using NTDLS.ReliableMessaging;
+﻿using Si.MpComms;
 using Si.MpLibrary;
-using Si.MpLibrary.ReliableMessages;
 
 namespace Si.MpHeadlessLobby
 {
     internal class MpLobbyHost
+        : IDisposable
     {
         //private readonly DmMessenger _dmMessenger;
-        private readonly RmClient _rmClient;
+        private readonly MpCommsManager _commsManager;
+        private bool disposedValue;
 
         public MpLobbyHost()
         {
@@ -22,11 +23,7 @@ namespace Si.MpHeadlessLobby
             };
             */
 
-            _rmClient = new RmClient();
-            _rmClient.OnException += (RmContext? context, Exception ex, IRmPayload? payload) =>
-            {
-                Console.WriteLine($"[Client - RM Client] Exception: {ex.GetBaseException().Message}");
-            };
+            _commsManager = new MpCommsManager(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
         }
 
         public void Run()
@@ -36,32 +33,39 @@ namespace Si.MpHeadlessLobby
 
             Console.WriteLine("Starting multiplay client...");
 
-            Console.WriteLine("Starting reliable messaging client.");
-            _rmClient.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
-
-            //Console.WriteLine($"Datagram messaging client listening on port {_dmMessenger.ListenPort}.");
-            //_dmMessenger.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
-
-            //var serverEndpointCtx = _dmMessenger.GetEndpointContext(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
-
             Console.WriteLine("MP Dummy Client is running...");
 
-            var session = _rmClient.StartServerSession();
+            var session = _commsManager.StartServerSession();
             Console.WriteLine($"Session created: {session.SessionId}");
 
-            var lobby = _rmClient.CreateLobby("Dire Debugging", 10);
+            var lobby = _commsManager.CreateLobby("Dire Debugging", 10);
             Console.WriteLine($"Lobby created: {lobby.LobbyId}");
 
-            //_dmMessenger.AttachDatagramEndpointToSession(serverEndpointCtx, session.SessionId);
-            //Console.WriteLine($"Datagram session attached to session: {session.SessionId}");
-
-            _rmClient.SetSituation(lobby.LobbyId, "SituationDebuggingGalore");
+            _commsManager.SetSituation(lobby.LobbyId, "SituationDebuggingGalore");
             Console.WriteLine($"Situation set");
 
-            _rmClient.Query(new StartGameQuery(lobby.LobbyId)).EnsureQuerySuccess();
+            _commsManager.StartGame(lobby.LobbyId);
             Console.WriteLine($"Game started.");
 
             Console.WriteLine("Press ENTER to stop.");
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _commsManager.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

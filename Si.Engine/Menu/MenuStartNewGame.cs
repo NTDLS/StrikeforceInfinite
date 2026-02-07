@@ -72,7 +72,7 @@ namespace Si.Engine.Menu
 
         private bool MenuStartNewGame_OnExecuteSelection(SpriteMenuItem item)
         {
-            switch(item.Key)
+            switch (item.Key)
             {
                 case "SINGLE_PLAYER":
                     _engine.Menus.Show(new MenuSituationSelect(_engine));
@@ -86,7 +86,7 @@ namespace Si.Engine.Menu
                 default:
                     throw new System.NotImplementedException();
             }
-            
+
             return true;
         }
     }

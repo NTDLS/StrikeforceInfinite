@@ -1,4 +1,4 @@
-﻿namespace Si.MpLibrary.DatagramMessages.SpriteActions
+﻿namespace Si.MpComms.DatagramMessages.SpriteActions
 {
     public class SiSpriteActionSpawn : SiSpriteAction
     {

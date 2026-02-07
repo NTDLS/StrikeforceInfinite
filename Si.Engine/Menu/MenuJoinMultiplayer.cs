@@ -35,7 +35,7 @@ namespace Si.Engine.Menu
 
         private bool MenuJoinMultiplayer_OnExecuteSelection(SpriteMenuItem item)
         {
-            switch(item.Key)
+            switch (item.Key)
             {
                 case "????":
                     return false;
@@ -45,7 +45,7 @@ namespace Si.Engine.Menu
                 default:
                     throw new System.NotImplementedException();
             }
-            
+
             return true;
         }
     }

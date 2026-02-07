@@ -21,7 +21,7 @@ namespace Si.Engine.Menu
 
             float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
-            
+
             var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Select a Situation");
             itemTitle.X -= itemTitle.Size.Width / 2;
             offsetY += itemTitle.Size.Height + 60;

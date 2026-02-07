@@ -1,6 +1,6 @@
 ﻿using NTDLS.Semaphore;
 using Si.Engine;
-using Si.MpLibrary;
+using Si.MpComms;
 using System.Diagnostics.CodeAnalysis;
 using static Si.Library.SiConstants;
 

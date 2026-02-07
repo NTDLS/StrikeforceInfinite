@@ -1,5 +1,5 @@
 ﻿using NTDLS.ReliableMessaging;
-using Si.MpLibrary.ReliableMessages;
+using Si.MpComms.ReliableMessages;
 
 namespace Si.MpServer
 {

@@ -1,10 +1,10 @@
 ﻿using NTDLS.DatagramMessaging;
-using Si.MpLibrary.DatagramMessages.SpriteActions;
+using Si.MpComms.DatagramMessages.SpriteActions;
 using System;
 
 namespace Si.Engine.MultiPlay
 {
-    internal class DatagramMessageHandler(MultiPlayClient dummyInstance)
+    internal class DatagramMessageHandler(MultiPlayClient mpyClient)
         : IDmDatagramHandler
     {
         public void SiSpriteActionDelete(DmContext context, SiSpriteActionDelete payload)

@@ -1,6 +1,6 @@
 ﻿using NTDLS.DatagramMessaging;
 
-namespace Si.MpLibrary.DatagramMessages
+namespace Si.MpComms.DatagramMessages
 {
     public class AttachDatagramEndpointToSessionMessage
         : IDmDatagram

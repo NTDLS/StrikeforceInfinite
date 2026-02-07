@@ -1,6 +1,6 @@
 ﻿using NTDLS.ReliableMessaging;
 
-namespace Si.MpLibrary.ReliableMessages
+namespace Si.MpComms.ReliableMessages
 {
     public class SetSituationQuery
         : IRmQuery<SetSituationQueryReply>

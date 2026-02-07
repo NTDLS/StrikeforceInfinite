@@ -1,5 +1,5 @@
 ﻿using NTDLS.Semaphore;
-using Si.MpLibrary;
+using Si.MpComms;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Si.MpServer

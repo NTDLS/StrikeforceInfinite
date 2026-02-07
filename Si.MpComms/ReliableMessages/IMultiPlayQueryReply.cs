@@ -1,4 +1,4 @@
-﻿namespace Si.MpLibrary.ReliableMessages
+﻿namespace Si.MpComms.ReliableMessages
 {
     public interface IMultiPlayQueryReply
     {

@@ -1,4 +1,4 @@
-﻿using Si.MpLibrary.DatagramMessages.SpriteActions;
+﻿using Si.MpComms.DatagramMessages.SpriteActions;
 using System;
 using static Si.Library.SiConstants;
 

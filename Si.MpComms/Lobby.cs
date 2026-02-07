@@ -1,7 +1,7 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.Semaphore;
 
-namespace Si.MpLibrary
+namespace Si.MpComms
 {
     public class Lobby
     {
