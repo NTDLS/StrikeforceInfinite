@@ -1,9 +1,9 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.ReliableMessaging;
-using Si.MpComms.DatagramMessages;
-using Si.MpComms.ReliableMessages;
+using Si.MpCommsMessages.DatagramMessages;
+using Si.MpCommsMessages.ReliableMessages;
 
-namespace Si.MpComms
+namespace Si.MpClientToServerComms
 {
     /// <summary>
     /// Used my any multiplayer client to manage communication with the multiplayer server.
@@ -70,25 +70,16 @@ namespace Si.MpComms
         public void AddHandler(IDmDatagramHandler handler)
         {
             if (_dmMessenger == null)
-            {
                 throw new Exception("Datagram messenger or is not initialized.");
-            }
 
-            _dmMessenger?.AddHandler(handler);
+            _dmMessenger.AddHandler(handler);
         }
 
         /// <summary>
         /// Registers the specified message handler to process incoming Reliable messages.
         /// </summary>
         public void AddHandler(IRmMessageHandler handler)
-        {
-            if (_dmMessenger == null)
-            {
-                throw new Exception("Datagram messenger or is not initialized.");
-            }
-
-            _rmClient.AddHandler(handler);
-        }
+            => _rmClient.AddHandler(handler);
 
         public SetSituationQueryReply SetSituation(Guid LobbyId, string situationName)
             => _rmClient.Query(new SetSituationQuery(LobbyId, situationName)).EnsureQuerySuccess();
@@ -101,6 +92,9 @@ namespace Si.MpComms
 
         public CreateLobbyQueryReply CreateLobby(string lobbyName, int maxPlayers)
             => _rmClient.Query(new CreateLobbyQuery(lobbyName, maxPlayers)).EnsureQuerySuccess();
+
+        public JoinLobbyQueryReply JoinLobby(Guid lobbyId)
+            => _rmClient.Query(new JoinLobbyQuery(lobbyId)).EnsureQuerySuccess();
 
         public void AttachDatagramEndpointToSession(Guid sessionId)
         {

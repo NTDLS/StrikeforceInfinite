@@ -1,6 +1,6 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.Semaphore;
-using Si.MpComms;
+using Si.MpClientToServerComms;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Si.MpServer
@@ -8,11 +8,11 @@ namespace Si.MpServer
     internal class LobbyManager(ServerInstance mpServerInstance)
     {
         //Dictionary of LobbyId to Lobby
-        private readonly OptimisticCriticalResource<Dictionary<Guid, Lobby>> _collection = new();
+        private readonly OptimisticCriticalResource<Dictionary<Guid, ManagedLobby>> _collection = new();
 
-        public Lobby Create(Session session, DmMessenger dmMessenger)
+        public ManagedLobby Create(ManagedSession session, DmMessenger dmMessenger)
         {
-            var lobby = new Lobby(session, dmMessenger);
+            var lobby = new ManagedLobby(session, dmMessenger);
 
             _collection.Write(o =>
             {
@@ -23,7 +23,7 @@ namespace Si.MpServer
             return lobby;
         }
 
-        public bool TryGet(Guid lobbyId, [NotNullWhen(true)] out Lobby? lobby)
+        public bool TryGet(Guid lobbyId, [NotNullWhen(true)] out ManagedLobby? lobby)
         {
             lobby = _collection.Read(o =>
             {
@@ -33,7 +33,7 @@ namespace Si.MpServer
             return lobby != null;
         }
 
-        public Lobby? Get(Guid lobbyId)
+        public ManagedLobby? Get(Guid lobbyId)
         {
             return _collection.Read(o =>
             {

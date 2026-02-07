@@ -1,11 +1,32 @@
 ﻿using NTDLS.ReliableMessaging;
-using Si.MpComms.ReliableMessages;
+using Si.MpCommsMessages.ReliableMessages;
 
 namespace Si.MpServer
 {
     internal class ReliableMessageHandler(ServerInstance mpServerInstance)
         : IRmMessageHandler
     {
+        public JoinLobbyQueryReply JoinLobbyQuery(RmContext context, JoinLobbyQuery payload)
+        {
+            try
+            {
+                if (mpServerInstance.Sessions.TryGetByConnectionId(context.ConnectionId, out var session))
+                {
+                    if (mpServerInstance.Lobbies.TryGet(payload.LobbyId, out var lobby))
+                    {
+                        lobby.AddSession(session);
+                        return new JoinLobbyQueryReply();
+                    }
+                    throw new Exception("Lobby not found.");
+                }
+                throw new Exception("Session not found.");
+            }
+            catch (Exception ex)
+            {
+                return new JoinLobbyQueryReply(ex);
+            }
+        }
+
         public CreateLobbyQueryReply CreateLobbyQuery(RmContext context, CreateLobbyQuery payload)
         {
             try

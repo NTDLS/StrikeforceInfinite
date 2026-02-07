@@ -75,12 +75,15 @@ namespace Si.Engine.Menu
             switch (item.Key)
             {
                 case "SINGLE_PLAYER":
+                    _engine.InitializeForSinglePlayer();
                     _engine.Menus.Show(new MenuSituationSelect(_engine));
                     break;
                 case "JOIN_MULTIPLAYER":
+                    _engine.InitializeForMultiplayer();
                     _engine.Menus.Show(new MenuJoinMultiplayer(_engine));
                     break;
                 case "HOST_MULTIPLAYER":
+                    _engine.InitializeForMultiplayer();
                     _engine.Menus.Show(new MenuHostMultiplayer(_engine));
                     break;
                 default:

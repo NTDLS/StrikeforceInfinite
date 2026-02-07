@@ -1,6 +1,6 @@
 ﻿using NTDLS.Semaphore;
 using Si.Engine;
-using Si.MpComms;
+using Si.MpClientToServerComms;
 using System.Diagnostics.CodeAnalysis;
 using static Si.Library.SiConstants;
 
@@ -11,7 +11,7 @@ namespace Si.MpServer
         //Dictionary of LobbyId to EngineCore
         private readonly OptimisticCriticalResource<Dictionary<Guid, EngineCore>> _collection = new();
 
-        public EngineCore Create(Lobby lobby)
+        public EngineCore Create(ManagedLobby lobby)
         {
             var engine = new EngineCore(lobby, mpServerInstance.SharedEngine, SiEngineExecutionMode.ServerHost);
 

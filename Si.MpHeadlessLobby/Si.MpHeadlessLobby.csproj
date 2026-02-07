@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Si.MpComms\Si.MpComms.csproj" />
-    <ProjectReference Include="..\Si.MpLibrary\Si.MpLibrary.csproj" />
+    <ProjectReference Include="..\Si.MpClientToServerComms\Si.MpClientToServerComms.csproj" />
   </ItemGroup>
 
 </Project>

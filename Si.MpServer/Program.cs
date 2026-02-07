@@ -4,8 +4,7 @@
     {
         static void Main(string[] args)
         {
-            var serverInstance = new ServerInstance();
-            serverInstance.Run();
+            new ServerInstance(42719).Run();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -9,6 +9,10 @@
   <ItemGroup>
     <PackageReference Include="NTDLS.DatagramMessaging" Version="1.9.0" />
     <PackageReference Include="NTDLS.ReliableMessaging" Version="3.2.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Si.MpCommsMessages\Si.MpCommsMessages.csproj" />
   </ItemGroup>
 
 </Project>

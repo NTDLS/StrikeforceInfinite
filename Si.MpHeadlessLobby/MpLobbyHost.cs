@@ -1,5 +1,4 @@
-﻿using Si.MpComms;
-using Si.MpLibrary;
+﻿using Si.MpClientToServerComms;
 
 namespace Si.MpHeadlessLobby
 {
@@ -23,7 +22,7 @@ namespace Si.MpHeadlessLobby
             };
             */
 
-            _commsManager = new MpCommsManager(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
+            _commsManager = new MpCommsManager("127.0.0.1", 42719);
         }
 
         public void Run()

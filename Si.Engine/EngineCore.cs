@@ -13,7 +13,7 @@ using Si.Engine.TickController.PlayerSpriteTickController;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Library;
 using Si.Library.Mathematics;
-using Si.MpComms;
+using Si.MpClientToServerComms;
 using Si.Rendering;
 using System;
 using System.Collections.Generic;
@@ -39,13 +39,13 @@ namespace Si.Engine
 
         #region Public properties.
 
-        internal MultiPlayClient? MpClient { get; set; }
+        internal MpCommsManager? CommsManager { get; set; }
 
         public SiEngineExecutionMode ExecutionMode { get; private set; }
         public bool IsRunning { get; private set; } = false;
         public bool IsInitializing { get; private set; } = false;
 
-        public Lobby? MultiplayLobby { get; set; }
+        public ManagedLobby? MultiplayLobby { get; set; }
 
         #endregion
 
@@ -114,9 +114,17 @@ namespace Si.Engine
 
         #endregion
 
-        public void InitializeMultiplayClient()
+        public void InitializeForMultiplayer()
         {
-            MpClient = new MultiPlayClient(this);
+            CommsManager = new MpCommsManager(Settings.ServerAddress, Settings.ServerPort);
+            CommsManager.AddHandler(new DatagramMessageHandler(this));
+            CommsManager.AddHandler(new ReliableMessageHandler(this));
+        }
+
+        public void InitializeForSinglePlayer()
+        {
+            CommsManager?.Dispose();
+            CommsManager = null;
         }
 
         /// <summary>
@@ -167,7 +175,7 @@ namespace Si.Engine
         /// Initializes a new instance of the game engine for server host mode, which shares rendering and asset
         /// management with another instance of the engine (the "shared engine") that is running in shared engine content mode.
         /// </summary>
-        public EngineCore(Lobby lobby, EngineCore sharedEngine, SiEngineExecutionMode executionMode)
+        public EngineCore(ManagedLobby lobby, EngineCore sharedEngine, SiEngineExecutionMode executionMode)
         {
             MultiplayLobby = lobby;
             ExecutionMode = executionMode;
@@ -211,8 +219,7 @@ namespace Si.Engine
             ExecutionMode = executionMode;
 
             if (ExecutionMode != SiEngineExecutionMode.Play
-                && ExecutionMode != SiEngineExecutionMode.Edit
-                )
+                && ExecutionMode != SiEngineExecutionMode.Edit)
             {
                 throw new Exception("This constructor is only meant for play and edit modes.");
             }
@@ -451,8 +458,8 @@ namespace Si.Engine
             {
                 IsRunning = false;
 
-                MpClient?.Shutdown();
-                MpClient = null;
+                CommsManager?.Dispose();
+                CommsManager = null;
 
                 OnShutdown?.Invoke(this);
 

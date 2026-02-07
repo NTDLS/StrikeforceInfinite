@@ -7,6 +7,9 @@ namespace Si.Library
     /// </summary>
     public class SiEngineSettings
     {
+        public string ServerAddress { get; set; } = "127.0.0.1";
+        public int ServerPort { get; set; } = 42719;
+
         public int GraphicsAdapterId { get; set; } = 0;
         public int MunitionTraversalThreads { get; set; } = SiUtility.LesserOf(Environment.ProcessorCount * 2, 16);
         public int WorldClockThreads { get; set; } = 10;

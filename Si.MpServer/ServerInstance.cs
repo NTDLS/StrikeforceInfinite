@@ -1,7 +1,6 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.ReliableMessaging;
 using Si.Engine;
-using Si.MpLibrary;
 using static Si.Library.SiConstants;
 
 namespace Si.MpServer
@@ -15,9 +14,14 @@ namespace Si.MpServer
         internal EngineManager Engines { get; private set; }
         internal EngineCore SharedEngine { get; private set; } = new(SiEngineExecutionMode.SharedEngineContent);
 
-        public ServerInstance()
+        private readonly int _listenPort = 42719;
+
+        public ServerInstance(int listenPort)
         {
-            DmMessenger = new DmMessenger(MpLibraryConstants.DefaultPort);
+            _listenPort = listenPort;
+
+            DmMessenger = new DmMessenger(listenPort);
+
             DmMessenger.AddHandler(new DatagramMessageHandler(this));
             DmMessenger.OnException += (DmContext? context, Exception ex) =>
             {
@@ -50,7 +54,7 @@ namespace Si.MpServer
             SharedEngine.StartEngine();
 
             Console.WriteLine("Starting reliable messaging server.");
-            RmServer.Start(MpLibraryConstants.DefaultPort);
+            RmServer.Start(_listenPort);
 
             Console.WriteLine($"Datagram messaging client listening on port {DmMessenger.ListenPort}.");
 

@@ -1,30 +1,33 @@
 ﻿using NTDLS.DatagramMessaging;
 using NTDLS.Semaphore;
 
-namespace Si.MpComms
+namespace Si.MpClientToServerComms
 {
-    public class Lobby
+    /// <summary>
+    /// An instance of a server lobby.
+    /// </summary>
+    public class ManagedLobby
     {
         public DmMessenger _dmMessenger;
 
         public Guid LobbyId { get; private set; } = Guid.NewGuid();
 
-        public Session OwnerSession { get; private set; }
+        public ManagedSession OwnerSession { get; private set; }
 
         /// <summary>
         /// Client sessions in this lobby, including the owner session.
         /// </summary>
-        public OptimisticCriticalResource<Dictionary<Guid, Session>> Sessions { get; private set; } = new();
+        public OptimisticCriticalResource<Dictionary<Guid, ManagedSession>> Sessions { get; private set; } = new();
 
         public SpriteActionBuffer ActionBuffer { get; private set; } = new();
 
-        public Lobby(Session ownerSession, DmMessenger dmMessenger)
+        public ManagedLobby(ManagedSession ownerSession, DmMessenger dmMessenger)
         {
             OwnerSession = ownerSession;
             _dmMessenger = dmMessenger;
         }
 
-        public void AddSession(Session session)
+        public void AddSession(ManagedSession session)
         {
             Sessions.Write(o => o.Add(session.SessionId, session));
         }

@@ -1,8 +1,8 @@
 ﻿using NTDLS.DatagramMessaging;
-using Si.MpComms.DatagramMessages.SpriteActions;
+using Si.MpCommsMessages.DatagramMessages.SpriteActions;
 using System.Net;
 
-namespace Si.MpComms
+namespace Si.MpClientToServerComms
 {
     public class SpriteActionBuffer
     {

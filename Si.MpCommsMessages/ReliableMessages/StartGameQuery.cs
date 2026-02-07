@@ -1,6 +1,6 @@
 ﻿using NTDLS.ReliableMessaging;
 
-namespace Si.MpComms.ReliableMessages
+namespace Si.MpCommsMessages.ReliableMessages
 {
     public class StartGameQuery
         : IRmQuery<StartGameQueryReply>

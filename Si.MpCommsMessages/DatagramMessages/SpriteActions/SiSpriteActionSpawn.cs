@@ -1,6 +1,6 @@
-﻿namespace Si.MpComms.DatagramMessages.SpriteActions
+﻿namespace Si.MpCommsMessages.DatagramMessages.SpriteActions
 {
-    public class SiSpriteActionVector : SiSpriteAction
+    public class SiSpriteActionSpawn : SiSpriteAction
     {
         public float X { get; set; }
         public float Y { get; set; }
@@ -11,9 +11,12 @@
         public float RotationSpeed { get; set; }
         //public float Boost { get; set; }
 
-        public SiSpriteActionVector(uint spriteUID)
+        public string SpriteType { get; set; }
+
+        public SiSpriteActionSpawn(uint spriteUID, string spriteType)
             : base(spriteUID)
         {
+            SpriteType = spriteType;
         }
     }
 }

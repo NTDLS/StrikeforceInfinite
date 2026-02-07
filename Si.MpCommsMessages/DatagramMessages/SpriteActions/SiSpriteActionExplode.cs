@@ -1,4 +1,4 @@
-﻿namespace Si.MpComms.DatagramMessages.SpriteActions
+﻿namespace Si.MpCommsMessages.DatagramMessages.SpriteActions
 {
     public class SiSpriteActionExplode : SiSpriteAction
     {

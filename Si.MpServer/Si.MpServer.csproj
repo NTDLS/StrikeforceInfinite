@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Si.Engine\Si.Engine.csproj" />
-    <ProjectReference Include="..\Si.MpLibrary\Si.MpLibrary.csproj" />
   </ItemGroup>
 
 </Project>
