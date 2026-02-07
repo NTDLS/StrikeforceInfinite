@@ -39,8 +39,8 @@ namespace Si.MpDummyClient
 
             var udpPort = DmClient.GetRandomUnusedUdpPort();
             Console.WriteLine($"Starting datagram messaging client, listening on port {udpPort}.");
-            _dmClient.Listen(udpPort);
             _dmClient.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
+            _dmClient.Listen(udpPort);
 
             Console.WriteLine("MP Dummy Client is running...");
 

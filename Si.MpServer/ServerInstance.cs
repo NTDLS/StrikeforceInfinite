@@ -8,8 +8,8 @@ namespace Si.MpServer
 {
     internal class ServerInstance
     {
-        public  DmClient DmClient { get; private set; }
-        public  RmServer RmServer { get; private set; }
+        public DmClient DmClient { get; private set; }
+        public RmServer RmServer { get; private set; }
         internal SessionManager Sessions { get; private set; }
         internal LobbyManager Lobbies { get; private set; }
         internal EngineManager Engines { get; private set; }

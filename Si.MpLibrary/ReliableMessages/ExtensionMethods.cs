@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Si.MpLibrary.ReliableMessages
+﻿namespace Si.MpLibrary.ReliableMessages
 {
     public static class ExtensionMethods
     {

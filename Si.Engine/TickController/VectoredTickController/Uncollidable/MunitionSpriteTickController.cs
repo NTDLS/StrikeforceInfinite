@@ -11,7 +11,6 @@ using Si.Library.Mathematics;
 using System.Collections.Concurrent;
 using System.Linq;
 using static Si.Library.SiConstants;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {

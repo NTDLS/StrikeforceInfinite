@@ -1,6 +1,4 @@
-﻿using NTDLS.DatagramMessaging;
-using NTDLS.Semaphore;
-using Si.Engine;
+﻿using NTDLS.Semaphore;
 using Si.MpLibrary;
 using System.Diagnostics.CodeAnalysis;
 

@@ -1,5 +1,4 @@
-﻿using NTDLS.DatagramMessaging;
-using NTDLS.Semaphore;
+﻿using NTDLS.Semaphore;
 
 namespace Si.MpLibrary
 {

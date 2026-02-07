@@ -10,7 +10,6 @@ using Si.Rendering;
 using System;
 using System.Drawing;
 using static Si.Library.SiConstants;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {

@@ -1,5 +1,4 @@
 ﻿using NTDLS.DatagramMessaging;
-using Si.MpLibrary.DatagramMessages;
 using Si.MpLibrary.DatagramMessages.SpriteActions;
 
 namespace Si.MpDummyClient
