@@ -1,4 +1,5 @@
-﻿using Si.Engine.Menu._Superclass;
+﻿using NTDLS.Helpers;
+using Si.Engine.Menu._Superclass;
 using Si.Engine.Sprite.MenuItem;
 using Si.Library.Mathematics;
 
@@ -12,6 +13,8 @@ namespace Si.Engine.Menu
         public MenuJoinMultiplayer(EngineCore engine)
             : base(engine)
         {
+            engine.CommsManager.EnsureNotNull();
+
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
 
             float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
@@ -21,12 +24,28 @@ namespace Si.Engine.Menu
             itemTitle.X -= itemTitle.Size.Width / 2;
             offsetY += itemTitle.Size.Height + 60;
 
-            var menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "JOIN_DEBUG_SERVER", " * Debug Server ");
+            var menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "GO_BACK", " Go Back ");
             menuItem.Selected = true;
             menuItem.X -= menuItem.Size.Width / 2;
             offsetY += menuItem.Size.Height + 5;
 
-            menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "GO_BACK", " Go Back ");
+
+            var lobbies = engine.CommsManager.GetLobbiesPaged(1);
+
+            foreach(var lobby in lobbies.Collection)
+            {
+                menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "LOBBY_ITEM", $" {lobby.Name} ({lobby.CurrentPlayers}/{lobby.MaxPlayers}) ");
+                menuItem.UserData = lobby;
+                menuItem.X -= menuItem.Size.Width / 2;
+                offsetY += menuItem.Size.Height + 5;
+            }
+
+            menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "PAGE_NEXT", " Next Page ");
+            menuItem.X -= menuItem.Size.Width / 2;
+            offsetY += menuItem.Size.Height + 5;
+
+
+            menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "PAGE_Prev", " Previous Page ");
             menuItem.X -= menuItem.Size.Width / 2;
             offsetY += menuItem.Size.Height + 5;
 

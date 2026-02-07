@@ -11,7 +11,8 @@ namespace Si.MpClientToServerComms
         public DmMessenger _dmMessenger;
 
         public Guid LobbyId { get; private set; } = Guid.NewGuid();
-
+        public string Name { get; set; } = string.Empty;
+        public int MaxPlayers { get; set; }
         public ManagedSession OwnerSession { get; private set; }
 
         /// <summary>

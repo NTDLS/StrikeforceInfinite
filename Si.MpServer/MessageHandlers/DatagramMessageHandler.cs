@@ -1,7 +1,7 @@
 ﻿using NTDLS.DatagramMessaging;
 using Si.MpCommsMessages.DatagramMessages;
 
-namespace Si.MpServer
+namespace Si.MpServer.MessageHandlers
 {
     internal class DatagramMessageHandler(ServerInstance mpServerInstance)
         : IDmDatagramHandler

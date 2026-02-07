@@ -93,6 +93,9 @@ namespace Si.MpClientToServerComms
         public CreateLobbyQueryReply CreateLobby(string lobbyName, int maxPlayers)
             => _rmClient.Query(new CreateLobbyQuery(lobbyName, maxPlayers)).EnsureQuerySuccess();
 
+        public GetLobbiesPagedQueryReply GetLobbiesPaged(int pageNumber)
+            => _rmClient.Query(new GetLobbiesPagedQuery(pageNumber)).EnsureQuerySuccess();
+
         public JoinLobbyQueryReply JoinLobby(Guid lobbyId)
             => _rmClient.Query(new JoinLobbyQuery(lobbyId)).EnsureQuerySuccess();
 

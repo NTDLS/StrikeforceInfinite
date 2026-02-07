@@ -1,11 +1,31 @@
 ﻿using NTDLS.ReliableMessaging;
 using Si.MpCommsMessages.ReliableMessages;
 
-namespace Si.MpServer
+namespace Si.MpServer.MessageHandlers
 {
     internal class ReliableMessageHandler(ServerInstance mpServerInstance)
         : IRmMessageHandler
     {
+
+        public GetLobbiesPagedQueryReply GetLobbiesPagedQuery(RmContext context, GetLobbiesPagedQuery payload)
+        {
+            try
+            {
+                var lobbies = mpServerInstance.Lobbies.GetManagedLobbiesPaged(payload.PageNumber, 10, out int totalCountOfLobbies);
+
+                return new GetLobbiesPagedQueryReply()
+                {
+                    PageNumber = payload.PageNumber,
+                    TotalCountOfLobbies = totalCountOfLobbies,
+                    Collection = lobbies
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GetLobbiesPagedQueryReply(ex);
+            }
+        }
+
         public JoinLobbyQueryReply JoinLobbyQuery(RmContext context, JoinLobbyQuery payload)
         {
             try
