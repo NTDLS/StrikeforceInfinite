@@ -3,16 +3,22 @@ using NTDLS.ReliableMessaging;
 using Si.MpLibrary;
 using Si.MpLibrary.DatagramMessages;
 using Si.MpLibrary.ReliableMessages;
+using System;
 
-namespace Si.MpDummyClient
+namespace Si.Engine.MultiPlay
 {
-    internal class MpDummyInstance
+    internal class MultiPlayClient
     {
         private readonly DmMessenger _dmMessenger;
         private readonly RmClient _rmClient;
+        private readonly EngineCore _engineCore;
 
-        public MpDummyInstance()
+        public MultiPlayClient(EngineCore engineCore)
         {
+            _engineCore = engineCore;
+
+            Console.WriteLine("Starting multiplay client...");
+
             var udpPort = DmMessenger.GetRandomUnusedUdpPort();
 
             _dmMessenger = new DmMessenger(udpPort);
@@ -21,30 +27,18 @@ namespace Si.MpDummyClient
             {
                 Console.WriteLine($"[Client - DM Client] Exception: {ex.GetBaseException().Message}");
             };
+            Console.WriteLine($"Datagram messaging client listening on port {_dmMessenger.ListenPort}.");
 
             _rmClient = new RmClient();
             _rmClient.OnException += (RmContext? context, Exception ex, IRmPayload? payload) =>
             {
                 Console.WriteLine($"[Client - RM Client] Exception: {ex.GetBaseException().Message}");
             };
-        }
-
-        public void Run()
-        {
-            Console.WriteLine("Waiting on server to init...");
-            Thread.Sleep(5000);
-
-            Console.WriteLine("Starting multiplay client...");
 
             Console.WriteLine("Starting reliable messaging client.");
             _rmClient.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
 
-            Console.WriteLine($"Datagram messaging client listening on port {_dmMessenger.ListenPort}.");
-            //_dmMessenger.Connect(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
-
             var serverEndpointCtx = _dmMessenger.GetEndpointContext(MpLibraryConstants.DefaultAddress, MpLibraryConstants.DefaultPort);
-
-            Console.WriteLine("MP Dummy Client is running...");
 
             var session = _rmClient.Query(new StartServerSessionQuery()).EnsureQuerySuccess();
             Console.WriteLine($"Session created: {session.SessionId}");
@@ -61,8 +55,12 @@ namespace Si.MpDummyClient
 
             _rmClient.Query(new StartGameQuery(lobby.LobbyId)).EnsureQuerySuccess();
             Console.WriteLine($"Game started.");
+        }
 
-            Console.WriteLine("Press ENTER to stop.");
+        public void Shutdown()
+        {
+            _rmClient.Disconnect();
+            _dmMessenger.Dispose();
         }
     }
 }

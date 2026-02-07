@@ -6,6 +6,7 @@ using SharpCompress.Archives;
 using SharpCompress.Common;
 using Si.Audio;
 using Si.Engine.Sprite;
+using Si.Library;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -261,5 +262,27 @@ namespace Si.Engine.Manager
 
             throw new FileNotFoundException(path);
         }
+
+        #region Explicit helpers for common assets to avoid typos and ease refactoring.
+
+        public string GetRandomGamerTag()
+        {
+            var gamerTagsText = GetText($@"Text\GamerTags.txt");
+            var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
+
+            var randomIndex = SiRandom.Between(1, gamerTags.Count);
+            return gamerTags[randomIndex];
+        }
+
+        public string GetRandomLobbyName()
+        {
+            var gamerTagsText = GetText($@"Text\LobbyNames.txt");
+            var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
+
+            var randomIndex = SiRandom.Between(1, gamerTags.Count);
+            return gamerTags[randomIndex];
+        }
+
+        #endregion
     }
 }

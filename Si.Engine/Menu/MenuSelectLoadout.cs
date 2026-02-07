@@ -23,13 +23,14 @@ namespace Si.Engine.Menu
         {
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
 
-            float offsetX = currentScaledScreenBounds.X + 40;
+            float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
-            var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Select a Class");
-            itemTitle.X = offsetX + 200;
-            itemTitle.Y = offsetY - itemTitle.Size.Height;
+            var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Select a Loadout");
+            itemTitle.X -= itemTitle.Size.Width / 2;
+            offsetY += itemTitle.Size.Height + 60;
 
+            offsetX = currentScaledScreenBounds.X + 40;
             offsetY += itemTitle.Height;
 
             _shipBlurb = AddTextBlock(new SiVector(offsetX, offsetY), "");

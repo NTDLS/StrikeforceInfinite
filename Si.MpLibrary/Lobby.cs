@@ -32,7 +32,7 @@ namespace Si.MpLibrary
 
         public void FlushActionBuffer()
         {
-            var sessions = Sessions.Read(o => o.Select(u => u.Value));
+            var sessions = Sessions.Read(o => o.Select(u => u.Value.DatagramEndPoint));
 
             ActionBuffer.FlushSpriteVectorsToClients(_dmMessenger, sessions);
         }

@@ -6,6 +6,7 @@ using Si.Engine.EngineLibrary;
 using Si.Engine.Interrogation._Superclass;
 using Si.Engine.Manager;
 using Si.Engine.Menu;
+using Si.Engine.MultiPlay;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController.PlayerSpriteTickController;
@@ -37,6 +38,8 @@ namespace Si.Engine
         #endregion
 
         #region Public properties.
+
+        internal MultiPlayClient? MpClient { get; set; }
 
         public SiEngineExecutionMode ExecutionMode { get; private set; }
         public bool IsRunning { get; private set; } = false;
@@ -111,13 +114,29 @@ namespace Si.Engine
 
         #endregion
 
+        public void InitializeMultiplayClient()
+        {
+            MpClient = new MultiPlayClient(this);
+        }
+
         /// <summary>
-        /// Initializes a new instance of the game engine.
+        /// Initializes a new instance of the game engine for shared engine content mode, which shares rendering and asset
+        /// management with another instance of the engine (the "shared engine") that is running in shared engine content mode.
+        /// 
+        /// You see, the server can host multiple game instances for different lobbies, but we don't want to have multiple copies
+        /// of the rendering and asset management code running on the server - that would be a waste of resources.
+        /// So instead, we have one instance of the engine running in shared engine content mode that handles all of
+        /// the rendering and asset management, and then each game instance runs in server host mode and shares the
+        /// rendering and asset management of the shared engine.
         /// </summary>
-        /// <param name="drawingSurface">The window that the game will be rendered to.</param>
         public EngineCore(SiEngineExecutionMode executionMode = SiEngineExecutionMode.SharedEngineContent)
         {
             ExecutionMode = executionMode;
+
+            if (ExecutionMode != SiEngineExecutionMode.SharedEngineContent)
+            {
+                throw new Exception("This constructor is only meant for shared engine content mode.");
+            }
 
             Settings = LoadSettings();
 
@@ -145,13 +164,18 @@ namespace Si.Engine
         }
 
         /// <summary>
-        /// Initializes a new instance of the game engine.
+        /// Initializes a new instance of the game engine for server host mode, which shares rendering and asset
+        /// management with another instance of the engine (the "shared engine") that is running in shared engine content mode.
         /// </summary>
-        /// <param name="drawingSurface">The window that the game will be rendered to.</param>
         public EngineCore(Lobby lobby, EngineCore sharedEngine, SiEngineExecutionMode executionMode)
         {
             MultiplayLobby = lobby;
             ExecutionMode = executionMode;
+
+            if (ExecutionMode != SiEngineExecutionMode.ServerHost)
+            {
+                throw new Exception("This constructor is only meant for server host mode.");
+            }
 
             Settings = LoadSettings();
 
@@ -185,6 +209,13 @@ namespace Si.Engine
         public EngineCore(Control drawingSurface, SiEngineExecutionMode executionMode)
         {
             ExecutionMode = executionMode;
+
+            if (ExecutionMode != SiEngineExecutionMode.Play
+                && ExecutionMode != SiEngineExecutionMode.Edit
+                )
+            {
+                throw new Exception("This constructor is only meant for play and edit modes.");
+            }
 
             Settings = LoadSettings();
 
@@ -419,6 +450,9 @@ namespace Si.Engine
             if (IsRunning)
             {
                 IsRunning = false;
+
+                MpClient?.Shutdown();
+                MpClient = null;
 
                 OnShutdown?.Invoke(this);
 

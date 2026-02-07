@@ -1,5 +1,6 @@
 ﻿using NTDLS.DatagramMessaging;
 using Si.MpLibrary.DatagramMessages.SpriteActions;
+using System.Net;
 
 namespace Si.MpLibrary
 {
@@ -31,9 +32,9 @@ namespace Si.MpLibrary
         public void RecordDelete(uint spriteUID)
             => AppendBuffer(new SiSpriteActionDelete(spriteUID));
 
-        public void FlushSpriteVectorsToClients(DmMessenger dmMessenger, IEnumerable<Session> sessions)
+        public void FlushSpriteVectorsToClients(DmMessenger dmMessenger, IEnumerable<IPEndPoint?>? iPEndPoints)
         {
-            if (_spriteActionBuffer.Count > 0)
+            if (_spriteActionBuffer.Count > 0 && iPEndPoints != null)
             {
                 //if (State.PlayMode != SiPlayMode.SinglePlayer && RpcClient?.IsConnected == true)
                 //var spriteActions = new SiSpriteActions(_spriteActionBuffer);
@@ -48,11 +49,11 @@ namespace Si.MpLibrary
                     //Task.Run(() => ??
                     //Parallel.ForEach(sessions, session => ??
 
-                    foreach (var session in sessions)
+                    foreach (var iPEndPoint in iPEndPoints)
                     {
-                        if (session.DatagramEndPoint != null)
+                        if (iPEndPoint != null)
                         {
-                            dmMessenger.Dispatch(vectorAction, session.DatagramEndPoint);
+                            dmMessenger.Dispatch(vectorAction, iPEndPoint);
                         }
                     }
                 }

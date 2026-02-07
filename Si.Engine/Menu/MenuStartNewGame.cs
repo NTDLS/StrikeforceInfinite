@@ -6,6 +6,7 @@ namespace Si.Engine.Menu
 {
     /// <summary>
     /// The menu that is shows when the game is first started.
+    /// Allows the player to select single player, join multiplayer or host multiplayer.
     /// </summary>
     internal class MenuStartNewGame : MenuBase
     {
@@ -20,16 +21,23 @@ namespace Si.Engine.Menu
             var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Strikeforce Infinite");
             itemTitle.X -= itemTitle.Size.Width / 2;
             offsetY += itemTitle.Size.Height + 60;
-            itemTitle.IsHighlighted = true;
 
-            var helpItem = AddSelectableItem(new SiVector(offsetX, offsetY), "START", " - Start - ");
-            helpItem.Selected = true;
-            helpItem.X -= helpItem.Size.Width / 2;
-            offsetY += helpItem.Size.Height + 5;
+            var menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "SINGLE_PLAYER", " Single Player ");
+            menuItem.Selected = true;
+            menuItem.X -= menuItem.Size.Width / 2;
+            offsetY += menuItem.Size.Height + 5;
+
+            menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "JOIN_MULTIPLAYER", " Join Multiplayer ");
+            menuItem.X -= menuItem.Size.Width / 2;
+            offsetY += menuItem.Size.Height + 5;
+
+            menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "HOST_MULTIPLAYER", " Host Multiplayer ");
+            menuItem.X -= menuItem.Size.Width / 2;
+            offsetY += menuItem.Size.Height + 5;
 
             offsetY += 50;
 
-            helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Forward and Rotate with <W>, <A> and <S>.");
+            var helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Forward and Rotate with <W>, <A> and <S>.");
             helpItem.X -= helpItem.Size.Width / 2;
             offsetY += helpItem.Size.Height + 5;
 
@@ -64,7 +72,21 @@ namespace Si.Engine.Menu
 
         private bool MenuStartNewGame_OnExecuteSelection(SpriteMenuItem item)
         {
-            _engine.Menus.Show(new MenuSituationSelect(_engine));
+            switch(item.Key)
+            {
+                case "SINGLE_PLAYER":
+                    _engine.Menus.Show(new MenuSituationSelect(_engine));
+                    break;
+                case "JOIN_MULTIPLAYER":
+                    _engine.Menus.Show(new MenuJoinMultiplayer(_engine));
+                    break;
+                case "HOST_MULTIPLAYER":
+                    _engine.Menus.Show(new MenuHostMultiplayer(_engine));
+                    break;
+                default:
+                    throw new System.NotImplementedException();
+            }
+            
             return true;
         }
     }

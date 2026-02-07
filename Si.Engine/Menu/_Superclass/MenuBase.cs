@@ -121,12 +121,13 @@ namespace Si.Engine.Menu._Superclass
             return item;
         }
 
-        public SpriteMenuSelectableTextInput AddSelectableTextInput(SiVector location, string key, string text = "")
+        public SpriteMenuSelectableTextInput AddSelectableTextInput(SiVector location, string key, string text = "", int characterLimit = 100)
         {
             var item = new SpriteMenuSelectableTextInput(_engine, this, _engine.Rendering.TextFormats.TextInputItem, _engine.Rendering.Materials.Brushes.Orange, location)
             {
                 Key = key,
                 Text = text,
+                CharacterLimit = characterLimit,
                 ItemType = SiMenuItemType.SelectableTextInput
             };
             AddMenuItem(item);
