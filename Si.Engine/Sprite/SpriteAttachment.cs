@@ -42,7 +42,7 @@ namespace Si.Engine.Sprite
                     var attachmentOffset = LocationRelativeToOwner - (RootOwner.Size / 2.0f);
 
                     // Apply the rotated offset to get the new attachment location relative to the base sprite center.
-                    return RootOwner.Location + attachmentOffset.RotatedBy(RootOwner.Orientation.RadiansSigned);
+                    return RootOwner.Location + attachmentOffset.RotatedBy(RootOwner.Orientation.DegreesSigned);
                 }
 
                 return Location;

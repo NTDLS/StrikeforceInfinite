@@ -1,5 +1,6 @@
 ﻿using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Si.Engine.AI.Logistics
         : AIStateMachine
     {
         private float _explodeCooldown = SiRandom.Between(5, 10);
+        private readonly bool _doExplosions = false;
 
         public AILogisticsDemo(EngineCore engine, SpriteInteractiveShipBase owner)
             : base(engine, owner, observedObjects: null)
@@ -24,21 +26,56 @@ namespace Si.Engine.AI.Logistics
 
         private void AILogisticsDemo_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler? state)
         {
-            _explodeCooldown -= epoch;
-            if (_explodeCooldown <= 0f)
+            if (_doExplosions)
             {
-                _explodeCooldown = SiRandom.Between(2.0f, 5.0f);
-
-                if (Owner.IsWithinCurrentScaledScreenBounds)
+                _explodeCooldown -= epoch;
+                if (_explodeCooldown <= 0f)
                 {
-                    var attachments = Owner.Attachments.Where(a => !a.IsDeadOrExploded).ToList();
-                    SiRandom.OneOfNullable(attachments)?.Explode();
+                    _explodeCooldown = SiRandom.Between(2.0f, 5.0f);
 
-                    if (!Owner.IsDeadOrExploded && Owner.IsVisible && attachments.Count == 0)
-                        Owner.Explode();
+                    if (Owner.IsWithinCurrentScaledScreenBounds)
+                    {
+                        var attachments = Owner.Attachments.Where(a => !a.IsDeadOrExploded).ToList();
+                        SiRandom.OneOfNullable(attachments)?.Explode();
+
+                        if (!Owner.IsDeadOrExploded && Owner.IsVisible && attachments.Count == 0)
+                            Owner.Explode();
+                    }
                 }
             }
         }
+
+        private class FollowRandomShip
+            : AIStateHandler
+        {
+            private readonly AILogisticsDemo _stateMachine;
+            private readonly SpriteEnemyBase? _followSprite;
+            private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+
+            public FollowRandomShip(AILogisticsDemo stateMachine)
+            {
+                _stateMachine = stateMachine;
+                _followSprite = SiRandom.OneOfNullable(_stateMachine.Engine.Sprites.Enemies.Visible());
+            }
+
+            public void Execute(float epoch)
+            {
+                if (_followSprite == null)
+                {
+                    _stateMachine.SetAIState(new ExitScreen(_stateMachine));
+                    return;
+                }
+                else if (_stateMachine.Owner.IsWithinCurrentScaledScreenBounds)
+                {
+                    _stateMachine.Owner.RotateMovementVectorIfNotPointingAt(_followSprite, 10.0f, _rotateDirection, 10, epoch);
+                }
+                else
+                {
+                    _stateMachine.SetAIState(new RotateToCenterScene(_stateMachine));
+                }
+            }
+        }
+
 
         /// <summary>
         /// Exit the screen at a high speed, then change state to start swooping back in.
@@ -63,7 +100,7 @@ namespace Si.Engine.AI.Logistics
         private class RotateToCenterScene(AILogisticsDemo stateMachine)
             : AIStateHandler
         {
-            private SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+            private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
 
             public void Execute(float epoch)
             {
@@ -76,9 +113,9 @@ namespace Si.Engine.AI.Logistics
                     stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 1.0f, 1.0f, epoch);
 
                     if (_rotateDirection == SimpleDirection.Clockwise)
-                        stateMachine.Owner.Orientation = SiVector.FromUnsignedDegrees(stateMachine.Owner.Orientation.Degrees + 45f * epoch);
+                        stateMachine.Owner.RotateMovementVector(45f, epoch);
                     else
-                        stateMachine.Owner.Orientation = SiVector.FromUnsignedDegrees(stateMachine.Owner.Orientation.Degrees - 45f * epoch);
+                        stateMachine.Owner.RotateMovementVector(-45f, epoch);
                 }
             }
         }

@@ -1,5 +1,4 @@
 ﻿using Si.Engine.Sprite.Enemy.Peon._Superclass;
-using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System.Drawing;
 
@@ -53,10 +52,10 @@ namespace Si.Engine.Sprite.Enemy.Debug
         {
             Orientation.RadiansSigned += 0.05f; // = this.AngleToInSignedRadians(_engine.Player.Sprite);
 
-            var point1 = Orientation.RotatedBy(90.ToRadians()) * new SiVector(50, 50);
+            var point1 = Orientation.RotatedBy(90) * new SiVector(50, 50);
             _particle1.Location = Location + point1;
 
-            var point2 = Orientation.RotatedBy(-90.ToRadians()) * new SiVector(50, 50);
+            var point2 = Orientation.RotatedBy(-90) * new SiVector(50, 50);
             _particle2.Location = Location + point2;
 
             var point3 = Orientation * new SiVector(50, 50);

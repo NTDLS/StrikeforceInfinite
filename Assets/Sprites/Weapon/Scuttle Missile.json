@@ -18,6 +18,7 @@
   "MaxLocks": 2,
   "MaxLockOnAngle": 40,
  
-  "GuidanceAngle": 90,
-  "GuidanceRotation": 3
+  "SeekingEscapeDistance": 500,
+  "SeekingEscapeAngleDegrees": 90,
+  "SeekingRotationRateDegrees": 45
 }

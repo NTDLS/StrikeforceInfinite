@@ -63,7 +63,7 @@ namespace Si.Engine.AI.Logistics
                     //Lets just change the state....
                 }
 
-                if (_stateMachine.Owner.RotateMovementVectorIfNotPointingAt(_observedObject, _rotationAngle * epoch, _rotateDirection, 10.0f) == false)
+                if (_stateMachine.Owner.RotateMovementVectorIfNotPointingAt(_observedObject, _rotationAngle, _rotateDirection, 10.0f, epoch) == false)
                 {
                     _stateMachine.SetAIState(new SteadyOnCurrentPath(_stateMachine));
                 }

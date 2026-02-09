@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Si.Library.ExtensionMethods;
+using System.Runtime.CompilerServices;
 
 namespace Si.Library.Mathematics
 {
@@ -71,8 +72,9 @@ namespace Si.Library.Mathematics
         /// <param name="radians"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SiVector RotatedBy(this SiVector vector, float radians)
+        public static SiVector RotatedBy(this SiVector vector, float degrees)
         {
+            float radians = degrees.ToRadians();
             float cosTheta = (float)Math.Cos(radians);
             float sinTheta = (float)Math.Sin(radians);
 

@@ -18,6 +18,7 @@
   "MaxLockOnAngle": 45,
   "ExplodesOnImpact": true,
   
-  "GuidanceAngle": 90,
-  "GuidanceRotation": 8  
+  "SeekingEscapeDistance": 500,
+  "SeekingEscapeAngleDegrees": 90,
+  "SeekingRotationRateDegrees": 40
 }

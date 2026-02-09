@@ -24,7 +24,7 @@ namespace Si.Engine.Sprite.Weapon
                 _fireSound?.Play();
                 RoundQuantity--;
 
-                var offset = Owner.Orientation.RotatedBy(90.ToRadians().Invert(_toggle)) * new SiVector(10, 10);
+                var offset = Owner.Orientation.RotatedBy(90.Invert(_toggle)) * new SiVector(10, 10);
 
                 _toggle = !_toggle;
 

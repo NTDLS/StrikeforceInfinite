@@ -86,9 +86,9 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                     {
                         var munition = new SeekingMunitionBase(_engine, this, Owner, spritePath, location ?? Owner.Location)
                         {
-                            SeekingRotationRateRadians = Metadata.GuidanceRotation.ToRadians(),
-                            MaxSeekingObservationAngleDegrees = Metadata.GuidanceAngle,
-                            MaxSeekingObservationDistance = Metadata.GuidanceDistance
+                            SeekingRotationRateDegrees = Metadata.SeekingRotationRateDegrees,
+                            SeekingEscapeAngleDegrees = Metadata.SeekingEscapeAngleDegrees,
+                            SeekingEscapeDistance = Metadata.SeekingEscapeDistance
                         };
                         return munition;
                     }
@@ -96,8 +96,8 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                     {
                         var munition = new LockingMunitionBase(_engine, this, Owner, spritePath, lockedTarget, location ?? Owner.Location)
                         {
-                            GuidedRotationRateInRadians = Metadata.GuidanceRotation.ToRadians(),
-                            MaxGuidedObservationAngleDegrees = Metadata.GuidanceAngle
+                            GuidedRotationRateDegrees = Metadata.SeekingRotationRateDegrees,
+                            MaxGuidedObservationAngleDegrees = Metadata.SeekingEscapeAngleDegrees
                         };
                         return munition;
                     }

@@ -13,7 +13,7 @@
   "SpeedVariancePercent": 0.10,
   "ExplodesOnImpact": true,
   
-  "GuidanceAngle": 20,
-  "GuidanceDistance": 1000,
-  "GuidanceRotation": 4
+  "SeekingEscapeAngleDegrees": 20,
+  "SeekingEscapeDistance": 1000,
+  "SeekingRotationRateDegrees": 45
 }

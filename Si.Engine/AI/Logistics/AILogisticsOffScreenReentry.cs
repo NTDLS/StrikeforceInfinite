@@ -54,9 +54,9 @@ namespace Si.Engine.AI.Logistics
                     stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 1.0f, 1.0f, epoch);
 
                     if (_rotateDirection == SimpleDirection.Clockwise)
-                        stateMachine.Owner.Orientation = SiVector.FromUnsignedDegrees(stateMachine.Owner.Orientation.Degrees + 45f * epoch);
+                        stateMachine.Owner.Orientation += 45f * epoch;
                     else
-                        stateMachine.Owner.Orientation = SiVector.FromUnsignedDegrees(stateMachine.Owner.Orientation.Degrees - 45f * epoch);
+                        stateMachine.Owner.Orientation -= 45f * epoch;
                 }
             }
         }

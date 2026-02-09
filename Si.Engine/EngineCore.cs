@@ -12,7 +12,6 @@ using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.Sprite.Enemy.Boss.Devastator;
-using Si.Engine.Sprite.Enemy.Peon;
 using Si.Engine.TickController.PlayerSpriteTickController;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Library;
@@ -437,13 +436,14 @@ namespace Si.Engine
 
                 Sprites.SkyBoxes.AddAtCenterUniverse();
 
-                Events.Add(1, () => AddDemoSprites());
+                //Events.Add(1, () => AddDemoSprites());
                 Events.Add(1, () => Menus.Show(new MenuStartNewGame(this)));
             }
         }
 
         void AddDemoSprites()
         {
+            /*
             for (int i = 0; i < 5; i++)
                 ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyMerc>());
 
@@ -458,6 +458,7 @@ namespace Si.Engine
 
             for (int i = 0; i < 5; i++)
                 ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemySerf>());
+            */
 
             for (int i = 0; i < 3; i++)
                 ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>());
