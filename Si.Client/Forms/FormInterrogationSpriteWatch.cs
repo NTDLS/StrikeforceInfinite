@@ -49,9 +49,9 @@ namespace Si.Client.Forms
                 if (enemy.CurrentAIController != null)
                 {
                     string aiControllerTypeName = enemy.CurrentAIController.GetType().Name;
-                    if (enemy.CurrentAIController.CurrentState != null)
+                    if (enemy.CurrentAIController.CurrentAIState != null)
                     {
-                        aiControllerTypeName += $" (State: {enemy.CurrentAIController.CurrentState.GetType().Name})";
+                        aiControllerTypeName += $" (State: {enemy.CurrentAIController.CurrentAIState.GetType().Name})";
                     }
                     UpsertVariable("AI Controller", $"{aiControllerTypeName}");
                 }

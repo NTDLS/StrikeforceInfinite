@@ -5,6 +5,7 @@ using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.Mathematics;
 using System;
+
 namespace Si.Engine.AI.Logistics
 {
     /// <summary>
@@ -22,11 +23,10 @@ namespace Si.Engine.AI.Logistics
         public AILogisticsMeander(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase? observedObject)
             : base(engine, owner, observedObject)
         {
-            owner.RecalculateOrientationMovementVector();
             OnApplyIntelligence += AILogistics_OnApplyIntelligence;
         }
 
-        private void AILogistics_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler state)
+        private void AILogistics_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler? state)
         {
             ObservedObject.EnsureNotNull();
 

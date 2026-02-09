@@ -1,5 +1,6 @@
 ﻿using NTDLS.Helpers;
 using SharpDX.Direct2D1;
+using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Player._Superclass;
 using Si.Engine.Sprite.SupportingClasses;
@@ -11,6 +12,7 @@ using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 
 namespace Si.Engine.Sprite._Superclass
 {
@@ -77,6 +79,30 @@ namespace Si.Engine.Sprite._Superclass
             SetImage(bitmap);
         }
 
+        #region Artificial Intelligence.
+
+        public IAIController? CurrentAIController { get; set; }
+        private readonly Dictionary<Type, IAIController> _aiControllers = new();
+
+        public void AddAIController(IAIController controller)
+            => _aiControllers.Add(controller.GetType(), controller);
+
+        public void ClearAIControllers()
+        {
+            _aiControllers.Clear();
+            CurrentAIController = null;
+        }
+
+        public IAIController GetAIController<T>() where T : IAIController
+            => _aiControllers[typeof(T)];
+
+        public void SetCurrentAIController<T>() where T : IAIController
+        {
+            CurrentAIController = GetAIController<T>();
+        }
+
+        #endregion
+
         /// <summary>
         /// Sets the sprites image, sets speed, shields, adds attachments and weapons
         /// from a .json file in the same path with the same name as the sprite image.
@@ -96,21 +122,13 @@ namespace Si.Engine.Sprite._Superclass
             SetHullHealth(Metadata.Hull);
             SetShieldHealth(Metadata.Shields);
 
-            if (Metadata.Weapons != null)
-            {
-                foreach (var weapon in Metadata.Weapons)
-                {
-                    AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount);
-                }
-            }
+            Metadata.Weapons?.ForEach(weapon => {
+                AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount);
+            });
 
-            if (Metadata.Attachments != null)
-            {
-                foreach (var attachment in Metadata.Attachments)
-                {
-                    AttachOfType(attachment.Type, attachment.LocationRelativeToOwner);
-                }
-            }
+            Metadata.Attachments?.ForEach(attachment => {
+                AttachOfType(attachment.Type, attachment.LocationRelativeToOwner);
+            });
 
             if (this is SpriteAttachment attach)
             {
@@ -325,12 +343,14 @@ namespace Si.Engine.Sprite._Superclass
         }
 
         /// <summary>
-        /// Provides a way to make decisions about the sprite that do not necessarily have anything to do with movement.
+        /// Provides a way to make basic decisions about the sprite that do not necessarily have anything to do with movement.
         /// </summary>
         /// <param name="epoch"></param>
         /// <param name="displacementVector"></param>
         public virtual void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
+            CurrentAIController?.ApplyIntelligence(epoch, displacementVector);
+            Weapons?.ForEach(o => o.ApplyIntelligence(epoch));
         }
 
         /// <summary>

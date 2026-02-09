@@ -8,6 +8,6 @@ namespace Si.Engine.AI._Superclass
     public interface IAIController
     {
         void ApplyIntelligence(float epoch, SiVector displacementVector);
-        AIStateHandler? CurrentState { get; }
+        AIStateHandler? CurrentAIState { get; }
     }
 }

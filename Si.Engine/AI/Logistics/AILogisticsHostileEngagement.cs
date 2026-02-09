@@ -5,24 +5,31 @@ using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.Mathematics;
 using static Si.Library.SiConstants;
+
 namespace Si.Engine.AI.Logistics
 {
     /// <summary>
     /// Keeps an object swooping past an object at an indirect angle.
     /// </summary>
-    internal class AILogisticsHostileEngagement : AIStateMachine
+    internal class AILogisticsHostileEngagement
+        : AIStateMachine
     {
-        #region Instance parameters.
-
         private readonly string _boostResourceName = "AILogisticsHostileEngagement_Boost";
 
-        //We use this so we can commit to an arch when banking, coming about, etc.
+        public AILogisticsHostileEngagement(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase observedObject)
+            : base(engine, owner, observedObject)
+        {
+            owner.OnHit += Owner_OnHit;
 
-        #endregion
+            Owner.RenewableResources.Create(_boostResourceName, 800, 0, 10);
+
+            SetAIState(new GotoRadiusOfObservedObject(this));
+        }
 
         #region AI States.
 
-        private class GotoRadiusOfObservedObject : AIStateHandler
+        private class GotoRadiusOfObservedObject
+            : AIStateHandler
         {
             private readonly AILogisticsHostileEngagement _stateMachine;
             private SimpleDirection _rotateDirection;
@@ -57,12 +64,13 @@ namespace Si.Engine.AI.Logistics
 
                 if (_stateMachine.Owner.RotateMovementVectorIfNotPointingAt(_observedObject, _rotationAngle * epoch, _rotateDirection, 10.0f) == false)
                 {
-                    _stateMachine.ChangeState(new SteadyOnCurrentPath(_stateMachine));
+                    _stateMachine.SetAIState(new SteadyOnCurrentPath(_stateMachine));
                 }
             }
         }
 
-        private class SteadyOnCurrentPath : AIStateHandler
+        private class SteadyOnCurrentPath
+            : AIStateHandler
         {
             private readonly AILogisticsHostileEngagement _stateMachine;
             private float _burndownEpochs = 3;
@@ -81,25 +89,12 @@ namespace Si.Engine.AI.Logistics
 
                 if (_burndownEpochs <= 0)
                 {
-                    _stateMachine.ChangeState(new GotoRadiusOfObservedObject(_stateMachine));
+                    _stateMachine.SetAIState(new GotoRadiusOfObservedObject(_stateMachine));
                 }
             }
         }
 
         #endregion
-
-        public AILogisticsHostileEngagement(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase observedObject)
-            : base(engine, owner, observedObject)
-        {
-            owner.OnHit += Owner_OnHit;
-
-            Owner.RenewableResources.Create(_boostResourceName, 800, 0, 10);
-
-            ChangeState(new GotoRadiusOfObservedObject(this));
-            Owner.RecalculateOrientationMovementVector();
-
-            OnApplyIntelligence += AILogistics_OnApplyIntelligence;
-        }
 
         private void Owner_OnHit(SpriteBase sender, SiDamageType damageType, int damageAmount)
         {
@@ -108,40 +103,6 @@ namespace Si.Engine.AI.Logistics
             {
                 //Do something different when we get low on health?
                 ChangeState(new AIStateTransitionToEvasiveEscape(this));
-            }
-            */
-        }
-
-        private void AILogistics_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler state)
-        {
-            //var deltaAngle = Owner.HeadingAngleToInUnsignedDegrees(ObservedObject);
-            //Console.WriteLine($"deltaAngle {deltaAngle}");
-
-            //var distanceToObservedObject = Owner.DistanceTo(ObservedObject);
-
-            state.Execute(epoch);
-
-            /*
-            switch (state)
-            {
-                //----------------------------------------------------------------------------------------------------------------------------------------------------
-                //
-                case StateGoToRandomLocation approaching:
-                    //Attempt to follow the observed object.
-
-                    Owner.RotateMovementVectorIfNotPointingAt(ObservedObject, 1, ref _lastDirection, approaching.VarianceAngle);
-
-                    if (Owner.DistanceTo(ObservedObject) < _idealMinDistance)
-                    {
-                        ChangeState(new AIStateTransitionToDepart());
-                    }
-
-                    break;
-                //----------------------------------------------------------------------------------------------------------------------------------------------------
-
-                //----------------------------------------------------------------------------------------------------------------------------------------------------
-                default:
-                    throw new Exception($"Unknown AI state: {state.GetType()}");
             }
             */
         }

@@ -9,19 +9,20 @@ namespace Si.Engine.AI.Logistics
     /// <summary>
     /// Keeps an object swooping past an object at an indirect angle.
     /// </summary>
-    internal class AILogisticsOffScreenReentry : AIStateMachine
+    internal class AILogisticsOffScreenReentry
+        : AIStateMachine
     {
         public AILogisticsOffScreenReentry(EngineCore engine, SpriteInteractiveShipBase owner)
             : base(engine, owner, null)
         {
-            ChangeState(new ExitScreen(this));
-            OnApplyIntelligence += (float epoch, SiVector displacementVector, AIStateHandler state) => state.Execute(epoch);
+            SetAIState(new ExitScreen(this));
         }
 
         /// <summary>
         /// Exit the screen at a high speed, then change state to start swooping back in.
         /// </summary>
-        private class ExitScreen(AILogisticsOffScreenReentry stateMachine) : AIStateHandler
+        private class ExitScreen(AILogisticsOffScreenReentry stateMachine)
+            : AIStateHandler
         {
             public void Execute(float epoch)
             {
@@ -29,7 +30,7 @@ namespace Si.Engine.AI.Logistics
 
                 if (stateMachine.Owner.IsWithinCurrentScaledScreenBounds == false)
                 {
-                    stateMachine.ChangeState(new RotateToCenterScene(stateMachine));
+                    stateMachine.SetAIState(new RotateToCenterScene(stateMachine));
                 }
             }
         }
@@ -37,7 +38,8 @@ namespace Si.Engine.AI.Logistics
         /// <summary>
         /// After exiting the screen, rotate to face the center of the screen.
         /// </summary>
-        private class RotateToCenterScene(AILogisticsOffScreenReentry stateMachine) : AIStateHandler
+        private class RotateToCenterScene(AILogisticsOffScreenReentry stateMachine)
+            : AIStateHandler
         {
             private SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
 
@@ -45,7 +47,7 @@ namespace Si.Engine.AI.Logistics
             {
                 if (stateMachine.Owner.IsPointingAt(stateMachine.Engine.Display.CenterOfCurrentScreen, 10.0f))
                 {
-                    stateMachine.ChangeState(new ApproachTarget(stateMachine));
+                    stateMachine.SetAIState(new ApproachTarget(stateMachine));
                 }
                 else
                 {
@@ -59,7 +61,8 @@ namespace Si.Engine.AI.Logistics
             }
         }
 
-        private class ApproachTarget(AILogisticsOffScreenReentry stateMachine) : AIStateHandler
+        private class ApproachTarget(AILogisticsOffScreenReentry stateMachine)
+            : AIStateHandler
         {
             private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
             private float _lastDistance = stateMachine.Owner.DistanceTo(stateMachine.Engine.Display.CenterOfCurrentScreen);
@@ -70,7 +73,7 @@ namespace Si.Engine.AI.Logistics
 
                 if (currentDistance > _lastDistance)
                 {
-                    stateMachine.ChangeState(new ExitScreen(stateMachine));
+                    stateMachine.SetAIState(new ExitScreen(stateMachine));
                 }
                 else
                 {
