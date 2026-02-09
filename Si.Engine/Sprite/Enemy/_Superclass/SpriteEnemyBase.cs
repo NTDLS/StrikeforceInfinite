@@ -20,7 +20,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
             RecalculateOrientationMovementVector();
 
             RadarPositionIndicator = _engine.Sprites.RadarPositions.Add();
-            RadarPositionIndicator.Visible = false;
+            RadarPositionIndicator.IsVisible = false;
 
             RadarPositionText = _engine.Sprites.TextBlocks.CreateRadarPosition(
                 engine.Rendering.TextFormats.RadarPositionIndicator,
@@ -41,7 +41,14 @@ namespace Si.Engine.Sprite.Enemy._Superclass
         public void AddAIController(IAIController controller)
             => _aiControllers.Add(controller.GetType(), controller);
 
-        public IAIController GetAIController<T>() where T : IAIController => _aiControllers[typeof(T)];
+        public void ClearAIControllers()
+        {
+            _aiControllers.Clear();
+            CurrentAIController = null;
+        }
+
+        public IAIController GetAIController<T>() where T : IAIController
+            => _aiControllers[typeof(T)];
 
         public void SetCurrentAIController<T>() where T : IAIController
         {

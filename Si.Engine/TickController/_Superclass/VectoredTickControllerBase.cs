@@ -4,6 +4,7 @@ using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.Mathematics;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Si.Engine.TickController._Superclass
@@ -21,7 +22,8 @@ namespace Si.Engine.TickController._Superclass
         public T[] Visible() => SpriteManager.VisibleOfType<T>();
         public T[] All() => SpriteManager.OfType<T>();
         public subType[] OfType<subType>() where subType : T => SpriteManager.OfType<subType>();
-        public T? ByTag(string name) => SpriteManager.VisibleOfType<T>().FirstOrDefault(o => o.SpriteTag == name);
+        public T? FirstByTag(string name) => SpriteManager.OfType<T>().FirstOrDefault(o => o.SpriteTag == name);
+        public IEnumerable<T> AllByTag(string name) => SpriteManager.OfType<T>().Where(o => o.SpriteTag == name);
 
         public virtual void ExecuteWorldClockTick(float epoch, SiVector displacementVector) { }
 

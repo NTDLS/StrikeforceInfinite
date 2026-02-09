@@ -35,7 +35,7 @@ namespace Si.Engine.Manager
         public float SpeedOrientedFrameScalingFactor()
         {
             //#if DEBUG
-            //            return 1.0f; //Juts disabled because it makes it hard to debug collisions. 
+            //return 1.0f; //Juts disabled because it makes it hard to debug collisions. 
             //#endif
             float weightedThrottlePercent = (
                 (_engine.Player.Sprite.OrientationMovementVector.Magnitude() / _engine.Player.Sprite.Speed) * 0.8f //80% of zoom is standard velocity

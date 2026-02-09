@@ -1,4 +1,5 @@
 ﻿using SharpDX.DirectInput;
+using Si.Engine.Sprite;
 using Si.Engine.Sprite.MenuItem;
 using Si.Library.Mathematics;
 using System;
@@ -12,22 +13,23 @@ namespace Si.Engine.Menu._Superclass
     /// <summary>
     /// A menu instance. Allows for setting title text, adding items and managing selections.
     /// </summary>
-    public class MenuBase
+    public class MenuBase(EngineCore engine)
     {
-        protected EngineCore _engine;
+        protected EngineCore _engine = engine;
         private DateTime _lastInputHandled = DateTime.UtcNow;
 
         public List<SpriteMenuItem> Items { get; private set; } = new();
         public bool QueuedForDeletion { get; private set; }
         public Guid UID { get; private set; } = Guid.NewGuid();
 
+        public SpriteMenuItem? FirstMenuItemByTag(string name) => Items.FirstOrDefault(o => o.SpriteTag == name);
+        public IEnumerable<SpriteMenuItem> AllMenuItemsByTag(string name) => Items.Where(o => o.SpriteTag == name);
+
         public T MenuItemByKey<T>(string key) where T : SpriteMenuItem
-        {
-            return (T)Items.First(o => o.Key == key);
-        }
+            => (T)Items.First(o => o.SpriteTag == key);
 
         public List<SpriteMenuItem> VisibleSelectableItems() =>
-            Items.Where(o => o.Visible == true
+            Items.Where(o => o.IsVisible == true
             && (o.ItemType == SiMenuItemType.SelectableItem || o.ItemType == SiMenuItemType.SelectableTextInput)).ToList();
 
         #region Events.
@@ -73,11 +75,6 @@ namespace Si.Engine.Menu._Superclass
 
         #endregion
 
-        public MenuBase(EngineCore engine)
-        {
-            _engine = engine;
-        }
-
         public bool HandlesEscape() => OnEscape != null;
 
         public void Close()
@@ -87,9 +84,24 @@ namespace Si.Engine.Menu._Superclass
             _engine.Menus.Unload(this);
         }
 
+        public void CenterHorizontally(SpriteTextBlock[] textBlocks, float y, int spacing = 5)
+        {
+            var totalWidth = textBlocks.Sum(o => o.Size.Width) + (textBlocks.Length * spacing);
+
+            var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
+
+            float offsetX = (_engine.Display.TotalCanvasSize.Width / 2) - (totalWidth / 2);
+
+            foreach (var block in textBlocks)
+            {
+                block.X = offsetX;
+                offsetX += block.Size.Width + spacing;
+            }
+        }
+
         public SpriteMenuItem AddTitleItem(SiVector location, string text)
         {
-            var item = new SpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuTitle, _engine.Rendering.Materials.Brushes.OrangeRed, location)
+            var item = new SpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuTitle, _engine.Rendering.Materials.Brushes.Red, location)
             {
                 Text = text,
                 ItemType = SiMenuItemType.Title
@@ -100,7 +112,7 @@ namespace Si.Engine.Menu._Superclass
 
         public SpriteMenuItem AddTextBlock(SiVector location, string text)
         {
-            var item = new SpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuGeneral, _engine.Rendering.Materials.Brushes.LawnGreen, location)
+            var item = new SpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuGeneral, _engine.Rendering.Materials.Brushes.Red, location)
             {
                 Text = text,
                 ItemType = SiMenuItemType.TextBlock
@@ -113,7 +125,7 @@ namespace Si.Engine.Menu._Superclass
         {
             var item = new SpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuItem, _engine.Rendering.Materials.Brushes.OrangeRed, location)
             {
-                Key = key,
+                SpriteTag = key,
                 Text = text,
                 ItemType = SiMenuItemType.SelectableItem
             };
@@ -123,9 +135,9 @@ namespace Si.Engine.Menu._Superclass
 
         public SpriteMenuSelectableTextInput AddSelectableTextInput(SiVector location, string key, string text = "", int characterLimit = 100)
         {
-            var item = new SpriteMenuSelectableTextInput(_engine, this, _engine.Rendering.TextFormats.TextInputItem, _engine.Rendering.Materials.Brushes.Orange, location)
+            var item = new SpriteMenuSelectableTextInput(_engine, this, _engine.Rendering.TextFormats.TextInputItem, _engine.Rendering.Materials.Brushes.LawnGreen, location)
             {
-                Key = key,
+                SpriteTag = key,
                 Text = text,
                 CharacterLimit = characterLimit,
                 ItemType = SiMenuItemType.SelectableTextInput
@@ -331,17 +343,17 @@ namespace Si.Engine.Menu._Superclass
             }
         }
 
-        public void Render(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget)
         {
-            foreach (var item in Items.Where(o => o.Visible == true))
+            foreach (var item in Items.Where(o => o.IsVisible == true))
             {
                 item.Render(renderTarget);
             }
 
-            var selectedItem = (from o in Items where o.Visible == true && o.Selected == true select o).FirstOrDefault();
+            var selectedItem = (from o in Items where o.IsVisible == true && o.Selected == true select o).FirstOrDefault();
             if (selectedItem != null)
             {
-                _engine.Rendering.DrawRectangle(renderTarget, selectedItem.RawBounds, _engine.Rendering.Materials.Colors.Red, 2, 2, 0);
+                _engine.Rendering.DrawRectangle(renderTarget, selectedItem.RawBounds, _engine.Rendering.Materials.Colors.LawnGreen, 2, 2, 0);
             }
         }
     }

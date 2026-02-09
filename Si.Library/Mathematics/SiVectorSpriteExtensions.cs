@@ -96,7 +96,8 @@ namespace Si.Library.Mathematics
         public static float AngleToInUnsignedDegrees(this ISprite fromSprite, SiVector toLocation)
             => fromSprite.Location.AngleToInUnsignedDegrees(toLocation);
 
-        ///
+        #region IsPointingAway (sprite to sprite).
+
         /// <summary>
         /// Returns true if the sprite is pointing AT another sprite, taking into account the tolerance in degrees.
         /// </summary>
@@ -122,6 +123,10 @@ namespace Si.Library.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsPointingAway(this ISprite fromSprite, ISprite atSprite, float toleranceDegrees, float maxDistance)
             => fromSprite.IsPointingAway(atSprite, toleranceDegrees) && fromSprite.DistanceTo(atSprite) <= maxDistance;
+
+        #endregion
+
+        #region IsPointingAt (sprite to sprite).
 
         /// <summary>
         /// Returns true if the sprite is pointing AT another sprite, taking into account the tolerance in degrees.
@@ -178,6 +183,99 @@ namespace Si.Library.Mathematics
             return false;
         }
 
+        #endregion
+
+        #region IsPointingAway (sprite to vector).
+
+        /// <summary>
+        /// Returns true if the sprite is pointing AT another sprite, taking into account the tolerance in degrees.
+        /// </summary>
+        /// <param name="fromSprite">The object from which the calculation is based.</param>
+        /// <param name="atVector">The object to which the calculation is based.</param>
+        /// <param name="toleranceDegrees"></param>
+        /// <returns>True if the object is pointing away from the other given the constraints.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsPointingAway(this ISprite fromSprite, SiVector atVector, float toleranceDegrees)
+        {
+            var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atVector));
+            return deltaAngle < 180 + toleranceDegrees && deltaAngle > 180 - toleranceDegrees;
+        }
+
+        /// <summary>
+        /// Returns true if the sprite is pointing AWAY another sprite, taking into account the tolerance in degrees.
+        /// </summary>
+        /// <param name="fromSprite">The object from which the calculation is based.</param>
+        /// <param name="atVector">The object to which the calculation is based.</param>
+        /// <param name="toleranceDegrees"></param>
+        /// <param name="maxDistance"></param>
+        /// <returns>True if the object is pointing away from the other given the constraints.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsPointingAway(this ISprite fromSprite, SiVector atVector, float toleranceDegrees, float maxDistance)
+            => fromSprite.IsPointingAway(atVector, toleranceDegrees) && fromSprite.DistanceTo(atVector) <= maxDistance;
+
+        #endregion
+
+        #region IsPointingAt (sprite to vector).
+
+        /// <summary>
+        /// Returns true if the sprite is pointing AT another sprite, taking into account the tolerance in degrees.
+        /// </summary>
+        /// <param name="fromSprite">The object from which the calculation is based.</param>
+        /// <param name="atVector">The object to which the calculation is based.</param>
+        /// <param name="toleranceDegrees"></param>
+        /// <returns>True if the object is pointing at the other given the constraints.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsPointingAt(this ISprite fromSprite, SiVector atVector, float toleranceDegrees)
+        {
+            var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInSignedDegrees(atVector));
+            return deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees;
+        }
+
+        /// <summary>
+        /// Returns true if the sprite is pointing AT another sprite, taking into account the tolerance in degrees and max distance.
+        /// </summary>
+        /// <param name="fromSprite">The object from which the calculation is based.</param>
+        /// <param name="atVector">The object to which the calculation is based.</param>
+        /// <param name="toleranceDegrees">The angle in degrees to consider the object to pointing at the other.</param>
+        /// <param name="maxDistance">The distance in which the object to pointing at the other.</param>
+        /// <returns>True if the object is pointing at the other given the constraints.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsPointingAt(this ISprite fromSprite, SiVector atVector, float toleranceDegrees, float maxDistance)
+        {
+            var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atVector));
+            if (deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees)
+            {
+                return fromSprite.DistanceTo(atVector) <= maxDistance;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the sprite is pointing AT another sprite, taking into account the tolerance in degrees and min/max distance.
+        /// </summary>
+        /// <param name="fromSprite">The object from which the calculation is based.</param>
+        /// <param name="atVector">The object to which the calculation is based.</param>
+        /// <param name="toleranceDegrees">The angle in degrees to consider the object to pointing at the other.</param>
+        /// /// <param name="minDistance">The distance in which the object to pointing at the other.</param>
+        /// <param name="maxDistance">The distance in which the object to pointing at the other.</param>
+        /// <returns>True if the object is pointing at the other given the constraints.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsPointingAt(this ISprite fromSprite, SiVector atVector, float toleranceDegrees, float minDistance, float maxDistance)
+        {
+            var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atVector));
+            if (deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees)
+            {
+                return fromSprite.DistanceTo(atVector).IsBetween(minDistance, maxDistance);
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region HeadingAngleToInSignedDegrees.
+
         /// <summary>
         /// Returns the angle which would be required to rotate a sprite to be pointing at another sprite.
         /// positive figures indicate right (starboard) side and negative indicate left-hand (port) side of the object.
@@ -199,6 +297,10 @@ namespace Si.Library.Mathematics
         public static float HeadingAngleToInSignedDegrees(this ISprite fromSprite, SiVector toLocation)
             => SiMath.RadToDeg(HeadingAngleToInSignedRadians(fromSprite, toLocation)).NormalizeDegrees();
 
+        #endregion
+
+        #region HeadingAngleToInUnsignedDegrees
+
         /// <summary>
         /// Returns the angle which would be required to rotate a sprite to be pointing at another sprite.
         /// </summary>
@@ -218,6 +320,9 @@ namespace Si.Library.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float HeadingAngleToInUnsignedDegrees(this ISprite fromSprite, SiVector toLocation)
             => SiMath.RadToDeg(HeadingAngleToInSignedRadians(fromSprite, toLocation)).DenormalizeDegrees();
+
+        #endregion
+
 
         /// <summary>
         /// Calculate the angle (in signed radians [+π,-π] ) from one sprite current orientation to another position.
@@ -257,6 +362,8 @@ namespace Si.Library.Mathematics
             return (float)Math.Atan2(determinant, dot);
         }
 
+        #region DistanceTo.
+
         /// <summary>
         /// Returns the distance from one sprite to another
         /// </summary>
@@ -266,5 +373,17 @@ namespace Si.Library.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float DistanceTo(this ISprite fromSprite, ISprite toSprite)
             => fromSprite.Location.DistanceTo(toSprite.Location);
+
+        /// <summary>
+        /// Returns the distance from one sprite to another
+        /// </summary>
+        /// <param name="fromSprite">The object from which the calculation is based.</param>
+        /// <param name="toVector">The object to which the calculation is based.</param>
+        /// <returns>The calculated distance from one object to the other.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float DistanceTo(this ISprite fromSprite, SiVector toVector)
+            => fromSprite.Location.DistanceTo(toVector);
+
+        #endregion
     }
 }

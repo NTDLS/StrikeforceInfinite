@@ -1,4 +1,5 @@
-﻿using Si.Engine.AI._Superclass;
+﻿using NTDLS.Helpers;
+using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
@@ -113,6 +114,8 @@ namespace Si.Engine.AI.Logistics
 
         private void AILogistics_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler state)
         {
+            ObservedObject.EnsureNotNull();
+
             var distanceToObservedObject = Owner.DistanceTo(ObservedObject);
 
             switch (state)

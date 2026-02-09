@@ -49,7 +49,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
         {
             Throttle = SiMath.Damp(Throttle, TargetThrottle, 0.01f, epoch);
 
-            var offset = this.Orientation * new SiVector(40f, 40f);
+            var offset = Orientation * new SiVector(40f, 40f);
 
             if (_thrusterLeft.IsDeadOrExploded)
             {

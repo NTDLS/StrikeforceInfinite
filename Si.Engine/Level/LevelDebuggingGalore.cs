@@ -166,7 +166,7 @@ namespace Si.Engine.Level
 
             asteroid.Location = new SiVector(800, 800);
             asteroid.Speed = 1.0f;
-            asteroid.Orientation = SiVector.FromDegrees(-45);
+            asteroid.Orientation = SiVector.FromUnsignedDegrees(-45);
 
             asteroid.SetHullHealth(100);
         }
@@ -186,7 +186,7 @@ namespace Si.Engine.Level
 
                     asteroid.Location = new SiVector(totalXOffset - asteroidSize * col, totalYOffset - asteroidSize * row);
 
-                    asteroid.Orientation = SiVector.FromDegrees(SiRandom.Between(0, 359));
+                    asteroid.Orientation = SiVector.FromUnsignedDegrees(SiRandom.Between(0, 359));
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
                     asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());

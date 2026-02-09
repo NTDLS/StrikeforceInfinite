@@ -270,7 +270,7 @@ namespace Si.Engine.Manager
             var gamerTagsText = GetText($@"Text\GamerTags.txt");
             var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
 
-            var randomIndex = SiRandom.Between(1, gamerTags.Count);
+            var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
             return gamerTags[randomIndex];
         }
 
@@ -279,7 +279,7 @@ namespace Si.Engine.Manager
             var gamerTagsText = GetText($@"Text\LobbyNames.txt");
             var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
 
-            var randomIndex = SiRandom.Between(1, gamerTags.Count);
+            var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
             return gamerTags[randomIndex];
         }
 

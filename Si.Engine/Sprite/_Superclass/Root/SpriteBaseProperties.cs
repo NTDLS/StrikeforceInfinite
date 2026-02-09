@@ -234,7 +234,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         public int Z { get; set; } = 0;
 
         private bool _isVisible = true;
-        public bool Visible
+        public bool IsVisible
         {
             get => _isVisible && !_readyForDeletion;
             set

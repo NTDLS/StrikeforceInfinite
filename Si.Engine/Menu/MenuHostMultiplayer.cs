@@ -49,7 +49,7 @@ namespace Si.Engine.Menu
 
         private bool MenuJoinMultiplayer_OnExecuteSelection(SpriteMenuItem item)
         {
-            switch (item.Key)
+            switch (item.SpriteTag)
             {
                 case "????":
                     return false;

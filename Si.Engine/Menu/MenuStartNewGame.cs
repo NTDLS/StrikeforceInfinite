@@ -37,7 +37,7 @@ namespace Si.Engine.Menu
 
             offsetY += 50;
 
-            var helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Forward and Rotate with <W>, <A> and <S>.");
+            var helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Forward, Reverse and Rotate with <W>, <A>, <S>, and <D>.");
             helpItem.X -= helpItem.Size.Width / 2;
             offsetY += helpItem.Size.Height + 5;
 
@@ -72,7 +72,7 @@ namespace Si.Engine.Menu
 
         private bool MenuStartNewGame_OnExecuteSelection(SpriteMenuItem item)
         {
-            switch (item.Key)
+            switch (item.SpriteTag)
             {
                 case "SINGLE_PLAYER":
                     _engine.InitializeForSinglePlayer();

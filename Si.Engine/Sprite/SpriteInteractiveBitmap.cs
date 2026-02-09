@@ -1,6 +1,7 @@
 ﻿using Si.Engine.Sprite._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Rendering;
 using System;
 using static Si.Library.SiConstants;
 

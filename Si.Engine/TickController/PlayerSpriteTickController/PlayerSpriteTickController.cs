@@ -26,7 +26,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             : base(engine)
         {
             //This is where the player is created.
-            Sprite = new SpriteDebugPlayer(engine) { Visible = false };
+            Sprite = new SpriteDebugPlayer(engine) { IsVisible = false };
             engine.Sprites.Add(Sprite);
             _engine = engine;
             _inputDelay.Restart();
@@ -39,7 +39,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             Sprite.Cleanup();
 
             Sprite = SiReflection.CreateInstanceFromType<SpritePlayerBase>(playerClassType, new object[] { _engine });
-            Sprite.Visible = false;
+            Sprite.IsVisible = false;
             _engine.Sprites.Add(Sprite); //Add the player back to the sprite collection.
         }
 
@@ -56,7 +56,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             Sprite.IsLockedOnSoft = false;
             Sprite.IsLockedOnHard = false;
 
-            if (Sprite.Visible)
+            if (Sprite.IsVisible)
             {
                 #region Weapons Selection and Fire.
 
@@ -243,12 +243,12 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
 
                 if (Sprite.ThrusterAnimation != null)
                 {
-                    Sprite.ThrusterAnimation.Visible = (targetForwardAmount >= throttleFloor);
+                    Sprite.ThrusterAnimation.IsVisible = (targetForwardAmount >= throttleFloor);
                 }
 
                 if (Sprite.BoosterAnimation != null)
                 {
-                    Sprite.BoosterAnimation.Visible =
+                    Sprite.BoosterAnimation.IsVisible =
                         (targetForwardAmount >= throttleFloor)
                         && Engine.Input.IsKeyPressed(SiPlayerKey.SpeedBoost)
                         && _boostForwardVelocity > 0
@@ -282,27 +282,27 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
         {
             Sprite.Reset();
 
-            Engine.Sprites.TextBlocks.PlayerStatsText.Visible = true;
+            Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
             Engine.Sprites.RenderRadar = true;
-            Sprite.Visible = true;
+            Sprite.IsVisible = true;
             Sprite.ShipEngineIdleSound.Play();
             Sprite.AllSystemsGoSound.Play();
         }
 
         public void Show()
         {
-            Engine.Sprites.TextBlocks.PlayerStatsText.Visible = true;
+            Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
             Engine.Sprites.RenderRadar = true;
-            Sprite.Visible = true;
+            Sprite.IsVisible = true;
             Sprite.ShipEngineIdleSound.Play();
             Sprite.AllSystemsGoSound.Play();
         }
 
         public void Hide()
         {
-            Engine.Sprites.TextBlocks.PlayerStatsText.Visible = false;
+            Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = false;
             Engine.Sprites.RenderRadar = false;
-            Sprite.Visible = false;
+            Sprite.IsVisible = false;
             Sprite.ShipEngineIdleSound.Stop();
             Sprite.ShipEngineRoarSound.Stop();
         }

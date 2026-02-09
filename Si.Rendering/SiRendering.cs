@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Si.Rendering
@@ -410,7 +409,7 @@ namespace Si.Rendering
 
         public void DrawPolygon(RenderTarget renderTarget, float x, float y, PointF[] points, RawColor4 color, float strokeWidth = 1.0f)
         {
-            if (points.Count() == 0)
+            if (points.Length == 0)
             {
                 return;
             }

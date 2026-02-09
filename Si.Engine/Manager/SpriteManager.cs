@@ -78,7 +78,7 @@ namespace Si.Engine.Manager
             TextBlocks = new TextBlocksSpriteTickController(_engine, this);
         }
 
-        public SpriteBase[] Visible() => _collection.Where(o => o.Visible == true).ToArray();
+        public SpriteBase[] Visible() => _collection.Where(o => o.IsVisible == true).ToArray();
 
         public SpriteBase[] All() => _collection.ToArray();
 
@@ -158,7 +158,7 @@ namespace Si.Engine.Manager
 
             if (_engine.Player.Sprite.IsDeadOrExploded)
             {
-                _engine.Player.Sprite.Visible = false;
+                _engine.Player.Sprite.IsVisible = false;
                 _engine.Player.Sprite.ReviveDeadOrExploded();
                 _engine.Menus.Show(new MenuStartNewGame(_engine));
             }
@@ -188,21 +188,21 @@ namespace Si.Engine.Manager
             => _collection.OfType<T>().ToArray();
 
         public T[] VisibleOfType<T>() where T : SpriteBase
-            => _collection.OfType<T>().Where(o => o.Visible).ToArray();
+            => _collection.OfType<T>().Where(o => o.IsVisible).ToArray();
 
         public T?[] VisibleDamageable<T>() where T : class
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.Visible && o.Metadata.MunitionDetection).Select(o => o as T).ToArray();
+            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.MunitionDetection).Select(o => o as T).ToArray();
 
         //Probably faster than VisibleDamageable<T>().
         public SpriteInteractiveBase[] VisibleDamageable()
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.Visible && o.Metadata.MunitionDetection == true).ToArray();
+            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).ToArray();
 
         public T?[] VisibleCollidable<T>() where T : class
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.Visible && o.Metadata.CollisionDetection).Select(o => o as T).ToArray();
+            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.CollisionDetection).Select(o => o as T).ToArray();
 
         //Probably faster than VisibleCollidable<T>().
         public SpriteInteractiveBase[] VisibleCollidable()
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.Visible && o.Metadata.CollisionDetection == true).ToArray();
+            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).ToArray();
 
         public PredictedKinematicBody[] VisibleCollidablePredictiveMove(float epoch)
             => _engine.Sprites.VisibleCollidable().Select(o => new PredictedKinematicBody(o, _engine.Display.RenderWindowPosition, epoch)).ToArray();
@@ -212,7 +212,7 @@ namespace Si.Engine.Manager
             var result = new List<SpriteBase>();
             foreach (var type in types)
             {
-                result.AddRange(_collection.Where(o => o.Visible == true && type.IsAssignableFrom(o.GetType())));
+                result.AddRange(_collection.Where(o => o.IsVisible == true && type.IsAssignableFrom(o.GetType())));
             }
 
             return result.ToArray();
@@ -244,7 +244,7 @@ namespace Si.Engine.Manager
         {
             var objects = new List<SpriteBase>();
 
-            foreach (var obj in _collection.Where(o => o.Visible == true))
+            foreach (var obj in _collection.Where(o => o.IsVisible == true))
             {
                 if (obj != with)
                 {
@@ -264,7 +264,7 @@ namespace Si.Engine.Manager
         {
             var objects = new List<SpriteBase>();
 
-            foreach (var obj in _collection.Where(o => o.Visible == true))
+            foreach (var obj in _collection.Where(o => o.IsVisible == true))
             {
                 if (obj.IntersectsAABB(location, size))
                 {
@@ -278,7 +278,7 @@ namespace Si.Engine.Manager
         {
             var objects = new List<SpriteBase>();
 
-            foreach (var obj in _collection.Where(o => o.Visible == true || includeInvisible))
+            foreach (var obj in _collection.Where(o => o.IsVisible == true || includeInvisible))
             {
                 if (obj.RenderLocationIntersectsAABB(location, size))
                 {
@@ -296,7 +296,7 @@ namespace Si.Engine.Manager
 
         public void RenderPostScaling(SharpDX.Direct2D1.RenderTarget renderTarget)
         {
-            foreach (var sprite in _collection.Where(o => o.Visible == true && o.RenderScaleOrder == SiRenderScaleOrder.PostScale).OrderBy(o => o.Z))
+            foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == SiRenderScaleOrder.PostScale).OrderBy(o => o.Z))
             {
                 sprite.Render(renderTarget);
             }
@@ -320,7 +320,7 @@ namespace Si.Engine.Manager
                     _radarOffset = new SiVector(radarBgImage.Size.Width / 2.0f, radarBgImage.Size.Height / 2.0f); //Best guess until player is visible.
                 }
 
-                if (_engine.Player.Sprite is not null && _engine.Player.Sprite.Visible)
+                if (_engine.Player.Sprite is not null && _engine.Player.Sprite.IsVisible)
                 {
                     float centerOfRadarX = (int)(radarBgImage.Size.Width / 2.0f) - 2.0f; //Subtract half the dot size.
                     float centerOfRadarY = (int)(radarBgImage.Size.Height / 2.0f) - 2.0f; //Subtract half the dot size.
@@ -331,7 +331,7 @@ namespace Si.Engine.Manager
                         );
 
                     //Render radar:
-                    foreach (var sprite in _collection.Where(o => o.Visible == true))
+                    foreach (var sprite in _collection.Where(o => o.IsVisible == true))
                     {
                         //SiPoint scale, SiPoint< float > offset
                         int x = (int)(_radarOffset.X + sprite.Location.X * _radarScale.X);
@@ -343,7 +343,7 @@ namespace Si.Engine.Manager
                             && y < _engine.Display.NaturalScreenSize.Height - radarBgImage.Size.Height + radarBgImage.Size.Height
                             )
                         {
-                            if ((sprite is SpritePlayerBase || sprite is SpriteEnemyBase || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.Visible == true)
+                            if ((sprite is SpritePlayerBase || sprite is SpriteEnemyBase || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.IsVisible == true)
                             {
                                 sprite.RenderRadar(renderTarget, x, y);
                             }
@@ -367,7 +367,7 @@ namespace Si.Engine.Manager
         /// <returns></returns>
         public void RenderPreScaling(SharpDX.Direct2D1.RenderTarget renderTarget)
         {
-            foreach (var sprite in _collection.Where(o => o.Visible == true && o.RenderScaleOrder == SiRenderScaleOrder.PreScale).OrderBy(o => o.Z))
+            foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == SiRenderScaleOrder.PreScale).OrderBy(o => o.Z))
             {
                 if (sprite.IsWithinCurrentScaledScreenBounds)
                 {

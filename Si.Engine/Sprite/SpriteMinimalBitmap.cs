@@ -2,6 +2,7 @@
 using Si.Engine.Sprite.SupportingClasses.Metadata;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Rendering;
 using System;
 using static Si.Library.SiConstants;
 

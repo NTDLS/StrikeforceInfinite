@@ -89,7 +89,7 @@ namespace Si.Engine.Sprite
             _currentRow = 0;
             _currentColumn = 0;
             _lastFrameChange = DateTime.Now.AddSeconds(-60);
-            Visible = true;
+            IsVisible = true;
         }
 
         public override void Render(RenderTarget renderTarget)

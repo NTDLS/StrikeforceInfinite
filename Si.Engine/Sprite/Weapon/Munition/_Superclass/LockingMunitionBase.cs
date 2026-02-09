@@ -26,7 +26,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         {
             if (LockedTarget != null)
             {
-                if (LockedTarget.Visible)
+                if (LockedTarget.IsVisible)
                 {
                     var deltaAngle = this.HeadingAngleToInSignedDegrees(LockedTarget);
 

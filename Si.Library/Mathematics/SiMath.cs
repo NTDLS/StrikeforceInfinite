@@ -70,6 +70,9 @@ namespace Si.Library.Mathematics
         public const float RadiansPerDegree = Pi / 180.0f;
         public const float DegreesPerRadian = 180.0f / Pi;
 
+        public static float SignedDegreesToUnsigned(float signedAngle)
+            => (signedAngle % 360f + 360f) % 360f;
+
         /// <summary>
         /// Converts radians to degrees
         /// </summary>

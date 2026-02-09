@@ -50,6 +50,22 @@ namespace Si.Engine.Sprite
             Format = format;
         }
 
+        public void CenterXY()
+        {
+            X = _engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
+            Y = _engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
+        }
+
+        public void CenterY()
+        {
+            Y = _engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
+        }
+
+        public void CenterX()
+        {
+            X = (_engine.Display.NaturalScreenSize.Width / 2) - (Size.Width / 2);
+        }
+
         public void SetTextAndCenterXY(string text)
         {
             Text = text;
@@ -71,7 +87,7 @@ namespace Si.Engine.Sprite
 
         public override void Render(RenderTarget renderTarget)
         {
-            if (Visible)
+            if (IsVisible)
             {
                 _engine.Rendering.DrawText(renderTarget,
                     RenderLocation.X,

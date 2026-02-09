@@ -1,4 +1,5 @@
-﻿using Si.Engine.AI._Superclass;
+﻿using NTDLS.Helpers;
+using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
@@ -18,7 +19,7 @@ namespace Si.Engine.AI.Logistics
         private readonly float _idealMaxDistance = SiRandom.Variance(8000, 0.20f);
         private readonly float _idealMinDistance = SiRandom.Variance(2500, 0.10f);
 
-        public AILogisticsMeander(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase observedObject)
+        public AILogisticsMeander(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase? observedObject)
             : base(engine, owner, observedObject)
         {
             owner.RecalculateOrientationMovementVector();
@@ -27,6 +28,8 @@ namespace Si.Engine.AI.Logistics
 
         private void AILogistics_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler state)
         {
+            ObservedObject.EnsureNotNull();
+
             var distanceToObservedObject = Owner.DistanceTo(ObservedObject);
 
             if (distanceToObservedObject > _idealMaxDistance)

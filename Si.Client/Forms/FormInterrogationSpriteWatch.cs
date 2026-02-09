@@ -46,14 +46,26 @@ namespace Si.Client.Forms
 
             if (sprite is SpriteEnemyBase enemy)
             {
-                UpsertVariable("AI Controller", $"{enemy.CurrentAIController}");
+                if (enemy.CurrentAIController != null)
+                {
+                    string aiControllerTypeName = enemy.CurrentAIController.GetType().Name;
+                    if (enemy.CurrentAIController.CurrentState != null)
+                    {
+                        aiControllerTypeName += $" (State: {enemy.CurrentAIController.CurrentState.GetType().Name})";
+                    }
+                    UpsertVariable("AI Controller", $"{aiControllerTypeName}");
+                }
+                else
+                {
+                    UpsertVariable("AI Controller", $"<none>");
+                }
             }
 
             UpsertVariable("UID", $"{sprite.UID}");
             UpsertVariable("Owner UID", $"{sprite.OwnerUID:n0}");
             UpsertVariable("Name", $"{sprite.GetType().Name}");
             UpsertVariable("Tag", $"{sprite.SpriteTag:n0}");
-            UpsertVariable("Is Visible?", $"{sprite.Visible:n0}");
+            UpsertVariable("Is Visible?", $"{sprite.IsVisible:n0}");
             UpsertVariable("Size", $"{sprite.Size:n0}");
             UpsertVariable("Bounds", $"{sprite.Bounds:n0}");
             UpsertVariable("Ready for Delete?", $"{sprite.IsQueuedForDeletion}");

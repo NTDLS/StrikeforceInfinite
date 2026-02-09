@@ -360,7 +360,7 @@ namespace Si.Engine.Manager
 
             var sprite = SiReflection.CreateInstanceFromTypeName<SpriteBase>(typeName, new[] { _engine });
             sprite.Location = new SiVector(x, y);
-            sprite.Visible = true;
+            sprite.IsVisible = true;
 
             _engine.Sprites.Add(sprite);
 
@@ -674,7 +674,7 @@ namespace Si.Engine.Manager
                 var sprite = o.Where(o => o.UID == uid).FirstOrDefault();
                 if (sprite != null)
                 {
-                    sprite.Visible = command.ParameterValue<bool>("state");
+                    sprite.IsVisible = command.ParameterValue<bool>("state");
                 }
             });
         }

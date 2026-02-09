@@ -21,14 +21,14 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
 
             ThrusterAnimation = new SpriteAnimation(_engine, @"Sprites\Animation\ThrustStandard32x32.png")
             {
-                Visible = false,
+                IsVisible = false,
                 OwnerUID = UID
             };
             _engine.Sprites.Animations.Insert(ThrusterAnimation, this);
 
             BoosterAnimation = new SpriteAnimation(_engine, @"Sprites\Animation\ThrustBoost32x32.png")
             {
-                Visible = false,
+                IsVisible = false,
                 OwnerUID = UID
             };
             _engine.Sprites.Animations.Insert(BoosterAnimation, this);
@@ -42,12 +42,12 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
         {
             var pointBehind = (Orientation * -1) * new SiVector(20, 20);
 
-            if (ThrusterAnimation != null && ThrusterAnimation.Visible)
+            if (ThrusterAnimation != null && ThrusterAnimation.IsVisible)
             {
                 ThrusterAnimation.Orientation = Orientation;
                 ThrusterAnimation.Location = Location + pointBehind;
             }
-            if (BoosterAnimation != null && BoosterAnimation.Visible)
+            if (BoosterAnimation != null && BoosterAnimation.IsVisible)
             {
                 BoosterAnimation.Orientation = Orientation;
                 BoosterAnimation.Location = Location + pointBehind;
@@ -58,11 +58,11 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
         {
             if (ThrusterAnimation != null)
             {
-                ThrusterAnimation.Visible = false;
+                ThrusterAnimation.IsVisible = false;
             }
             if (BoosterAnimation != null)
             {
-                BoosterAnimation.Visible = false;
+                BoosterAnimation.IsVisible = false;
             }
         }
 
@@ -76,11 +76,11 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
 
             if (ThrusterAnimation != null)
             {
-                ThrusterAnimation.Visible = OrientationMovementVector.Sum() > 0;
+                ThrusterAnimation.IsVisible = OrientationMovementVector.Sum() > 0;
             }
             if (BoosterAnimation != null)
             {
-                BoosterAnimation.Visible = Throttle > 0;
+                BoosterAnimation.IsVisible = Throttle > 0;
             }
         }
 

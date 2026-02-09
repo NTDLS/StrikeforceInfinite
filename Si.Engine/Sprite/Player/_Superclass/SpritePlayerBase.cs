@@ -70,7 +70,7 @@ namespace Si.Engine.Sprite.Player._Superclass
                 ThrusterAnimation = new SpriteAnimation(_engine, @"Sprites\Animation\ThrustStandard32x32.png")
                 {
                     SpriteTag = "PlayerForwardThrust",
-                    Visible = false,
+                    IsVisible = false,
                     OwnerUID = UID
                 };
                 _engine.Sprites.Animations.Insert(ThrusterAnimation, this);
@@ -82,7 +82,7 @@ namespace Si.Engine.Sprite.Player._Superclass
                 BoosterAnimation = new SpriteAnimation(_engine, @"Sprites\Animation\ThrustBoost32x32.png")
                 {
                     SpriteTag = "PlayerForwardThrust",
-                    Visible = false,
+                    IsVisible = false,
                     OwnerUID = UID
                 };
                 _engine.Sprites.Animations.Insert(BoosterAnimation, this);
@@ -102,10 +102,10 @@ namespace Si.Engine.Sprite.Player._Superclass
         public override void VisibilityChanged()
         {
             UpdateThrustAnimationPositions();
-            if (Visible == false)
+            if (IsVisible == false)
             {
-                if (ThrusterAnimation != null) ThrusterAnimation.Visible = false;
-                if (BoosterAnimation != null) BoosterAnimation.Visible = false;
+                if (ThrusterAnimation != null) ThrusterAnimation.IsVisible = false;
+                if (BoosterAnimation != null) BoosterAnimation.IsVisible = false;
                 ShipEngineIdleSound?.Stop();
                 ShipEngineRoarSound?.Stop();
             }
@@ -166,7 +166,7 @@ namespace Si.Engine.Sprite.Player._Superclass
 
             if (ThrusterAnimation != null)
             {
-                if (Visible)
+                if (IsVisible)
                 {
                     ThrusterAnimation.Orientation = Orientation;
                     ThrusterAnimation.Location = Location + pointBehind;
@@ -175,7 +175,7 @@ namespace Si.Engine.Sprite.Player._Superclass
 
             if (BoosterAnimation != null)
             {
-                if (Visible)
+                if (IsVisible)
                 {
                     BoosterAnimation.Orientation = Orientation;
                     BoosterAnimation.Location = Location + pointBehind;

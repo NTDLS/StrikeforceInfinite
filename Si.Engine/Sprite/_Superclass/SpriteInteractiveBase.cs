@@ -283,7 +283,7 @@ namespace Si.Engine.Sprite._Superclass
         {
             base.Render(renderTarget);
 
-            if (Visible)
+            if (IsVisible)
             {
                 if (_lockedOnImage != null && IsLockedOnHard)
                 {
@@ -340,7 +340,7 @@ namespace Si.Engine.Sprite._Superclass
         /// </summary>
         public virtual void PerformCollisionDetection(float epoch)
         {
-            if (!Metadata.CollisionDetection)
+            if (!Metadata.CollisionDetection || IsDeadOrExploded || !IsVisible)
             {
                 return;
             }

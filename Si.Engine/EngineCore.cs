@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using NTDLS.Helpers;
 using NTDLS.Semaphore;
 using Si.Engine.AI._Superclass;
+using Si.Engine.AI.Logistics;
 using Si.Engine.EngineLibrary;
 using Si.Engine.Interrogation._Superclass;
 using Si.Engine.Manager;
@@ -9,6 +10,9 @@ using Si.Engine.Menu;
 using Si.Engine.MultiPlay;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
+using Si.Engine.Sprite.Enemy._Superclass;
+using Si.Engine.Sprite.Enemy.Boss.Devastator;
+using Si.Engine.Sprite.Enemy.Peon;
 using Si.Engine.TickController.PlayerSpriteTickController;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Library;
@@ -282,7 +286,7 @@ namespace Si.Engine
 
         public void ResetGame()
         {
-            Sprites.TextBlocks.PlayerStatsText.Visible = false;
+            Sprites.TextBlocks.PlayerStatsText.IsVisible = false;
             Situations.End();
             Sprites.QueueDeletionOfActionSprites();
         }
@@ -433,7 +437,38 @@ namespace Si.Engine
 
                 Sprites.SkyBoxes.AddAtCenterUniverse();
 
+                Events.Add(1, () => AddDemoSprites());
                 Events.Add(1, () => Menus.Show(new MenuStartNewGame(this)));
+            }
+        }
+
+        void AddDemoSprites()
+        {
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyMerc>());
+
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyMinnow>());
+
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>());
+
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyScav>());
+
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemySerf>());
+
+            for (int i = 0; i < 3; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>());
+
+            void ApplySpriteStates(SpriteEnemyBase sprite)
+            {
+                sprite.ClearAIControllers();
+                sprite.Location = Display.RandomOnScreenLocation();
+                sprite.Orientation = SiVector.FromUnsignedDegrees(sprite.Location.AngleToInUnsignedDegrees(Player.Sprite.Location) + SiRandom.Variance(360, 0.15f));
+                sprite.AddAIController(new AILogisticsDemo(this, sprite));
+                sprite.SetCurrentAIController<AILogisticsDemo>();
             }
         }
 

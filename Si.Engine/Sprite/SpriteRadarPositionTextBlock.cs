@@ -11,7 +11,7 @@ namespace Si.Engine.Sprite
             : base(engine, format, color, location, false)
         {
             RenderScaleOrder = SiRenderScaleOrder.PreScale;
-            Visible = false;
+            IsVisible = false;
         }
 
         private float _distanceValue;

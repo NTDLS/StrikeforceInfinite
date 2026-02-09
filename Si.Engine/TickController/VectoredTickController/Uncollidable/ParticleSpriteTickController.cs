@@ -56,7 +56,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
             var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1), color)
             {
-                Visible = true
+                IsVisible = true
             };
             SpriteManager.Add(obj);
             return obj;
@@ -66,7 +66,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
             var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1))
             {
-                Visible = true
+                IsVisible = true
             };
             SpriteManager.Add(obj);
             return obj;
@@ -142,7 +142,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
                 var p = AddAt(nozzleWorldPos, color, size ?? new Size(2, 2));
 
-                p.Visible = true;
+                p.IsVisible = true;
                 p.VectorType = ParticleVectorType.FollowOrientation;
                 p.Orientation.Degrees = SiMath.WrapDegreesUnsigned(angle);
                 p.Speed = SiRandom.Between(minSpeed, maxSpeed);

@@ -62,11 +62,11 @@ namespace Si.Engine.TickController.UnvectoredTickController
 
                     foreach (var member in group)
                     {
-                        member.Visible = false;
+                        member.IsVisible = false;
                     }
 
                     group[0].Text = min.ToString("#,#") + "-" + max.ToString("#,#");
-                    group[0].Visible = true;
+                    group[0].IsVisible = true;
                 }
             }
         }

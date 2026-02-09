@@ -79,9 +79,9 @@ namespace Si.Engine.Sprite._Superclass
                 {
                     RadarPositionText.DistanceValue = Math.Abs(DistanceTo(_engine.Player.Sprite));
 
-                    RadarPositionText.Visible = true;
+                    RadarPositionText.IsVisible = _engine.Player.Sprite.IsVisible;
                     RadarPositionText.IsFixedPosition = true;
-                    RadarPositionIndicator.Visible = true;
+                    RadarPositionIndicator.IsVisible = _engine.Player.Sprite.IsVisible;
                     RadarPositionIndicator.IsFixedPosition = true;
 
                     float requiredAngleRadians = _engine.Player.Sprite.AngleToInSignedRadians(this);
@@ -96,8 +96,8 @@ namespace Si.Engine.Sprite._Superclass
                 }
                 else
                 {
-                    RadarPositionText.Visible = false;
-                    RadarPositionIndicator.Visible = false;
+                    RadarPositionText.IsVisible = false;
+                    RadarPositionIndicator.IsVisible = false;
                 }
             }
         }

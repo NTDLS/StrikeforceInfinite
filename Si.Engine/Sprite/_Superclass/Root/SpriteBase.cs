@@ -30,7 +30,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         public void QueueForDelete()
         {
             _readyForDeletion = true;
-            Visible = false;
+            IsVisible = false;
 
             foreach (var attachment in Attachments)
             {
@@ -101,7 +101,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public virtual void Cleanup()
         {
-            Visible = false;
+            IsVisible = false;
 
             _engine.Sprites.QueueAllForDeletionByOwner(UID);
 
@@ -126,7 +126,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 + $"\t               Owner UID: {OwnerUID:n0}\r\n"
                 + $"\t                    Type: {GetType().Name}\r\n"
                 + $"\t                     Tag: {SpriteTag:n0}\r\n"
-                + $"\t             Is Visible?: {Visible:n0}\r\n"
+                + $"\t             Is Visible?: {IsVisible:n0}\r\n"
                 + $"\t                    Size: {Size:n0}\r\n"
                 + $"\t                  Bounds: {Bounds:n0}\r\n"
                 + $"\t       Ready for Delete?: {IsQueuedForDeletion}\r\n"

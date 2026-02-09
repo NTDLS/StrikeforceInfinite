@@ -4,7 +4,6 @@ namespace Si.Library.Mathematics
 {
     public static class SiVectorExtensions
     {
-
         /// <summary>
         /// Rotate a point around another point by a certain angle.
         /// 

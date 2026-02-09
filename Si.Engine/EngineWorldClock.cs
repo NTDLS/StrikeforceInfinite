@@ -124,7 +124,7 @@ namespace Si.Engine
 
             _engine.Sprites.TextBlocks.PausedText.X = _engine.Display.NaturalScreenSize.Width / 2 - _engine.Sprites.TextBlocks.PausedText.Size.Width / 2;
             _engine.Sprites.TextBlocks.PausedText.Y = _engine.Display.NaturalScreenSize.Height / 2 - _engine.Sprites.TextBlocks.PausedText.Size.Height / 2;
-            _engine.Sprites.TextBlocks.PausedText.Visible = _isPaused;
+            _engine.Sprites.TextBlocks.PausedText.IsVisible = _isPaused;
         }
 
         public void Pause()

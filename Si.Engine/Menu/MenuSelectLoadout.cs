@@ -77,7 +77,7 @@ namespace Si.Engine.Menu
             playerSprites.ForEach(sprite =>
             {
                 _engine.Sprites.AddPlayer(sprite);
-                sprite.ThrusterAnimation.Visible = true;
+                sprite.ThrusterAnimation.IsVisible = true;
             });
 
             OnSelectionChanged += PlayerLoadoutMenu_OnSelectionChanged;

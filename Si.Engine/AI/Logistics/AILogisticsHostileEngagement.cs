@@ -1,4 +1,5 @@
-﻿using Si.Engine.AI._Superclass;
+﻿using NTDLS.Helpers;
+using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
@@ -25,13 +26,15 @@ namespace Si.Engine.AI.Logistics
         {
             private readonly AILogisticsHostileEngagement _stateMachine;
             private SimpleDirection _rotateDirection;
-            private float _rotationAngle = SiRandom.Variance(5, 10f);
+            private float _rotationAngle = SiRandom.Variance(5, 0.10f);
             private readonly SiVector _targetLocation;
+            private readonly SpriteBase _observedObject;
 
             public GotoRadiusOfObservedObject(AILogisticsHostileEngagement stateMachine)
             {
                 _stateMachine = stateMachine;
-                _targetLocation = stateMachine.ObservedObject.Location.RandomAtDistance(10, 50);
+                _observedObject = stateMachine.ObservedObject.EnsureNotNull();
+                _targetLocation = _observedObject.Location.RandomAtDistance(10, 50);
 
                 var deltaAngle = stateMachine.Owner.HeadingAngleToInSignedDegrees(_targetLocation);
                 _rotateDirection = deltaAngle >= 0 ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
@@ -52,7 +55,7 @@ namespace Si.Engine.AI.Logistics
                     //Lets just change the state....
                 }
 
-                if (_stateMachine.Owner.RotateMovementVectorIfNotPointingAt(_stateMachine.ObservedObject, _rotationAngle * epoch, _rotateDirection, 10.0f) == false)
+                if (_stateMachine.Owner.RotateMovementVectorIfNotPointingAt(_observedObject, _rotationAngle * epoch, _rotateDirection, 10.0f) == false)
                 {
                     _stateMachine.ChangeState(new SteadyOnCurrentPath(_stateMachine));
                 }

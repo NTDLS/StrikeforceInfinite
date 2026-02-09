@@ -60,12 +60,21 @@ namespace Si.Library.Mathematics
         public RectangleF ToRectangleF() => new(X, Y, 1f, 1f);
 
         /// <summary>
+        /// Returns an SiVector from an angle in signed degrees.
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SiVector FromSignedDegrees(float angleInDegrees)
+            => new(SiMath.DegToRad(SiMath.SignedDegreesToUnsigned(angleInDegrees)));
+
+        /// <summary>
         /// Returns an SiVector from an angle in degrees.
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SiVector FromDegrees(float angleInDegrees)
+        public static SiVector FromUnsignedDegrees(float angleInDegrees)
             => new(SiMath.DegToRad(angleInDegrees));
 
         /// <summary>
@@ -74,7 +83,7 @@ namespace Si.Library.Mathematics
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SiVector FromRadians(float angleInRadians)
+        public static SiVector FromUnsignedRadians(float angleInRadians)
             => new(angleInRadians);
 
         /// <summary>
