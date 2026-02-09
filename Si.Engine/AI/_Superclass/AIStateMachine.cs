@@ -2,6 +2,7 @@
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.Mathematics;
 using System;
+using System.Collections.Generic;
 
 namespace Si.Engine.AI._Superclass
 {
@@ -22,9 +23,9 @@ namespace Si.Engine.AI._Superclass
         public SpriteInteractiveShipBase Owner { get; private set; }
 
         /// <summary>
-        /// Reference to the object that the sprite is observing.
+        /// Collection of objects that the sprite is observing.
         /// </summary>
-        public SpriteBase? ObservedObject { get; private set; }
+        public List<SpriteBase> ObservedObjects { get; private set; } = [];
 
         /// <summary>
         /// The current state that the AI is in.
@@ -57,11 +58,11 @@ namespace Si.Engine.AI._Superclass
         /// <param name="engine">Reference to the engine core class.</param>
         /// <param name="owner">Reference to the sprite that is being controlled by this AI model.</param>
         /// <param name="observedObject">Reference to the object that the sprite is observing (probably the player, but can be other objects).</param>
-        public AIStateMachine(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase? observedObject)
+        public AIStateMachine(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase>? observedObjects = null)
         {
             Engine = engine;
             Owner = owner;
-            ObservedObject = observedObject;
+            ObservedObjects = observedObjects ?? [];
         }
 
         public void ApplyIntelligence(float epoch, SiVector displacementVector)

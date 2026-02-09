@@ -4,6 +4,8 @@ using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.Mathematics;
+using System.Collections.Generic;
+using System.Linq;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.AI.Logistics
@@ -16,8 +18,8 @@ namespace Si.Engine.AI.Logistics
     {
         private readonly string _boostResourceName = "AILogisticsHostileEngagement_Boost";
 
-        public AILogisticsHostileEngagement(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase observedObject)
-            : base(engine, owner, observedObject)
+        public AILogisticsHostileEngagement(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase>? observedObjects)
+            : base(engine, owner, observedObjects)
         {
             owner.OnHit += Owner_OnHit;
 
@@ -40,7 +42,7 @@ namespace Si.Engine.AI.Logistics
             public GotoRadiusOfObservedObject(AILogisticsHostileEngagement stateMachine)
             {
                 _stateMachine = stateMachine;
-                _observedObject = stateMachine.ObservedObject.EnsureNotNull();
+                _observedObject = stateMachine.ObservedObjects.First();
                 _targetLocation = _observedObject.Location.RandomAtDistance(10, 50);
 
                 var deltaAngle = stateMachine.Owner.HeadingAngleToInSignedDegrees(_targetLocation);

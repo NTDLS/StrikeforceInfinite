@@ -4,7 +4,8 @@ using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Enemy.Starbase.Garrison
 {
-    internal class SpriteEnemyStarbaseGarrisonTurret : SpriteAttachment
+    internal class SpriteEnemyStarbaseGarrisonTurret
+        : SpriteAttachment
     {
         public bool FireToggler { get; set; }
 

@@ -6,14 +6,15 @@ using System.Linq;
 
 namespace Si.Engine.Sprite.Enemy.Peon
 {
-    internal class SpriteEnemyPhoenix : SpriteEnemyPeonBase
+    internal class SpriteEnemyPhoenix
+        : SpriteEnemyPeonBase
     {
         public SpriteEnemyPhoenix(EngineCore engine)
             : base(engine, @"Sprites\Enemy\Peon\Phoenix.png")
         {
-            AddAIController(new AILogisticsHostileEngagement(_engine, this, _engine.Player.Sprite));
-            AddAIController(new AILogisticsTaunt(_engine, this, _engine.Player.Sprite));
-            AddAIController(new AILogisticsMeander(_engine, this, _engine.Player.Sprite));
+            AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
+            AddAIController(new AILogisticsTaunt(_engine, this, [_engine.Player.Sprite]));
+            AddAIController(new AILogisticsMeander(_engine, this, [_engine.Player.Sprite]));
 
             SetCurrentAIController<AILogisticsTaunt>();
         }

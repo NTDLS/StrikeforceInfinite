@@ -11,7 +11,7 @@ namespace Si.Engine.Sprite.Enemy.Debug
         public SpriteEnemyDebugPoly(EngineCore engine)
             : base(engine, @"Sprites\Enemy\DebugPoly\Hull.png")
         {
-            AddAIController(new AILogisticsHostileEngagement(_engine, this, _engine.Player.Sprite));
+            AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
             SetCurrentAIController<AILogisticsHostileEngagement>();
         }
     }

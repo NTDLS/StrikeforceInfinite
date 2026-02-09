@@ -18,7 +18,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
         {
             Orientation.Degrees = SiRandom.Between(0, 359);
 
-            AddAIController(new AILogisticsHostileEngagement(_engine, this, _engine.Player.Sprite));
+            AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
 
             SetCurrentAIController<AILogisticsHostileEngagement>();
 

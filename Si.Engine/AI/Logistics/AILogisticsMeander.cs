@@ -5,6 +5,8 @@ using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.Mathematics;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Si.Engine.AI.Logistics
 {
@@ -20,28 +22,28 @@ namespace Si.Engine.AI.Logistics
         private readonly float _idealMaxDistance = SiRandom.Variance(8000, 0.20f);
         private readonly float _idealMinDistance = SiRandom.Variance(2500, 0.10f);
 
-        public AILogisticsMeander(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase? observedObject)
-            : base(engine, owner, observedObject)
+        public AILogisticsMeander(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase>? observedObjects)
+            : base(engine, owner, observedObjects)
         {
             OnApplyIntelligence += AILogistics_OnApplyIntelligence;
         }
 
         private void AILogistics_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler? state)
         {
-            ObservedObject.EnsureNotNull();
+            var observedObject = ObservedObjects.First();
 
-            var distanceToObservedObject = Owner.DistanceTo(ObservedObject);
+            var distanceToObservedObject = Owner.DistanceTo(observedObject);
 
             if (distanceToObservedObject > _idealMaxDistance)
             {
-                if (Owner.IsPointingAt(ObservedObject, _varianceAngleForTravel) == false)
+                if (Owner.IsPointingAt(observedObject, _varianceAngleForTravel) == false)
                 {
                     Owner.RotateMovementVector(_angleToAdd * epoch);
                 }
             }
             else if (distanceToObservedObject < _idealMinDistance)
             {
-                if (Owner.IsPointingAway(ObservedObject, _varianceAngleForTravel) == false)
+                if (Owner.IsPointingAway(observedObject, _varianceAngleForTravel) == false)
                 {
                     Owner.RotateMovementVector(_angleToAdd * epoch);
                 }
