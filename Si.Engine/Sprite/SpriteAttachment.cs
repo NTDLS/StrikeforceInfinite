@@ -5,7 +5,8 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite
 {
-    public class SpriteAttachment : SpriteInteractiveBase
+    public class SpriteAttachment
+        : SpriteInteractiveBase
     {
         private SpriteInteractiveBase? _rootOwner = null;
         private SpriteInteractiveBase? _owner = null;

@@ -20,7 +20,7 @@ namespace Si.Engine.AI._Superclass
         /// <summary>
         /// Reference to the sprite that is being controlled by this AI model.
         /// </summary>
-        public SpriteInteractiveShipBase Owner { get; private set; }
+        public SpriteInteractiveBase Owner { get; private set; }
 
         /// <summary>
         /// Collection of objects that the sprite is observing.
@@ -58,7 +58,7 @@ namespace Si.Engine.AI._Superclass
         /// <param name="engine">Reference to the engine core class.</param>
         /// <param name="owner">Reference to the sprite that is being controlled by this AI model.</param>
         /// <param name="observedObject">Reference to the object that the sprite is observing (probably the player, but can be other objects).</param>
-        public AIStateMachine(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase>? observedObjects = null)
+        public AIStateMachine(EngineCore engine, SpriteInteractiveBase owner, List<SpriteBase>? observedObjects = null)
         {
             Engine = engine;
             Owner = owner;

@@ -12,7 +12,6 @@ using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 
 namespace Si.Engine.Sprite._Superclass
 {
@@ -122,11 +121,13 @@ namespace Si.Engine.Sprite._Superclass
             SetHullHealth(Metadata.Hull);
             SetShieldHealth(Metadata.Shields);
 
-            Metadata.Weapons?.ForEach(weapon => {
+            Metadata.Weapons?.ForEach(weapon =>
+            {
                 AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount);
             });
 
-            Metadata.Attachments?.ForEach(attachment => {
+            Metadata.Attachments?.ForEach(attachment =>
+            {
                 AttachOfType(attachment.Type, attachment.LocationRelativeToOwner);
             });
 
