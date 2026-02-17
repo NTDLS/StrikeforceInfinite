@@ -247,5 +247,20 @@ namespace Si.Engine.Sprite._Superclass._Root
                 }
             }
         }
+
+        /// <summary>
+        /// Calculates the minimum and maximum points of the axis-aligned bounding box (AABB) for the current object
+        /// based on its location and size.
+        /// </summary>
+        /// <remarks>Use this method to determine the spatial boundaries of the object in 2D space, which
+        /// is useful for collision detection, rendering, or spatial queries.</remarks>
+        /// <returns>A tuple containing two <see cref="SiVector"/> values: the minimum point at the current location, and the
+        /// maximum point determined by adding the width and height to the location.</returns>
+        public (SiVector min, SiVector max) GetAabbMinMax()
+        {
+            var min = Location;
+            var max = new SiVector( Location.X + Size.Width, Location.Y + Size.Height);
+            return (min, max);
+        }
     }
 }

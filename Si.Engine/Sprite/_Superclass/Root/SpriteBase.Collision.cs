@@ -83,6 +83,11 @@ namespace Si.Engine.Sprite._Superclass._Root
             //Get the starting position of the sprite before it was last moved.
             var hitTestPosition = new SiVector(Location - (OrientationMovementVector * epoch));
             var directionVector = OrientationMovementVector.Normalize();
+
+            //We want to step at least 1 pixel at a time, but for larger sprites we can step more
+            // (half the size of the sprite) to save on performance without effecting accuracy.
+            float step = MathF.Max(1f, MathF.Max(Size.Width, Size.Height) * 0.5f);
+
             var totalTravelDistance = Math.Abs(Location.DistanceTo(hitTestPosition));
 
             if (totalTravelDistance > _engine.Display.TotalCanvasDiagonal)
@@ -95,9 +100,10 @@ namespace Si.Engine.Sprite._Superclass._Root
             }
 
             //Hit-test each position along the sprite path.
-            for (int i = 0; i < totalTravelDistance; i++)
+            for (float traveled = 0; traveled < totalTravelDistance; traveled += step)
             {
-                hitTestPosition += directionVector;
+                hitTestPosition += directionVector * step;
+
                 foreach (var obj in objectsThatCanBeHit)
                 {
                     if (obj.IntersectsAABB(hitTestPosition))
@@ -400,7 +406,6 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// Determines if two axis-aligned bounding boxes (AABB) intersect.
         /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
-        /// <returns></returns>
         public bool IntersectsAABB(SiVector location)
         {
             var alteredHitBox = new RectangleF(location.X, location.Y, 1f, 1f);

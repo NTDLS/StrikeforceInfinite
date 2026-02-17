@@ -8,9 +8,12 @@ using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
+using System;
 using System.Collections.Concurrent;
+using System.Drawing;
 using System.Linq;
 using static Si.Library.SiConstants;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
@@ -49,6 +52,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             };
         }
 
+
         public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
         {
             var munitions = VisibleOfType<MunitionBase>();
@@ -67,12 +71,25 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                 {
                     if (munition.IsDeadOrExploded == false)
                     {
+                        var source = munition.FiredFromType == SiFiredFromType.Player ? objectsPlayerCanHit : objectsEnemyCanHit;
+                        var endPos = munition.Location;
+                        var startPos = endPos - (munition.OrientationMovementVector * epoch);
+                        var halfStep = new SiVector(munition.Size.Width * 0.5f, munition.Size.Height * 0.5f);
+                        var bulletSwept = SiAxisAlignedBoundingBox.SweptAabbForMotion(startPos, endPos, halfStep);
+
+                        // This allocates - we can avoid allocations later with a pooled List.
+                        var candidates = source.Where(o =>
+                        {
+                            var objAabb = o.GetAabbMinMax();
+                            return SiAxisAlignedBoundingBox.AabbOverlaps(bulletSwept, objAabb);
+                        }).ToArray();
+
                         threadPoolTracker.Enqueue(() => //Enqueue an item into the thread pool.
                         {
                             munition.ApplyMotion(epoch, displacementVector); //Move the munition.
                             munition.ApplyIntelligence(epoch, displacementVector);
 
-                            var hitObject = munition.FindFirstReverseCollisionAlongMovementVectorAABB(munition.FiredFromType == SiFiredFromType.Player ? objectsPlayerCanHit : objectsEnemyCanHit, epoch);
+                            var hitObject = munition.FindFirstReverseCollisionAlongMovementVectorAABB(candidates, epoch);
                             if (hitObject != null)
                             {
                                 hitObjects.Add(new(munition, hitObject));
