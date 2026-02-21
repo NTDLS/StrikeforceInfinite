@@ -34,7 +34,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                                 Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
 
-                            SpriteManager.Stars.Add(Engine.Display.RenderWindowPosition.X + x, Engine.Display.RenderWindowPosition.Y + y);
+                            SpriteManager.Stars.Add(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
                         }
 
                     }
@@ -44,7 +44,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, (int)-displacementVector.X);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
-                            SpriteManager.Stars.Add(Engine.Display.RenderWindowPosition.X + x, Engine.Display.RenderWindowPosition.Y + y);
+                            SpriteManager.Stars.Add(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
                         }
 
                     }
@@ -54,7 +54,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(Engine.Display.TotalCanvasSize.Height - (int)displacementVector.Y, Engine.Display.TotalCanvasSize.Height);
-                            SpriteManager.Stars.Add(Engine.Display.RenderWindowPosition.X + x, Engine.Display.RenderWindowPosition.Y + y);
+                            SpriteManager.Stars.Add(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
                         }
                     }
                     else if (displacementVector.Y < 0)
@@ -63,7 +63,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, (int)-displacementVector.Y);
-                            SpriteManager.Stars.Add(Engine.Display.RenderWindowPosition.X + x, Engine.Display.RenderWindowPosition.Y + y);
+                            SpriteManager.Stars.Add(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
                         }
                     }
                 }

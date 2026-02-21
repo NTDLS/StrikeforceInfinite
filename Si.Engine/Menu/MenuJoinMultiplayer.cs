@@ -95,7 +95,7 @@ namespace Si.Engine.Menu
             return true;
         }
 
-        public override void Render(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public override void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
             var lobbyMenuItems = AllMenuItemsByTag("LOBBY_ITEM");
             if (lobbyMenuItems.Any())
@@ -113,7 +113,7 @@ namespace Si.Engine.Menu
                 _engine.Rendering.DrawRectangle(renderTarget, fullBox, _engine.Rendering.Materials.Colors.Red, 2, 2, 0);
             }
 
-            base.Render(renderTarget);
+            base.Render(renderTarget, epoch);
         }
     }
 }

@@ -159,13 +159,13 @@ namespace Si.Engine.Manager
 
         public void CommandHandler_Display_RenderWindowPosition_Get(InterrogationCommand command)
         {
-            _interrogationForm.WriteLine($"\t{_engine.Display.RenderWindowPosition}", System.Drawing.Color.Black);
+            _interrogationForm.WriteLine($"\t{_engine.Display.CameraPosition}", System.Drawing.Color.Black);
         }
 
         public void CommandHandler_Display_RenderWindowPosition_Set(InterrogationCommand command)
         {
-            _engine.Display.RenderWindowPosition.X = command.ParameterValue<float>("x");
-            _engine.Display.RenderWindowPosition.Y = command.ParameterValue<float>("y");
+            _engine.Display.CameraPosition.X = command.ParameterValue<float>("x");
+            _engine.Display.CameraPosition.Y = command.ParameterValue<float>("y");
         }
 
         public void CommandHandler_Display_RenderWindowPosition_CenterOn(InterrogationCommand command)
@@ -176,8 +176,8 @@ namespace Si.Engine.Manager
                 var baseSprite = o.Where(o => o.UID == spriteUID).FirstOrDefault();
                 if (baseSprite != null)
                 {
-                    _engine.Display.RenderWindowPosition.X = baseSprite.X;
-                    _engine.Display.RenderWindowPosition.Y = baseSprite.Y;
+                    _engine.Display.CameraPosition.X = baseSprite.X;
+                    _engine.Display.CameraPosition.Y = baseSprite.Y;
                 }
             });
         }
@@ -263,7 +263,7 @@ namespace Si.Engine.Manager
         public void CommandHandler_Display_Metrics(InterrogationCommand command)
         {
             var infoText =
-                  $"\t         Background Offset: {_engine.Display.RenderWindowPosition}\r\n"
+                  $"\t         Background Offset: {_engine.Display.CameraPosition}\r\n"
                 + $"\t           Base Draw Scale: {_engine.Display.BaseDrawScale:n4}\r\n"
                 + $"\t             Overdraw Size: {_engine.Display.OverdrawSize}\r\n"
                 + $"\t       Natural Screen Size: {_engine.Display.NaturalScreenSize}\r\n"

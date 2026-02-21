@@ -16,7 +16,8 @@ namespace Si.Engine.TickController.UnvectoredTickController
         public MenuTickController(EngineCore engine)
             : base(engine) { }
 
-        public void Render(RenderTarget renderTarget) => _current?.Render(renderTarget);
+        public void Render(RenderTarget renderTarget, float epoch)
+            => _current?.Render(renderTarget, epoch);
 
         public void Show(MenuBase menu)
         {

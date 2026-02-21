@@ -9,7 +9,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         //public virtual SiSpriteActionVector GetMultiplayVector() { return null; }
         private DateTime _lastMultiplaySpriteVectorUpdate = DateTime.MinValue;
 
-        public virtual SiSpriteActionVector? GetMultiPlayActionVector()
+        public virtual SiSpriteActionMotion? GetMultiPlayActionVector()
         {
             if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
             {
@@ -17,7 +17,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 {
                     _lastMultiplaySpriteVectorUpdate = DateTime.UtcNow;
 
-                    return new SiSpriteActionVector(UID)
+                    return new SiSpriteActionMotion(UID)
                     {
                         X = X,
                         Y = Y,

@@ -37,7 +37,7 @@ namespace Si.Engine.MultiPlay
             }
         }
 
-        public void SiSpriteActionVector(DmContext context, SiSpriteActionVector payload)
+        public void SiSpriteActionVector(DmContext context, SiSpriteActionMotion payload)
         {
             try
             {

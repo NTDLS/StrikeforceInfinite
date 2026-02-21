@@ -72,7 +72,7 @@ namespace Si.Client.Forms
             UpsertVariable("Is Dead?", $"{sprite.IsDeadOrExploded}");
             UpsertVariable("Location", $"{sprite.Location}");
             UpsertVariable("Location (Render)", $"{sprite.RenderLocation}");
-            UpsertVariable("Background Offset", $"{_engine.Display.RenderWindowPosition}");
+            UpsertVariable("Background Offset", $"{_engine.Display.CameraPosition}");
             UpsertVariable("Rotation Speed", $"{sprite.RotationSpeed:n2}");
             UpsertVariable("Speed", $"{sprite.Speed:n2}");
             UpsertVariable("Throttle", $"{sprite.Throttle:n2}");

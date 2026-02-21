@@ -92,7 +92,7 @@ namespace Si.Engine.Sprite
             IsVisible = true;
         }
 
-        public override void Render(RenderTarget renderTarget)
+        public override void Render(RenderTarget renderTarget, float epoch)
         {
             var sourceRect = new RawRectangleF(
                 _currentColumn * Size.Width,

@@ -85,7 +85,7 @@ namespace Si.Engine.Sprite
             X = _engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
         }
 
-        public override void Render(RenderTarget renderTarget)
+        public override void Render(RenderTarget renderTarget, float epoch)
         {
             if (IsVisible)
             {

@@ -157,7 +157,7 @@ namespace Si.Engine
                 //We only render if we are in play or edit mode.
                 if (_engine.ExecutionMode == SiEngineExecutionMode.Play || _engine.ExecutionMode == SiEngineExecutionMode.Edit)
                 {
-                    _engine.RenderEverything();
+                    _engine.RenderEverything(elapsedEpochMilliseconds / 1000.0f);
                 }
 
                 //When running as a server host or VSync is disabled, we need to enforce the framerate ourselves.
@@ -171,6 +171,11 @@ namespace Si.Engine
                     {
                         if (_engine.Settings.YieldRemainingFrameTime) Thread.Yield();
                     }
+                }
+
+                if (_engine.Settings.DebugThrottleMs > 0)
+                {
+                    Thread.Sleep(_engine.Settings.DebugThrottleMs);
                 }
 
                 if (_isPaused) Thread.Yield();

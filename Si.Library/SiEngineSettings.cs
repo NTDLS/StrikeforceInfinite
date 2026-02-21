@@ -64,5 +64,11 @@ namespace Si.Library
         /// How much larger than the screen (NaturalScreenSize) that we will make the canvas so we can zoom-out. (2 = 2x larger than screen.).
         /// </summary>
         public float OverdrawScale { get; set; } = 1.5f;
+
+        /// <summary>
+        /// Introduces a delay between frames for debugging purposes.
+        /// 0 = disabled.
+        /// </summary>
+        public int DebugThrottleMs { get; set; } = 0;
     }
 }

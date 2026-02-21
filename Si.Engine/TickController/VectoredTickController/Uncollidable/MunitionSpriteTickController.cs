@@ -10,10 +10,8 @@ using Si.Library;
 using Si.Library.Mathematics;
 using System;
 using System.Collections.Concurrent;
-using System.Drawing;
 using System.Linq;
 using static Si.Library.SiConstants;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
@@ -52,7 +50,6 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             };
         }
 
-
         public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
         {
             var munitions = VisibleOfType<MunitionBase>();
@@ -71,32 +68,25 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                 {
                     if (munition.IsDeadOrExploded == false)
                     {
-                        var source = munition.FiredFromType == SiFiredFromType.Player ? objectsPlayerCanHit : objectsEnemyCanHit;
-                        var endPos = munition.Location;
-                        var startPos = endPos - (munition.OrientationMovementVector * epoch);
-                        var halfStep = new SiVector(munition.Size.Width * 0.5f, munition.Size.Height * 0.5f);
-                        var bulletSwept = SiAxisAlignedBoundingBox.SweptAabbForMotion(startPos, endPos, halfStep);
+                        var hitCandidates = munition.FiredFromType == SiFiredFromType.Player ? objectsPlayerCanHit : objectsEnemyCanHit;
 
                         // This allocates - we can avoid allocations later with a pooled List.
-                        var candidates = source.Where(o =>
-                        {
-                            var objAabb = o.GetAabbMinMax();
-                            return SiAxisAlignedBoundingBox.AabbOverlaps(bulletSwept, objAabb);
-                        }).ToArray();
+                        var filteredCandidates = hitCandidates.Where(o
+                            => SiAxisAlignedBoundingBox.AabbOverlaps(munition.SweptAabbForMotion(epoch), o.GetAabbMinMaxRotated())).ToArray();
 
                         threadPoolTracker.Enqueue(() => //Enqueue an item into the thread pool.
                         {
                             munition.ApplyMotion(epoch, displacementVector); //Move the munition.
                             munition.ApplyIntelligence(epoch, displacementVector);
+                            Engine.MultiplayLobby?.ActionBuffer.RecordMotion(munition.GetMultiPlayActionVector());
 
-                            var hitObject = munition.FindFirstReverseCollisionAlongMovementVectorAABB(candidates, epoch);
-                            if (hitObject != null)
+                            if (filteredCandidates.Length > 0)
                             {
-                                hitObjects.Add(new(munition, hitObject));
-                            }
-                            else
-                            {
-                                Engine.MultiplayLobby?.ActionBuffer.RecordVector(munition.GetMultiPlayActionVector());
+                                var hitObject = munition.FindFirstReverseCollisionAlongMovementVectorAabb(filteredCandidates, epoch);
+                                if (hitObject != null)
+                                {
+                                    hitObjects.Add(new(munition, hitObject));
+                                }
                             }
                         });
                     }
@@ -114,10 +104,10 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                     if (hitObject.Object.IsDeadOrExploded == false)
                     {
                         hitObject.Munition.Explode();
-
                         Engine.MultiplayLobby?.ActionBuffer.RecordExplode(hitObject.Munition.UID);
 
                         hitObject.Object.MunitionHit(hitObject.Munition);
+                        Engine.MultiplayLobby?.ActionBuffer.RecordHit(hitObject.Object.UID, hitObject.Munition.UID);
                     }
                 }
             }

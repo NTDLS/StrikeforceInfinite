@@ -25,7 +25,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             foreach (var particle in Visible())
             {
                 particle.ApplyMotion(epoch, displacementVector);
-                Engine.MultiplayLobby?.ActionBuffer.RecordVector(particle.GetMultiPlayActionVector());
+                Engine.MultiplayLobby?.ActionBuffer.RecordMotion(particle.GetMultiPlayActionVector());
             }
         }
 

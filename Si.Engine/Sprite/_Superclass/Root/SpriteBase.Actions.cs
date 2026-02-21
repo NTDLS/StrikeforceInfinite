@@ -20,7 +20,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// <returns></returns>
         public virtual bool TryMunitionHit(MunitionBase munition, SiVector hitTestPosition)
         {
-            if (IntersectsAABB(hitTestPosition))
+            if (IntersectsAabb(hitTestPosition))
             {
                 Hit(munition);
                 if (HullHealth <= 0)

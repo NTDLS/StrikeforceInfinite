@@ -64,7 +64,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         #endregion
 
         /// <summary>
-        /// Number or radians to rotate the sprite Orientation along its center at each call to ApplyMotion().
+        /// Number or radians=per-second to rotate the sprite Orientation along its center at each call to ApplyMotion().
         /// Negative for counter-clockwise, positive for clockwise.
         /// </summary>
         public float RotationSpeed { get; set; } = 0;
@@ -96,6 +96,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         public SiVector RadarDotSize { get; set; } = new SiVector(4, 4);
         public bool IsWithinCurrentScaledScreenBounds => _engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds);
         public bool IsHighlighted { get; set; } = false;
+        public bool HighlightSweptMotionRect { get; set; } = false;
         public int HullHealth { get; private set; } = 0; //Ship hit-points.
         public int ShieldHealth { get; private set; } = 0; //Shield hit-points, these take 1/2 damage.
 
@@ -199,7 +200,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 }
                 else
                 {
-                    return _location - _engine.Display.RenderWindowPosition;
+                    return _location - _engine.Display.CameraPosition;
                 }
             }
         }
@@ -246,21 +247,6 @@ namespace Si.Engine.Sprite._Superclass._Root
                     VisibilityChanged();
                 }
             }
-        }
-
-        /// <summary>
-        /// Calculates the minimum and maximum points of the axis-aligned bounding box (AABB) for the current object
-        /// based on its location and size.
-        /// </summary>
-        /// <remarks>Use this method to determine the spatial boundaries of the object in 2D space, which
-        /// is useful for collision detection, rendering, or spatial queries.</remarks>
-        /// <returns>A tuple containing two <see cref="SiVector"/> values: the minimum point at the current location, and the
-        /// maximum point determined by adding the width and height to the location.</returns>
-        public (SiVector min, SiVector max) GetAabbMinMax()
-        {
-            var min = Location;
-            var max = new SiVector( Location.X + Size.Width, Location.Y + Size.Height);
-            return (min, max);
         }
     }
 }

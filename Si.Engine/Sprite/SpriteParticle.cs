@@ -106,7 +106,7 @@ namespace Si.Engine.Sprite
             }
         }
 
-        public override void Render(RenderTarget renderTarget)
+        public override void Render(RenderTarget renderTarget, float epoch)
         {
             if (IsVisible)
             {

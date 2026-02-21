@@ -137,7 +137,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 + $"\t                          {Orientation.DegreesSigned:n2}deg\r\n"
                 + $"\t                          {Orientation.RadiansSigned:n2}rad\r\n"
                 + extraInfo
-                + $"\t       Background Offset: {_engine.Display.RenderWindowPosition}\r\n"
+                + $"\t       Background Offset: {_engine.Display.CameraPosition}\r\n"
                 + $"\t                  Thrust: {OrientationMovementVector * 100:n2}\r\n"
                 + $"\t                   Boost: {Throttle * 100:n2}\r\n"
                 + $"\t                    Hull: {HullHealth:n0}\r\n"

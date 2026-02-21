@@ -270,7 +270,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             var displacementVector = Sprite.OrientationMovementVector * epoch;
 
             //Scroll the background.
-            Engine.Display.RenderWindowPosition += displacementVector;
+            Engine.Display.CameraPosition += displacementVector;
 
             //Move the player in the direction of the background. This keeps the player visually in place, which is in the center screen.
             Sprite.Location += displacementVector;

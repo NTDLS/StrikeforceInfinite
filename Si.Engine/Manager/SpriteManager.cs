@@ -205,7 +205,7 @@ namespace Si.Engine.Manager
             => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).ToArray();
 
         public PredictedKinematicBody[] VisibleCollidablePredictiveMove(float epoch)
-            => _engine.Sprites.VisibleCollidable().Select(o => new PredictedKinematicBody(o, _engine.Display.RenderWindowPosition, epoch)).ToArray();
+            => _engine.Sprites.VisibleCollidable().Select(o => new PredictedKinematicBody(o, _engine.Display.CameraPosition, epoch)).ToArray();
 
         public SpriteBase[] VisibleOfTypes(Type[] types)
         {
@@ -294,11 +294,11 @@ namespace Si.Engine.Manager
             return sprite;
         }
 
-        public void RenderPostScaling(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public void RenderPostScaling(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
             foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == SiRenderScaleOrder.PostScale).OrderBy(o => o.Z))
             {
-                sprite.Render(renderTarget);
+                sprite.Render(renderTarget, epoch);
             }
 
             if (RenderRadar)
@@ -365,18 +365,18 @@ namespace Si.Engine.Manager
         /// for drawing then the previous frame will be returned.
         /// </summary>
         /// <returns></returns>
-        public void RenderPreScaling(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public void RenderPreScaling(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
             foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == SiRenderScaleOrder.PreScale).OrderBy(o => o.Z))
             {
                 if (sprite.IsWithinCurrentScaledScreenBounds)
                 {
-                    sprite.Render(renderTarget);
+                    sprite.Render(renderTarget, epoch);
                 }
             }
 
-            _engine.Player.Sprite?.Render(renderTarget);
-            _engine.Menus.Render(renderTarget);
+            _engine.Player.Sprite?.Render(renderTarget, epoch);
+            _engine.Menus.Render(renderTarget, epoch);
 
             if (_engine.Settings.HighlightNaturalBounds)
             {

@@ -20,8 +20,11 @@ namespace Si.MpClientToServerComms
         /// <summary>
         /// Buffers sprite vector information so that all of the updates can be sent at one time at the end of the game loop.
         /// </summary>
-        public void RecordVector(SiSpriteActionVector? action)
+        public void RecordMotion(SiSpriteActionMotion? action)
             => AppendBuffer(action);
+
+        public void RecordHit(uint spriteUID, uint munitionUID)
+            => AppendBuffer(new SiSpriteActionHit(spriteUID, munitionUID));
 
         public void RecordSpawn(SiSpriteActionSpawn? action)
             => AppendBuffer(action);

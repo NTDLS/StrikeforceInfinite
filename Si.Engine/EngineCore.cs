@@ -296,7 +296,7 @@ namespace Si.Engine
             Situations.AdvanceLevel();
         }
 
-        public void RenderEverything()
+        public void RenderEverything(float epoch)
         {
             try
             {
@@ -315,7 +315,7 @@ namespace Si.Engine
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.EditorBackground);
                         }
 
-                        Sprites.RenderPreScaling(o.IntermediateRenderTarget);
+                        Sprites.RenderPreScaling(o.IntermediateRenderTarget, epoch);
 
                         //Render-Loop invocations are not meant to be performant. They are meant for one-off tasks that need to
                         //  be done in the render loop - which is why we attempt to optimize them out with _renderLoopInvocationCount.
@@ -336,11 +336,11 @@ namespace Si.Engine
                             foreach (var collision in Collisions.Detected)
                             {
                                 Rendering.DrawRectangle(o.IntermediateRenderTarget,
-                                    -Display.RenderWindowPosition.X, -Display.RenderWindowPosition.Y,
+                                    -Display.CameraPosition.X, -Display.CameraPosition.Y,
                                     collision.Value.OverlapRectangle.ToRawRectangleF(),
                                     Rendering.Materials.Colors.Orange, 1, 2, 0);
 
-                                Rendering.DrawPolygon(o.IntermediateRenderTarget, -Display.RenderWindowPosition.X, -Display.RenderWindowPosition.Y,
+                                Rendering.DrawPolygon(o.IntermediateRenderTarget, -Display.CameraPosition.X, -Display.CameraPosition.Y,
                                     collision.Value.OverlapPolygon,
                                     Rendering.Materials.Colors.Cyan, 3);
 
@@ -368,7 +368,7 @@ namespace Si.Engine
                             Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, (float)Display.BaseDrawScale);
                         }
 
-                        Sprites.RenderPostScaling(o.ScreenRenderTarget);
+                        Sprites.RenderPostScaling(o.ScreenRenderTarget, epoch);
 
                         o.ScreenRenderTarget.EndDraw();
                     }

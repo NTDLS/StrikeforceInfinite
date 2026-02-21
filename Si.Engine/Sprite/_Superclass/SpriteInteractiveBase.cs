@@ -298,9 +298,9 @@ namespace Si.Engine.Sprite._Superclass
 
         #endregion
 
-        public override void Render(RenderTarget renderTarget)
+        public override void Render(RenderTarget renderTarget, float epoch)
         {
-            base.Render(renderTarget);
+            base.Render(renderTarget, epoch);
 
             if (IsVisible)
             {
@@ -317,7 +317,7 @@ namespace Si.Engine.Sprite._Superclass
 
         public override bool TryMunitionHit(MunitionBase munition, SiVector hitTestPosition)
         {
-            if (IntersectsAABB(hitTestPosition))
+            if (IntersectsAabb(hitTestPosition))
             {
                 Hit(munition);
                 if (HullHealth <= 0)
@@ -385,7 +385,7 @@ namespace Si.Engine.Sprite._Superclass
 
             //IsHighlighted = true;
 
-            var thisCollidable = new PredictedKinematicBody(this, _engine.Display.RenderWindowPosition, epoch);
+            var thisCollidable = new PredictedKinematicBody(this, _engine.Display.CameraPosition, epoch);
 
             foreach (var other in _engine.Collisions.Collidables)
             {

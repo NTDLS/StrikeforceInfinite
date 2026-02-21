@@ -12,7 +12,7 @@ namespace Si.Engine.Sprite._Superclass._Root
     /// </summary>
     public partial class SpriteBase : ISprite
     {
-        public virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
             if (_isVisible && _image != null)
             {
@@ -22,6 +22,22 @@ namespace Si.Engine.Sprite._Superclass._Root
                 {
                     _engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
                         _engine.Rendering.Materials.Colors.Red, 0, 1, Orientation.RadiansSigned);
+                }
+
+                if (HighlightSweptMotionRect)
+                {
+                    //We use negative epoch because when we reach rendering, the sprite has already moved.
+                    var swept = SweptAabbForMotion(-epoch);
+
+                    var sweptRect = new RawRectangleF(
+                        swept.min.X - _engine.Display.CameraPosition.X,
+                        swept.min.Y - _engine.Display.CameraPosition.Y,
+                        swept.max.X - _engine.Display.CameraPosition.X,
+                        swept.max.Y - _engine.Display.CameraPosition.Y
+                    );
+
+                    _engine.Rendering.DrawRectangle(renderTarget, sweptRect,
+                            _engine.Rendering.Materials.Colors.Red, 0, 1, 0);
                 }
             }
         }

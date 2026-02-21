@@ -343,11 +343,11 @@ namespace Si.Engine.Menu._Superclass
             }
         }
 
-        public virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
             foreach (var item in Items.Where(o => o.IsVisible == true))
             {
-                item.Render(renderTarget);
+                item.Render(renderTarget, epoch);
             }
 
             var selectedItem = (from o in Items where o.IsVisible == true && o.Selected == true select o).FirstOrDefault();
