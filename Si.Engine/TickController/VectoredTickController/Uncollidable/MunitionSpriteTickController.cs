@@ -70,7 +70,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                     {
                         var hitCandidates = munition.FiredFromType == SiFiredFromType.Player ? objectsPlayerCanHit : objectsEnemyCanHit;
 
-                        // This allocates - we can avoid allocations later with a pooled List.
+                        //Filter the hit candidates down to just those that are in the general area of the munition's movement this tick,
+                        //  so we don't have to do expensive collision checks against objects that are nowhere near the munition.
                         var filteredCandidates = hitCandidates.Where(o
                             => SiAxisAlignedBoundingBox.AabbOverlaps(munition.SweptAabbForMotion(epoch), o.GetAabbMinMaxRotated())).ToArray();
 
