@@ -15,7 +15,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
         public SpriteEnemyBase(EngineCore engine, string imagePath)
                 : base(engine, imagePath)
         {
-            RecalculateOrientationMovementVector();
+            RecalculateMovementVectorFromOrientation();
 
             RadarPositionIndicator = _engine.Sprites.RadarPositions.Add();
             RadarPositionIndicator.IsVisible = false;
@@ -29,7 +29,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
 
         public virtual void AfterCreate() { }
 
-        public override void RotationChanged() => LocationChanged();
+        public override void OrientationChanged() => LocationChanged();
 
         public override void Explode()
         {

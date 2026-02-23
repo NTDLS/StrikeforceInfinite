@@ -10,7 +10,7 @@ namespace Si.Engine.Sprite.Enemy.Boss._Superclass
         public SpriteEnemyBossBase(EngineCore engine, string imagePath)
             : base(engine, imagePath)
         {
-            RecalculateOrientationMovementVector();
+            RecalculateMovementVectorFromOrientation();
         }
 
         public override void Cleanup()

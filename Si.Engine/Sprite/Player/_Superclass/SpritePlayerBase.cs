@@ -111,7 +111,7 @@ namespace Si.Engine.Sprite.Player._Superclass
             }
         }
 
-        public override void RotationChanged() => UpdateThrustAnimationPositions();
+        public override void OrientationChanged() => UpdateThrustAnimationPositions();
 
         //The player position does not change, only the background offset changes... hmmmm. :/
         public override void LocationChanged() => UpdateThrustAnimationPositions();

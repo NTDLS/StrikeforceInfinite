@@ -68,7 +68,7 @@ namespace Si.Engine.AI._Superclass
         public void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
             OnApplyIntelligence?.Invoke(epoch, displacementVector, CurrentAIState);
-            CurrentAIState?.Execute(epoch);
+            CurrentAIState?.Tick(epoch);
         }
 
         /// <summary>

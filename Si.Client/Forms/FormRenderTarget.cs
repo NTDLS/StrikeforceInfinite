@@ -106,8 +106,8 @@ namespace Si.Client
 
                 highlightedSprites.Clear();
 
-                var sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One).ToList();
-                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One))
+                var sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One()).ToList();
+                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One()))
                 {
                     sprites.Add(_engine.Player.Sprite);
                 }
@@ -128,8 +128,8 @@ namespace Si.Client
 
             _engine.Invoke(() =>
             {
-                sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One, true).ToList();
-                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One))
+                sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One(), true).ToList();
+                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One()))
                 {
                     sprites.Add(_engine.Player.Sprite);
                 }

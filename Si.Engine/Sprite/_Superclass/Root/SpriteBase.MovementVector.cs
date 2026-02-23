@@ -13,28 +13,28 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateOrientationMovementVector() => OrientationMovementVector = MakeOrientationMovementVector();
+        public void RecalculateMovementVectorFromOrientation() => MovementVector = MakeMovementVectorFromOrientation();
 
         /// <summary>
         /// Sets the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateMovementVectorFromAngle(float angleInRadians) => OrientationMovementVector = MakeMovementVectorFromAngle(angleInRadians);
+        public void RecalculateMovementVectorFromAngle(float angleInRadians) => MovementVector = MakeMovementVectorFromAngle(angleInRadians);
 
         /// <summary>
         /// Sets the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateMovementVectorFromAngle(SiVector angle) => OrientationMovementVector = MakeMovementVectorFromAngle(angle);
+        public void RecalculateMovementVectorFromAngle(SiVector angle) => MovementVector = MakeMovementVectorFromAngle(angle);
 
         /// <summary>
         /// Returns the movement vector in the direction of the sprite taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public SiVector MakeOrientationMovementVector() => Orientation * Speed * Throttle;
+        public SiVector MakeMovementVectorFromOrientation() => Orientation * Speed * Throttle;
 
         /// <summary>
         /// Returns the movement vector in the given direction taking into account the speed and throttle percentage.

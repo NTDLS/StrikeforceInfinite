@@ -18,6 +18,6 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public virtual void VisibilityChanged() { }
         public virtual void LocationChanged() { }
-        public virtual void RotationChanged() { }
+        public virtual void OrientationChanged() { }
     }
 }

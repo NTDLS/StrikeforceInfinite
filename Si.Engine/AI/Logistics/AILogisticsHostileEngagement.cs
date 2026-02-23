@@ -48,7 +48,7 @@ namespace Si.Engine.AI.Logistics
                 _rotateDirection = deltaAngle >= 0 ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
             }
 
-            public void Execute(float epoch)
+            public void Tick(float epoch)
             {
                 if (_stateMachine.TimeInStateSeconds >= 2.5)
                 {
@@ -81,7 +81,7 @@ namespace Si.Engine.AI.Logistics
                 _stateMachine = stateMachine;
             }
 
-            public void Execute(float epoch)
+            public void Tick(float epoch)
             {
                 //Throttle down during the steady path.
                 _stateMachine.Owner.Throttle = SiMath.Damp(_stateMachine.Owner.Throttle, 0, 0.2f, epoch);

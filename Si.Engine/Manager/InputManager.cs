@@ -389,7 +389,7 @@ namespace Si.Engine.Manager
 
                     asteroid.Location = new SiVector(totalXOffset - asteroidSize * col, totalYOffset - asteroidSize * row);
 
-                    asteroid.Orientation = SiVector.FromUnsignedDegrees(SiRandom.Between(0, 359));
+                    asteroid.Orientation = SiRandom.RandomOrientationVector();
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
                     asteroid.Throttle = 1;

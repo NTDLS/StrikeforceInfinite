@@ -12,10 +12,10 @@ namespace Si.Library.Mathematics
     {
         public delegate void OnChange(SiVector vector);
         public event OnChange? OnChangeEvent;
-        public static readonly SiVector Zero = new();
-        public static readonly SiVector UnitOfX = new(1f, 0f);
-        public static readonly SiVector UnitOfY = new(0f, 1f);
-        public static readonly SiVector One = new(1f, 1f);
+        public static SiVector Zero() => new();
+        public static SiVector UnitOfX() => new(1f, 0f);
+        public static SiVector UnitOfY() => new(0f, 1f);
+        public static SiVector One() => new(1f, 1f);
 
         public float X;
         public float Y;
@@ -139,7 +139,7 @@ namespace Si.Library.Mathematics
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static SiVector operator /(SiVector original, float scaleFactor)
-            => scaleFactor == 0 ? Zero : new SiVector(original.X / scaleFactor, original.Y / scaleFactor);
+            => scaleFactor == 0 ? Zero() : new SiVector(original.X / scaleFactor, original.Y / scaleFactor);
 
         #endregion
 
@@ -211,7 +211,7 @@ namespace Si.Library.Mathematics
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static SiVector operator /(SiVector original, SiVector scaleFactor)
-            => scaleFactor.X == 0.0 && scaleFactor.Y == 0.0 ? One :
+            => scaleFactor.X == 0.0 && scaleFactor.Y == 0.0 ? One() :
                 new SiVector(original.X / scaleFactor.X, original.Y / scaleFactor.Y);
 
         #endregion
@@ -350,6 +350,13 @@ namespace Si.Library.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Rotate(float angleRadians)
         {
+            // If orientation is invalid, reset it
+            if (X == 0f && Y == 0f)
+            {
+                X = 1f;
+                Y = 0f;
+            }
+
             var cosTheta = (float)Math.Cos(angleRadians);
             var sinTheta = (float)Math.Sin(angleRadians);
 

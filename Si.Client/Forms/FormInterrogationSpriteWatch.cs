@@ -76,7 +76,7 @@ namespace Si.Client.Forms
             UpsertVariable("Rotation Speed", $"{sprite.RotationSpeed:n2}");
             UpsertVariable("Speed", $"{sprite.Speed:n2}");
             UpsertVariable("Throttle", $"{sprite.Throttle:n2}");
-            UpsertVariable("Movement Vector", $"{sprite.OrientationMovementVector}");
+            UpsertVariable("Movement Vector", $"{sprite.MovementVector}");
             UpsertVariable("Angle to Player", $"{sprite.AngleToInSignedDegrees(_engine.Player.Sprite):n2}");
             UpsertVariable("Angle", $"{sprite.Orientation:n2}");
             UpsertVariable("Angle Degrees", $"{sprite.Orientation.Degrees:n2}");

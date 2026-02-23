@@ -26,7 +26,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _speed = value;
-                RecalculateOrientationMovementVector();
+                RecalculateMovementVectorFromOrientation();
             }
         }
 
@@ -34,7 +34,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// Vector representing both speed and direction (Orientation * Speed * Throttle).
         /// Typically set by a call to RecalculateOrientationMovementVector()
         /// </summary>
-        public SiVector OrientationMovementVector { get; set; } = new();
+        public SiVector MovementVector { get; set; } = SiVector.One();
 
         private float _throttle = 1.0f;
         /// <summary>
@@ -47,7 +47,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _throttle = value.Clamp(0, float.MaxValue);
-                RecalculateOrientationMovementVector();
+                RecalculateMovementVectorFromOrientation();
             }
         }
 
@@ -69,7 +69,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         public float RotationSpeed { get; set; } = 0;
 
-        private SiVector _orientation = new SiVector();
+        private SiVector _orientation = SiVector.One();
         /// <summary>
         /// The angle in which the sprite is pointing, note that this is NOT the travel angle.
         /// The travel angle is baked into the MovementVector. If you need the movement vector
@@ -82,9 +82,6 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _orientation = value;
-                _orientation.OnChangeEvent += (SiVector vector) => RotationChanged();
-                RotationChanged();
-                RecalculateOrientationMovementVector();
             }
         }
 

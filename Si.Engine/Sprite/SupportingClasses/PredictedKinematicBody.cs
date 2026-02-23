@@ -67,7 +67,7 @@ namespace Si.Engine.Sprite.SupportingClasses
             Sprite = sprite;
 
             PredictedDirection = new SiVector(sprite.Orientation.RadiansSigned + sprite.RotationSpeed * epoch);
-            PredictedLocation = sprite.Location + (sprite.OrientationMovementVector * epoch);
+            PredictedLocation = sprite.Location + (sprite.MovementVector * epoch);
         }
 
         /// <summary>

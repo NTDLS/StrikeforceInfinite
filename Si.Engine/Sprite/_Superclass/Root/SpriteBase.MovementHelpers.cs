@@ -8,34 +8,20 @@ namespace Si.Engine.Sprite._Superclass._Root
     public partial class SpriteBase
     {
         /// <summary>
-        /// Instantly rotates this objects movement vector by the given radians and then recalculates the Orientation.
+        /// Instantly rotates this objects orientation by the given degrees.
         /// </summary>
-        public void RotatePointingDirection(float degrees, float epoch)
+        public void RotateOrientation(float degrees, float epoch)
         {
             Orientation.Rotate(degrees.ToRadians() * epoch);
-            RecalculateOrientationMovementVector();
         }
 
         /// <summary>
-        /// Instantly rotates this objects movement vector by the given radians and then recalculates the Orientation.
+        /// Instantly rotates this objects movement vector by the given degrees and then recalculates the movement vector.
         /// </summary>
         public void RotateMovementVector(float degrees, float epoch)
         {
-            OrientationMovementVector.Rotate(degrees.ToRadians() * epoch);
-            Orientation.Radians = OrientationMovementVector.OrientationInRadians();
-            RecalculateOrientationMovementVector();
-        }
-
-        /// <summary>
-        /// Instantly points a sprite at another by rotating the movement vector and then recalculates the Orientation.
-        /// </summary>
-        public void RotateMovementVector(SiVector toLocationOf)
-        {
-            var radians = Location.AngleToInSignedRadians(toLocationOf);
-
-            OrientationMovementVector.SetDirectionMaintainMagnitude(radians);
-            Orientation.Radians = OrientationMovementVector.OrientationInRadians();
-            RecalculateOrientationMovementVector();
+            Orientation.Rotate(degrees.ToRadians() * epoch);
+            RecalculateMovementVectorFromOrientation();
         }
 
         /// <summary>

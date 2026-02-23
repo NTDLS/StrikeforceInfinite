@@ -12,7 +12,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 
         public override void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
-            IsVisible = !RootOwner.OrientationMovementVector.Magnitude().IsNearZero();
+            IsVisible = !RootOwner.MovementVector.Magnitude().IsNearZero();
             base.ApplyIntelligence(epoch, displacementVector);
         }
     }

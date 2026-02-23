@@ -32,8 +32,8 @@ namespace Si.Engine.Sprite._Superclass._Root
             var collisions = new List<SpriteBase>();
 
             //Get the starting position of the sprite before it was last moved.
-            var hitTestPosition = new SiVector(Location - (OrientationMovementVector * epoch));
-            var directionVector = OrientationMovementVector.Normalize();
+            var hitTestPosition = new SiVector(Location - (MovementVector * epoch));
+            var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(hitTestPosition));
 
             if (totalTravelDistance > _engine.Display.TotalCanvasDiagonal)
@@ -81,8 +81,8 @@ namespace Si.Engine.Sprite._Superclass._Root
             ///     between where it ended up and where it should have come from given its movement vector.
 
             //Get the starting position of the sprite before it was last moved.
-            var hitTestPosition = new SiVector(Location - (OrientationMovementVector * epoch));
-            var directionVector = OrientationMovementVector.Normalize();
+            var hitTestPosition = new SiVector(Location - (MovementVector * epoch));
+            var directionVector = MovementVector.Normalize();
 
             //We want to step at least 1 pixel at a time, but for larger sprites we can step more
             // (half the size of the sprite) to save on performance without effecting accuracy.
@@ -142,8 +142,8 @@ namespace Si.Engine.Sprite._Superclass._Root
             var collisions = new List<SpriteBase>();
 
             var hitTestPosition = new SiVector(Location);
-            var destinationPoint = new SiVector(Location + (OrientationMovementVector * epoch));
-            var directionVector = OrientationMovementVector.Normalize();
+            var destinationPoint = new SiVector(Location + (MovementVector * epoch));
+            var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(destinationPoint));
 
             if (totalTravelDistance > _engine.Display.TotalCanvasDiagonal)
@@ -189,8 +189,8 @@ namespace Si.Engine.Sprite._Superclass._Root
             ///     between where it is and where it will end up given its movement vector.
 
             var hitTestPosition = new SiVector(Location);
-            var destinationPoint = new SiVector(Location + (OrientationMovementVector * epoch));
-            var directionVector = OrientationMovementVector.Normalize();
+            var destinationPoint = new SiVector(Location + (MovementVector * epoch));
+            var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(destinationPoint));
 
             if (totalTravelDistance > _engine.Display.TotalCanvasDiagonal)
@@ -426,7 +426,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         public (SiVector min, SiVector max) SweptAabbForMotion(float epoch)
         {
             var startPos = Location;
-            var endPos = Location + (OrientationMovementVector * epoch);
+            var endPos = Location + (MovementVector * epoch);
 
             float hw = Size.Width * 0.5f;
             float hh = Size.Height * 0.5f;

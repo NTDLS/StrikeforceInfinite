@@ -16,7 +16,7 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
         public SpriteEnemyPeonBase(EngineCore engine, string imagePath)
             : base(engine, imagePath)
         {
-            RecalculateOrientationMovementVector();
+            RecalculateMovementVectorFromOrientation();
 
             OnVisibilityChanged += EnemyBase_OnVisibilityChanged;
 
@@ -77,7 +77,7 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
 
             if (ThrusterAnimation != null)
             {
-                ThrusterAnimation.IsVisible = OrientationMovementVector.Sum() > 0;
+                ThrusterAnimation.IsVisible = MovementVector.Sum() > 0;
             }
             if (BoosterAnimation != null)
             {

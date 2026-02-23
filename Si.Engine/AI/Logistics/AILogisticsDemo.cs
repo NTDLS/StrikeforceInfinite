@@ -2,6 +2,7 @@
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Library;
+using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System.Linq;
 using static Si.Library.SiConstants;
@@ -58,7 +59,7 @@ namespace Si.Engine.AI.Logistics
                 _followSprite = SiRandom.OneOfNullable(_stateMachine.Engine.Sprites.Enemies.Visible());
             }
 
-            public void Execute(float epoch)
+            public void Tick(float epoch)
             {
                 if (_followSprite == null)
                 {
@@ -83,7 +84,7 @@ namespace Si.Engine.AI.Logistics
         private class ExitScreen(AILogisticsDemo stateMachine)
             : AIStateHandler
         {
-            public void Execute(float epoch)
+            public void Tick(float epoch)
             {
                 stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 3.0f, 1.0f, epoch);
 
@@ -102,7 +103,7 @@ namespace Si.Engine.AI.Logistics
         {
             private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
 
-            public void Execute(float epoch)
+            public void Tick(float epoch)
             {
                 if (stateMachine.Owner.IsPointingAt(stateMachine.Engine.Display.CenterOfCurrentScreen, 10.0f))
                 {
@@ -113,9 +114,9 @@ namespace Si.Engine.AI.Logistics
                     stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 1.0f, 1.0f, epoch);
 
                     if (_rotateDirection == SimpleDirection.Clockwise)
-                        stateMachine.Owner.RotateMovementVector(45f, epoch);
+                        stateMachine.Owner.RotateMovementVector(45, epoch);
                     else
-                        stateMachine.Owner.RotateMovementVector(-45f, epoch);
+                        stateMachine.Owner.RotateMovementVector(-45, epoch);
                 }
             }
         }
@@ -126,7 +127,7 @@ namespace Si.Engine.AI.Logistics
             private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
             private float _lastDistance = stateMachine.Owner.DistanceTo(stateMachine.Engine.Display.CenterOfCurrentScreen);
 
-            public void Execute(float epoch)
+            public void Tick(float epoch)
             {
                 var currentDistance = stateMachine.Owner.DistanceTo(stateMachine.Engine.Display.CenterOfCurrentScreen);
 
@@ -141,9 +142,9 @@ namespace Si.Engine.AI.Logistics
                     stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
 
                     if (_rotateDirection == SimpleDirection.Clockwise)
-                        stateMachine.Owner.Orientation += 1f * epoch;
+                        stateMachine.Owner.RotateMovementVector(1f, epoch);
                     else
-                        stateMachine.Owner.Orientation -= 1f * epoch;
+                        stateMachine.Owner.RotateMovementVector(-1f, epoch);
                 }
             }
         }

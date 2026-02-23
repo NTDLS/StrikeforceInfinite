@@ -1,4 +1,6 @@
-﻿namespace Si.Library
+﻿using Si.Library.Mathematics;
+
+namespace Si.Library
 {
     public class SiRandom
     {
@@ -74,5 +76,8 @@
 
         public static int Between(int minValue, int maxValue)
             => Generator.Next(minValue, maxValue + 1);
+
+        public static SiVector RandomOrientationVector()
+            => SiVector.FromUnsignedDegrees(Between(0, 359));
     }
 }

@@ -1,29 +1,39 @@
 ﻿using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System;
+using System.Linq;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.AI.Logistics
 {
     /// <summary>
-    /// Keeps an object swooping past the center of the screen at an indirect angle.
+    /// Keeps an object swooping past an object at an indirect angle.
     /// </summary>
-    internal class AILogisticsOffScreenReentry
+    internal class AILogisticsGuardTarget
         : AIStateMachine
     {
-        public AILogisticsOffScreenReentry(EngineCore engine, SpriteInteractiveShipBase owner)
-            : base(engine, owner, null)
+        protected ModelParameters Parameters { get; set; }
+
+        public class ModelParameters
         {
-            SetAIState(new ExitScreen(this));
+            public float MaxDistance { get; set; } = 200;
+        }
+
+        public AILogisticsGuardTarget(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase observedObject, ModelParameters parameters)
+            : base(engine, owner, [observedObject])
+        {
+            SetAIState(new GoToDistance(this));
+            Parameters = parameters;
         }
 
         /// <summary>
         /// Exit the screen at a high speed, then change state to start swooping back in.
         /// </summary>
-        private class ExitScreen(AILogisticsOffScreenReentry stateMachine)
+        private class GoToDistance(AILogisticsGuardTarget stateMachine)
             : AIStateHandler
         {
             private int _lastHullHealth = stateMachine.Owner.HullHealth;
@@ -35,9 +45,11 @@ namespace Si.Engine.AI.Logistics
             {
                 stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
 
-                if (stateMachine.Owner.IsWithinCurrentScaledScreenBounds == false)
+                var currentDistance = stateMachine.Owner.DistanceTo(stateMachine.ObservedObjects.First());
+
+                if (currentDistance > stateMachine.Parameters.MaxDistance)
                 {
-                    stateMachine.SetAIState(new RotateToCenterScene(stateMachine));
+                    stateMachine.SetAIState(new RotateToObservedObject(stateMachine));
                 }
                 else
                 {
@@ -64,7 +76,7 @@ namespace Si.Engine.AI.Logistics
         /// <summary>
         /// After exiting the screen, rotate to face the center of the screen.
         /// </summary>
-        private class RotateToCenterScene(AILogisticsOffScreenReentry stateMachine)
+        private class RotateToObservedObject(AILogisticsGuardTarget stateMachine)
             : AIStateHandler
         {
             private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
@@ -72,7 +84,7 @@ namespace Si.Engine.AI.Logistics
 
             public void Tick(float epoch)
             {
-                if (stateMachine.Owner.IsPointingAt(stateMachine.Engine.Display.CenterOfCurrentScreen, 10.0f))
+                if (stateMachine.Owner.IsPointingAt(stateMachine.ObservedObjects.First(), 10.0f))
                 {
                     stateMachine.SetAIState(new ApproachTarget(stateMachine));
                 }
@@ -88,19 +100,19 @@ namespace Si.Engine.AI.Logistics
             }
         }
 
-        private class ApproachTarget(AILogisticsOffScreenReentry stateMachine)
+        private class ApproachTarget(AILogisticsGuardTarget stateMachine)
             : AIStateHandler
         {
-            private float _lastDistance = stateMachine.Owner.DistanceTo(stateMachine.Engine.Display.CenterOfCurrentScreen);
+            private float _lastDistance = stateMachine.Owner.DistanceTo(stateMachine.ObservedObjects.First());
             private int _lastHullHealth = stateMachine.Owner.HullHealth;
 
             public void Tick(float epoch)
             {
-                var currentDistance = stateMachine.Owner.DistanceTo(stateMachine.Engine.Display.CenterOfCurrentScreen);
+                var currentDistance = stateMachine.Owner.DistanceTo(stateMachine.ObservedObjects.First());
 
                 if (currentDistance > _lastDistance)
                 {
-                    stateMachine.SetAIState(new ExitScreen(stateMachine));
+                    stateMachine.SetAIState(new GoToDistance(stateMachine));
                 }
                 else
                 {
@@ -109,7 +121,7 @@ namespace Si.Engine.AI.Logistics
                     if (stateMachine.Owner.HullHealth < _lastHullHealth - 5)
                     {
                         //If we take hits on approach, leave.
-                        stateMachine.SetAIState(new ExitScreen(stateMachine));
+                        stateMachine.SetAIState(new GoToDistance(stateMachine));
                         return;
                     }
 
