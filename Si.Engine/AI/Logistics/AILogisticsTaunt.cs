@@ -11,6 +11,8 @@ namespace Si.Engine.AI.Logistics
     internal class AILogisticsTaunt
         : AIStateMachine
     {
+        //DO NOT USE WITHOUT REWRITE!!
+
         public AILogisticsTaunt(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase> observedObjects)
             : base(engine, owner, observedObjects)
         {

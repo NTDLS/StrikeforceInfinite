@@ -9,6 +9,8 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.AI.Logistics
 {
+    //DO NOT USE WITHOUT REWRITE!!
+
     /// <summary>
     /// Keeps an object swooping past an object at an indirect angle.
     /// </summary>

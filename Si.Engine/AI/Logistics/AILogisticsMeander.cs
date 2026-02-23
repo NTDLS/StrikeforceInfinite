@@ -10,6 +10,8 @@ namespace Si.Engine.AI.Logistics
     /// </summary>
     internal class AILogisticsMeander : AIStateMachine
     {
+        //DO NOT USE WITHOUT REWRITE!!
+
         public AILogisticsMeander(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase>? observedObjects)
             : base(engine, owner, observedObjects)
         {
