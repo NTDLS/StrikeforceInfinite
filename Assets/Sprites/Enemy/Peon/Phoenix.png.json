@@ -4,6 +4,18 @@
   "MaxThrottle": 1.5,
   "Hull": 20,
   "MunitionDetection": true,
+
+  "ExplosionType": "Energy",
+  "FragmentOnExplode": true,
+  "ParticleBlastOnExplodeAmount": {
+    "Min": 200,
+    "Max": 800
+  },
+  "ScreenShakeOnExplodeAmount": {
+    "Min": 5,
+    "Max": 500
+  },
+  
   "Shields": 10,
   "Bounty": 10,
   "Weapons": [

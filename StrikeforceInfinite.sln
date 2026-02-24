@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Si.MpClientToServerComms", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Si.MpCommsMessages", "Si.MpCommsMessages\Si.MpCommsMessages.csproj", "{8102C13C-5B08-4633-9422-AF8504AAB472}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Si.AssetManager", "Si.AssetManager\Si.AssetManager.csproj", "{32B9668F-A615-4E85-A214-5F8DBB2D8795}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,10 @@ Global
 		{8102C13C-5B08-4633-9422-AF8504AAB472}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8102C13C-5B08-4633-9422-AF8504AAB472}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8102C13C-5B08-4633-9422-AF8504AAB472}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32B9668F-A615-4E85-A214-5F8DBB2D8795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32B9668F-A615-4E85-A214-5F8DBB2D8795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32B9668F-A615-4E85-A214-5F8DBB2D8795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32B9668F-A615-4E85-A214-5F8DBB2D8795}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
