@@ -78,7 +78,7 @@ namespace Si.Engine
         #region Events.
 
         public delegate void InitializationEvent(EngineCore engine);
-        public event InitializationEvent? OnInitialization;
+        public event InitializationEvent? OnInitializationComplete;
 
         public delegate void ShutdownEvent(EngineCore engine);
         public event ShutdownEvent? OnShutdown;
@@ -398,7 +398,9 @@ namespace Si.Engine
                 }
             }
 
-            if (ExecutionMode == SiEngineExecutionMode.Play || ExecutionMode == SiEngineExecutionMode.ServerHost)
+            if (ExecutionMode == SiEngineExecutionMode.Play
+                || ExecutionMode == SiEngineExecutionMode.Edit
+                || ExecutionMode == SiEngineExecutionMode.ServerHost)
             {
                 _worldClock?.Start();
             }
@@ -422,8 +424,12 @@ namespace Si.Engine
             {
                 HydrateCache();
             }
+            else if (ExecutionMode == SiEngineExecutionMode.Edit)
+            {
+                //HydrateCache();
+            }
 
-            OnInitialization?.Invoke(this);
+            OnInitializationComplete?.Invoke(this);
 
             IsInitializing = false;
 
@@ -437,7 +443,7 @@ namespace Si.Engine
                 Sprites.SkyBoxes.AddAtCenterUniverse();
 
                 //Events.Add(1, () => AddDemoSprites());
-                Events.Add(1, () => Menus.Show(new MenuStartNewGame(this)));
+                Events.Once(() => Menus.Show(new MenuStartNewGame(this)));
             }
         }
 

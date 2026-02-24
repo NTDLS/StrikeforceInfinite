@@ -46,7 +46,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         /// <param name="spriteImagePath"></param>
         public void LoadMetadata(string weaponName)
         {
-            var metadataJson = _engine.Assets.GetText($@"Sprites\Weapon\{weaponName}.json");
+            var metadataJson = _engine.Assets.GetText($@"Sprites\Weapon\{weaponName}.meta");
             Metadata = JsonConvert.DeserializeObject<WeaponMetadata>(metadataJson);
 
             if (string.IsNullOrEmpty(Metadata?.SoundPath) == false)

@@ -1,4 +1,4 @@
-﻿namespace Si.AssetManager
+﻿namespace Si.AssetExplorer
 {
     partial class FormMain
     {
@@ -31,10 +31,10 @@
             splitContainerLeft = new SplitContainer();
             treeViewAssets = new TreeView();
             splitContainerRight = new SplitContainer();
-            splitContainerBottom = new SplitContainer();
             splitContainerProperties = new SplitContainer();
             pictureBoxPreview = new PictureBox();
             listViewProperties = new ListView();
+            splitContainerBottom = new SplitContainer();
             richTextBoxOutput = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
@@ -43,15 +43,15 @@
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).BeginInit();
             splitContainerRight.Panel2.SuspendLayout();
             splitContainerRight.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)splitContainerBottom).BeginInit();
-            splitContainerBottom.Panel1.SuspendLayout();
-            splitContainerBottom.Panel2.SuspendLayout();
-            splitContainerBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).BeginInit();
             splitContainerProperties.Panel1.SuspendLayout();
             splitContainerProperties.Panel2.SuspendLayout();
             splitContainerProperties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxPreview).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainerBottom).BeginInit();
+            splitContainerBottom.Panel1.SuspendLayout();
+            splitContainerBottom.Panel2.SuspendLayout();
+            splitContainerBottom.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainerLeft
@@ -67,8 +67,8 @@
             // splitContainerLeft.Panel2
             // 
             splitContainerLeft.Panel2.Controls.Add(splitContainerRight);
-            splitContainerLeft.Size = new Size(800, 448);
-            splitContainerLeft.SplitterDistance = 225;
+            splitContainerLeft.Size = new Size(794, 443);
+            splitContainerLeft.SplitterDistance = 223;
             splitContainerLeft.TabIndex = 0;
             // 
             // treeViewAssets
@@ -76,7 +76,7 @@
             treeViewAssets.Dock = DockStyle.Fill;
             treeViewAssets.Location = new Point(0, 0);
             treeViewAssets.Name = "treeViewAssets";
-            treeViewAssets.Size = new Size(225, 448);
+            treeViewAssets.Size = new Size(223, 443);
             treeViewAssets.TabIndex = 0;
             // 
             // splitContainerRight
@@ -88,27 +88,9 @@
             // splitContainerRight.Panel2
             // 
             splitContainerRight.Panel2.Controls.Add(splitContainerProperties);
-            splitContainerRight.Size = new Size(571, 448);
-            splitContainerRight.SplitterDistance = 402;
+            splitContainerRight.Size = new Size(567, 443);
+            splitContainerRight.SplitterDistance = 399;
             splitContainerRight.TabIndex = 0;
-            // 
-            // splitContainerBottom
-            // 
-            splitContainerBottom.Dock = DockStyle.Fill;
-            splitContainerBottom.Location = new Point(0, 0);
-            splitContainerBottom.Name = "splitContainerBottom";
-            splitContainerBottom.Orientation = Orientation.Horizontal;
-            // 
-            // splitContainerBottom.Panel1
-            // 
-            splitContainerBottom.Panel1.Controls.Add(splitContainerLeft);
-            // 
-            // splitContainerBottom.Panel2
-            // 
-            splitContainerBottom.Panel2.Controls.Add(richTextBoxOutput);
-            splitContainerBottom.Size = new Size(800, 625);
-            splitContainerBottom.SplitterDistance = 448;
-            splitContainerBottom.TabIndex = 1;
             // 
             // splitContainerProperties
             // 
@@ -124,8 +106,8 @@
             // splitContainerProperties.Panel2
             // 
             splitContainerProperties.Panel2.Controls.Add(listViewProperties);
-            splitContainerProperties.Size = new Size(165, 448);
-            splitContainerProperties.SplitterDistance = 177;
+            splitContainerProperties.Size = new Size(164, 443);
+            splitContainerProperties.SplitterDistance = 175;
             splitContainerProperties.TabIndex = 0;
             // 
             // pictureBoxPreview
@@ -134,7 +116,7 @@
             pictureBoxPreview.Dock = DockStyle.Fill;
             pictureBoxPreview.Location = new Point(0, 0);
             pictureBoxPreview.Name = "pictureBoxPreview";
-            pictureBoxPreview.Size = new Size(165, 177);
+            pictureBoxPreview.Size = new Size(164, 175);
             pictureBoxPreview.TabIndex = 0;
             pictureBoxPreview.TabStop = false;
             // 
@@ -143,16 +125,34 @@
             listViewProperties.Dock = DockStyle.Fill;
             listViewProperties.Location = new Point(0, 0);
             listViewProperties.Name = "listViewProperties";
-            listViewProperties.Size = new Size(165, 267);
+            listViewProperties.Size = new Size(164, 264);
             listViewProperties.TabIndex = 0;
             listViewProperties.UseCompatibleStateImageBehavior = false;
+            // 
+            // splitContainerBottom
+            // 
+            splitContainerBottom.Dock = DockStyle.Fill;
+            splitContainerBottom.Location = new Point(3, 3);
+            splitContainerBottom.Name = "splitContainerBottom";
+            splitContainerBottom.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainerBottom.Panel1
+            // 
+            splitContainerBottom.Panel1.Controls.Add(splitContainerLeft);
+            // 
+            // splitContainerBottom.Panel2
+            // 
+            splitContainerBottom.Panel2.Controls.Add(richTextBoxOutput);
+            splitContainerBottom.Size = new Size(794, 619);
+            splitContainerBottom.SplitterDistance = 443;
+            splitContainerBottom.TabIndex = 1;
             // 
             // richTextBoxOutput
             // 
             richTextBoxOutput.Dock = DockStyle.Fill;
             richTextBoxOutput.Location = new Point(0, 0);
             richTextBoxOutput.Name = "richTextBoxOutput";
-            richTextBoxOutput.Size = new Size(800, 173);
+            richTextBoxOutput.Size = new Size(794, 172);
             richTextBoxOutput.TabIndex = 0;
             richTextBoxOutput.Text = "";
             // 
@@ -163,6 +163,7 @@
             ClientSize = new Size(800, 625);
             Controls.Add(splitContainerBottom);
             Name = "FormMain";
+            Padding = new Padding(3);
             Text = "Asset Manager";
             splitContainerLeft.Panel1.ResumeLayout(false);
             splitContainerLeft.Panel2.ResumeLayout(false);
@@ -171,15 +172,15 @@
             splitContainerRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).EndInit();
             splitContainerRight.ResumeLayout(false);
-            splitContainerBottom.Panel1.ResumeLayout(false);
-            splitContainerBottom.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)splitContainerBottom).EndInit();
-            splitContainerBottom.ResumeLayout(false);
             splitContainerProperties.Panel1.ResumeLayout(false);
             splitContainerProperties.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).EndInit();
             splitContainerProperties.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxPreview).EndInit();
+            splitContainerBottom.Panel1.ResumeLayout(false);
+            splitContainerBottom.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainerBottom).EndInit();
+            splitContainerBottom.ResumeLayout(false);
             ResumeLayout(false);
         }
 

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Si.Engine.Sprite.Enemy.Peon
 {
-    internal class SpriteEnemyPhoenix
+    public class SpriteEnemyPhoenix
         : SpriteEnemyPeonBase
     {
         public SpriteEnemyPhoenix(EngineCore engine)

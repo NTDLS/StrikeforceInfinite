@@ -1,4 +1,4 @@
-namespace Si.AssetManager
+namespace Si.AssetExplorer
 {
     internal static class Program
     {

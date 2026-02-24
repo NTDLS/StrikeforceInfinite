@@ -1,5 +1,5 @@
-﻿using Si.Engine.Core.Types;
-using Si.Engine.Level._Superclass;
+﻿using Si.Engine.Level._Superclass;
+using Si.Library;
 
 namespace Si.Engine.Level
 {

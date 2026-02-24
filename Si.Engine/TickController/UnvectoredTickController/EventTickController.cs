@@ -1,9 +1,9 @@
 ﻿using NTDLS.Semaphore;
-using Si.Engine.Core.Types;
 using Si.Engine.Menu;
 using Si.Engine.TickController._Superclass;
+using Si.Library;
 using System.Collections.Generic;
-using static Si.Engine.Core.Types.SiDefermentEvent;
+using static Si.Library.SiDefermentEvent;
 
 namespace Si.Engine.TickController.UnvectoredTickController
 {
@@ -52,6 +52,47 @@ namespace Si.Engine.TickController.UnvectoredTickController
 
         #region Factories.
 
+        public SiDefermentEvent Once(SiDefermentSimpleExecuteCallback executionCallback,
+            SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
+        {
+            return _collection.Use(o =>
+            {
+                var obj = new SiDefermentEvent(0,
+                    (SiDefermentEvent sender, object? refObj) =>
+                    {
+                        executionCallback();
+                    });
+                o.Add(obj);
+                return obj;
+            });
+        }
+
+        public SiDefermentEvent Once<T>(SiDefermentSimpleExecuteCallbackT<T> executionCallback, T parameter,
+            SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
+        {
+            return _collection.Use(o =>
+            {
+                var obj = new SiDefermentEvent(0,
+                    (SiDefermentEvent sender, object? refObj) =>
+                    {
+                        executionCallback(parameter);
+                    });
+                o.Add(obj);
+                return obj;
+            });
+        }
+
+        public SiDefermentEvent Once(SiDefermentExecuteCallback executionCallback, object? parameter = null,
+            SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
+        {
+            return _collection.Use(o =>
+            {
+                var obj = new SiDefermentEvent(0, parameter, executionCallback, SiDefermentEventMode.OneTime, threadModel);
+                o.Add(obj);
+                return obj;
+            });
+        }
+
         /// <summary>
         /// Creates a new event. This can be a recurring event, single event, synchronous, asynchronous and can be passed parameters.
         /// </summary>
@@ -61,7 +102,7 @@ namespace Si.Engine.TickController.UnvectoredTickController
         /// <param name="eventMode">Whether the event is one time or recurring.</param>
         /// <param name="threadModel">Whether the event callback is run synchronous or asynchronous.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback, object? parameter,
+        public SiDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback, object? parameter = null,
             SiDefermentEventMode eventMode = SiDefermentEventMode.OneTime,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {

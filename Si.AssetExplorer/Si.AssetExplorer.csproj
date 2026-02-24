@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NTDLS.WinFormsHelpers" Version="1.3.13" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Si.Engine\Si.Engine.csproj" />
     <ProjectReference Include="..\Si.Library\Si.Library.csproj" />
     <ProjectReference Include="..\Si.Rendering\Si.Rendering.csproj" />

@@ -23,10 +23,12 @@ namespace Si.Engine.Manager
         private const string _assetPackagePath = "Si.Assets.rez";
 #endif
 
+        public string AssetPackagePath => _assetPackagePath;
         private readonly EngineCore _engine;
         private readonly OptimisticCriticalResource<Dictionary<string, object>> _collection = new();
         private readonly IArchive? _archive = null;
         private readonly Dictionary<string, IArchiveEntry> _entryHashes;
+
         public Dictionary<string, IArchiveEntry> Entries => _entryHashes;
 
         public AssetManager(EngineCore engine)
@@ -49,9 +51,12 @@ namespace Si.Engine.Manager
             _archive?.Dispose();
         }
 
+        public static bool IsDirectoryFromAttrib(IEntry entry) =>
+            entry.Attrib.HasValue && ((FileAttributes)entry.Attrib.Value & FileAttributes.Directory) != 0;
+
         public T GetMetaData<T>(string spriteImagePath, bool avoidCache = false)
         {
-            string metadataFile = $"{spriteImagePath}.json".Replace('\\', '/');
+            string metadataFile = $"{spriteImagePath}.meta".Replace('\\', '/');
 
             if (avoidCache)
             {
@@ -211,6 +216,7 @@ namespace Si.Engine.Manager
             {
                 switch (Path.GetExtension(entry.Key.EnsureNotNull()).ToLower())
                 {
+                    case ".meta":
                     case ".json":
                     case ".txt":
                         threadPoolTracker.Enqueue(() => GetText(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
