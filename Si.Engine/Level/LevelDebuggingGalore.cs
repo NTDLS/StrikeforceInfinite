@@ -84,9 +84,26 @@ namespace Si.Engine.Level
             asteroid.SetHullHealth(int.MaxValue);
             */
 
+
+            for (int i = 0; i < 10; i++)
+            {
+                var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                sprite.Location = _engine.Display.RandomOffScreenLocation();
+                //sprite.SetHullHealth(int.MaxValue);
+                sprite.Orientation = SiRandom.RandomOrientationVector();
+
+                sprite.ClearAIControllers();
+                sprite.AddAIController(new AILogisticsHostileEngagement2(_engine, sprite, _engine.Player.Sprite, new AILogisticsHostileEngagement2.ModelParameters()
+                {
+                }));
+                sprite.SetCurrentAIController<AILogisticsHostileEngagement2>();
+            }
+
+            /*
             var garrison = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>();
             garrison.Location = new(500, 500);
 
+            //This is cool!
             for (int i = 0; i < 25; i++)
             {
                 var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
@@ -101,6 +118,7 @@ namespace Si.Engine.Level
                 }));
                 sprite.SetCurrentAIController<AILogisticsGuardTarget>();
             }
+            */
 
             /* //This is cool!
             for (int i = 0; i < 10; i++)

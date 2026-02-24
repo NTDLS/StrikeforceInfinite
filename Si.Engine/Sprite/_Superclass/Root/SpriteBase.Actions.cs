@@ -99,7 +99,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public virtual void HitExplosion()
         {
-            _engine.Sprites.Animations.AddRandomHitExplosionAt(this);
+            _engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
         }
     }
 }

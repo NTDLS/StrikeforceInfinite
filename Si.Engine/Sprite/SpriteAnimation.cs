@@ -23,10 +23,10 @@ namespace Si.Engine.Sprite
         private int _currentColumn = 0;
         private int _rows;
         private int _columns;
-        private int _frameDelayMilliseconds;
-        private DateTime _lastFrameChange = DateTime.Now.AddSeconds(-60);
+        private float _epochsSinceLastAdvancment = int.MaxValue;
 
         public SiAnimationPlayMode PlayMode { get; private set; }
+        public float FramesPerSecond { get; private set; } = 1;
 
         public SpriteAnimation(EngineCore engine, string spriteSheetFileName)
             : base(engine)
@@ -49,13 +49,7 @@ namespace Si.Engine.Sprite
 
             PlayMode = metadata.PlayMode;
 
-            AdvanceImage();
-        }
-
-        public float FramesPerSecond
-        {
-            set => _frameDelayMilliseconds = (int)((1.0f / value) * 1000.0f);
-            get => (int)(1.0f / (_frameDelayMilliseconds / 1000.0f));
+            AdvanceImage(0);
         }
 
         /// <summary>
@@ -88,7 +82,7 @@ namespace Si.Engine.Sprite
             _currentFrame = 0;
             _currentRow = 0;
             _currentColumn = 0;
-            _lastFrameChange = DateTime.Now.AddSeconds(-60);
+            _epochsSinceLastAdvancment = int.MaxValue;
             IsVisible = true;
         }
 
@@ -111,11 +105,22 @@ namespace Si.Engine.Sprite
             );
         }
 
-        public void AdvanceImage()
+        public void AdvanceImage(float epoch)
         {
-            if (!_isComplete && (DateTime.Now - _lastFrameChange).TotalMilliseconds > _frameDelayMilliseconds)
+            // guard bogus values
+            if (epoch <= 0 || float.IsNaN(epoch) || float.IsInfinity(epoch))
+                return;
+
+            // Clamp delta to avoid runaway.
+            epoch = MathF.Min(epoch, 0.25f);
+
+            _epochsSinceLastAdvancment += epoch;
+
+            float secondsPerFrame = 1.0f / FramesPerSecond;
+
+            if (!_isComplete && _epochsSinceLastAdvancment >= secondsPerFrame)
             {
-                _lastFrameChange = DateTime.Now;
+                _epochsSinceLastAdvancment = 0;
 
                 if (++_currentColumn == _columns)
                 {

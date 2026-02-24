@@ -5,6 +5,7 @@ using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 using System.IO;
+using static System.Net.WebRequestMethods;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
@@ -20,7 +21,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             foreach (var sprite in Visible())
             {
                 sprite.ApplyMotion(epoch, displacementVector);
-                sprite.AdvanceImage();
+                sprite.AdvanceImage(epoch);
 
                 Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
             }
@@ -48,39 +49,66 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         */
 
         /// <summary>
-        /// Small explosion for a objecting hitting another.
+        /// Very small fiery explosion.
         /// </summary>
-        /// <param name="positionOf"></param>
-        public void AddRandomHitExplosionAt(SpriteBase positionOf)
+        public void AddRandomMicroFireExplosionAt(SpriteBase positionOf)
         {
-            if (SiRandom.ChanceIn(1, 5))
-            {
-                const string assetPath = @"Sprites\Animation\Explode\Hit Explosion 66x66";
-                int assetCount = 2;
-                int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
+            const string assetPath = @"Sprites\Animation\Explode\Micro Fire Explosions";
+            int assetCount = 4;
+            int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
 
-                var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
-                animation.Location = positionOf.Location.Clone();
-            }
-            else
-            {
-                const string assetPath = @"Sprites\Animation\Explode\Hit Explosion 22x22";
-                int assetCount = 4;
-                int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
-
-                var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
-                animation.Location = positionOf.Location.Clone();
-            }
+            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            animation.Location = positionOf.Location.Clone();
         }
 
         /// <summary>
-        /// Fairly large fiery explosion.
+        /// Small fiery explosion.
+        /// </summary>
+        public void AddRandomSmallFireExplosionAt(SpriteBase positionOf)
+        {
+            const string assetPath = @"Sprites\Animation\Explode\Small Fire Explosions";
+            int assetCount = 2;
+            int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
+
+            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            animation.Location = positionOf.Location.Clone();
+        }
+
+        /// <summary>
+        /// Medium fiery explosion.
         /// </summary>
         /// <param name="PositionOf"></param>
-        public void AddRandomExplosionAt(SpriteBase PositionOf)
+        public void AddRandomMediumFireExplosionAt(SpriteBase PositionOf)
         {
-            const string assetPath = @"Sprites\Animation\Explode\Explosion 256x256\";
-            int assetCount = 6;
+            const string assetPath = @"Sprites\Animation\Explode\Medium Fire Explosions\";
+            int assetCount = 7;
+            int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
+
+            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            animation.Location = PositionOf.Location.Clone();
+        }
+
+        /// <summary>
+        /// Somewhat large fiery explosion.
+        /// </summary>
+        /// <param name="PositionOf"></param>
+        public void AddRandomLargeFireExplosionAt(SpriteBase PositionOf)
+        {
+            const string assetPath = @"Sprites\Animation\Explode\Large Fire Explosions\";
+            int assetCount = 7;
+            int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
+
+            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            animation.Location = PositionOf.Location.Clone();
+        }
+
+        /// <summary>
+        /// Fairly large colorful energy-looking explosions.
+        /// </summary>
+        public void AddRandomEnergyExplosionAt(SpriteBase PositionOf)
+        {
+            const string assetPath = @"Sprites\Animation\Explode\Energy Explosions\";
+            int assetCount = 8;
             int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
 
             var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));

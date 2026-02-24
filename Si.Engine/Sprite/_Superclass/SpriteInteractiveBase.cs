@@ -12,6 +12,7 @@ using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite._Superclass
 {
@@ -333,10 +334,34 @@ namespace Si.Engine.Sprite._Superclass
         {
             _engine.Events.Add(() =>
             {
-                _engine.Sprites.Animations.AddRandomExplosionAt(this);
-                _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(200, 800));
-                _engine.Sprites.CreateFragmentsOf(this);
-                _engine.Rendering.AddScreenShake(4, 800);
+                switch (Metadata.ExplosionType)
+                {
+                    case ExplosionType.MediumFire:
+                        _engine.Sprites.Animations.AddRandomMediumFireExplosionAt(this);
+                        break;
+                    case ExplosionType.LargeFire:
+                        _engine.Sprites.Animations.AddRandomLargeFireExplosionAt(this);
+                        break;
+                    case ExplosionType.SmallFire:
+                        _engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
+                        break;
+                    case ExplosionType.MicroFire:
+                        _engine.Sprites.Animations.AddRandomMicroFireExplosionAt(this);
+                        break;
+                    case ExplosionType.Energy:
+                        _engine.Sprites.Animations.AddRandomEnergyExplosionAt(this);
+                        break;
+                }
+
+                if (Metadata.ParticleBlastOnExplodeAmount.IsValid())
+                    _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(Metadata.ParticleBlastOnExplodeAmount.Min, Metadata.ParticleBlastOnExplodeAmount.Max));
+
+                if (Metadata.FragmentOnExplode)
+                    _engine.Sprites.CreateFragmentsOf(this);
+
+                if (Metadata.ScreenShakeOnExplodeAmount.IsValid())
+                    _engine.Rendering.AddScreenShake(Metadata.ScreenShakeOnExplodeAmount.Min, Metadata.ScreenShakeOnExplodeAmount.Max);
+
                 _engine.Audio.PlayRandomExplosion();
             });
 

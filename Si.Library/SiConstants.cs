@@ -57,6 +57,15 @@
             Independent
         }
 
+        public enum ExplosionType
+        {
+            MediumFire,
+            LargeFire,
+            SmallFire,
+            MicroFire,
+            Energy
+        }
+
         /// <summary>
         /// Determines the behavior of a attachment sprite's orientation.
         /// </summary>
