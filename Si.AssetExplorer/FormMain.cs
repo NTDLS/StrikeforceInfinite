@@ -1,10 +1,11 @@
+using Krypton.Toolkit;
 using NTDLS.Helpers;
 using Si.Engine;
 using Si.Engine.Sprite.Enemy.Peon;
 
 namespace Si.AssetExplorer
 {
-    public partial class FormMain : Form
+    public partial class FormMain : KryptonForm
     {
         private readonly EngineCore _engine;
         private bool _firstShown = true;
@@ -95,5 +96,15 @@ namespace Si.AssetExplorer
             richTextBoxOutput.SelectionStart = richTextBoxOutput.Text.Length;
             //richTextBoxOutput.ScrollToCaret();
         }
+
+        #region Tooklstrip buttons
+
+        private void ToolStripButtonSettings_Click(object sender, EventArgs e)
+        {
+            using var formSettings = new FormSettings();
+            formSettings.ShowDialog();
+        }
+
+        #endregion
     }
 }

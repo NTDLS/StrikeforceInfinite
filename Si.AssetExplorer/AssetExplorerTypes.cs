@@ -1,5 +1,10 @@
 ﻿namespace Si.AssetExplorer
 {
+    public static class Constants
+    {
+        public const string AppName = "Si.AssetExplorer";
+    }
+
     public static class AssetExplorerColors
     {
         public static readonly Color Default = Color.Black;

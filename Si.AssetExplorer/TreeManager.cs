@@ -1,16 +1,17 @@
 ﻿using SharpCompress.Archives;
 using SharpCompress.Common;
 using Si.Engine;
+using Talkster.Client.Controls;
 
 namespace Si.AssetExplorer
 {
     internal class TreeManager
     {
-        public readonly TreeView _treeView;
+        public readonly DoubleBufferedTreeView _treeView;
         private readonly EngineCore _engineCore;
         public readonly Action<string, LoggingLevel?> _writeAction;
 
-        public TreeManager(TreeView treeView, EngineCore engineCore, Action<string, LoggingLevel?> writeAction)
+        public TreeManager(DoubleBufferedTreeView treeView, EngineCore engineCore, Action<string, LoggingLevel?> writeAction)
         {
             _engineCore = engineCore;
             _treeView = treeView;

@@ -1,4 +1,7 @@
-﻿namespace Si.AssetExplorer
+﻿using Krypton.Toolkit;
+using Talkster.Client.Controls;
+
+namespace Si.AssetExplorer
 {
     partial class FormMain
     {
@@ -28,47 +31,54 @@
         /// </summary>
         private void InitializeComponent()
         {
-            splitContainerLeft = new SplitContainer();
-            treeViewAssets = new TreeView();
-            splitContainerRight = new SplitContainer();
-            splitContainerProperties = new SplitContainer();
-            pictureBoxPreview = new PictureBox();
-            listViewProperties = new ListView();
-            splitContainerBottom = new SplitContainer();
-            richTextBoxOutput = new RichTextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            splitContainerLeft = new KryptonSplitContainer();
+            treeViewAssets = new DoubleBufferedTreeView();
+            splitContainerRight = new KryptonSplitContainer();
+            splitContainerProperties = new KryptonSplitContainer();
+            pictureBoxPreview = new KryptonPictureBox();
+            listViewProperties = new KryptonListView();
+            splitContainerBottom = new KryptonSplitContainer();
+            richTextBoxOutput = new KryptonRichTextBox();
+            kryptonToolStrip1 = new KryptonToolStrip();
+            toolStripButtonSettings = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
+            (splitContainerLeft.Panel1).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
+            (splitContainerLeft.Panel2).BeginInit();
             splitContainerLeft.Panel2.SuspendLayout();
-            splitContainerLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).BeginInit();
+            (splitContainerRight.Panel1).BeginInit();
+            (splitContainerRight.Panel2).BeginInit();
             splitContainerRight.Panel2.SuspendLayout();
-            splitContainerRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).BeginInit();
+            (splitContainerProperties.Panel1).BeginInit();
             splitContainerProperties.Panel1.SuspendLayout();
+            (splitContainerProperties.Panel2).BeginInit();
             splitContainerProperties.Panel2.SuspendLayout();
-            splitContainerProperties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxPreview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainerBottom).BeginInit();
+            (splitContainerBottom.Panel1).BeginInit();
             splitContainerBottom.Panel1.SuspendLayout();
+            (splitContainerBottom.Panel2).BeginInit();
             splitContainerBottom.Panel2.SuspendLayout();
-            splitContainerBottom.SuspendLayout();
+            kryptonToolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainerLeft
             // 
             splitContainerLeft.Dock = DockStyle.Fill;
             splitContainerLeft.Location = new Point(0, 0);
-            splitContainerLeft.Name = "splitContainerLeft";
             // 
-            // splitContainerLeft.Panel1
+            // 
             // 
             splitContainerLeft.Panel1.Controls.Add(treeViewAssets);
             // 
-            // splitContainerLeft.Panel2
+            // 
             // 
             splitContainerLeft.Panel2.Controls.Add(splitContainerRight);
-            splitContainerLeft.Size = new Size(794, 443);
-            splitContainerLeft.SplitterDistance = 223;
+            splitContainerLeft.Size = new Size(800, 429);
+            splitContainerLeft.SplitterDistance = 224;
             splitContainerLeft.TabIndex = 0;
             // 
             // treeViewAssets
@@ -76,44 +86,40 @@
             treeViewAssets.Dock = DockStyle.Fill;
             treeViewAssets.Location = new Point(0, 0);
             treeViewAssets.Name = "treeViewAssets";
-            treeViewAssets.Size = new Size(223, 443);
+            treeViewAssets.Size = new Size(224, 429);
             treeViewAssets.TabIndex = 0;
             // 
             // splitContainerRight
             // 
             splitContainerRight.Dock = DockStyle.Fill;
             splitContainerRight.Location = new Point(0, 0);
-            splitContainerRight.Name = "splitContainerRight";
             // 
-            // splitContainerRight.Panel2
+            // 
             // 
             splitContainerRight.Panel2.Controls.Add(splitContainerProperties);
-            splitContainerRight.Size = new Size(567, 443);
-            splitContainerRight.SplitterDistance = 399;
+            splitContainerRight.Size = new Size(571, 429);
+            splitContainerRight.SplitterDistance = 401;
             splitContainerRight.TabIndex = 0;
             // 
             // splitContainerProperties
             // 
             splitContainerProperties.Dock = DockStyle.Fill;
             splitContainerProperties.Location = new Point(0, 0);
-            splitContainerProperties.Name = "splitContainerProperties";
             splitContainerProperties.Orientation = Orientation.Horizontal;
             // 
-            // splitContainerProperties.Panel1
             // 
-            splitContainerProperties.Panel1.BackColor = Color.Black;
+            // 
             splitContainerProperties.Panel1.Controls.Add(pictureBoxPreview);
             // 
-            // splitContainerProperties.Panel2
+            // 
             // 
             splitContainerProperties.Panel2.Controls.Add(listViewProperties);
-            splitContainerProperties.Size = new Size(164, 443);
-            splitContainerProperties.SplitterDistance = 175;
+            splitContainerProperties.Size = new Size(165, 429);
+            splitContainerProperties.SplitterDistance = 168;
             splitContainerProperties.TabIndex = 0;
             // 
             // pictureBoxPreview
             // 
-            pictureBoxPreview.BackColor = Color.CadetBlue;
             pictureBoxPreview.Location = new Point(36, 34);
             pictureBoxPreview.Name = "pictureBoxPreview";
             pictureBoxPreview.Size = new Size(100, 100);
@@ -124,28 +130,27 @@
             // listViewProperties
             // 
             listViewProperties.Dock = DockStyle.Fill;
+            listViewProperties.HideSelection = false;
             listViewProperties.Location = new Point(0, 0);
             listViewProperties.Name = "listViewProperties";
-            listViewProperties.Size = new Size(164, 264);
+            listViewProperties.Size = new Size(165, 256);
             listViewProperties.TabIndex = 0;
-            listViewProperties.UseCompatibleStateImageBehavior = false;
             // 
             // splitContainerBottom
             // 
             splitContainerBottom.Dock = DockStyle.Fill;
-            splitContainerBottom.Location = new Point(3, 3);
-            splitContainerBottom.Name = "splitContainerBottom";
+            splitContainerBottom.Location = new Point(0, 25);
             splitContainerBottom.Orientation = Orientation.Horizontal;
             // 
-            // splitContainerBottom.Panel1
+            // 
             // 
             splitContainerBottom.Panel1.Controls.Add(splitContainerLeft);
             // 
-            // splitContainerBottom.Panel2
+            // 
             // 
             splitContainerBottom.Panel2.Controls.Add(richTextBoxOutput);
-            splitContainerBottom.Size = new Size(794, 619);
-            splitContainerBottom.SplitterDistance = 443;
+            splitContainerBottom.Size = new Size(800, 600);
+            splitContainerBottom.SplitterDistance = 429;
             splitContainerBottom.TabIndex = 1;
             // 
             // richTextBoxOutput
@@ -153,9 +158,30 @@
             richTextBoxOutput.Dock = DockStyle.Fill;
             richTextBoxOutput.Location = new Point(0, 0);
             richTextBoxOutput.Name = "richTextBoxOutput";
-            richTextBoxOutput.Size = new Size(794, 172);
+            richTextBoxOutput.Size = new Size(800, 166);
             richTextBoxOutput.TabIndex = 0;
             richTextBoxOutput.Text = "";
+            // 
+            // kryptonToolStrip1
+            // 
+            kryptonToolStrip1.Font = new Font("Segoe UI", 9F);
+            kryptonToolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings });
+            kryptonToolStrip1.Location = new Point(0, 0);
+            kryptonToolStrip1.Name = "kryptonToolStrip1";
+            kryptonToolStrip1.Size = new Size(800, 25);
+            kryptonToolStrip1.TabIndex = 3;
+            kryptonToolStrip1.Text = "kryptonToolStrip1";
+            // 
+            // toolStripButtonSettings
+            // 
+            toolStripButtonSettings.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonSettings.Image = (Image)resources.GetObject("toolStripButtonSettings.Image");
+            toolStripButtonSettings.ImageTransparentColor = Color.Magenta;
+            toolStripButtonSettings.Name = "toolStripButtonSettings";
+            toolStripButtonSettings.Size = new Size(23, 22);
+            toolStripButtonSettings.Text = "Settings";
+            toolStripButtonSettings.ToolTipText = "Settings";
+            toolStripButtonSettings.Click += ToolStripButtonSettings_Click;
             // 
             // FormMain
             // 
@@ -163,38 +189,48 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 625);
             Controls.Add(splitContainerBottom);
+            Controls.Add(kryptonToolStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
-            Padding = new Padding(3);
             Text = "Asset Manager";
+            (splitContainerLeft.Panel1).EndInit();
             splitContainerLeft.Panel1.ResumeLayout(false);
+            (splitContainerLeft.Panel2).EndInit();
             splitContainerLeft.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).EndInit();
-            splitContainerLeft.ResumeLayout(false);
+            (splitContainerRight.Panel1).EndInit();
+            (splitContainerRight.Panel2).EndInit();
             splitContainerRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).EndInit();
-            splitContainerRight.ResumeLayout(false);
+            (splitContainerProperties.Panel1).EndInit();
             splitContainerProperties.Panel1.ResumeLayout(false);
             splitContainerProperties.Panel1.PerformLayout();
+            (splitContainerProperties.Panel2).EndInit();
             splitContainerProperties.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).EndInit();
-            splitContainerProperties.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxPreview).EndInit();
+            (splitContainerBottom.Panel1).EndInit();
             splitContainerBottom.Panel1.ResumeLayout(false);
+            (splitContainerBottom.Panel2).EndInit();
             splitContainerBottom.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerBottom).EndInit();
-            splitContainerBottom.ResumeLayout(false);
+            kryptonToolStrip1.ResumeLayout(false);
+            kryptonToolStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private SplitContainer splitContainerLeft;
-        private TreeView treeViewAssets;
-        private SplitContainer splitContainerRight;
-        private SplitContainer splitContainerBottom;
-        private SplitContainer splitContainerProperties;
-        private PictureBox pictureBoxPreview;
-        private ListView listViewProperties;
-        private RichTextBox richTextBoxOutput;
+        private KryptonSplitContainer splitContainerLeft;
+        private DoubleBufferedTreeView treeViewAssets;
+        private KryptonSplitContainer splitContainerRight;
+        private KryptonSplitContainer splitContainerBottom;
+        private KryptonSplitContainer splitContainerProperties;
+        private KryptonPictureBox pictureBoxPreview;
+        private KryptonListView listViewProperties;
+        private KryptonRichTextBox richTextBoxOutput;
+        private KryptonToolStrip kryptonToolStrip1;
+        private ToolStripButton toolStripButtonSettings;
     }
 }
