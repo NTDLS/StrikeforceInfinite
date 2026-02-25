@@ -287,7 +287,7 @@ namespace Si.Engine.Manager
                         break;
                 }
 
-                if (!IsDirectoryFromAttrib(entry) && !entry.Key.EndsWith(".meta", StringComparison.OrdinalIgnoreCase)) 
+                if (!IsDirectoryFromAttrib(entry) && !entry.Key.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
                 {
                     GetMetadata(entry.Key);
                 }
