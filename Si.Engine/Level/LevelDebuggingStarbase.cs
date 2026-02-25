@@ -65,7 +65,7 @@ namespace Si.Engine.Level
 
         private void AddEnemies()
         {
-            _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>();
+            //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>();
         }
     }
 }

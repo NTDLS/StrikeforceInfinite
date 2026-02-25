@@ -1,4 +1,5 @@
 {
+  "Class": "WeaponPhotonTorpedo",
   "Name": "Photon Torpedo",
   "Description": "",
   "MunitionType": "Energy",

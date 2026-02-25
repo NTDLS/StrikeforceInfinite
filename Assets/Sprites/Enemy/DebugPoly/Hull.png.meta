@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyDebugPoly",
   "Description": "",
   "Speed": 250,
   "MaxThrottle": 1.5,

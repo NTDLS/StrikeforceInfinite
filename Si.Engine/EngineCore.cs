@@ -466,17 +466,17 @@ namespace Si.Engine
                 ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemySerf>());
             */
 
-            for (int i = 0; i < 3; i++)
-                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>());
+            //for (int i = 0; i < 3; i++)
+                //ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>());
 
-            void ApplySpriteStates(SpriteEnemyBase sprite)
-            {
-                sprite.ClearAIControllers();
-                sprite.Location = Display.RandomOnScreenLocation();
-                sprite.Orientation = SiVector.FromUnsignedDegrees(sprite.Location.AngleToInUnsignedDegrees(Player.Sprite.Location) + SiRandom.Variance(360, 0.15f));
-                sprite.AddAIController(new AILogisticsDemo(this, sprite));
-                sprite.SetCurrentAIController<AILogisticsDemo>();
-            }
+            //void ApplySpriteStates(SpriteEnemyBase sprite)
+            //{
+            //    sprite.ClearAIControllers();
+            //    sprite.Location = Display.RandomOnScreenLocation();
+            //    sprite.Orientation = SiVector.FromUnsignedDegrees(sprite.Location.AngleToInUnsignedDegrees(Player.Sprite.Location) + SiRandom.Variance(360, 0.15f));
+            //    sprite.AddAIController(new AILogisticsDemo(this, sprite));
+            //    sprite.SetCurrentAIController<AILogisticsDemo>();
+            //}
         }
 
         private void HydrateCache(SpriteTextBlock? loadingHeader = null, SpriteTextBlock? loadingDetail = null)

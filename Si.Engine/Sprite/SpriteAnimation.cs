@@ -10,7 +10,8 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite
 {
-    public class SpriteAnimation : SpriteMinimalBitmap
+    public class SpriteAnimation
+        : SpriteMinimalBitmap
     {
 #if DEBUG
         private string? _debug_imageName;

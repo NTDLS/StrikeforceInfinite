@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteCruiserPlayer",
   "Name": "Cruiser",
   "Description": "→ This ship is a placeholder ←\nLook no further, there is nothing to see here.",
   "Speed": 400,

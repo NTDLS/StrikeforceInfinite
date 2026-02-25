@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyScav",
   "Description": "",
   "Speed": 300,
   "MaxThrottle": 1.5,

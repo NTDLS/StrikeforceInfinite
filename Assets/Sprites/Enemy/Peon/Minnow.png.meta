@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyMinnow",
   "Description": "",
   "Speed": 300,
   "MaxThrottle": 1.5,

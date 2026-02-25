@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteAnimation",
   "FrameHeight": 66,
   "FrameWidth": 66,
   "FramesPerSecond": 50,

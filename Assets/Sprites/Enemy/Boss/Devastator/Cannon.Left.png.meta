@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyBossDevastatorLeftCannon",
   "Description": "",
   "MunitionDetection": true,
   "Hull": 50,

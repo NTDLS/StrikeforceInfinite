@@ -22,4 +22,11 @@
         Warning,
         Error
     }
+
+    public enum SiTreeNodeType
+    {
+        Undefined,
+        Folder,
+        Asset
+    }
 }

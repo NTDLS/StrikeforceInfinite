@@ -1,4 +1,5 @@
 {
+  "Class": "WeaponFragMissile",
   "Name": "Frag Missile",
   "Description": "",
   "SoundPath": "Sounds\\Weapons\\Frag Missile.wav",

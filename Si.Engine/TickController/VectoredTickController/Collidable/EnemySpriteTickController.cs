@@ -7,7 +7,8 @@ using System;
 
 namespace Si.Engine.TickController.VectoredTickController.Collidable
 {
-    public class EnemySpriteTickController : VectoredCollidableTickControllerBase<SpriteEnemyBase>
+    public class EnemySpriteTickController
+        : VectoredCollidableTickControllerBase<SpriteEnemyBase>
     {
         private readonly EngineCore _engine;
 

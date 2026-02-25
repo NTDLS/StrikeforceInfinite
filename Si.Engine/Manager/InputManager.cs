@@ -430,7 +430,7 @@ namespace Si.Engine.Manager
             {
                 _engine.Invoke(() =>
                 {
-                    _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                    //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
                 });
             }
             else if (key == Keys.F3)
@@ -494,9 +494,9 @@ namespace Si.Engine.Manager
             {
                 _engine.Invoke(() =>
                 {
-                    var enemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-                    enemy.Orientation = SiVector.FromUnsignedDegrees(-90);
-                    enemy.Location = new SiVector(1000, 1000);
+                    //var enemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+                    //enemy.Orientation = SiVector.FromUnsignedDegrees(-90);
+                    //enemy.Location = new SiVector(1000, 1000);
                 });
             }
             else if (key == Keys.F8)

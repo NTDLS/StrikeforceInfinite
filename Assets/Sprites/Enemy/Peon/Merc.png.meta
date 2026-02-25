@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyMerc",
   "Description": "",
   "Speed": 300,
   "MaxThrottle": 1.5,

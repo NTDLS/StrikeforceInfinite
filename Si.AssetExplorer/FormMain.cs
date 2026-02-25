@@ -1,5 +1,7 @@
 using Krypton.Toolkit;
 using NTDLS.Helpers;
+using SharpCompress.Compressors.ZStandard.Unsafe;
+using Si.AssetExplorer.Controls;
 using Si.Engine;
 using Si.Engine.Sprite.Enemy.Peon;
 
@@ -27,51 +29,84 @@ namespace Si.AssetExplorer
 
             _engine = new EngineCore(pictureBoxPreview, Library.SiConstants.SiEngineExecutionMode.Edit);
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
-            _treeManager = new TreeManager(treeViewAssets, _engine, WriteOutput);
+            _treeManager = new TreeManager(treeViewAssets, _engine, WriteOutput, LoadSelectedTreeNode);
 
             Shown += FormMain_Shown;
         }
 
         private void Parent_Resize(object? sender, EventArgs e)
         {
-            pictureBoxPreview.Parent.EnsureNotNull();
-            int margin = 6;
-
-            var boxSize = Math.Min(pictureBoxPreview.Parent.Width, pictureBoxPreview.Parent.Height) - margin;
-
-            if (boxSize > 10)
+            try
             {
-                pictureBoxPreview.Width = boxSize;
-                pictureBoxPreview.Height = boxSize;
+                pictureBoxPreview.Parent.EnsureNotNull();
 
-                pictureBoxPreview.Left = (pictureBoxPreview.Parent.Width / 2) - (pictureBoxPreview.Width / 2);
-                pictureBoxPreview.Top = (pictureBoxPreview.Parent.Height / 2) - (pictureBoxPreview.Height / 2);
+                int margin = 6;
+                var boxSize = Math.Min(pictureBoxPreview.Parent.Width, pictureBoxPreview.Parent.Height) - margin;
+
+                if (boxSize > 10)
+                {
+                    pictureBoxPreview.Width = boxSize;
+                    pictureBoxPreview.Height = boxSize;
+
+                    pictureBoxPreview.Left = (pictureBoxPreview.Parent.Width / 2) - (pictureBoxPreview.Width / 2);
+                    pictureBoxPreview.Top = (pictureBoxPreview.Parent.Height / 2) - (pictureBoxPreview.Height / 2);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
             }
         }
 
         private void EngineCore_OnInitializationComplete(EngineCore engine)
         {
-            WriteOutput("Engine initialization complete.", LoggingLevel.Verbose);
-
-            _treeManager.Repopulate();
-
-            _engine.Events.Once(() =>
+            try
             {
-                var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
-                sprite.Location = _engine.Display.CenterCanvas;
-                sprite.Speed = 0;
-                sprite.Throttle = 0;
-            });
+                WriteOutput("Engine initialization complete.", LoggingLevel.Verbose);
+
+                _treeManager.Repopulate();
+
+                _engine.Events.Once(() =>
+                {
+                    //var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                    //sprite.Location = _engine.Display.CenterCanvas;
+                    //sprite.Speed = 0;
+                    //sprite.Throttle = 0;
+                });
+            }
+            catch (Exception ex)
+            {
+                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
         }
 
         private void FormMain_Shown(object? sender, EventArgs e)
         {
-            if (_firstShown)
+            try
             {
-                _firstShown = false;
+                if (_firstShown)
+                {
+                    _firstShown = false;
 
-                WriteOutput("Starting engine.", LoggingLevel.Verbose);
-                _engine.StartEngine();
+                    WriteOutput("Starting engine.", LoggingLevel.Verbose);
+                    _engine.StartEngine();
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
+        }
+
+        private void LoadSelectedTreeNode(SiTreeNode node)
+        {
+            try
+            {
+                //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPeon>().Location = _engine.Display.CenterCanvas;
+            }
+            catch (Exception ex)
+            {
+                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
             }
         }
 
@@ -109,8 +144,15 @@ namespace Si.AssetExplorer
 
         private void ToolStripButtonSettings_Click(object sender, EventArgs e)
         {
-            using var formSettings = new FormSettings();
-            formSettings.ShowDialog();
+            try
+            {
+                using var formSettings = new FormSettings();
+                formSettings.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
         }
 
         #endregion

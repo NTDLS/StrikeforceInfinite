@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyStarbaseGarrison",
   "Description": "→ Garrison ←\nTODO: Add a description\n",
   "MunitionDetection": false,
   "CollisionDetection": true,

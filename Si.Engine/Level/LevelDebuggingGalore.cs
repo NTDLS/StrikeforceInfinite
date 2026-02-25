@@ -82,7 +82,9 @@ namespace Si.Engine.Level
             asteroid.SetHullHealth(int.MaxValue);
             */
 
+            var sprite = _engine.Sprites.Enemies.Add("Phoenix.png");
 
+            /*
             for (int i = 0; i < 10; i++)
             {
                 var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
@@ -96,6 +98,7 @@ namespace Si.Engine.Level
                 }));
                 sprite.SetCurrentAIController<AILogisticsHostileEngagement2>();
             }
+            */
 
             /*
             var garrison = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>();

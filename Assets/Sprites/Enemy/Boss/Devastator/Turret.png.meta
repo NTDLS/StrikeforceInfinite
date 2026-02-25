@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyBossDevastatorTurret",
   "Description": "",
   "MunitionDetection": true,
   "Hull": 200,

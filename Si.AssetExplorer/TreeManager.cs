@@ -1,6 +1,9 @@
-﻿using SharpCompress.Archives;
+﻿using NTDLS.Helpers;
+using SharpCompress.Archives;
 using SharpCompress.Common;
+using Si.AssetExplorer.Controls;
 using Si.Engine;
+using Si.Engine.Manager;
 using Talkster.Client.Controls;
 
 namespace Si.AssetExplorer
@@ -9,109 +12,164 @@ namespace Si.AssetExplorer
     {
         public readonly DoubleBufferedTreeView _treeView;
         private readonly EngineCore _engineCore;
-        public readonly Action<string, LoggingLevel?> _writeAction;
+        public readonly Action<string, LoggingLevel?> _writeOutput;
+        public readonly Action<SiTreeNode> _loadSelectedTreeNode;
 
-        public TreeManager(DoubleBufferedTreeView treeView, EngineCore engineCore, Action<string, LoggingLevel?> writeAction)
+        public TreeManager(DoubleBufferedTreeView treeView, EngineCore engineCore,
+            Action<string, LoggingLevel?> writeOutput,
+            Action<SiTreeNode> loadSelectedTreeNode)
         {
             _engineCore = engineCore;
             _treeView = treeView;
-            _writeAction = writeAction;
+            _writeOutput = writeOutput;
+            _loadSelectedTreeNode = loadSelectedTreeNode;
+
+            _treeView.NodeMouseDoubleClick += TreeView_NodeMouseDoubleClick;
+        }
+
+        private void TreeView_NodeMouseDoubleClick(object? sender, TreeNodeMouseClickEventArgs e)
+        {
+            try
+            {
+                var node = e.Node as SiTreeNode ?? throw new InvalidOperationException("Expected SiTreeNode type.");
+                if (node.NodeType == SiTreeNodeType.Asset)
+                {
+                    _loadSelectedTreeNode(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
         }
 
         private void WriteOutput(string text, LoggingLevel? color = null)
-            => _writeAction(text, color);
+            => _writeOutput(text, color);
 
         public void Repopulate()
         {
-            WriteOutput("Populating assets.", LoggingLevel.Verbose);
-
-            WriteOutput("Accessing archive.", LoggingLevel.Verbose);
-            var archive = ArchiveFactory.Open(_engineCore.Assets.AssetPackagePath, new SharpCompress.Readers.ReaderOptions()
+            try
             {
-                ArchiveEncoding = new ArchiveEncoding()
+                WriteOutput("Populating assets.", LoggingLevel.Verbose);
+
+                WriteOutput("Accessing archive.", LoggingLevel.Verbose);
+                var archive = ArchiveFactory.Open(_engineCore.Assets.AssetPackagePath, new SharpCompress.Readers.ReaderOptions()
                 {
-                    Default = System.Text.Encoding.Default
-                }
-            });
+                    ArchiveEncoding = new ArchiveEncoding()
+                    {
+                        Default = System.Text.Encoding.Default
+                    }
+                });
 
-            WriteOutput($"Enumerating {archive.Entries.Count():n0} assets.", LoggingLevel.Verbose);
+                WriteOutput($"Enumerating {archive.Entries.Count():n0} assets.", LoggingLevel.Verbose);
 
-            foreach (var entry in archive.Entries)
-            {
-                if (entry.Key == null) continue;
-                if (Path.GetExtension(entry.Key).Equals(".meta", StringComparison.OrdinalIgnoreCase)) continue;
-
-                //if (AssetManager.IsDirectoryFromAttrib(entry))
+                foreach (var entry in archive.Entries)
                 {
-                    UpsertTreeNodesPath(entry.Key);
+                    if (entry.Key == null) continue;
+                    if (Path.GetExtension(entry.Key).Equals(".meta", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    UpsertTreeNodesPath(entry);
+
+                    switch (Path.GetExtension(entry.Key).ToLower())
+                    {
+                        case ".meta":
+                        case ".json":
+                        case ".txt":
+                            //threadPoolTracker.Enqueue(() => GetText(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
+                            break;
+                        case ".png":
+                        case ".jpg":
+                        case ".bmp":
+                            //threadPoolTracker.Enqueue(() => GetBitmap(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
+                            break;
+                        case ".wav":
+                            //threadPoolTracker.Enqueue(() => GetAudio(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
+                            break;
+                        default:
+                            //Interlocked.Increment(ref statusIndex);
+                            break;
+                    }
                 }
 
-                switch (Path.GetExtension(entry.Key).ToLower())
-                {
-                    case ".meta":
-                    case ".json":
-                    case ".txt":
-                        //threadPoolTracker.Enqueue(() => GetText(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    case ".png":
-                    case ".jpg":
-                    case ".bmp":
-                        //threadPoolTracker.Enqueue(() => GetBitmap(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    case ".wav":
-                        //threadPoolTracker.Enqueue(() => GetAudio(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    default:
-                        //Interlocked.Increment(ref statusIndex);
-                        break;
-                }
+                WriteOutput($"Assets enumeration complete.", LoggingLevel.Verbose);
+
+                ExpandRootNodes();
             }
-
-            WriteOutput($"Assets enumeration complete.", LoggingLevel.Verbose);
-
-            ExpandRootNodes();
+            catch (Exception ex)
+            {
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
         }
 
         private void ExpandRootNodes()
         {
-            if (_treeView.InvokeRequired)
+            try
             {
-                _treeView.Invoke(new Action(ExpandRootNodes));
-                return;
-            }
+                if (_treeView.InvokeRequired)
+                {
+                    _treeView.Invoke(new Action(ExpandRootNodes));
+                    return;
+                }
 
-            foreach (TreeNode node in _treeView.Nodes)
+                foreach (SiTreeNode node in _treeView.Nodes)
+                {
+                    node.Expand();
+                }
+            }
+            catch (Exception ex)
             {
-                node.Expand();
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
             }
         }
 
-        private void UpsertTreeNodesPath(string path)
+        private void UpsertTreeNodesPath(IArchiveEntry entry)
         {
-            if (_treeView.InvokeRequired)
+            try
             {
-                _treeView.Invoke(new Action<string>(UpsertTreeNodesPath), path);
-                return;
+                if (_treeView.InvokeRequired)
+                {
+                    _treeView.Invoke(new Action<IArchiveEntry>(UpsertTreeNodesPath), entry);
+                    return;
+                }
+
+                var path = entry.Key.EnsureNotNull().TrimStart(['\\', '/', '.']).TrimStart(['\\', '/', '.']);
+                var parts = path.Split(['\\', '/'], StringSplitOptions.RemoveEmptyEntries);
+
+                TreeNodeCollection workingLevel = _treeView.Nodes;
+
+                foreach (var part in parts)
+                {
+                    if (part.StartsWith("@"))
+                    {
+                        //We use the "@" prefix to denote special nodes that should be ignored in the tree structure.
+                        return;
+                    }
+
+                    var foundNode = workingLevel.Find(part, false);
+                    if (foundNode.Length == 1)
+                    {
+                        workingLevel = foundNode.First().Nodes;
+                    }
+                    else
+                    {
+                        var nodeType = AssetManager.IsDirectoryFromAttrib(entry) ? SiTreeNodeType.Folder : SiTreeNodeType.Asset;
+
+                        var displayName = part;
+
+                        if (nodeType == SiTreeNodeType.Asset)
+                        {
+                            displayName = Path.GetFileNameWithoutExtension(part);
+                        }
+
+                        var newNode = new SiTreeNode(part, displayName, entry.Key, nodeType);
+                        workingLevel.Add(newNode);
+                        workingLevel = newNode.Nodes;
+                    }
+                }
             }
-
-            path = path.TrimStart(['\\', '/', '.']).TrimStart(['\\', '/', '.']);
-            var parts = path.Split(['\\', '/'], StringSplitOptions.RemoveEmptyEntries);
-
-            TreeNodeCollection workingLevel = _treeView.Nodes;
-
-            foreach (var part in parts)
+            catch (Exception ex)
             {
-                var foundNode = workingLevel.Find(part, false);
-                if (foundNode.Length == 1)
-                {
-                    workingLevel = foundNode.First().Nodes;
-                }
-                else
-                {
-                    var newNode = new TreeNode(part) { Name = part };
-                    workingLevel.Add(newNode);
-                    workingLevel = newNode.Nodes;
-                }
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
             }
         }
     }

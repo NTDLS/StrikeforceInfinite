@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyStarbaseGarrisonTurret",
   "Description": "",
   "MunitionDetection": true,
   "Hull": 200,

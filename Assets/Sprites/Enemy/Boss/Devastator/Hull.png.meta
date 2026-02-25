@@ -1,4 +1,5 @@
 {
+  "Class": "SpriteEnemyBossDevastator",
   "Name":"Devastator",
   "Description": "TODO: Add a description",
   "MunitionDetection": true,

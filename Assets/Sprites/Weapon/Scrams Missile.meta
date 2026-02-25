@@ -1,4 +1,5 @@
 {
+  "Class": "WeaponScramsMissile",
   "Name": "Scrams Missile",
   "Description": "",
   "SoundPath": "Sounds\\Weapons\\Scrams Missile.wav",

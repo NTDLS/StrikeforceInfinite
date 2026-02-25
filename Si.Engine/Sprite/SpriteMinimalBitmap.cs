@@ -11,7 +11,8 @@ namespace Si.Engine.Sprite
     /// <summary>
     /// These are just minimal non-collidable, non interactive, generic bitmap sprites.
     /// </summary>
-    public class SpriteMinimalBitmap : SpriteBase
+    public class SpriteMinimalBitmap
+        : SpriteBase
     {
         /// <summary>
         /// The max travel distance from the creation x,y before the sprite is automatically deleted.
