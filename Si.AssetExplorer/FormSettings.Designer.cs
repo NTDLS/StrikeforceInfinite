@@ -85,6 +85,7 @@
             Controls.Add(kryptonComboBoxTheme);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormSettings";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Settings";
             ((System.ComponentModel.ISupportInitialize)kryptonComboBoxTheme).EndInit();
             ResumeLayout(false);

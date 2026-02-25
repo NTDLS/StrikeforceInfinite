@@ -2,7 +2,6 @@
 using NTDLS.Persistence;
 using NTDLS.WinFormsHelpers;
 using Si.AssetExplorer.Controls;
-using System.Diagnostics;
 
 namespace Si.AssetExplorer
 {

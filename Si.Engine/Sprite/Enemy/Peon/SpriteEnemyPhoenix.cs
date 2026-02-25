@@ -1,8 +1,6 @@
-﻿using Si.Engine.AI._Superclass;
-using Si.Engine.AI.Logistics;
+﻿using Si.Engine.AI.Logistics;
 using Si.Engine.Sprite.Enemy.Peon._Superclass;
 using Si.Engine.Sprite.Weapon;
-using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System.Linq;
 

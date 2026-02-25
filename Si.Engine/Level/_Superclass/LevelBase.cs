@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Si.Library;
+using System;
 using System.Collections.Generic;
-using static Si.Library.SiDefermentEvent;
 using static Si.Library.SiConstants;
-using Si.Library;
+using static Si.Library.SiDefermentEvent;
 
 namespace Si.Engine.Level._Superclass
 {

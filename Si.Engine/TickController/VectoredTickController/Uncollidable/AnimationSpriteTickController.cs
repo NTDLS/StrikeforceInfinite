@@ -5,7 +5,6 @@ using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 using System.IO;
-using static System.Net.WebRequestMethods;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {

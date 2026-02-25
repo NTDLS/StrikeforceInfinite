@@ -190,7 +190,6 @@ namespace Si.AssetExplorer
             ClientSize = new Size(800, 625);
             Controls.Add(splitContainerBottom);
             Controls.Add(kryptonToolStrip1);
-            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             Text = "Asset Manager";
             (splitContainerLeft.Panel1).EndInit();

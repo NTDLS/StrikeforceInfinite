@@ -2,9 +2,7 @@
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
-using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
-using System;
 using System.Linq;
 using static Si.Library.SiConstants;
 

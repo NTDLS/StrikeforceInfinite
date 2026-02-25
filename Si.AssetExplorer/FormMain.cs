@@ -10,10 +10,15 @@ namespace Si.AssetExplorer
         private readonly EngineCore _engine;
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
+        private readonly RichTextBox _richTextBox;
 
         public FormMain()
         {
             InitializeComponent();
+
+            // KryptonRichTextBox is a composite control; the real editor is inside.
+            _richTextBox = richTextBoxOutput.Controls.OfType<RichTextBox>().FirstOrDefault()
+                ?? throw new InvalidOperationException("Could not find inner RichTextBox inside KryptonRichTextBox.");
 
             WriteOutput("Instanciating EngineCore.", LoggingLevel.Verbose);
 
@@ -78,10 +83,7 @@ namespace Si.AssetExplorer
                 return;
             }
 
-            richTextBoxOutput.SelectionStart = richTextBoxOutput.TextLength;
-            richTextBoxOutput.SelectionLength = 0;
-
-            richTextBoxOutput.SelectionColor = loggingLevel switch
+            var color = loggingLevel switch
             {
                 LoggingLevel.Verbose => AssetExplorerColors.Verbose,
                 LoggingLevel.Information => AssetExplorerColors.Information,
@@ -90,11 +92,17 @@ namespace Si.AssetExplorer
                 _ => AssetExplorerColors.Default
             };
 
-            richTextBoxOutput.AppendText($"{text}\r\n");
-            richTextBoxOutput.SelectionColor = richTextBoxOutput.ForeColor;
+            _richTextBox.SelectionStart = _richTextBox.TextLength;
+            _richTextBox.SelectionLength = 0;
+            _richTextBox.SelectionColor = color;
+            _richTextBox.AppendText(text + Environment.NewLine);
+            _richTextBox.SelectionColor = _richTextBox.ForeColor;
 
-            richTextBoxOutput.SelectionStart = richTextBoxOutput.Text.Length;
-            //richTextBoxOutput.ScrollToCaret();
+            // Reset selection to end.
+            _richTextBox.Select(_richTextBox.TextLength, 0);
+            _richTextBox.SelectionColor = _richTextBox.ForeColor;
+
+            _richTextBox.ScrollToCaret();
         }
 
         #region Tooklstrip buttons
