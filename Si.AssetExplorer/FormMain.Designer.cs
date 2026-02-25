@@ -101,6 +101,7 @@
             // 
             // splitContainerProperties.Panel1
             // 
+            splitContainerProperties.Panel1.BackColor = Color.Black;
             splitContainerProperties.Panel1.Controls.Add(pictureBoxPreview);
             // 
             // splitContainerProperties.Panel2
@@ -113,10 +114,10 @@
             // pictureBoxPreview
             // 
             pictureBoxPreview.BackColor = Color.CadetBlue;
-            pictureBoxPreview.Dock = DockStyle.Fill;
-            pictureBoxPreview.Location = new Point(0, 0);
+            pictureBoxPreview.Location = new Point(36, 34);
             pictureBoxPreview.Name = "pictureBoxPreview";
-            pictureBoxPreview.Size = new Size(164, 175);
+            pictureBoxPreview.Size = new Size(100, 100);
+            pictureBoxPreview.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBoxPreview.TabIndex = 0;
             pictureBoxPreview.TabStop = false;
             // 
@@ -173,6 +174,7 @@
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).EndInit();
             splitContainerRight.ResumeLayout(false);
             splitContainerProperties.Panel1.ResumeLayout(false);
+            splitContainerProperties.Panel1.PerformLayout();
             splitContainerProperties.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).EndInit();
             splitContainerProperties.ResumeLayout(false);
