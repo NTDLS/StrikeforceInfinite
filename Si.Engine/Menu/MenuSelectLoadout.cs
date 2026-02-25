@@ -1,7 +1,6 @@
 ﻿using Si.Engine.Menu._Superclass;
 using Si.Engine.Sprite.MenuItem;
 using Si.Engine.Sprite.Player._Superclass;
-using Si.Library;
 using Si.Library.Mathematics;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,21 +36,6 @@ namespace Si.Engine.Menu
             _shipBlurb.X = offsetX + 250;
             _shipBlurb.Y = offsetY - _shipBlurb.Size.Height;
 
-            /*
-            //Use reflection to get a list of possible player types.
-            var playerTypes = SiReflection.GetSubClassesOf<SpritePlayerBase>()
-                .Where(o => o.Name.EndsWith("Drone") == false)
-                .OrderBy(o => o.Name).ToList();
-
-            //Move the debug player to the top of the list.
-            var debugPlayer = playerTypes.Where(o => o.Name.Contains("Debug")).FirstOrDefault();
-            if (debugPlayer != null)
-            {
-                playerTypes.Remove(debugPlayer);
-                playerTypes.Insert(0, debugPlayer);
-            }
-            */
-
             var assetMetas = engine.Assets.GetMetadataInDirectory(@"Sprites\Player\Ships");
 
             List<SpritePlayerBase> playerSprites = new();
@@ -75,11 +59,12 @@ namespace Si.Engine.Menu
 
                 playerSprite.X = offsetX;
                 playerSprite.Y = offsetY;
+
+                playerSprites.Add(playerSprite);
             }
 
             playerSprites.ForEach(sprite =>
             {
-                _engine.Sprites.AddPlayer(sprite);
                 sprite.ThrusterAnimation.IsVisible = true;
             });
 
