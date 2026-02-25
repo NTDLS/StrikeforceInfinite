@@ -35,7 +35,7 @@ namespace Si.Engine.TickController._Superclass
 
         public void QueueAllForDeletion() => SpriteManager.QueueAllForDeletionOfType<T>();
 
-        public void Add(T obj) => SpriteManager.Add(obj);
+        public void Add(T obj) => SpriteManager.Insert(obj);
 
         public T Add(string spritePath)
             => Engine.Sprites.Add<T>(spritePath);
@@ -58,7 +58,7 @@ namespace Si.Engine.TickController._Superclass
         public T Add(SharpDX.Direct2D1.Bitmap bitmap)
         {
             T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmap).EnsureNotNull();
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 

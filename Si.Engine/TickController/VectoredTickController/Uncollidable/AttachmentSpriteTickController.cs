@@ -59,7 +59,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             sprite.OwnerUID = owner.UID;
             sprite.LocationRelativeToOwner = locationRelativeToOwner.Clone();
 
-            SpriteManager.Add(sprite);
+            SpriteManager.Insert(sprite);
             return sprite;
         }
     }

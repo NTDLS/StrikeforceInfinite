@@ -386,16 +386,6 @@ namespace Si.Engine
             IsRunning = true;
             //Sprites.ResetPlayer();
 
-            if (ExecutionMode == SiEngineExecutionMode.Play)
-            {
-                //Add initial stars.
-                for (int i = 0; i < Settings.InitialFrameStarCount; i++)
-                {
-                    //TODO: Get the random star sprite.
-                    //Sprites.Stars.AddAt(Display.RandomOnScreenLocation());
-                }
-            }
-
             if (ExecutionMode == SiEngineExecutionMode.Play
                 || ExecutionMode == SiEngineExecutionMode.Edit
                 || ExecutionMode == SiEngineExecutionMode.ServerHost)
@@ -431,8 +421,15 @@ namespace Si.Engine
 
             IsInitializing = false;
 
+
             if (ExecutionMode == SiEngineExecutionMode.Play)
             {
+                //Add initial stars.
+                for (int i = 0; i < Settings.InitialFrameStarCount; i++)
+                {
+                    Sprites.Stars.AddAt(Display.RandomOnScreenLocation());
+                }
+
                 if (Settings.PlayMusic)
                 {
                     Audio.BackgroundMusicSound.Play();

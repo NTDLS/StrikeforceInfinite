@@ -15,7 +15,6 @@ using Si.Engine.TickController.VectoredTickController.Uncollidable;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
-using Si.Library.Sprite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,12 +112,8 @@ namespace Si.Engine.Manager
         {
         }
 
-        //public T CreateByType<T>() where T : SpriteBase
-        //{
-        //    return (T)Activator.CreateInstance(typeof(T), [_engine]).EnsureNotNull();
-        //}
 
-        public T Create<T>(string spritePath) where T : ISprite
+        public T Create<T>(string spritePath) where T : SpriteBase
         {
             var metadata = _engine.Assets.GetMetadata(spritePath)
                 ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
@@ -131,11 +126,11 @@ namespace Si.Engine.Manager
         public T Add<T>(string spritePath) where T : SpriteBase
         {
             var obj = Create<T>(spritePath);
-            Add(obj);
+            Insert(obj);
             return obj;
         }
 
-        public void Add(SpriteBase sprite)
+        public void Insert(SpriteBase sprite)
         {
             if (_engine.IsInitializing == true)
             {
@@ -152,14 +147,6 @@ namespace Si.Engine.Manager
 
             _engine.MultiplayLobby?.ActionBuffer.RecordSpawn(sprite.GetMultiPlayActionSpawn());
         }
-
-        //public void HardDelete(SpriteBase sprite)
-        //{
-        //    _engine.MultiplayLobby?.ActionBuffer.RecordDelete(sprite.UID);
-
-        //    sprite.Cleanup();
-        //    _collection.Remove(sprite);
-        //}
 
         public void HardDeleteAllQueuedDeletions()
         {
@@ -308,7 +295,7 @@ namespace Si.Engine.Manager
 
         public SpritePlayerBase AddPlayer(SpritePlayerBase sprite)
         {
-            Add(sprite);
+            Insert(sprite);
             return sprite;
         }
 

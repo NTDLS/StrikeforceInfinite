@@ -42,14 +42,14 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public SpriteRadarPositionTextBlock CreateRadarPosition(TextFormat format, SolidColorBrush color, SiVector location)
         {
             var obj = new SpriteRadarPositionTextBlock(Engine, format, color, location);
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 
         public SpriteTextBlock Add(TextFormat format, SolidColorBrush color, SiVector location, bool isPositionStatic)
         {
             var obj = new SpriteTextBlock(Engine, format, color, location, isPositionStatic);
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 
@@ -57,7 +57,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
             var obj = new SpriteTextBlock(Engine, format, color, location, isPositionStatic);
             obj.SpriteTag = name;
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 
@@ -66,7 +66,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             var obj = new SpriteTextBlock(Engine, format, color, location, isPositionStatic);
             obj.SpriteTag = name;
             obj.Text = text;
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 

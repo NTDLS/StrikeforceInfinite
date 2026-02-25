@@ -30,7 +30,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             object[] param = { Engine };
             var obj = (SpritePowerupBase)Activator.CreateInstance(typeof(T), param).EnsureNotNull();
             obj.Location = new SiVector(x, y);
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return (T)obj;
         }
     }

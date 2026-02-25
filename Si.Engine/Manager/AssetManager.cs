@@ -30,14 +30,14 @@ namespace Si.Engine.Manager
             Asset
         }
 
-        public class MetadataEnumerationItem
+        public class MetadataContainer
         {
-            public AssetContainer Container { get; set; }
+            public AssetContainer Asset { get; set; }
             public SpriteMetadata Metadata { get; set; }
 
-            public MetadataEnumerationItem(AssetContainer container, SpriteMetadata metadata)
+            public MetadataContainer(AssetContainer container, SpriteMetadata metadata)
             {
-                Container = container;
+                Asset = container;
                 Metadata = metadata;
             }
         }
@@ -93,12 +93,12 @@ namespace Si.Engine.Manager
         /// Gets the metadata for all assets in a directory.
         /// This REQUIRES that the assets already be cached.
         /// </summary>
-        public List<MetadataEnumerationItem> GetMetadataInDirectory(string directory, bool avoidCache = false)
+        public List<MetadataContainer> GetMetadataInDirectory(string directory, bool avoidCache = false)
         {
             var assetMetadatas = _collection.Read(o =>
                 o.Where(kv => kv.Value.BaseAssetType == BaseAssetType.Meta
                 && string.Equals(kv.Value.Directory, directory, StringComparison.OrdinalIgnoreCase))
-                .Select(kv => new MetadataEnumerationItem(kv.Value, (SpriteMetadata)kv.Value.Object))).ToList();
+                .Select(kv => new MetadataContainer(kv.Value, (SpriteMetadata)kv.Value.Object))).ToList();
 
             return assetMetadatas ?? [];
         }

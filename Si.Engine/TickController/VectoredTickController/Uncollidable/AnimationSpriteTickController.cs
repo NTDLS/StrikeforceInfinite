@@ -35,7 +35,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public void Insert(SpriteAnimation animation, SpriteBase defaultPosition)
         {
             animation.Location = defaultPosition.Location.Clone();
-            SpriteManager.Add(animation);
+            SpriteManager.Insert(animation);
         }
 
         /*

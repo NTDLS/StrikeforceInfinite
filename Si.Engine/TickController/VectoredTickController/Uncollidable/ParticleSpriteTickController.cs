@@ -48,7 +48,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public SpriteParticle AddAt(SpriteBase sprite, Color4 color, Size? size = null)
         {
             var obj = new SpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 
@@ -58,7 +58,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             {
                 IsVisible = true
             };
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 
@@ -68,7 +68,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             {
                 IsVisible = true
             };
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 

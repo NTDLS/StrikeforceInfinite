@@ -117,13 +117,13 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public void Add(WeaponBase weapon)
         {
             var obj = weapon.CreateMunition();
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
         }
 
         public void Add(WeaponBase weapon, SiVector? location = null)
         {
             var obj = weapon.CreateMunition(location);
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public void AddLockedOnTo(WeaponBase weapon, SpriteInteractiveBase lockedTarget, SiVector? location = null)
         {
             var obj = weapon.CreateMunition(location, lockedTarget);
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
         }
     }
 }

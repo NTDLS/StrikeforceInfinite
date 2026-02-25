@@ -26,7 +26,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
         {
             //This is where the player is created.
             Sprite = new SpriteDebugPlayer(engine, @"Sprites\Player\Ships\Debug.png") { IsVisible = false };
-            engine.Sprites.Add(Sprite);
+            engine.Sprites.Insert(Sprite);
             _engine = engine;
             _inputDelay.Restart();
         }
@@ -38,7 +38,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             Sprite.Cleanup();
             Sprite = Engine.Sprites.Add<SpritePlayerBase>(spritePath);
             Sprite.IsVisible = false;
-            _engine.Sprites.Add(Sprite); //Add the player back to the sprite collection.
+            _engine.Sprites.Insert(Sprite); //Add the player back to the sprite collection.
         }
 
         private float _forwardVelocity = 0;
