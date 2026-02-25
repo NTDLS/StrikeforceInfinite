@@ -24,7 +24,6 @@ namespace Si.Engine.TickController._Superclass
         public T? FirstByTag(string name) => SpriteManager.OfType<T>().FirstOrDefault(o => o.SpriteTag == name);
         public IEnumerable<T> AllByTag(string name) => SpriteManager.OfType<T>().Where(o => o.SpriteTag == name);
 
-
         public virtual void ExecuteWorldClockTick(float epoch, SiVector displacementVector) { }
 
         public VectoredCollidableTickControllerBase(EngineCore engine, SpriteManager manager)

@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy.Peon
     public class SpriteEnemyPhoenix
         : SpriteEnemyPeonBase
     {
-        public SpriteEnemyPhoenix(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Peon\Phoenix.png")
+        public SpriteEnemyPhoenix(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             AddAIController(new AILogisticsOffScreenReentry(_engine, this));
             //AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));

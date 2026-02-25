@@ -1,4 +1,5 @@
-﻿using Si.Library;
+﻿using Si.Engine.Sprite.SupportingClasses.Metadata._Superclass;
+using Si.Library;
 using System.Collections.Generic;
 using static Si.Library.SiConstants;
 
@@ -8,13 +9,9 @@ namespace Si.Engine.Sprite.SupportingClasses.Metadata
     /// Contains sprite metadata.
     /// </summary>
     public class InteractiveSpriteMetadata
+        : MetadataBase
     {
         public InteractiveSpriteMetadata() { }
-
-        public string @Class { get; set; } = string.Empty;
-
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
 
         public AttachmentOrientationType OrientationType { get; set; } = AttachmentOrientationType.FixedToOwner;
         public AttachmentPositionType PositionType { get; set; } = AttachmentPositionType.FixedToOwner;
@@ -76,8 +73,8 @@ namespace Si.Engine.Sprite.SupportingClasses.Metadata
         /// <summary>
         /// Used for the players "primary weapon slot".
         /// </summary>
-        public InteractiveSpriteWeapon? PrimaryWeapon { get; set; }
-        public List<InteractiveSpriteAttachment> Attachments { get; set; } = new();
-        public List<InteractiveSpriteWeapon> Weapons { get; set; } = new();
+        public InteractiveSpriteWeaponMetadata? PrimaryWeapon { get; set; }
+        public List<InteractiveSpriteAttachmentMetadata> Attachments { get; set; } = new();
+        public List<InteractiveSpriteWeaponMetadata> Weapons { get; set; } = new();
     }
 }

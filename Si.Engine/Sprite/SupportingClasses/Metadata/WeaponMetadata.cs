@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Si.Engine.Sprite.SupportingClasses.Metadata._Superclass;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite.SupportingClasses.Metadata
@@ -8,13 +9,9 @@ namespace Si.Engine.Sprite.SupportingClasses.Metadata
     /// Contains sprite metadata.
     /// </summary>
     public class WeaponMetadata
+        : MetadataBase
     {
         public WeaponMetadata() { }
-
-        public string @Class { get; set; } = string.Empty;
-
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// If the sprite has an image, these are the paths to the bitmaps (be default, they are used at random)..

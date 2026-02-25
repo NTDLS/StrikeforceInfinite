@@ -82,7 +82,7 @@ namespace Si.Engine.Level
             asteroid.SetHullHealth(int.MaxValue);
             */
 
-            var sprite = _engine.Sprites.Enemies.Add("Phoenix.png");
+            var sprite = _engine.Sprites.Add("Sprites\\Enemy\\Peon\\Phoenix.png");
 
             /*
             for (int i = 0; i < 10; i++)

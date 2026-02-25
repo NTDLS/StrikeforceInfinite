@@ -6,6 +6,7 @@ using SharpCompress.Archives;
 using SharpCompress.Common;
 using Si.Audio;
 using Si.Engine.Sprite;
+using Si.Engine.Sprite.SupportingClasses.Metadata._Superclass;
 using Si.Library;
 using System;
 using System.Collections.Generic;
@@ -54,9 +55,36 @@ namespace Si.Engine.Manager
         public static bool IsDirectoryFromAttrib(IEntry entry) =>
             entry.Attrib.HasValue && ((FileAttributes)entry.Attrib.Value & FileAttributes.Directory) != 0;
 
-        public T GetMetaData<T>(string spriteImagePath, bool avoidCache = false)
+        public MetadataBase GetMetaDataBase(string spritePath, bool avoidCache = false)
         {
-            string metadataFile = $"{spriteImagePath}.meta".Replace('\\', '/');
+            string metadataFile = $"{spritePath}.meta".Replace('\\', '/');
+
+            if (avoidCache)
+            {
+                return JsonConvert.DeserializeObject<MetadataBase>(GetText(metadataFile)).EnsureNotNull();
+            }
+
+            string key = $"meta:base:{metadataFile.ToLower()}";
+
+            var cached = _collection.Read(o =>
+            {
+                o.TryGetValue(key, out var value);
+                return value;
+            });
+
+            if (cached != null)
+            {
+                return (MetadataBase)cached;
+            }
+
+            var metadata = JsonConvert.DeserializeObject<MetadataBase>(GetText(metadataFile)).EnsureNotNull();
+            _collection.Write(o => o.Add(key, metadata ?? throw new NullReferenceException()));
+            return metadata;
+        }
+
+        public T GetMetaData<T>(string spritePath, bool avoidCache = false)
+        {
+            string metadataFile = $"{spritePath}.meta".Replace('\\', '/');
 
             if (avoidCache)
             {

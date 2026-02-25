@@ -1,15 +1,12 @@
-﻿using static Si.Library.SiConstants;
+﻿using Si.Engine.Sprite.SupportingClasses.Metadata._Superclass;
+using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite.SupportingClasses.Metadata
 {
     internal class SpriteAnimationMetadata
+        : MetadataBase
     {
         public SpriteAnimationMetadata() { }
-
-        public string @Class { get; set; } = string.Empty;
-
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
 
         public float Speed { get; set; } = 1f;
         public float MaxThrottle { get; set; } = 0f;
