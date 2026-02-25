@@ -5,8 +5,8 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 {
     internal class SpriteEnemyBossDevastatorRightCannon : SpriteAttachment
     {
-        public SpriteEnemyBossDevastatorRightCannon(EngineCore engine)
-            : base(engine, $@"Sprites\Enemy\Boss\Devastator\Cannon.Right.png")
+        public SpriteEnemyBossDevastatorRightCannon(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
 

@@ -26,7 +26,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             : base(engine)
         {
             //This is where the player is created.
-            Sprite = new SpriteDebugPlayer(engine) { IsVisible = false };
+            Sprite = new SpriteDebugPlayer(engine, @"Sprites\Player\Ships\Debug.png") { IsVisible = false };
             engine.Sprites.Add(Sprite);
             _engine = engine;
             _inputDelay.Restart();

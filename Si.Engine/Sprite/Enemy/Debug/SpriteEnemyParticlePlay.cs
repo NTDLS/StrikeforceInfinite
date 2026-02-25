@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// </summary>
     internal class SpriteEnemyParticlePlay : SpriteEnemyPeonBase
     {
-        public SpriteEnemyParticlePlay(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Debug\Hull.png")
+        public SpriteEnemyParticlePlay(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             Throttle = 0;
 

@@ -47,33 +47,23 @@ namespace Si.Engine.TickController._Superclass
         public void Add(T obj) => SpriteManager.Add(obj);
 
         public T Add(string spritePath)
-        {
-            var metadata = Engine.Assets.GetMetaData(spritePath)
-                ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
-
-            var metadataBaseType = SiReflection.GetTypeByName(metadata.Class);
-
-            var obj = (T)Activator.CreateInstance(metadataBaseType, Engine, spritePath).EnsureNotNull();
-            Add(obj);
-            return obj;
-        }
+            => Engine.Sprites.Add<T>(spritePath);
 
         public T AddAt(string spritePath, float x, float y)
         {
-            var obj = Add(spritePath);
+            var obj = Engine.Sprites.Add<T>(spritePath);
             obj.Location = new SiVector(x, y);
-            Add(obj);
             return obj;
         }
 
         public T AddAt(string spritePath, SpriteBase locationOf)
         {
-            var obj = Add(spritePath);
+            var obj = Engine.Sprites.Add<T>(spritePath);
             obj.Location = locationOf.Location.Clone();
-            Add(obj);
             return obj;
         }
 
+        //TODO: This shold be moved to Engine.Sprites...
         public T Add(SharpDX.Direct2D1.Bitmap bitmap)
         {
             T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmap).EnsureNotNull();
@@ -81,6 +71,7 @@ namespace Si.Engine.TickController._Superclass
             return obj;
         }
 
+        //TODO: This shold be moved to Engine.Sprites...
         public T AddAt(SharpDX.Direct2D1.Bitmap bitmap, SpriteBase locationOf)
         {
             T obj = Add(bitmap);

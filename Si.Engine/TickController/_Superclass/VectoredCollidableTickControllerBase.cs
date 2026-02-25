@@ -41,7 +41,7 @@ namespace Si.Engine.TickController._Superclass
 
         public T Add(string spritePath)
         {
-            var metadata = Engine.Assets.GetMetaData(spritePath)
+            var metadata = Engine.Assets.GetMetadata(spritePath)
                 ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
 
             var metadataBaseType = SiReflection.GetTypeByName(metadata.Class);

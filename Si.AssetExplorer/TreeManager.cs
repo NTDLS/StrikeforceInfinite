@@ -46,6 +46,35 @@ namespace Si.AssetExplorer
         private void WriteOutput(string text, LoggingLevel? color = null)
             => _writeOutput(text, color);
 
+        public static void CreateMetaFiles(string rootDirectory)
+        {
+            if (!Directory.Exists(rootDirectory))
+                throw new DirectoryNotFoundException(rootDirectory);
+
+            foreach (var file in Directory.EnumerateFiles(rootDirectory, "*", SearchOption.AllDirectories))
+            {
+                try
+                {
+                    // Skip files that are already meta files
+                    if (file.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    string metaPath = file + ".meta";
+
+                    if (!File.Exists(metaPath))
+                    {
+                        // Create empty JSON file
+                        using (File.Create(metaPath)) { }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Optional: log and continue
+                    Console.WriteLine($"Failed: {file} - {ex.Message}");
+                }
+            }
+        }
+
         public void Repopulate()
         {
             try

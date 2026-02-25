@@ -4,8 +4,8 @@ namespace Si.Engine.Sprite.Player
 {
     internal class SpriteFrigatePlayer : SpritePlayerBase
     {
-        public SpriteFrigatePlayer(EngineCore engine)
-            : base(engine, @$"Sprites\Player\Ships\Frigate.png")
+        public SpriteFrigatePlayer(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
     }

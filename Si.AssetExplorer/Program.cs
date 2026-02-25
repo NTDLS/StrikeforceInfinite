@@ -25,11 +25,39 @@ namespace Si.AssetExplorer
 
             Settings.Save(); //Create a default persisted state if one does not exist.
 
+            //CreateMetaFiles(@"C:\NTDLS\StrikeforceInfinite\Assets");
 
             ThemeManager.GlobalPaletteMode = Settings.Instance.Theme;
 
             Application.Run(new FormMain());
+        }
 
+        public static void CreateMetaFiles(string rootDirectory)
+        {
+            if (!Directory.Exists(rootDirectory))
+                throw new DirectoryNotFoundException(rootDirectory);
+
+            foreach (var file in Directory.EnumerateFiles(rootDirectory, "*.*", SearchOption.AllDirectories))
+            {
+                try
+                {
+                    // Skip files that are already meta files
+                    if (file.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    string metaPath = file + ".meta";
+
+                    if (!File.Exists(metaPath))
+                    {
+                        // Create empty JSON file
+                        using (File.Create(metaPath)) { }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed: {file} - {ex.Message}");
+                }
+            }
         }
     }
 }

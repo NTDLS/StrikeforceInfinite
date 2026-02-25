@@ -7,7 +7,7 @@ namespace Si.Engine.Sprite.Weapon
     internal class WeaponBlunderbuss : WeaponBase
     {
         public WeaponBlunderbuss(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
-            : base(engine, owner,  spritePath)
+            : base(engine, owner, spritePath)
         {
         }
 

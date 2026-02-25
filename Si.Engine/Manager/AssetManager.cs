@@ -24,9 +24,43 @@ namespace Si.Engine.Manager
         private const string _assetPackagePath = "Si.Assets.rez";
 #endif
 
+        public enum BaseAssetType
+        {
+            Meta,
+            Asset
+        }
+
+        public class MetadataEnumerationItem
+        {
+            public AssetContainer Container { get; set; }
+            public SpriteMetadata Metadata { get; set; }
+
+            public MetadataEnumerationItem(AssetContainer container, SpriteMetadata metadata)
+            {
+                Container = container;
+                Metadata = metadata;
+            }
+        }
+
+        public class AssetContainer
+        {
+            public BaseAssetType BaseAssetType { get; set; }
+            public string? Directory { get; set; }
+            public string SpritePath { get; set; }
+            public object Object { get; set; }
+
+            public AssetContainer(BaseAssetType baseAssetType, string spritePath, object obj)
+            {
+                BaseAssetType = baseAssetType;
+                Directory = Path.GetDirectoryName(spritePath)?.ToLower();
+                SpritePath = spritePath;
+                Object = obj;
+            }
+        }
+
         public string AssetPackagePath => _assetPackagePath;
         private readonly EngineCore _engine;
-        private readonly OptimisticCriticalResource<Dictionary<string, object>> _collection = new();
+        private readonly OptimisticCriticalResource<Dictionary<string, AssetContainer>> _collection = new();
         private readonly IArchive? _archive = null;
         private readonly Dictionary<string, IArchiveEntry> _entryHashes;
 
@@ -55,7 +89,21 @@ namespace Si.Engine.Manager
         public static bool IsDirectoryFromAttrib(IEntry entry) =>
             entry.Attrib.HasValue && ((FileAttributes)entry.Attrib.Value & FileAttributes.Directory) != 0;
 
-        public SpriteMetadata GetMetaData(string spritePath, bool avoidCache = false)
+        /// <summary>
+        /// Gets the metadata for all assets in a directory.
+        /// This REQUIRES that the assets already be cached.
+        /// </summary>
+        public List<MetadataEnumerationItem> GetMetadataInDirectory(string directory, bool avoidCache = false)
+        {
+            var assetMetadatas = _collection.Read(o =>
+                o.Where(kv => kv.Value.BaseAssetType == BaseAssetType.Meta
+                && string.Equals(kv.Value.Directory, directory, StringComparison.OrdinalIgnoreCase))
+                .Select(kv => new MetadataEnumerationItem(kv.Value, (SpriteMetadata)kv.Value.Object))).ToList();
+
+            return assetMetadatas ?? [];
+        }
+
+        public SpriteMetadata GetMetadata(string spritePath, bool avoidCache = false)
         {
             string metadataFile = $"{spritePath}.meta".Replace('\\', '/');
 
@@ -69,7 +117,7 @@ namespace Si.Engine.Manager
             var cached = _collection.Read(o =>
             {
                 o.TryGetValue(key, out var value);
-                return value;
+                return value?.Object;
             });
 
             if (cached != null)
@@ -77,8 +125,8 @@ namespace Si.Engine.Manager
                 return (SpriteMetadata)cached;
             }
 
-            var metadata = JsonConvert.DeserializeObject<SpriteMetadata>(GetText(metadataFile)).EnsureNotNull();
-            _collection.Write(o => o.Add(key, metadata ?? throw new NullReferenceException()));
+            var metadata = JsonConvert.DeserializeObject<SpriteMetadata>(GetText(metadataFile)) ?? new SpriteMetadata();
+            _collection.Write(o => o.Add(key, new AssetContainer(BaseAssetType.Meta, spritePath, metadata.EnsureNotNull())));
             return metadata;
         }
 
@@ -130,8 +178,8 @@ namespace Si.Engine.Manager
 
             var cached = _collection.Read(o =>
             {
-                o.TryGetValue(path, out object? value);
-                return value as string;
+                o.TryGetValue(path, out var value);
+                return value?.Object as string;
             });
             if (cached != null)
             {
@@ -141,7 +189,7 @@ namespace Si.Engine.Manager
             try
             {
                 var text = GetCompressedText(path);
-                _collection.Write(o => o.TryAdd(path, text));
+                _collection.Write(o => o.TryAdd(path, new AssetContainer(BaseAssetType.Asset, path, text)));
                 return text;
             }
             catch
@@ -157,11 +205,12 @@ namespace Si.Engine.Manager
             var cacheKey = $"{path}:{initialVolume}:{loopForever}";
             var cached = _collection.Read(o =>
             {
-                if (o.TryGetValue(cacheKey, out object? value))
+                if (o.TryGetValue(cacheKey, out var value))
                 {
-                    ((SiAudioClip)value).SetInitialVolume(initialVolume);
-                    ((SiAudioClip)value).SetLoopForever(loopForever);
-                    return (SiAudioClip)value;
+                    var audioClip = value.Object as SiAudioClip;
+                    audioClip?.SetInitialVolume(initialVolume);
+                    audioClip?.SetLoopForever(loopForever);
+                    return audioClip;
                 }
                 return null;
             });
@@ -173,7 +222,7 @@ namespace Si.Engine.Manager
 
             using var stream = GetCompressedStream(path);
             var result = new SiAudioClip(stream, initialVolume, loopForever);
-            _collection.Write(o => o.TryAdd(cacheKey, result));
+            _collection.Write(o => o.TryAdd(cacheKey, new AssetContainer(BaseAssetType.Asset, path, result)));
             stream.Close();
             return result;
         }
@@ -184,8 +233,8 @@ namespace Si.Engine.Manager
 
             var cached = _collection.Read(o =>
             {
-                o.TryGetValue(path, out object? value);
-                return value as SharpDX.Direct2D1.Bitmap;
+                o.TryGetValue(path, out var value);
+                return value?.Object as SharpDX.Direct2D1.Bitmap;
             });
 
             if (cached != null)
@@ -195,7 +244,7 @@ namespace Si.Engine.Manager
 
             using var stream = GetCompressedStream(path);
             var bitmap = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
-            _collection.Write(o => o.TryAdd(path, bitmap));
+            _collection.Write(o => o.TryAdd(path, new AssetContainer(BaseAssetType.Asset, path, bitmap)));
             return bitmap;
         }
 
@@ -236,6 +285,11 @@ namespace Si.Engine.Manager
                     default:
                         Interlocked.Increment(ref statusIndex);
                         break;
+                }
+
+                if (!IsDirectoryFromAttrib(entry) && !entry.Key.EndsWith(".meta", StringComparison.OrdinalIgnoreCase)) 
+                {
+                    GetMetadata(entry.Key);
                 }
             }
 

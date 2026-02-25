@@ -109,7 +109,7 @@ namespace Si.Engine.Sprite._Superclass
         /// <param name="spriteImagePath"></param>
         private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            _metadata = _engine.Assets.GetMetaData(spriteImagePath);
+            _metadata = _engine.Assets.GetMetadata(spriteImagePath);
 
             SetImage(spriteImagePath);
 
@@ -182,7 +182,7 @@ namespace Si.Engine.Sprite._Superclass
 
         public void AddWeapon(string spritePath, int munitionCount)
         {
-            var metadata = _engine.Assets.GetMetaData(spritePath)
+            var metadata = _engine.Assets.GetMetadata(spritePath)
                 ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
 
             var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
@@ -251,45 +251,13 @@ namespace Si.Engine.Sprite._Superclass
         #region Attachments.
 
         /// <summary>
-        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another sprites children for automatic cleanup when parent is destroyed. 
+        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another
+        /// sprites children for automatic cleanup when parent is destroyed. 
         /// </summary>
         /// <returns></returns>
-        public SpriteAttachment Attach(string imagePath)
+        public SpriteAttachment AttachOfType(string spritePath, SiVector locationRelativeToOwner)
         {
-            var attachment = _engine.Sprites.Attachments.Add(this, imagePath);
-            Attachments.Add(attachment);
-            return attachment;
-        }
-
-        /// <summary>
-        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another sprites children for automatic cleanup when parent is destroyed. 
-        /// </summary>
-        /// <returns></returns>
-        public SpriteAttachment Attach<T>(string imagePath) where T : SpriteAttachment
-        {
-            var attachment = _engine.Sprites.Attachments.AddTypeOf<T>(this, imagePath);
-            Attachments.Add(attachment);
-            return attachment;
-        }
-
-        /// <summary>
-        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another sprites children for automatic cleanup when parent is destroyed. 
-        /// </summary>
-        /// <returns></returns>
-        public SpriteAttachment AttachOfType<T>() where T : SpriteAttachment
-        {
-            var attachment = _engine.Sprites.Attachments.AddTypeOf<T>(this);
-            Attachments.Add(attachment);
-            return attachment;
-        }
-
-        /// <summary>
-        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another sprites children for automatic cleanup when parent is destroyed. 
-        /// </summary>
-        /// <returns></returns>
-        public SpriteAttachment AttachOfType(string typeName, SiVector locationRelativeToOwner)
-        {
-            var attachment = _engine.Sprites.Attachments.AddTypeOf(typeName, this, locationRelativeToOwner);
+            var attachment = _engine.Sprites.Attachments.AddTypeOf(spritePath, this, locationRelativeToOwner);
             Attachments.Add(attachment);
             return attachment;
         }

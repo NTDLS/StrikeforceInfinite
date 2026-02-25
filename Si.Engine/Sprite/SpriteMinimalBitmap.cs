@@ -49,7 +49,7 @@ namespace Si.Engine.Sprite
 
         private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            var metadata = _engine.Assets.GetMetaData(spriteImagePath);
+            var metadata = _engine.Assets.GetMetadata(spriteImagePath);
 
             Speed = metadata.Speed;
             Throttle = metadata.Throttle;

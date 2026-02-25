@@ -59,7 +59,7 @@ namespace Si.Engine.Sprite.Player._Superclass
             ShipEngineIdleSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Idle.wav", 0.5f, true);
             ShipEngineBoostSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Boost.wav", 0.5f, true);
 
-            Orientation = new SiVector(0);
+            Orientation = SiVector.One();
             Throttle = 0;
 
             RenewableResources.Create(BoostResourceName, _engine.Settings.MaxPlayerBoostAmount,
@@ -119,14 +119,14 @@ namespace Si.Engine.Sprite.Player._Superclass
         public string GetLoadoutHelpText()
         {
             var primaryWeaponType = Metadata.PrimaryWeapon?.Type;
-            var primaryWeaponMetadata = _engine.Assets.GetMetaData(primaryWeaponType.EnsureNotNull());
+            var primaryWeaponMetadata = _engine.Assets.GetMetadata(primaryWeaponType.EnsureNotNull());
             string primaryWeapon = $"{primaryWeaponMetadata.Name} x{primaryWeaponMetadata.MunitionCount}";
 
             string secondaryWeapons = string.Empty;
             foreach (var weapon in Metadata.Weapons)
             {
                 var secondaryWeaponType = weapon?.Type;
-                var secondaryWeaponMetadata = _engine.Assets.GetMetaData(secondaryWeaponType.EnsureNotNull());
+                var secondaryWeaponMetadata = _engine.Assets.GetMetadata(secondaryWeaponType.EnsureNotNull());
 
                 secondaryWeapons += $"{secondaryWeaponMetadata.Name} x{secondaryWeaponMetadata.MunitionCount}\n{new string(' ', 20)}";
             }
@@ -233,7 +233,7 @@ namespace Si.Engine.Sprite.Player._Superclass
 
         public void SetPrimaryWeapon(string spritePath, int munitionCount)
         {
-            var metadata = _engine.Assets.GetMetaData(spritePath)
+            var metadata = _engine.Assets.GetMetadata(spritePath)
                 ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
 
             var type = SiReflection.GetTypeByName(metadata.Class);

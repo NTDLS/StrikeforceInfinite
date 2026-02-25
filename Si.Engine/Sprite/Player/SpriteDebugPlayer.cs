@@ -2,10 +2,11 @@
 
 namespace Si.Engine.Sprite.Player
 {
-    internal class SpriteDebugPlayer : SpritePlayerBase
+    internal class SpriteDebugPlayer
+        : SpritePlayerBase
     {
-        public SpriteDebugPlayer(EngineCore engine)
-            : base(engine, @"Sprites\Player\Ships\Debug.png")
+        public SpriteDebugPlayer(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
     }

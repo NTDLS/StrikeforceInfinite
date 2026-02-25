@@ -80,7 +80,10 @@ namespace Si.Engine.Level
             asteroid.SetHullHealth(int.MaxValue);
             */
 
-            var sprite = _engine.Sprites.Enemies.Add("Sprites\\Enemy\\Peon\\Phoenix.png");
+            //var sprite = _engine.Sprites.Enemies.Add(@"Sprites\Enemy\Peon\Phoenix.png");
+
+            var sprite = _engine.Sprites.Enemies.Add(@"Sprites\Enemy\Boss\Devastator\Hull.png");
+
 
             /*
             for (int i = 0; i < 10; i++)

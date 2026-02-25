@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using NTDLS.Helpers;
+﻿using NTDLS.Helpers;
 using Si.Audio;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
@@ -51,7 +50,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         /// <param name="spriteImagePath"></param>
         public void LoadMetadata(string spritePath)
         {
-            Metadata = _engine.Assets.GetMetaData(spritePath);
+            Metadata = _engine.Assets.GetMetadata(spritePath);
 
             if (string.IsNullOrEmpty(Metadata?.SoundPath) == false)
             {

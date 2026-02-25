@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy.Starbase.Garrison
     {
         public bool FireToggler { get; set; }
 
-        public SpriteEnemyStarbaseGarrisonTurret(EngineCore engine)
-            : base(engine, $@"Sprites\Enemy\Starbase\Garrison\Turret.png")
+        public SpriteEnemyStarbaseGarrisonTurret(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
 

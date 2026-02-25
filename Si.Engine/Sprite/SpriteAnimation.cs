@@ -37,7 +37,7 @@ namespace Si.Engine.Sprite
 
             Location = new SiVector();
 
-            var metadata = _engine.Assets.GetMetaData(spriteSheetFileName);
+            var metadata = _engine.Assets.GetMetadata(spriteSheetFileName);
 
             Speed = metadata.Speed;
             Throttle = metadata.Throttle;

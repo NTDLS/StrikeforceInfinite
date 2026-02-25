@@ -120,7 +120,7 @@ namespace Si.Engine.Manager
 
         public T Create<T>(string spritePath) where T : ISprite
         {
-            var metadata = _engine.Assets.GetMetaData(spritePath)
+            var metadata = _engine.Assets.GetMetadata(spritePath)
                 ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
 
             var metadataBaseType = SiReflection.GetTypeByName(metadata.Class);
@@ -128,9 +128,9 @@ namespace Si.Engine.Manager
             return (T)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
         }
 
-        public SpriteBase Add(string spritePath)
+        public T Add<T>(string spritePath) where T : SpriteBase
         {
-            var obj = Create<SpriteBase>(spritePath);
+            var obj = Create<T>(spritePath);
             Add(obj);
             return obj;
         }

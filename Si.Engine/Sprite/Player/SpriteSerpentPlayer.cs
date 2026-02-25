@@ -4,8 +4,8 @@ namespace Si.Engine.Sprite.Player
 {
     internal class SpriteSerpentPlayer : SpritePlayerBase
     {
-        public SpriteSerpentPlayer(EngineCore engine)
-            : base(engine, @$"Sprites\Player\Ships\Serpent.png")
+        public SpriteSerpentPlayer(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
     }

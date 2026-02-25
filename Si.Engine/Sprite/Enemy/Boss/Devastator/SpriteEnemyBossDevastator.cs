@@ -13,8 +13,8 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
         private readonly SpriteAttachment _thrusterLeft;
         private readonly SpriteAttachment _thrusterRight;
 
-        public SpriteEnemyBossDevastator(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Boss\Devastator\Hull.png")
+        public SpriteEnemyBossDevastator(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             Orientation.Degrees = SiRandom.Between(0, 359);
 

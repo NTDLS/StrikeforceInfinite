@@ -1,7 +1,6 @@
 ﻿using Si.Engine.Manager;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController._Superclass;
 using Si.Library.Mathematics;
 using System.Linq;
@@ -26,6 +25,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
+        /*
         public SpriteAttachment Add(SpriteBase owner, string? imagePath = null)
         {
             var sprite = new SpriteAttachment(Engine, imagePath)
@@ -49,10 +49,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             SpriteManager.Add(sprite);
             return sprite;
         }
+        */
 
-        public SpriteAttachment AddTypeOf(string typeName, SpriteInteractiveBase owner, SiVector locationRelativeToOwner)
+        public SpriteAttachment AddTypeOf(string spritePath, SpriteInteractiveBase owner, SiVector locationRelativeToOwner)
         {
-            var sprite = CreateSubtypeByName(typeName);
+            var sprite = CreateSubtypeByName(spritePath);
 
             sprite.Z = owner.Z + 1; //We want to make sure these go on top of the parent.
             sprite.OwnerUID = owner.UID;

@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
     {
         public bool FireToggler { get; set; }
 
-        public SpriteEnemyBossDevastatorTurret(EngineCore engine)
-            : base(engine, $@"Sprites\Enemy\Boss\Devastator\Turret.png")
+        public SpriteEnemyBossDevastatorTurret(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
 

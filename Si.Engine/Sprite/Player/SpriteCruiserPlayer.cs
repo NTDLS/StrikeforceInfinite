@@ -4,8 +4,8 @@ namespace Si.Engine.Sprite.Player
 {
     internal class SpriteCruiserPlayer : SpritePlayerBase
     {
-        public SpriteCruiserPlayer(EngineCore engine)
-            : base(engine, @"Sprites\Player\Ships\Cruiser.png")
+        public SpriteCruiserPlayer(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
     }
