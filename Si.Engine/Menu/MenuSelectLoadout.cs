@@ -62,8 +62,6 @@ namespace Si.Engine.Menu
             {
                 var playerSprite = engine.Sprites.Add<SpritePlayerBase>(assetMeta.Container.SpritePath);
 
-                //var assetType = SiReflection.GetTypeByName(assetMeta.Class);
-                //var playerSprite = SiReflection.CreateInstanceFromType<SpritePlayerBase>(assetType, new object[] { engine });
                 playerSprite.SpriteTag = "MENU_SHIP_SELECT";
                 playerSprite.Orientation.Degrees = 45;
 

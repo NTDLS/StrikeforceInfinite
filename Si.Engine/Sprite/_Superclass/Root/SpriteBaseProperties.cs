@@ -82,6 +82,8 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _orientation = value;
+                _orientation.OnChangeEvent += (SiVector vector) => OrientationChanged();
+                OrientationChanged();
             }
         }
 
