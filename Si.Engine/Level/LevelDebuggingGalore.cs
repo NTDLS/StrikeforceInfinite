@@ -1,7 +1,5 @@
-﻿using Si.Engine.AI.Logistics;
-using Si.Engine.Level._Superclass;
+﻿using Si.Engine.Level._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Enemy.Peon;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -82,7 +80,7 @@ namespace Si.Engine.Level
             asteroid.SetHullHealth(int.MaxValue);
             */
 
-            var sprite = _engine.Sprites.Add("Sprites\\Enemy\\Peon\\Phoenix.png");
+            var sprite = _engine.Sprites.Enemies.Add("Sprites\\Enemy\\Peon\\Phoenix.png");
 
             /*
             for (int i = 0; i < 10; i++)

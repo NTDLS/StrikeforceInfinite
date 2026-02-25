@@ -2,7 +2,6 @@
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
-using Si.Engine.Sprite.SupportingClasses.Metadata;
 using Si.Library.Mathematics;
 using System;
 using System.Drawing;
@@ -38,7 +37,7 @@ namespace Si.Engine.Sprite
 
             Location = new SiVector();
 
-            var metadata = _engine.Assets.GetMetaData<SpriteAnimationMetadata>(spriteSheetFileName);
+            var metadata = _engine.Assets.GetMetaData(spriteSheetFileName);
 
             Speed = metadata.Speed;
             Throttle = metadata.Throttle;

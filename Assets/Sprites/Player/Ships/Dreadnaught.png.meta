@@ -11,52 +11,52 @@
   "CollisionDetection": true,
   "PrimaryWeapon":
   {
-	"Type": "WeaponBlunderbuss",
+	"Type": "Sprites/Weapon/Blunderbuss.png",
 	"MunitionCount": 2147483647
   },
   "Weapons": [
 	{
-	  "Type": "WeaponBlunderbuss",
+	  "Type": "Sprites/Weapon/Blunderbuss.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponDualVulcanCannon",
+	  "Type": "Sprites/Weapon/Dual Vulcan Cannon.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponFragMissile",
+	  "Type": "Sprites/Weapon/Frag Missile.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponLancer",
+	  "Type": "Sprites/Weapon/Lancer.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponPhotonTorpedo",
+	  "Type": "Sprites/Weapon/Photon Torpedo.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponPrecisionFragMissile",
+	  "Type": "Sprites/Weapon/Precision Frag Missile.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponScattershot",
+	  "Type": "Sprites/Weapon/Scattershot.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponScramsMissile",
+	  "Type": "Sprites/Weapon/Scrams Missile.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponScuttleMissile",
+	  "Type": "Sprites/Weapon/Scuttle Missile.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponThunderstrikeMissile",
+	  "Type": "Sprites/Weapon/Thunderstrike Missile.png",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "WeaponVulcanCannon",
+	  "Type": "Sprites/Weapon/Vulcan Cannon.png",
 	  "MunitionCount": 2147483647
 	}
 	]

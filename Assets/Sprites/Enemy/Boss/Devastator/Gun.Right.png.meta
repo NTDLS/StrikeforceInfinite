@@ -6,7 +6,7 @@
   "Shields": 0,
   "Weapons": [
 	{
-	  "Type": "WeaponLancer",
+	  "Type": "Sprites/Weapon/Lancer.png",
 	  "MunitionCount": 2147483647
 	}
   ]

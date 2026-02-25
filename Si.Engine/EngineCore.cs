@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 using NTDLS.Helpers;
 using NTDLS.Semaphore;
 using Si.Engine.AI._Superclass;
-using Si.Engine.AI.Logistics;
 using Si.Engine.EngineLibrary;
 using Si.Engine.Interrogation._Superclass;
 using Si.Engine.Manager;
@@ -10,8 +9,6 @@ using Si.Engine.Menu;
 using Si.Engine.MultiPlay;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Enemy.Boss.Devastator;
 using Si.Engine.TickController.PlayerSpriteTickController;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Library;
@@ -394,7 +391,8 @@ namespace Si.Engine
                 //Add initial stars.
                 for (int i = 0; i < Settings.InitialFrameStarCount; i++)
                 {
-                    Sprites.Stars.Add(Display.RandomOnScreenLocation());
+                    //TODO: Get the random star sprite.
+                    //Sprites.Stars.AddAt(Display.RandomOnScreenLocation());
                 }
             }
 
@@ -440,7 +438,8 @@ namespace Si.Engine
                     Audio.BackgroundMusicSound.Play();
                 }
 
-                Sprites.SkyBoxes.AddAtCenterUniverse();
+                //TODO: Get the random skybox sprite.
+                //Sprites.SkyBoxes.AddAtCenterUniverse();
 
                 //Events.Add(1, () => AddDemoSprites());
                 Events.Once(() => Menus.Show(new MenuStartNewGame(this)));
@@ -467,7 +466,7 @@ namespace Si.Engine
             */
 
             //for (int i = 0; i < 3; i++)
-                //ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>());
+            //ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>());
 
             //void ApplySpriteStates(SpriteEnemyBase sprite)
             //{

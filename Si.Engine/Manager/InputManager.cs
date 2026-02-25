@@ -1,8 +1,6 @@
 ﻿using SharpDX.DirectInput;
 using SharpDX.XInput;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Enemy.Boss.Devastator;
-using Si.Engine.Sprite.Enemy.Peon;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;

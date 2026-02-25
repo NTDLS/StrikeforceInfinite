@@ -8,7 +8,7 @@
   "Bounty": 50,
   "Weapons": [
 	{
-	  "Type": "WeaponThunderstrikeMissile",
+	  "Type": "Sprites/Weapon/Thunderstrike Missile.png",
 	  "MunitionCount": 2147483647
 	}
   ]

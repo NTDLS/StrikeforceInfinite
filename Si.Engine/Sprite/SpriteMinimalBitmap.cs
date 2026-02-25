@@ -1,5 +1,4 @@
 ﻿using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.SupportingClasses.Metadata;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using Si.Rendering;
@@ -50,7 +49,7 @@ namespace Si.Engine.Sprite
 
         private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            var metadata = _engine.Assets.GetMetaData<SpriteMinimalBitmapMetadata>(spriteImagePath);
+            var metadata = _engine.Assets.GetMetaData(spriteImagePath);
 
             Speed = metadata.Speed;
             Throttle = metadata.Throttle;

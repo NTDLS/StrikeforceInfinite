@@ -228,9 +228,12 @@ namespace Si.Engine.Sprite.Player._Superclass
 
         #region Weapons selection and evaluation.
 
-        public void SetPrimaryWeapon(string weaponTypeName, int munitionCount)
+        public void SetPrimaryWeapon(string spritePath, int munitionCount)
         {
-            var weaponType = SiReflection.GetTypeByName(weaponTypeName);
+            var metadata = _engine.Assets.GetMetaData(spritePath)
+                ?? throw new NullReferenceException($"No metadata found for primary weapon with path {spritePath}.");
+
+            var weaponType = SiReflection.GetTypeByName(metadata.Class);
 
             PrimaryWeapon = SiReflection.CreateInstanceFromType<WeaponBase>(weaponType, [_engine, this]);
             PrimaryWeapon.RoundQuantity = munitionCount;

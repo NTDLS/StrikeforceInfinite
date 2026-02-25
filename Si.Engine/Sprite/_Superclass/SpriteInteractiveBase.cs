@@ -4,7 +4,6 @@ using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Player._Superclass;
 using Si.Engine.Sprite.SupportingClasses;
-using Si.Engine.Sprite.SupportingClasses.Metadata;
 using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
@@ -45,8 +44,8 @@ namespace Si.Engine.Sprite._Superclass
         #endregion
 
         public SiRenewableResources RenewableResources { get; set; } = new();
-        private InteractiveSpriteMetadata? _metadata = null;
-        public InteractiveSpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
+        private SpriteMetadata? _metadata = null;
+        public SpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
         public List<WeaponBase> Weapons { get; private set; } = new();
 
         /// <summary>
@@ -110,7 +109,7 @@ namespace Si.Engine.Sprite._Superclass
         /// <param name="spriteImagePath"></param>
         private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            _metadata = _engine.Assets.GetMetaData<InteractiveSpriteMetadata>(spriteImagePath);
+            _metadata = _engine.Assets.GetMetaData(spriteImagePath);
 
             SetImage(spriteImagePath);
 
@@ -181,13 +180,13 @@ namespace Si.Engine.Sprite._Superclass
 
         public void ClearWeapons() => Weapons.Clear();
 
-        public void AddWeapon(string weaponTypeName, int munitionCount)
+        public void AddWeapon(string spritePath, int munitionCount)
         {
-            var weaponType = SiReflection.GetTypeByName(weaponTypeName);
-            if (weaponType == null)
-            {
-                throw new Exception($"The type '{weaponTypeName}' does not exist in the reflection cache.");
-            }
+            var metadata = _engine.Assets.GetMetaData(spritePath)
+                ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
+
+            var weaponType = SiReflection.GetTypeByName(metadata.Class)
+                ?? throw new Exception($"The type '{spritePath}' does not exist in the reflection cache.");
 
             var weapon = Weapons.Where(o => o.GetType() == weaponType).SingleOrDefault();
             if (weapon == null)

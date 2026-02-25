@@ -10,7 +10,8 @@ using System.Linq;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class StarSpriteTickController : VectoredTickControllerBase<SpriteStar>
+    public class StarSpriteTickController
+        : VectoredTickControllerBase<SpriteStar>
     {
         public StarSpriteTickController(EngineCore engine, SpriteManager manager)
             : base(engine, manager)
@@ -34,7 +35,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                                 Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
 
-                            SpriteManager.Stars.Add(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
+                            //TODO: Get the random star sprite.
+                            //SpriteManager.Stars.AddAt(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
                         }
 
                     }
@@ -44,7 +46,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, (int)-displacementVector.X);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
-                            SpriteManager.Stars.Add(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
+                            //TODO: Get the random star sprite.
+                            //SpriteManager.Stars.AddAt(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
                         }
 
                     }
@@ -54,7 +57,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(Engine.Display.TotalCanvasSize.Height - (int)displacementVector.Y, Engine.Display.TotalCanvasSize.Height);
-                            SpriteManager.Stars.Add(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
+                            //TODO: Get the random star sprite.
+                            //SpriteManager.Stars.AddAt(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
                         }
                     }
                     else if (displacementVector.Y < 0)
@@ -63,7 +67,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, (int)-displacementVector.Y);
-                            SpriteManager.Stars.Add(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
+                            //TODO: Get the random star sprite.
+                            //SpriteManager.Stars.AddAt(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y);
                         }
                     }
                 }

@@ -2,6 +2,7 @@
 using Si.Engine.Manager;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.TickController._Superclass;
+using Si.Library;
 using Si.Library.Mathematics;
 using System;
 
@@ -31,21 +32,16 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
             }
         }
 
-        public T AddTypeOf<T>() where T : SpriteEnemyBase
+        public new SpriteEnemyBase Add(string spritePath)
         {
-            object[] param = { Engine };
-            SpriteEnemyBase obj = (SpriteEnemyBase)Activator.CreateInstance(typeof(T), param).EnsureNotNull();
+            var metadataBase = _engine.Assets.GetMetaData(spritePath)
+                ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
 
-            //If we do this here, then it doesn't allow us to set the location and orientation in the constructor of the SpriteEnemyBase subclass, which is a problem.
-            //obj.Location = Engine.Display.RandomOffScreenLocation();
-            //obj.Orientation.Degrees = SiRandom.Between(0, 359);
-            //obj.RecalculateOrientationMovementVector();
+            var metadataBaseType = SiReflection.GetTypeByName(metadataBase.Class);
 
-            obj.BeforeCreate();
-            SpriteManager.Add(obj);
-            obj.AfterCreate();
-
-            return (T)obj;
+            var obj = (SpriteEnemyBase)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
+            Add(obj);
+            return obj;
         }
     }
 }

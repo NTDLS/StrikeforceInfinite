@@ -6,7 +6,7 @@
   "Shields": 0,
   "Weapons": [
 	{
-	  "Type": "WeaponVulcanCannon",
+	  "Type": "Sprites/Weapon/Vulcan Cannon.png",
 	  "MunitionCount": 2147483647
 	}
   ]

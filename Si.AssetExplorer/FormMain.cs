@@ -1,9 +1,7 @@
 using Krypton.Toolkit;
 using NTDLS.Helpers;
-using SharpCompress.Compressors.ZStandard.Unsafe;
 using Si.AssetExplorer.Controls;
 using Si.Engine;
-using Si.Engine.Sprite.Enemy.Peon;
 
 namespace Si.AssetExplorer
 {

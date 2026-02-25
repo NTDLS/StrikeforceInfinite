@@ -119,10 +119,10 @@ namespace Si.Engine.Manager
 
         public SpriteBase Add(string spritePath)
         {
-            var metadataBase = _engine.Assets.GetMetaDataBase(spritePath)
+            var metadata = _engine.Assets.GetMetaData(spritePath)
                 ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
 
-            var metadataBaseType = SiReflection.GetTypeByName(metadataBase.Class);
+            var metadataBaseType = SiReflection.GetTypeByName(metadata.Class);
 
             var obj = (SpriteBase)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
             Add(obj);

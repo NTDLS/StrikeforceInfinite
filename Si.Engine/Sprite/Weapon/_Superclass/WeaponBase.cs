@@ -4,7 +4,7 @@ using Si.Audio;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.Sprite.Player._Superclass;
-using Si.Engine.Sprite.SupportingClasses.Metadata;
+using Si.Engine.Sprite.SupportingClasses;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
@@ -27,7 +27,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         protected DateTime _lastFired = DateTime.Now.AddMinutes(-5);
         protected SiAudioClip? _fireSound;
 
-        public WeaponMetadata? Metadata { get; private set; }
+        public SpriteMetadata? Metadata { get; private set; }
         public List<WeaponsLock> LockedTargets { get; set; } = new();
         public int RoundsFired { get; set; }
         public int RoundQuantity { get; set; }
@@ -46,8 +46,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         /// <param name="spriteImagePath"></param>
         public void LoadMetadata(string weaponName)
         {
-            var metadataJson = _engine.Assets.GetText($@"Sprites\Weapon\{weaponName}.meta");
-            Metadata = JsonConvert.DeserializeObject<WeaponMetadata>(metadataJson);
+            Metadata = _engine.Assets.GetMetaData($@"Sprites\Weapon\{weaponName}.png");
 
             if (string.IsNullOrEmpty(Metadata?.SoundPath) == false)
             {
