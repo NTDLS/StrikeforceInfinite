@@ -12,37 +12,37 @@
   "Weapons": [],
   "Attachments": [
     {
-      "Type": "SpriteEnemyBossDevastatorLeftCannon",
+      "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Left.png",
       "X": 65,
       "Y": 8
     },
     {
-      "Type": "SpriteEnemyBossDevastatorRightCannon",
+      "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Right.png",
       "X": 65,
       "Y": 75
     },
     {
-      "Type": "SpriteEnemyBossDevastatorLeftGun",
+      "Type": "Sprites/Enemy/Boss/Devastator/Gun.Left.png",
       "X": 90,
       "Y": 20
     },
     {
-      "Type": "SpriteEnemyBossDevastatorRightGun",
+      "Type": "Sprites/Enemy/Boss/Devastator/Gun.Right.png",
       "X": 90,
       "Y": 63
     },
     {
-      "Type": "SpriteEnemyBossDevastatorTurret",
+      "Type": "Sprites/Enemy/Boss/Devastator/Turret.png",
       "X": 35,
       "Y": 40
     },
     {
-      "Type": "SpriteEnemyBossDevastatorLeftJet",
+      "Type": "Sprites/Enemy/Boss/Devastator/Jet.Left.png",
       "X": -40,
       "Y": 24
     },
 	{
-      "Type": "SpriteEnemyBossDevastatorRightJet",
+      "Type": "Sprites/Enemy/Boss/Devastator/Jet.Right.png",
       "X": -40,
       "Y": 57
     }

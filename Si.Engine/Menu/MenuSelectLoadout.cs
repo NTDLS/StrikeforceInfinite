@@ -55,7 +55,7 @@ namespace Si.Engine.Menu
                 var menuItem = AddSelectableItem(new SiVector(offsetX + 75, offsetY), playerSprite.Metadata.Name, playerSprite.Metadata.Name);
                 menuItem.Y -= menuItem.Size.Height / 2;
 
-                menuItem.UserData = playerSprite;
+                menuItem.UserData = assetMeta.Container.SpritePath;
 
                 playerSprite.X = offsetX;
                 playerSprite.Y = offsetY;
@@ -94,9 +94,9 @@ namespace Si.Engine.Menu
             _animationTimer.Change(Timeout.Infinite, Timeout.Infinite);
             _animationTimer.Dispose();
 
-            if (item.UserData is SpritePlayerBase selectedSprite)
+            if (item.UserData is string selectedSpritePath)
             {
-                _engine.Player.InstantiatePlayerClass(selectedSprite.GetType());
+                _engine.Player.InstantiatePlayerClass(selectedSpritePath);
                 _engine.StartGame();
             }
 

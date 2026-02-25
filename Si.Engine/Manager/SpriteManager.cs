@@ -113,10 +113,10 @@ namespace Si.Engine.Manager
         {
         }
 
-        public T CreateByType<T>() where T : SpriteBase
-        {
-            return (T)Activator.CreateInstance(typeof(T), [_engine]).EnsureNotNull();
-        }
+        //public T CreateByType<T>() where T : SpriteBase
+        //{
+        //    return (T)Activator.CreateInstance(typeof(T), [_engine]).EnsureNotNull();
+        //}
 
         public T Create<T>(string spritePath) where T : ISprite
         {

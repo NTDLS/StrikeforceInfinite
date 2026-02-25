@@ -53,7 +53,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
         public SpriteAttachment AddTypeOf(string spritePath, SpriteInteractiveBase owner, SiVector locationRelativeToOwner)
         {
-            var sprite = CreateSubtypeByName(spritePath);
+            var sprite = Engine.Sprites.Add<SpriteAttachment>(spritePath);
 
             sprite.Z = owner.Z + 1; //We want to make sure these go on top of the parent.
             sprite.OwnerUID = owner.UID;

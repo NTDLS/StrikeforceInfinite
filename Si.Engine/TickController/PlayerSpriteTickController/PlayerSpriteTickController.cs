@@ -2,7 +2,6 @@
 using Si.Engine.Sprite.Player;
 using Si.Engine.Sprite.Player._Superclass;
 using Si.Engine.TickController._Superclass;
-using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System;
@@ -32,13 +31,12 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             _inputDelay.Restart();
         }
 
-        public void InstantiatePlayerClass(Type playerClassType)
+        public void InstantiatePlayerClass(string spritePath)
         {
             //Remove the player from the sprite collection.
             Sprite.QueueForDelete();
             Sprite.Cleanup();
-
-            Sprite = SiReflection.CreateInstanceFromType<SpritePlayerBase>(playerClassType, new object[] { _engine });
+            Sprite = Engine.Sprites.Add<SpritePlayerBase>(spritePath);
             Sprite.IsVisible = false;
             _engine.Sprites.Add(Sprite); //Add the player back to the sprite collection.
         }

@@ -199,21 +199,6 @@ namespace Si.Engine.Sprite._Superclass
             }
         }
 
-        public void AddWeapon<T>(int munitionCount) where T : WeaponBase
-        {
-            var weapon = GetWeaponOfType<T>();
-            if (weapon == null)
-            {
-                weapon = SiReflection.CreateInstanceOf<T>([_engine, this]).EnsureNotNull();
-                weapon.RoundQuantity += munitionCount;
-                Weapons.Add(weapon);
-            }
-            else
-            {
-                weapon.RoundQuantity += munitionCount;
-            }
-        }
-
         public int TotalAvailableWeaponRounds() => (from o in Weapons select o.RoundQuantity).Sum();
         public int TotalWeaponFiredRounds() => (from o in Weapons select o.RoundsFired).Sum();
 

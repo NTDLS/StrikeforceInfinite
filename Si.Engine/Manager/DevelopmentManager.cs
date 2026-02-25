@@ -38,7 +38,7 @@ namespace Si.Engine.Manager
 
             "Engine-Pause|state:Required:Boolean|Pauses and un-pauses the engine.",
 
-            "Sprite-Create|typeName:Required:String,x:Required:Numeric,y:Required:Numeric|Creates a sprite at the given position.",
+            "Sprite-Create|spritePath:Required:String,x:Required:Numeric,y:Required:Numeric|Creates a sprite at the given position.",
             "Sprite-ListTypes||Lists all sprite types.",
 
             "Sprite-Watch|uid:Required:Numeric|Starts a watch form to monitor various sprite metrics.",
@@ -349,8 +349,8 @@ namespace Si.Engine.Manager
 
         public void CommandHandler_Sprite_Create(InterrogationCommand command)
         {
-            var typeName = command.ParameterValue<string>("typeName");
-            if (typeName == null)
+            var spritePath = command.ParameterValue<string>("spritePath");
+            if (spritePath == null)
             {
                 return;
             }
@@ -358,11 +358,10 @@ namespace Si.Engine.Manager
             var x = command.ParameterValue<uint>("x");
             var y = command.ParameterValue<uint>("y");
 
-            var sprite = SiReflection.CreateInstanceFromTypeName<SpriteBase>(typeName, new[] { _engine });
+
+            var sprite = _engine.Sprites.Create<SpriteBase>(spritePath);
             sprite.Location = new SiVector(x, y);
             sprite.IsVisible = true;
-
-            _engine.Sprites.Add(sprite);
 
             _interrogationForm.WriteLine($"\tCreatedUID: {sprite.UID}", System.Drawing.Color.Black);
         }
