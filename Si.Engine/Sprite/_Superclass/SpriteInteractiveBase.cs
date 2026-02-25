@@ -185,13 +185,11 @@ namespace Si.Engine.Sprite._Superclass
             var metadata = _engine.Assets.GetMetaData(spritePath)
                 ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
 
-            var weaponType = SiReflection.GetTypeByName(metadata.Class)
-                ?? throw new Exception($"The type '{spritePath}' does not exist in the reflection cache.");
-
-            var weapon = Weapons.Where(o => o.GetType() == weaponType).SingleOrDefault();
+            var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
             if (weapon == null)
             {
-                weapon = SiReflection.CreateInstanceFromType<WeaponBase>(weaponType, [_engine, this]).EnsureNotNull();
+                var type = SiReflection.GetTypeByName(metadata.Class);
+                weapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, spritePath]).EnsureNotNull();
                 weapon.RoundQuantity += munitionCount;
                 Weapons.Add(weapon);
             }

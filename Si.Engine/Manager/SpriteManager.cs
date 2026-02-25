@@ -15,6 +15,7 @@ using Si.Engine.TickController.VectoredTickController.Uncollidable;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Sprite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,14 +118,19 @@ namespace Si.Engine.Manager
             return (T)Activator.CreateInstance(typeof(T), [_engine]).EnsureNotNull();
         }
 
-        public SpriteBase Add(string spritePath)
+        public T Create<T>(string spritePath) where T : ISprite
         {
             var metadata = _engine.Assets.GetMetaData(spritePath)
                 ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
 
             var metadataBaseType = SiReflection.GetTypeByName(metadata.Class);
 
-            var obj = (SpriteBase)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
+            return (T)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
+        }
+
+        public SpriteBase Add(string spritePath)
+        {
+            var obj = Create<SpriteBase>(spritePath);
             Add(obj);
             return obj;
         }
@@ -142,7 +148,7 @@ namespace Si.Engine.Manager
             {
                 throw new Exception("NULL sprites cannot be added to the manager.");
             }
-            _engine.Events.Add(() => _collection.Add(sprite));
+            _engine.Events.Once(() => _collection.Add(sprite));
 
             _engine.MultiplayLobby?.ActionBuffer.RecordSpawn(sprite.GetMultiPlayActionSpawn());
         }

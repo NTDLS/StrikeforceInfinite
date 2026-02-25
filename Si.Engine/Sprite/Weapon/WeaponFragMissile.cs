@@ -8,12 +8,10 @@ namespace Si.Engine.Sprite.Weapon
 {
     internal class WeaponFragMissile : WeaponBase
     {
-        static string Name { get; } = "Frag Missile";
-
         private bool _toggle = false;
 
-        public WeaponFragMissile(EngineCore engine, SpriteInteractiveBase owner)
-            : base(engine, owner, Name)
+        public WeaponFragMissile(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
+            : base(engine, owner, spritePath)
         {
         }
 

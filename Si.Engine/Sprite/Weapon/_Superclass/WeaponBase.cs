@@ -9,6 +9,7 @@ using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Sprite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
     /// A weapon is a "device" that fires a "munition" (_MunitionBase). It must be owned by another sprite.
     /// </summary>
     public class WeaponBase
+        : ISprite
     {
         public Guid UID { get; private set; } = Guid.NewGuid();
         protected EngineCore _engine;
@@ -27,26 +29,29 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         protected DateTime _lastFired = DateTime.Now.AddMinutes(-5);
         protected SiAudioClip? _fireSound;
 
+        public SiVector Location { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public SiVector Orientation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public SpriteMetadata? Metadata { get; private set; }
         public List<WeaponsLock> LockedTargets { get; set; } = new();
         public int RoundsFired { get; set; }
         public int RoundQuantity { get; set; }
 
-        public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string name)
+        public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
         {
             Owner = owner;
             _engine = engine;
 
-            LoadMetadata(name);
+            LoadMetadata(spritePath);
         }
 
         /// <summary>
         /// Sets the sprites images and loads other weapon related metadata.
         /// </summary>
         /// <param name="spriteImagePath"></param>
-        public void LoadMetadata(string weaponName)
+        public void LoadMetadata(string spritePath)
         {
-            Metadata = _engine.Assets.GetMetaData($@"Sprites\Weapon\{weaponName}.png");
+            Metadata = _engine.Assets.GetMetaData(spritePath);
 
             if (string.IsNullOrEmpty(Metadata?.SoundPath) == false)
             {

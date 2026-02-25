@@ -6,10 +6,8 @@ namespace Si.Engine.Sprite.Weapon
 {
     internal class WeaponBlunderbuss : WeaponBase
     {
-        static string Name { get; } = "Blunderbuss";
-
-        public WeaponBlunderbuss(EngineCore engine, SpriteInteractiveBase owner)
-            : base(engine, owner, Name)
+        public WeaponBlunderbuss(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
+            : base(engine, owner,  spritePath)
         {
         }
 

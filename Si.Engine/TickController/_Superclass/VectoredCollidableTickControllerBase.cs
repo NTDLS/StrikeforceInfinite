@@ -1,5 +1,4 @@
 ﻿using NTDLS.Helpers;
-using SharpDX.Direct2D1;
 using Si.Engine.Manager;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;

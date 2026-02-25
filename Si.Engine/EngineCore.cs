@@ -489,7 +489,9 @@ namespace Si.Engine
             if (Settings.PreCacheAllAssets)
             {
                 Assets.HydrateCache(loadingHeader, loadingDetail);
-                Sprites.HydrateCache(loadingHeader, loadingDetail);
+
+                //I dont think we need to do this any more now that sprites are tied to the assets.
+                //Sprites.HydrateCache(loadingHeader, loadingDetail);
             }
         }
 

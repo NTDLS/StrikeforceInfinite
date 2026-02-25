@@ -215,6 +215,9 @@ namespace Si.Engine.Manager
 
             foreach (var entry in archive.Entries)
             {
+                /// Skip entries with '@' in the name as they are likely to be used for internal purposes and not actual assets.
+                if (entry.Key?.Contains('@') == true) continue;
+
                 switch (Path.GetExtension(entry.Key.EnsureNotNull()).ToLower())
                 {
                     case ".meta":

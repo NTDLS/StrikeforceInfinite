@@ -7,12 +7,10 @@ namespace Si.Engine.Sprite.Weapon
 {
     internal class WeaponThunderstrikeMissile : WeaponBase
     {
-        static string Name { get; } = "Thunderstrike Missile";
-
         private bool _toggle = false;
 
-        public WeaponThunderstrikeMissile(EngineCore engine, SpriteInteractiveBase owner)
-            : base(engine, owner, Name)
+        public WeaponThunderstrikeMissile(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
+            : base(engine, owner, spritePath)
         {
         }
 

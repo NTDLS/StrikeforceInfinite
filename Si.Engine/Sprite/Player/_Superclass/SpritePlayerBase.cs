@@ -118,14 +118,17 @@ namespace Si.Engine.Sprite.Player._Superclass
 
         public string GetLoadoutHelpText()
         {
-            string weaponName = SiReflection.GetStaticPropertyValue(Metadata.PrimaryWeapon?.Type ?? throw new NullReferenceException(), "Name");
-            string primaryWeapon = $"{weaponName} x{Metadata.PrimaryWeapon.MunitionCount}";
+            var primaryWeaponType = Metadata.PrimaryWeapon?.Type;
+            var primaryWeaponMetadata = _engine.Assets.GetMetaData(primaryWeaponType.EnsureNotNull());
+            string primaryWeapon = $"{primaryWeaponMetadata.Name} x{primaryWeaponMetadata.MunitionCount}";
 
             string secondaryWeapons = string.Empty;
             foreach (var weapon in Metadata.Weapons)
             {
-                weaponName = SiReflection.GetStaticPropertyValue(weapon.Type.EnsureNotNull(), "Name");
-                secondaryWeapons += $"{weaponName} x{weapon.MunitionCount}\n{new string(' ', 20)}";
+                var secondaryWeaponType = weapon?.Type;
+                var secondaryWeaponMetadata = _engine.Assets.GetMetaData(secondaryWeaponType.EnsureNotNull());
+
+                secondaryWeapons += $"{secondaryWeaponMetadata.Name} x{secondaryWeaponMetadata.MunitionCount}\n{new string(' ', 20)}";
             }
 
             string result = $"             Name : {Metadata.Name}\n";
@@ -231,11 +234,10 @@ namespace Si.Engine.Sprite.Player._Superclass
         public void SetPrimaryWeapon(string spritePath, int munitionCount)
         {
             var metadata = _engine.Assets.GetMetaData(spritePath)
-                ?? throw new NullReferenceException($"No metadata found for primary weapon with path {spritePath}.");
+                ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
 
-            var weaponType = SiReflection.GetTypeByName(metadata.Class);
-
-            PrimaryWeapon = SiReflection.CreateInstanceFromType<WeaponBase>(weaponType, [_engine, this]);
+            var type = SiReflection.GetTypeByName(metadata.Class);
+            PrimaryWeapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, spritePath]).EnsureNotNull();
             PrimaryWeapon.RoundQuantity = munitionCount;
         }
 

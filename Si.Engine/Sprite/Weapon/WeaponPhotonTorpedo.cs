@@ -6,12 +6,10 @@ namespace Si.Engine.Sprite.Weapon
 {
     internal class WeaponPhotonTorpedo : WeaponBase
     {
-        static string Name { get; } = "Photon Torpedo";
-
         private bool _toggle = false;
 
-        public WeaponPhotonTorpedo(EngineCore engine, SpriteInteractiveBase owner)
-            : base(engine, owner, Name)
+        public WeaponPhotonTorpedo(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
+            : base(engine, owner, spritePath)
         {
         }
 
