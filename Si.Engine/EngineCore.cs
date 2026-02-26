@@ -214,7 +214,7 @@ namespace Si.Engine
         /// Initializes a new instance of the game engine.
         /// </summary>
         /// <param name="drawingSurface">The window that the game will be rendered to.</param>
-        public EngineCore(Control drawingSurface, SiEngineExecutionMode executionMode)
+        public EngineCore(Control drawingSurface, SiEngineExecutionMode executionMode, Size? sizeOverride = null)
         {
             ExecutionMode = executionMode;
 
@@ -226,7 +226,7 @@ namespace Si.Engine
 
             Settings = LoadSettings();
 
-            Display = new DisplayManager(this, drawingSurface);
+            Display = new DisplayManager(this, drawingSurface, sizeOverride);
             Rendering = new SiRendering(Settings, drawingSurface, Display.TotalCanvasSize);
             Assets = new AssetManager(this);
             Events = new EventTickController(this);
@@ -356,7 +356,11 @@ namespace Si.Engine
 
                         o.ScreenRenderTarget.BeginDraw();
 
-                        if (Settings.EnableSpeedScaleFactoring)
+                        if (Display.ZoomOverride != null)
+                        {
+                            Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, Display.ZoomOverride.Value);
+                        }
+                        else if (Settings.EnableSpeedScaleFactoring)
                         {
                             Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, (float)Display.SpeedOrientedFrameScalingFactor());
                         }
@@ -414,13 +418,12 @@ namespace Si.Engine
             }
             else if (ExecutionMode == SiEngineExecutionMode.Edit)
             {
-                //HydrateCache();
+                HydrateCache();
             }
 
             OnInitializationComplete?.Invoke(this);
 
             IsInitializing = false;
-
 
             if (ExecutionMode == SiEngineExecutionMode.Play)
             {

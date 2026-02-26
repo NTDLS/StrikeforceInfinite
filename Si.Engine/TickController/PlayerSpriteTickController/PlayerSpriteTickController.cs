@@ -24,10 +24,21 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             : base(engine)
         {
             //This is where the player is created.
-            Sprite = engine.Sprites.Add<SpritePlayer>(@"Sprites\Player\Ships\Debug.png", (o) =>
+            if (engine.ExecutionMode == SiEngineExecutionMode.Play)
             {
-                o.IsVisible = false;
-            });
+                Sprite = engine.Sprites.Add<SpritePlayer>(@"Sprites\Player\Ships\Debug.png", (o) =>
+                {
+                    o.IsVisible = false;
+                });
+            }
+            else
+            {
+                // In edit mode, the player is just a placeholder and is not added to the collecton.
+                Sprite = engine.Sprites.Create<SpritePlayer>(@"Sprites\Player\Ships\Debug.png", (o) =>
+                {
+                    o.IsVisible = true;
+                });
+            }
 
             _engine = engine;
             _inputDelay.Restart();
@@ -55,6 +66,13 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
         /// <returns></returns>
         public override SiVector ExecuteWorldClockTick(float epoch)
         {
+            if (_engine.ExecutionMode == SiEngineExecutionMode.Edit)
+            {
+                //We dont want the player to move at all in edit mode, so just return a zero vector.
+                //Otherwise this can also cause micro-changes to the camera position.
+                return SiVector.Zero();
+            }
+
             Sprite.IsLockedOnSoft = false;
             Sprite.IsLockedOnHard = false;
 

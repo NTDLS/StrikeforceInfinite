@@ -42,6 +42,7 @@ namespace Si.AssetExplorer
             richTextBoxOutput = new KryptonRichTextBox();
             kryptonToolStrip1 = new KryptonToolStrip();
             toolStripButtonSettings = new ToolStripButton();
+            toolStripButtonDevelopmentConsole = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
             (splitContainerLeft.Panel1).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
@@ -165,7 +166,7 @@ namespace Si.AssetExplorer
             // kryptonToolStrip1
             // 
             kryptonToolStrip1.Font = new Font("Segoe UI", 9F);
-            kryptonToolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings });
+            kryptonToolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDevelopmentConsole });
             kryptonToolStrip1.Location = new Point(0, 0);
             kryptonToolStrip1.Name = "kryptonToolStrip1";
             kryptonToolStrip1.Size = new Size(800, 25);
@@ -182,6 +183,17 @@ namespace Si.AssetExplorer
             toolStripButtonSettings.Text = "Settings";
             toolStripButtonSettings.ToolTipText = "Settings";
             toolStripButtonSettings.Click += ToolStripButtonSettings_Click;
+            // 
+            // toolStripButtonDevelopmentConsole
+            // 
+            toolStripButtonDevelopmentConsole.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonDevelopmentConsole.Image = (Image)resources.GetObject("toolStripButtonDevelopmentConsole.Image");
+            toolStripButtonDevelopmentConsole.ImageTransparentColor = Color.Magenta;
+            toolStripButtonDevelopmentConsole.Name = "toolStripButtonDevelopmentConsole";
+            toolStripButtonDevelopmentConsole.Size = new Size(23, 22);
+            toolStripButtonDevelopmentConsole.Text = "Development Console";
+            toolStripButtonDevelopmentConsole.ToolTipText = "Development Console";
+            toolStripButtonDevelopmentConsole.Click += ToolStripButtonDevelopmentConsole_Click;
             // 
             // FormMain
             // 
@@ -231,5 +243,6 @@ namespace Si.AssetExplorer
         private KryptonRichTextBox richTextBoxOutput;
         private KryptonToolStrip kryptonToolStrip1;
         private ToolStripButton toolStripButtonSettings;
+        private ToolStripButton toolStripButtonDevelopmentConsole;
     }
 }

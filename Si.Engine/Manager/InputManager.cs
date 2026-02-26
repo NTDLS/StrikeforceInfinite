@@ -91,12 +91,18 @@ namespace Si.Engine.Manager
 
         public void Snapshot()
         {
+            if (_engine.ExecutionMode != SiEngineExecutionMode.Play)
+            {
+                _playerKeyStates.Clear();
+                return;
+            }
+
             if (_engine.Display.IsDrawingSurfaceFocused == false)
             {
                 //We do this so that I can have more than one instance open on the same computer 
                 //  at a time without the keyboard commands to one affecting the other.
-                //_playerKeyStates.Clear();
-                //return;
+                _playerKeyStates.Clear();
+                return;
             }
 
             var keyboardState = DxKeyboard.GetCurrentState();

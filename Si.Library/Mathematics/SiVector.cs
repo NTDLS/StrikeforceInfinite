@@ -8,7 +8,8 @@ namespace Si.Library.Mathematics
     /// 2d vector.
     /// Note that when the signed/unsigned is unspecified, it is unsigned (Degrees 0,360), Radians(0,2π), etc.
     /// </summary>
-    public partial class SiVector : IComparable<SiVector>
+    public partial class SiVector
+        : IComparable<SiVector>
     {
         public delegate void OnChange(SiVector vector);
         public event OnChange? OnChangeEvent;

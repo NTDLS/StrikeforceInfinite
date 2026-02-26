@@ -131,6 +131,7 @@ namespace Si.Client
                 sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One(), true).ToList();
                 if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One()))
                 {
+                    //TODO: WHAT?!
                     sprites.Add(_engine.Player.Sprite);
                 }
             }).Wait();

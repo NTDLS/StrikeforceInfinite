@@ -108,7 +108,7 @@ namespace Si.Engine.Manager
 
             if (avoidCache)
             {
-                return JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)).EnsureNotNull();
+                return JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)) ?? new Metadata();
             }
 
             string key = $"meta:{metadataFile.ToLower()}";

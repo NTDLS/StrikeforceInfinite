@@ -113,9 +113,11 @@ namespace Si.Engine.Manager
         public T Create<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
         {
             var metadata = _engine.Assets.GetMetadata(spritePath)
-                ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
+                ?? throw new Exception($"No metadata found for sprite path: {spritePath}");
 
-            var metadataBaseType = SiReflection.GetTypeByName(metadata.Class);
+            string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
+
+            var metadataBaseType = SiReflection.GetTypeByName(className);
 
             var sprite = (T)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
             initilizationProc?.Invoke(sprite);
@@ -168,6 +170,9 @@ namespace Si.Engine.Manager
                 _engine.Menus.Show(new MenuStartNewGame(_engine));
             }
         }
+
+        public void QueueAllForDeletion()
+            => _collection.ForEach(o => o.QueueForDelete());
 
         /// <summary>
         /// Deletes all the non-background sprite types.
@@ -380,7 +385,6 @@ namespace Si.Engine.Manager
                 }
             }
 
-            _engine.Player.Sprite?.Render(renderTarget, epoch);
             _engine.Menus.Render(renderTarget, epoch);
 
             if (_engine.Settings.HighlightNaturalBounds)

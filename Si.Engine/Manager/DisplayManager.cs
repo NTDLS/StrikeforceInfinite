@@ -32,11 +32,14 @@ namespace Si.Engine.Manager
         public bool IsDrawingSurfaceFocused { get; set; } = false;
         public void SetIsDrawingSurfaceFocused(bool isFocused) => IsDrawingSurfaceFocused = isFocused;
 
+        //#if DEBUG
+        //public float? ZoomOverride = 1.0f; Makes it easier to debug collisions.
+        //#else
+        public float? ZoomOverride = null;
+        //#endif
+
         public float SpeedOrientedFrameScalingFactor()
         {
-            //#if DEBUG
-            //return 1.0f; //Juts disabled because it makes it hard to debug collisions. 
-            //#endif
             float weightedThrottlePercent = (
                 (_engine.Player.Sprite.MovementVector.Magnitude() / _engine.Player.Sprite.Speed) * 0.8f //80% of zoom is standard velocity
                  + (_engine.Player.Sprite.Throttle <= 1 ? 1 : _engine.Player.Sprite.Throttle / _engine.Player.Sprite.MaxThrottle) * 0.2f //20% of the zoom will be the "boost".
@@ -170,11 +173,19 @@ namespace Si.Engine.Manager
             }
         }
 
-        public DisplayManager(EngineCore engine, Control drawingSurface)
+        public DisplayManager(EngineCore engine, Control drawingSurface, Size? sizeOverride = null)
         {
             _engine = engine;
             DrawingSurface = drawingSurface;
-            NaturalScreenSize = new Size(drawingSurface.Width, drawingSurface.Height);
+
+            if (sizeOverride != null)
+            {
+                NaturalScreenSize = new Size(sizeOverride.Value.Width, sizeOverride.Value.Height);
+            }
+            else
+            {
+                NaturalScreenSize = new Size(drawingSurface.Width, drawingSurface.Height);
+            }
 
             Screen = Screen.FromHandle(drawingSurface.Handle);
 

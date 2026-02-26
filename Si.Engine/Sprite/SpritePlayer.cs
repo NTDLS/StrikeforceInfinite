@@ -15,7 +15,8 @@ namespace Si.Engine.Sprite
     /// <summary>
     /// The player base is a sub-class of the ship base. It is only used by the Player and as a model for menu selections.
     /// </summary>
-    public class SpritePlayer : SpriteInteractiveBase
+    public class SpritePlayer
+        : SpriteInteractiveBase
     {
         public readonly string BoostResourceName = "SpritePlayerBase:Boost";
 

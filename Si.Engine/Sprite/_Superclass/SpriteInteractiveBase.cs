@@ -17,7 +17,8 @@ namespace Si.Engine.Sprite._Superclass
     /// <summary>
     /// A sprite that the player can see, probably shoot and destroy and might even shoot back.
     /// </summary>
-    public class SpriteInteractiveBase : SpriteBase
+    public class SpriteInteractiveBase
+        : SpriteBase
     {
         #region Locking Indicator.
 

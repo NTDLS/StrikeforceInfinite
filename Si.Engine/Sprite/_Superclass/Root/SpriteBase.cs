@@ -9,7 +9,8 @@ namespace Si.Engine.Sprite._Superclass._Root
     /// <summary>
     /// Represents a single item that can be rendered to the screen. All on-screen objects are derived from this class.
     /// </summary>
-    public partial class SpriteBase : ISprite
+    public partial class SpriteBase
+        : ISprite
     {
         protected EngineCore _engine;
 
