@@ -1,5 +1,5 @@
 {
-  "Class": "SpriteDebugPlayer",
+  "Class": "SpritePlayer",
   "Name": "Debug",
   "Description": "→ The code crusader ←\nCrude in design but equipped with advanced diagnostics and repair systems.\nNearly indestructible and inconceivably fast. Its mission is to discover\nglitches in the vast cosmic code, ensuring a smooth journey for all that follow...",
   "Speed": 300,
