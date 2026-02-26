@@ -10,6 +10,18 @@ namespace Si.Library
         private static readonly PessimisticCriticalResource<Dictionary<string, PropertyInfo>> _staticPropertyCache = new();
         private static readonly PessimisticCriticalResource<Dictionary<Type, List<Type>>> _subClassesOfCache = new();
 
+        public static object? GetPropertyValue(object obj, string propertyName)
+        {
+            if (obj == null || string.IsNullOrWhiteSpace(propertyName))
+                return null;
+
+            var prop = obj.GetType().GetProperty(
+                propertyName,
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+
+            return prop?.GetValue(obj);
+        }
+
         public static bool IsAssignableToGenericType(Type givenType, Type genericType)
         {
             return givenType.GetInterfaces()

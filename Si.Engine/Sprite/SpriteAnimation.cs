@@ -25,7 +25,7 @@ namespace Si.Engine.Sprite
         private int _columns;
         private float _epochsSinceLastAdvancment = int.MaxValue;
 
-        public SiAnimationPlayMode PlayMode { get; private set; }
+        public SiAnimationPlayMode PlayMode { get; set; }
         public float FramesPerSecond { get; private set; } = 1;
 
         public SpriteAnimation(EngineCore engine, string spriteSheetFileName)

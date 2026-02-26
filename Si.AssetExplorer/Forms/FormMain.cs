@@ -3,8 +3,14 @@ using NTDLS.Helpers;
 using Si.AssetExplorer.Controls;
 using Si.AssetExplorer.Forms;
 using Si.Engine;
+using Si.Engine.Sprite;
+using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
+using Si.Library;
 using Si.Library.ExtensionMethods;
+using static Si.Library.SiConstants;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Si.AssetExplorer
 {
@@ -130,20 +136,114 @@ namespace Si.AssetExplorer
                     _engine.Sprites.QueueAllForDeletion();
                     _engine.Sprites.HardDeleteAllQueuedDeletions();
 
-                    _engine.Sprites.Add(node.AssetKey, (o) =>
+                    var sprite = _engine.Sprites.Add(node.AssetKey, (o) =>
                     {
+                        if (o is SpriteAnimation spriteAnimation)
+                        {
+                            spriteAnimation.PlayMode = SiAnimationPlayMode.Infinite ;
+                        }
+
+                        o.Orientation.Degrees = 0;
                         o.IsVisible = true;
                         o.Location = _engine.Display.CenterCanvas;
                         o.RotationSpeed = 0f;
                         o.Speed = 0;
                         o.Throttle = 0;
                     });
+
+                    PopulateProperties(sprite);
                 });
             }
             catch (Exception ex)
             {
                 WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
             }
+        }
+
+        private class PropertyItem : ListViewItem
+        {
+            private readonly static Metadata _defaults = new Metadata();
+
+            public PropertyItem(Metadata metaData, string propertyName, ListViewGroup? group, PropertyEditorType editorType)
+            {
+                Group = group;
+
+                var workingValue = SiReflection.GetPropertyValue(metaData, propertyName)?.ToString() ?? string.Empty;
+                var defaultValue = SiReflection.GetPropertyValue(_defaults, propertyName)?.ToString() ?? string.Empty;
+
+                Text = NTDLS.Helpers.Text.SeparateCamelCase(propertyName);
+                SubItems.Add(workingValue);
+                SubItems.Add(defaultValue);
+            }
+        }
+
+        private void PopulateProperties(SpriteBase sprite)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<SpriteBase>(PopulateProperties), sprite);
+                return;
+            }
+
+            listViewProperties.Items.Clear();
+            listViewProperties.View = View.Details;
+            listViewProperties.FullRowSelect = true;
+            listViewProperties.GridLines = true;
+            listViewProperties.ShowGroups = true;
+
+            listViewProperties.Groups.Clear();
+
+            var defaults = new Metadata();
+
+            if (sprite is SpriteInteractiveBase concrete)
+            {
+                var groupBase = new ListViewGroup("Base", HorizontalAlignment.Left);
+                listViewProperties.Groups.Add(groupBase);
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Class", groupBase, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Name", groupBase, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Description", groupBase, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Type", groupBase, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "X", groupBase, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Y", groupBase, PropertyEditorType.Readonly));
+
+                var groupAttachment = new ListViewGroup("Attachment", HorizontalAlignment.Left);
+                listViewProperties.Groups.Add(groupAttachment);
+
+
+                var groupDestroy = new ListViewGroup("Destroy", HorizontalAlignment.Left);
+                listViewProperties.Groups.Add(groupDestroy);
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "ExplosionType", groupDestroy, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "ParticleBlastOnExplodeAmount", groupDestroy, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "FragmentOnExplode", groupDestroy, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "ScreenShakeOnExplodeAmount", groupDestroy, PropertyEditorType.Readonly));
+
+                //OrientationType
+                //PositionType
+
+                var groupHealth = new ListViewGroup("Health", HorizontalAlignment.Left);
+                listViewProperties.Groups.Add(groupHealth);
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Hull", groupHealth, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Shields", groupHealth, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Bounty", groupHealth, PropertyEditorType.Readonly));
+
+                var groupMomentum = new ListViewGroup("Momentum", HorizontalAlignment.Left);
+                listViewProperties.Groups.Add(groupMomentum);
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Speed", groupMomentum, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Throttle", groupMomentum, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "MaxThrottle", groupMomentum, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "Mass", groupMomentum, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "MunitionDetection", groupMomentum, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "CollisionDetection", groupMomentum, PropertyEditorType.Readonly));
+                listViewProperties.Items.Add(new PropertyItem(concrete.Metadata, "CollisionPolyAugmentation", groupMomentum, PropertyEditorType.Readonly));
+
+                //PrimaryWeapon
+                //Attachments
+                //Weapons
+
+                //listViewProperties.Items.Add(new PropertyItem(["Description", concrete.Metadata.Description, defaults.Description], groupAttachment));
+            }
+
+            //listViewProperties.Invalidate();
         }
 
         private void WriteOutput(string text, LoggingLevel? loggingLevel)

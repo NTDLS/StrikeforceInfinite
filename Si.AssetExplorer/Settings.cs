@@ -31,6 +31,6 @@ namespace Si.AssetExplorer
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public PaletteMode Theme { get; set; } = Theming.IsWindowsDarkMode() ? PaletteMode.Office2010BlackDarkMode : PaletteMode.ProfessionalSystem;
+        public PaletteMode Theme { get; set; } = Theming.IsWindowsDarkMode() ? PaletteMode.SparklePurple : PaletteMode.ProfessionalSystem;
     }
 }

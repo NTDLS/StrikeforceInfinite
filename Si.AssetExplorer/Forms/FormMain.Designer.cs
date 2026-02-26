@@ -38,6 +38,9 @@ namespace Si.AssetExplorer
             splitContainerProperties = new KryptonSplitContainer();
             pictureBoxPreview = new KryptonPictureBox();
             listViewProperties = new KryptonListView();
+            columnHeaderName = new ColumnHeader();
+            columnHeaderValue = new ColumnHeader();
+            columnHeaderDefault = new ColumnHeader();
             splitContainerBottom = new KryptonSplitContainer();
             richTextBoxOutput = new KryptonRichTextBox();
             kryptonToolStrip1 = new KryptonToolStrip();
@@ -97,6 +100,10 @@ namespace Si.AssetExplorer
             // 
             // 
             // 
+            splitContainerRight.Panel1.PanelBackStyle = PaletteBackStyle.ControlToolTip;
+            // 
+            // 
+            // 
             splitContainerRight.Panel2.Controls.Add(splitContainerProperties);
             splitContainerRight.Size = new Size(571, 429);
             splitContainerRight.SplitterDistance = 401;
@@ -121,6 +128,7 @@ namespace Si.AssetExplorer
             // 
             // pictureBoxPreview
             // 
+            pictureBoxPreview.BorderStyle = BorderStyle.FixedSingle;
             pictureBoxPreview.Location = new Point(36, 34);
             pictureBoxPreview.Name = "pictureBoxPreview";
             pictureBoxPreview.Size = new Size(100, 100);
@@ -130,12 +138,26 @@ namespace Si.AssetExplorer
             // 
             // listViewProperties
             // 
+            listViewProperties.Columns.AddRange(new ColumnHeader[] { columnHeaderName, columnHeaderValue, columnHeaderDefault });
             listViewProperties.Dock = DockStyle.Fill;
             listViewProperties.HideSelection = false;
             listViewProperties.Location = new Point(0, 0);
             listViewProperties.Name = "listViewProperties";
             listViewProperties.Size = new Size(165, 256);
             listViewProperties.TabIndex = 0;
+            listViewProperties.View = View.Details;
+            // 
+            // columnHeaderName
+            // 
+            columnHeaderName.Text = "Name";
+            // 
+            // columnHeaderValue
+            // 
+            columnHeaderValue.Text = "Value";
+            // 
+            // columnHeaderDefault
+            // 
+            columnHeaderDefault.Text = "Default";
             // 
             // splitContainerBottom
             // 
@@ -202,6 +224,7 @@ namespace Si.AssetExplorer
             ClientSize = new Size(800, 625);
             Controls.Add(splitContainerBottom);
             Controls.Add(kryptonToolStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             Text = "Asset Manager";
             (splitContainerLeft.Panel1).EndInit();
@@ -244,5 +267,8 @@ namespace Si.AssetExplorer
         private KryptonToolStrip kryptonToolStrip1;
         private ToolStripButton toolStripButtonSettings;
         private ToolStripButton toolStripButtonDevelopmentConsole;
+        private ColumnHeader columnHeaderName;
+        private ColumnHeader columnHeaderValue;
+        private ColumnHeader columnHeaderDefault;
     }
 }

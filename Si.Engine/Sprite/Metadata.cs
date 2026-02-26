@@ -13,11 +13,12 @@ namespace Si.Engine.Sprite
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        #region InteractiveSpriteAttachmentMetadata
-
+        //TODO: I think this can and should be eliminated.
         public string Type { get; set; } = string.Empty;
         public float X { get; set; }
         public float Y { get; set; }
+
+        #region InteractiveSpriteAttachmentMetadata
 
         [JsonIgnore]
         public SiVector LocationRelativeToOwner { get => new SiVector(X, Y); }
