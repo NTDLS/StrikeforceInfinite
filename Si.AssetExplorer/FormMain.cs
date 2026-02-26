@@ -2,6 +2,7 @@ using Krypton.Toolkit;
 using NTDLS.Helpers;
 using Si.AssetExplorer.Controls;
 using Si.Engine;
+using Si.Engine.Sprite._Superclass._Root;
 
 namespace Si.AssetExplorer
 {
@@ -66,10 +67,12 @@ namespace Si.AssetExplorer
 
                 _engine.Events.Once(() =>
                 {
-                    //var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
-                    //sprite.Location = _engine.Display.CenterCanvas;
-                    //sprite.Speed = 0;
-                    //sprite.Throttle = 0;
+                    var sprite = _engine.Sprites.Add<SpriteBase>(@"Sprites\Enemy\Debug\Hull.png", (o) =>
+                    {
+                        o.Location = _engine.Display.CenterCanvas;
+                        o.Speed = 0;
+                        o.Throttle = 0;
+                    });
                 });
             }
             catch (Exception ex)
