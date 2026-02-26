@@ -10,7 +10,6 @@ namespace Si.Engine.Sprite
     public class Metadata
     {
         public string @Class { get; set; } = string.Empty;
-
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
@@ -46,22 +45,22 @@ namespace Si.Engine.Sprite
         /// 
         /// Mass == 0 is infinite mass, it cannot be moved by ineterial forces.
         /// </summary>
-        public float Mass { get; set; } = 0f;
+        public float Mass { get; set; }
 
         /// <summary>
         /// How many hit points does the sprite have? When this reaches 0, the sprite is destroyed.
         /// </summary>
-        public int Hull { get; set; } = 0;
+        public int Hull { get; set; }
 
         /// <summary>
         /// Gets or sets the current shield strength of the entity, representing its defensive capabilities.
         /// </summary>
-        public int Shields { get; set; } = 0;
+        public int Shields { get; set; }
 
         /// <summary>
         /// Gets or sets the bounty amount associated with the entity. This probably will not survive the early access period.
         /// </summary>
-        public int Bounty { get; set; } = 0;
+        public int Bounty { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether munition detection is enabled (bullet detection).
@@ -82,7 +81,7 @@ namespace Si.Engine.Sprite
         /// <remarks>Adjust this value to fine-tune the collision area for the associated sprite.
         /// Increasing the factor enlarges the collision polygon, while decreasing it reduces the area considered for
         /// collisions. This can be useful for accommodating visual effects or gameplay balancing.</remarks>
-        public float CollisionPolyAugmentation { get; set; } = 1;
+        public float CollisionPolyAugmentation { get; set; } = 0;
 
         /// <summary>
         /// Used for the players "primary weapon slot".
@@ -114,7 +113,7 @@ namespace Si.Engine.Sprite
         /// <summary>
         /// If the sprite has an image, these are the paths to the bitmaps (be default, they are used at random)..
         /// </summary>
-        public string[] SpritePaths { get; set; } = new string[0];
+        public string[] SpritePaths { get; set; } = [];
 
         public string? SoundPath { get; set; }
         public float SoundVolume { get; set; } = 1.0f;
@@ -122,12 +121,12 @@ namespace Si.Engine.Sprite
         /// <summary>
         /// The variance in degrees that the loaded munition will use for an initial heading angle.
         /// </summary>
-        public float AngleVarianceDegrees { get; set; } = 0;
+        public float AngleVarianceDegrees { get; set; }
 
         /// <summary>
         /// The variance expressed in decimal percentage that determines the loaded munitions initial velocity.
         /// </summary>
-        public float SpeedVariancePercent { get; set; } = 0;
+        public float SpeedVariancePercent { get; set; }
 
         public int FireDelayMilliseconds { get; set; } = 100;
         public int Damage { get; set; } = 1;
