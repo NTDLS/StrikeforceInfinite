@@ -241,7 +241,7 @@ namespace Si.Engine.Sprite._Superclass
         /// <returns></returns>
         public SpriteAttachment AttachOfType(string spritePath, SiVector locationRelativeToOwner)
         {
-            var attachment = _engine.Sprites.Attachments.AddTypeOf(spritePath, this, locationRelativeToOwner);
+            var attachment = _engine.Sprites.Attachments.AddAttachment(spritePath, this, locationRelativeToOwner);
             Attachments.Add(attachment);
             return attachment;
         }
