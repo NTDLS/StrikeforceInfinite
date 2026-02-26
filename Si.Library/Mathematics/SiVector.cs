@@ -1,6 +1,8 @@
 ﻿using Si.Library.ExtensionMethods;
 using Si.Library.Sprite;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 
 namespace Si.Library.Mathematics
@@ -48,11 +50,71 @@ namespace Si.Library.Mathematics
 
         #endregion
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override string ToString()
+            => string.Format(CultureInfo.InvariantCulture, "x{0:#,##0.#####}:y{1:#,##0.#####}", X, Y);
+
+        public static SiVector Parse(string text)
+        {
+            if (TryParse(text, out SiVector vector))
+            {
+                return vector;
+            }
+            throw new FormatException($"The provided string '{text}' is not in the correct format for parsing an SiVector.");
+        }
+
+        public static bool TryParse(string text, [NotNullWhen(true)] out SiVector? vector)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                vector = default;
+                return false;
+            }
+
+            var parts = text.Split(':');
+            if (parts.Length != 2)
+            {
+                vector = default;
+                return false;
+            }
+
+            var xPart = parts[0].Trim();
+            var yPart = parts[1].Trim();
+
+            if (!xPart.StartsWith("x") || !yPart.StartsWith("y"))
+            {
+                vector = default;
+                return false;
+            }
+
+            xPart = xPart.Substring(1);
+            yPart = yPart.Substring(1);
+
+            var style = NumberStyles.Float | NumberStyles.AllowThousands;
+            var culture = CultureInfo.InvariantCulture;
+
+            if (!float.TryParse(xPart, style, culture, out float x))
+            {
+                vector = default;
+                return false;
+            }
+
+            if (!float.TryParse(yPart, style, culture, out float y))
+            {
+                vector = default;
+                return false;
+            }
+
+            vector = new SiVector(x, y);
+
+            return true;
+        }
+
         #region Valiatation helpers (not that I'mnot sure if these should use || or &&)
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNan()
-            => float.IsNaN(X) || float.IsNaN(Y);
+                => float.IsNaN(X) || float.IsNaN(Y);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsInfinity()
@@ -242,10 +304,6 @@ namespace Si.Library.Mathematics
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => ToString().GetHashCode();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override string ToString()
-            => $"{{{Math.Round(X, 4).ToString("#.####")},{Math.Round(Y, 4).ToString("#.####")}}}";
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object? o)

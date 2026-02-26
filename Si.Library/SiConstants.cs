@@ -7,6 +7,22 @@
         public const string MultiplayServerAddress = "127.0.0.1";
         public const int MultiplayServerTCPPort = 6785;
 
+        public enum PropertyEditorType
+        {
+            Readonly,
+            String,
+            Text,
+            Integer,
+            Decimal,
+            Boolean,
+            Range,
+            Vector,
+            Enum, //Can this be combined with Picker
+            Picker, //Can this be combined with Enum
+            MultipleSpritePicker,
+            SingleSpritePicker
+        }
+
         public static class Mass
         {
             public const float Minuscule = 0.1f;

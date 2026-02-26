@@ -5,19 +5,6 @@
         public const string AppName = "Si.AssetExplorer";
     }
 
-    public enum PropertyEditorType
-    {
-        Readonly,
-        String,
-        Text,
-        Integer,
-        FloatingPoint,
-        Boolean,
-        Range,
-        Enum, //Can this be combined with Picker
-        Picker //Can this be combined with Enum
-    }
-
     public static class AssetExplorerColors
     {
         public static readonly Color Default = Color.Black;
