@@ -5,9 +5,8 @@ using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Player._Superclass;
+using Si.Engine.Sprite.KinematicBody;
 using Si.Engine.Sprite.PowerUp._Superclass;
-using Si.Engine.Sprite.SupportingClasses;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Engine.TickController.VectoredTickController.Collidable;
@@ -82,11 +81,11 @@ namespace Si.Engine.Manager
 
         public SpriteBase[] All() => _collection.ToArray();
 
-        public List<SpritePlayerBase> AllVisiblePlayers
+        public List<SpritePlayer> AllVisiblePlayers
         {
             get
             {
-                var players = VisibleOfType<SpritePlayerBase>().ToList();
+                var players = VisibleOfType<SpritePlayer>().ToList();
                 players.Add(_engine.Player.Sprite);
                 return players;
             }
@@ -95,7 +94,6 @@ namespace Si.Engine.Manager
         /// <summary>
         /// This is to be used ONLY for the debugger to access the collection. Otherwise, this class managed all access to the internal collection,
         /// </summary>
-        /// <param name="collectionAccessor"></param>
         public void DeveloperOnlyAccess(CollectionAccessor collectionAccessor)
             => collectionAccessor(All());
 
@@ -112,22 +110,24 @@ namespace Si.Engine.Manager
         {
         }
 
-
-        public T Create<T>(string spritePath) where T : SpriteBase
+        public T Create<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
         {
             var metadata = _engine.Assets.GetMetadata(spritePath)
                 ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
 
             var metadataBaseType = SiReflection.GetTypeByName(metadata.Class);
 
-            return (T)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
+            var sprite = (T)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
+            initilizationProc?.Invoke(sprite);
+            return sprite;
         }
 
-        public T Add<T>(string spritePath) where T : SpriteBase
+        public T Add<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            var obj = Create<T>(spritePath);
-            Insert(obj);
-            return obj;
+            var sprite = Create<T>(spritePath);
+            initilizationProc?.Invoke(sprite);
+            Insert(sprite);
+            return sprite;
         }
 
         public void Insert(SpriteBase sprite)
@@ -293,7 +293,7 @@ namespace Si.Engine.Manager
             return objects.ToArray();
         }
 
-        public SpritePlayerBase AddPlayer(SpritePlayerBase sprite)
+        public SpritePlayer AddPlayer(SpritePlayer sprite)
         {
             Insert(sprite);
             return sprite;
@@ -348,7 +348,7 @@ namespace Si.Engine.Manager
                             && y < _engine.Display.NaturalScreenSize.Height - radarBgImage.Size.Height + radarBgImage.Size.Height
                             )
                         {
-                            if ((sprite is SpritePlayerBase || sprite is SpriteEnemyBase || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.IsVisible == true)
+                            if ((sprite is SpritePlayer || sprite is SpriteEnemyBase || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.IsVisible == true)
                             {
                                 sprite.RenderRadar(renderTarget, x, y);
                             }

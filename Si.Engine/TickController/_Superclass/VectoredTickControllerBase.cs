@@ -33,26 +33,14 @@ namespace Si.Engine.TickController._Superclass
             SpriteManager = manager;
         }
 
-        public void QueueAllForDeletion() => SpriteManager.QueueAllForDeletionOfType<T>();
+        public void QueueAllForDeletion()
+            => SpriteManager.QueueAllForDeletionOfType<T>();
 
-        public void Add(T obj) => SpriteManager.Insert(obj);
+        public void Add(T obj)
+            => SpriteManager.Insert(obj);
 
         public T Add(string spritePath)
             => Engine.Sprites.Add<T>(spritePath);
-
-        public T AddAt(string spritePath, float x, float y)
-        {
-            var obj = Engine.Sprites.Add<T>(spritePath);
-            obj.Location = new SiVector(x, y);
-            return obj;
-        }
-
-        public T AddAt(string spritePath, SpriteBase locationOf)
-        {
-            var obj = Engine.Sprites.Add<T>(spritePath);
-            obj.Location = locationOf.Location.Clone();
-            return obj;
-        }
 
         //TODO: This shold be moved to Engine.Sprites...
         public T Add(SharpDX.Direct2D1.Bitmap bitmap)

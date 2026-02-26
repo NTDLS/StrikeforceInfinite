@@ -5,9 +5,9 @@ using Si.Library.Mathematics;
 using System.Collections.Generic;
 using static Si.Library.SiConstants;
 
-namespace Si.Engine.Sprite.SupportingClasses
+namespace Si.Engine.Sprite
 {
-    public class SpriteMetadata
+    public class Metadata
     {
         public string @Class { get; set; } = string.Empty;
 
@@ -87,9 +87,9 @@ namespace Si.Engine.Sprite.SupportingClasses
         /// <summary>
         /// Used for the players "primary weapon slot".
         /// </summary>
-        public SpriteMetadata? PrimaryWeapon { get; set; }
-        public List<SpriteMetadata> Attachments { get; set; } = new();
-        public List<SpriteMetadata> Weapons { get; set; } = new();
+        public Metadata? PrimaryWeapon { get; set; }
+        public List<Metadata> Attachments { get; set; } = new();
+        public List<Metadata> Weapons { get; set; } = new();
 
         #endregion
 

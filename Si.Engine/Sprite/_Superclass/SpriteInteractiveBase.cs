@@ -2,8 +2,7 @@
 using SharpDX.Direct2D1;
 using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Player._Superclass;
-using Si.Engine.Sprite.SupportingClasses;
+using Si.Engine.Sprite.KinematicBody;
 using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
@@ -44,8 +43,8 @@ namespace Si.Engine.Sprite._Superclass
         #endregion
 
         public SiRenewableResources RenewableResources { get; set; } = new();
-        private SpriteMetadata? _metadata = null;
-        public SpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
+        private Metadata? _metadata = null;
+        public Metadata Metadata => _metadata ?? throw new NullReferenceException();
         public List<WeaponBase> Weapons { get; private set; } = new();
 
         /// <summary>
@@ -137,7 +136,7 @@ namespace Si.Engine.Sprite._Superclass
                 attach.PositionType = Metadata.PositionType;
             }
 
-            if (this is SpritePlayerBase player)
+            if (this is SpritePlayer player)
             {
                 if (Metadata?.PrimaryWeapon?.Type != null)
                 {
@@ -419,8 +418,8 @@ namespace Si.Engine.Sprite._Superclass
             B.MovementVector = vB + impulse * invMassB;
 
             // I don't want players to bounce too much.
-            if (A is SpritePlayerBase) A.MovementVector = (A.MovementVector + vA) * 0.5f;
-            if (B is SpritePlayerBase) B.MovementVector = (B.MovementVector + vB) * 0.5f;
+            if (A is SpritePlayer) A.MovementVector = (A.MovementVector + vA) * 0.5f;
+            if (B is SpritePlayer) B.MovementVector = (B.MovementVector + vB) * 0.5f;
         }
     }
 }

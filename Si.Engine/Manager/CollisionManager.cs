@@ -1,5 +1,5 @@
 ﻿using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.SupportingClasses;
+using Si.Engine.Sprite.KinematicBody;
 using System.Collections.Generic;
 
 namespace Si.Engine.Manager

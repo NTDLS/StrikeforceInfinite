@@ -1,8 +1,8 @@
 ﻿using NTDLS.DelegateThreadPooling;
 using Si.Engine.Manager;
+using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Player._Superclass;
 using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Engine.TickController._Superclass;
@@ -56,8 +56,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             if (munitions.Count() != 0)
             {
                 var interactiveSprites = SpriteManager.VisibleDamageable();
-                var objectsPlayerCanHit = interactiveSprites.Where(o => o is not SpritePlayerBase).ToArray();
-                var objectsEnemyCanHit = interactiveSprites.Where(o => o is SpritePlayerBase).ToArray();
+                var objectsPlayerCanHit = interactiveSprites.Where(o => o is not SpritePlayer).ToArray();
+                var objectsEnemyCanHit = interactiveSprites.Where(o => o is SpritePlayer).ToArray();
 
                 //Create a collection of threads so we can wait on the ones that we start.
                 var threadPoolTracker = _munitionTraversalThreadPool.CreateChildPool();

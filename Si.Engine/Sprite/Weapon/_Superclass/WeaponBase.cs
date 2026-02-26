@@ -2,8 +2,6 @@
 using Si.Audio;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Player._Superclass;
-using Si.Engine.Sprite.SupportingClasses;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
@@ -31,7 +29,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         public SiVector Location { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public SiVector Orientation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public SpriteMetadata? Metadata { get; private set; }
+        public Metadata? Metadata { get; private set; }
         public List<WeaponsLock> LockedTargets { get; set; } = new();
         public int RoundsFired { get; set; }
         public int RoundQuantity { get; set; }
@@ -130,7 +128,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
             LockedTargets.Clear();
 
-            if (Owner is SpritePlayerBase owner)
+            if (Owner is SpritePlayer owner)
             {
                 var potentialTargets = _engine.Sprites.Enemies.Visible();
 

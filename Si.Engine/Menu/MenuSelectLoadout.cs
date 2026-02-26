@@ -1,6 +1,6 @@
 ﻿using Si.Engine.Menu._Superclass;
+using Si.Engine.Sprite;
 using Si.Engine.Sprite.MenuItem;
-using Si.Engine.Sprite.Player._Superclass;
 using Si.Library.Mathematics;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Si.Engine.Menu
     {
         private readonly SpriteMenuItem _shipBlurb;
         private Timer _animationTimer;
-        private SpritePlayerBase? _selectedSprite;
+        private SpritePlayer? _selectedSprite;
 
         public MenuSelectLoadout(EngineCore engine)
             : base(engine)
@@ -38,13 +38,13 @@ namespace Si.Engine.Menu
 
             var playerShipContainers = engine.Assets.GetMetadataInDirectory(@"Sprites\Player\Ships");
 
-            List<SpritePlayerBase> playerSprites = new();
+            List<SpritePlayer> playerSprites = new();
 
             float previousSpriteSize = 0;
 
             foreach (var playerShipContainer in playerShipContainers)
             {
-                var playerSprite = engine.Sprites.Add<SpritePlayerBase>(playerShipContainer.Asset.SpritePath);
+                var playerSprite = engine.Sprites.Add<SpritePlayer>(playerShipContainer.Asset.SpritePath);
 
                 playerSprite.SpriteTag = "MENU_SHIP_SELECT";
                 playerSprite.Orientation.Degrees = 45;
@@ -105,7 +105,7 @@ namespace Si.Engine.Menu
 
         private void PlayerLoadoutMenu_OnSelectionChanged(SpriteMenuItem item)
         {
-            if (item.UserData is SpritePlayerBase selectedSprite)
+            if (item.UserData is SpritePlayer selectedSprite)
             {
                 _shipBlurb.Text = selectedSprite.GetLoadoutHelpText();
                 _selectedSprite = selectedSprite;

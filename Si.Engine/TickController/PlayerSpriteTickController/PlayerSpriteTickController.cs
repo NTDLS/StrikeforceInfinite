@@ -1,6 +1,5 @@
 ﻿using Si.Engine.Persistent;
-using Si.Engine.Sprite.Player;
-using Si.Engine.Sprite.Player._Superclass;
+using Si.Engine.Sprite;
 using Si.Engine.TickController._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -13,20 +12,23 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
     /// <summary>
     /// This is the controller for the single local player.
     /// </summary>
-    public class PlayerSpriteTickController : PlayerSpriteTickControllerBase<SpritePlayerBase>
+    public class PlayerSpriteTickController : PlayerSpriteTickControllerBase<SpritePlayer>
     {
         private readonly EngineCore _engine;
         private readonly Stopwatch _inputDelay = new();
 
         public PlayerStats Stats { get; set; } = new(); //This should be saved.
-        public SpritePlayerBase Sprite { get; set; }
+        public SpritePlayer Sprite { get; set; }
 
         public PlayerSpriteTickController(EngineCore engine)
             : base(engine)
         {
             //This is where the player is created.
-            Sprite = new SpriteDebugPlayer(engine, @"Sprites\Player\Ships\Debug.png") { IsVisible = false };
-            engine.Sprites.Insert(Sprite);
+            Sprite = engine.Sprites.Add<SpritePlayer>(@"Sprites\Player\Ships\Debug.png", (o) =>
+            {
+                o.IsVisible = false;
+            });
+
             _engine = engine;
             _inputDelay.Restart();
         }
@@ -36,8 +38,10 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             //Remove the player from the sprite collection.
             Sprite.QueueForDelete();
             Sprite.Cleanup();
-            Sprite = Engine.Sprites.Add<SpritePlayerBase>(spritePath);
-            Sprite.IsVisible = false;
+            Sprite = Engine.Sprites.Add<SpritePlayer>(spritePath, (o) =>
+            {
+                o.IsVisible = false;
+            });
             _engine.Sprites.Insert(Sprite); //Add the player back to the sprite collection.
         }
 

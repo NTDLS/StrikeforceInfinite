@@ -2,7 +2,6 @@
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Player._Superclass;
 using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
@@ -82,7 +81,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             {
                 FiredFromType = SiFiredFromType.Enemy;
             }
-            else if (firedFrom is SpritePlayerBase)
+            else if (firedFrom is SpritePlayer)
             {
                 FiredFromType = SiFiredFromType.Player;
             }

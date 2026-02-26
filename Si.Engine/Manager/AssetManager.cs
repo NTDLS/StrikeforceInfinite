@@ -6,7 +6,6 @@ using SharpCompress.Archives;
 using SharpCompress.Common;
 using Si.Audio;
 using Si.Engine.Sprite;
-using Si.Engine.Sprite.SupportingClasses;
 using Si.Library;
 using System;
 using System.Collections.Generic;
@@ -33,9 +32,9 @@ namespace Si.Engine.Manager
         public class MetadataContainer
         {
             public AssetContainer Asset { get; set; }
-            public SpriteMetadata Metadata { get; set; }
+            public Metadata Metadata { get; set; }
 
-            public MetadataContainer(AssetContainer container, SpriteMetadata metadata)
+            public MetadataContainer(AssetContainer container, Metadata metadata)
             {
                 Asset = container;
                 Metadata = metadata;
@@ -98,18 +97,18 @@ namespace Si.Engine.Manager
             var assetMetadatas = _collection.Read(o =>
                 o.Where(kv => kv.Value.BaseAssetType == BaseAssetType.Meta
                 && string.Equals(kv.Value.Directory, directory, StringComparison.OrdinalIgnoreCase))
-                .Select(kv => new MetadataContainer(kv.Value, (SpriteMetadata)kv.Value.Object))).ToList();
+                .Select(kv => new MetadataContainer(kv.Value, (Metadata)kv.Value.Object))).ToList();
 
             return assetMetadatas ?? [];
         }
 
-        public SpriteMetadata GetMetadata(string spritePath, bool avoidCache = false)
+        public Metadata GetMetadata(string spritePath, bool avoidCache = false)
         {
             string metadataFile = $"{spritePath}.meta".Replace('\\', '/');
 
             if (avoidCache)
             {
-                return JsonConvert.DeserializeObject<SpriteMetadata>(GetText(metadataFile)).EnsureNotNull();
+                return JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)).EnsureNotNull();
             }
 
             string key = $"meta:{metadataFile.ToLower()}";
@@ -122,10 +121,10 @@ namespace Si.Engine.Manager
 
             if (cached != null)
             {
-                return (SpriteMetadata)cached;
+                return (Metadata)cached;
             }
 
-            var metadata = JsonConvert.DeserializeObject<SpriteMetadata>(GetText(metadataFile)) ?? new SpriteMetadata();
+            var metadata = JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)) ?? new Metadata();
             _collection.Write(o => o.Add(key, new AssetContainer(BaseAssetType.Meta, spritePath, metadata.EnsureNotNull())));
             return metadata;
         }
