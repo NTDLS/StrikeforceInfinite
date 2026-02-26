@@ -1,0 +1,7 @@
+{
+  "Class": "SpriteEnemyBossDevastatorRightJet",
+  "Description": "",
+  "MunitionDetection": true,
+  "Hull": 50,
+  "Shields": 0
+}

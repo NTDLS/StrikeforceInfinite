@@ -6,12 +6,14 @@ using Si.Engine.EngineLibrary;
 using Si.Engine.Interrogation._Superclass;
 using Si.Engine.Manager;
 using Si.Engine.Menu;
+using Si.Engine.MultiPlay;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController.PlayerSpriteTickController;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Library;
 using Si.Library.Mathematics;
+using Si.MpClientToServerComms;
 using Si.Rendering;
 using System;
 using System.Collections.Generic;
@@ -29,7 +31,7 @@ namespace Si.Engine
     {
         #region Backend variables.
 
-        private readonly EngineWorldClock _worldClock;
+        private readonly EngineWorldClock? _worldClock;
         private readonly PessimisticCriticalResource<List<RenderLoopInvocation>> _renderLoopInvocations = new();
         private int _renderLoopInvocationCount = 0;
 
@@ -37,10 +39,13 @@ namespace Si.Engine
 
         #region Public properties.
 
-        public SiEngineInitializationType ExecutionType { get; private set; }
+        internal MpCommsManager? CommsManager { get; set; }
 
+        public SiEngineExecutionMode ExecutionMode { get; private set; }
         public bool IsRunning { get; private set; } = false;
         public bool IsInitializing { get; private set; } = false;
+
+        public ManagedLobby? MultiplayLobby { get; set; }
 
         #endregion
 
@@ -70,7 +75,7 @@ namespace Si.Engine
         #region Events.
 
         public delegate void InitializationEvent(EngineCore engine);
-        public event InitializationEvent? OnInitialization;
+        public event InitializationEvent? OnInitializationComplete;
 
         public delegate void ShutdownEvent(EngineCore engine);
         public event ShutdownEvent? OnShutdown;
@@ -109,13 +114,115 @@ namespace Si.Engine
 
         #endregion
 
+        public void InitializeForMultiplayer()
+        {
+            CommsManager = new MpCommsManager(Settings.ServerAddress, Settings.ServerPort);
+            CommsManager.AddHandler(new DatagramMessageHandler(this));
+            CommsManager.AddHandler(new ReliableMessageHandler(this));
+        }
+
+        public void InitializeForSinglePlayer()
+        {
+            CommsManager?.Dispose();
+            CommsManager = null;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the game engine for shared engine content mode, which shares rendering and asset
+        /// management with another instance of the engine (the "shared engine") that is running in shared engine content mode.
+        /// 
+        /// You see, the server can host multiple game instances for different lobbies, but we don't want to have multiple copies
+        /// of the rendering and asset management code running on the server - that would be a waste of resources.
+        /// So instead, we have one instance of the engine running in shared engine content mode that handles all of
+        /// the rendering and asset management, and then each game instance runs in server host mode and shares the
+        /// rendering and asset management of the shared engine.
+        /// </summary>
+        public EngineCore(SiEngineExecutionMode executionMode = SiEngineExecutionMode.SharedEngineContent)
+        {
+            ExecutionMode = executionMode;
+
+            if (ExecutionMode != SiEngineExecutionMode.SharedEngineContent)
+            {
+                throw new Exception("This constructor is only meant for shared engine content mode.");
+            }
+
+            Settings = LoadSettings();
+
+            var drawingSurface = new Control()
+            {
+                Height = 1080,
+                Width = 1920
+            };
+
+            Display = new DisplayManager(this, drawingSurface);
+            Rendering = new SiRendering(Settings, drawingSurface, Display.TotalCanvasSize);
+            Assets = new AssetManager(this);
+            Events = new EventTickController(this);
+            Sprites = new SpriteManager(this);
+            Input = new InputManager(this);
+            Collisions = new CollisionManager(this);
+
+            Situations = new SituationTickController(this);
+            Audio = new AudioManager(this);
+            Menus = new MenuTickController(this);
+            Player = new PlayerSpriteTickController(this);
+
+            //No clock for shared engine content mode.
+            //_worldClock = new EngineWorldClock(this);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the game engine for server host mode, which shares rendering and asset
+        /// management with another instance of the engine (the "shared engine") that is running in shared engine content mode.
+        /// </summary>
+        public EngineCore(ManagedLobby lobby, EngineCore sharedEngine, SiEngineExecutionMode executionMode)
+        {
+            MultiplayLobby = lobby;
+            ExecutionMode = executionMode;
+
+            if (ExecutionMode != SiEngineExecutionMode.ServerHost)
+            {
+                throw new Exception("This constructor is only meant for server host mode.");
+            }
+
+            Settings = LoadSettings();
+
+            var drawingSurface = new Control()
+            {
+                Height = 1080,
+                Width = 1920
+            };
+
+            Display = sharedEngine.Display;
+            Rendering = sharedEngine.Rendering;
+            Assets = sharedEngine.Assets;
+
+            Events = new EventTickController(this);
+            Sprites = new SpriteManager(this);
+            Input = new InputManager(this);
+            Collisions = new CollisionManager(this);
+
+            Situations = new SituationTickController(this);
+            Audio = new AudioManager(this);
+            Menus = new MenuTickController(this);
+            Player = new PlayerSpriteTickController(this);
+
+            _worldClock = new EngineWorldClock(this);
+        }
+
         /// <summary>
         /// Initializes a new instance of the game engine.
         /// </summary>
         /// <param name="drawingSurface">The window that the game will be rendered to.</param>
-        public EngineCore(Control drawingSurface, SiEngineInitializationType executionType)
+        public EngineCore(Control drawingSurface, SiEngineExecutionMode executionMode)
         {
-            ExecutionType = executionType;
+            ExecutionMode = executionMode;
+
+            if (ExecutionMode != SiEngineExecutionMode.Play
+                && ExecutionMode != SiEngineExecutionMode.Edit)
+            {
+                throw new Exception("This constructor is only meant for play and edit modes.");
+            }
 
             Settings = LoadSettings();
 
@@ -175,7 +282,7 @@ namespace Si.Engine
 
         public void ResetGame()
         {
-            Sprites.TextBlocks.PlayerStatsText.Visible = false;
+            Sprites.TextBlocks.PlayerStatsText.IsVisible = false;
             Situations.End();
             Sprites.QueueDeletionOfActionSprites();
         }
@@ -186,7 +293,7 @@ namespace Si.Engine
             Situations.AdvanceLevel();
         }
 
-        public void RenderEverything()
+        public void RenderEverything(float epoch)
         {
             try
             {
@@ -196,7 +303,7 @@ namespace Si.Engine
                     {
                         o.IntermediateRenderTarget.BeginDraw();
 
-                        if (ExecutionType == SiEngineInitializationType.Play)
+                        if (ExecutionMode == SiEngineExecutionMode.Play)
                         {
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Black);
                         }
@@ -205,7 +312,7 @@ namespace Si.Engine
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.EditorBackground);
                         }
 
-                        Sprites.RenderPreScaling(o.IntermediateRenderTarget);
+                        Sprites.RenderPreScaling(o.IntermediateRenderTarget, epoch);
 
                         //Render-Loop invocations are not meant to be performant. They are meant for one-off tasks that need to
                         //  be done in the render loop - which is why we attempt to optimize them out with _renderLoopInvocationCount.
@@ -226,11 +333,11 @@ namespace Si.Engine
                             foreach (var collision in Collisions.Detected)
                             {
                                 Rendering.DrawRectangle(o.IntermediateRenderTarget,
-                                    -Display.RenderWindowPosition.X, -Display.RenderWindowPosition.Y,
+                                    -Display.CameraPosition.X, -Display.CameraPosition.Y,
                                     collision.Value.OverlapRectangle.ToRawRectangleF(),
                                     Rendering.Materials.Colors.Orange, 1, 2, 0);
 
-                                Rendering.DrawPolygon(o.IntermediateRenderTarget, -Display.RenderWindowPosition.X, -Display.RenderWindowPosition.Y,
+                                Rendering.DrawPolygon(o.IntermediateRenderTarget, -Display.CameraPosition.X, -Display.CameraPosition.Y,
                                     collision.Value.OverlapPolygon,
                                     Rendering.Materials.Colors.Cyan, 3);
 
@@ -258,7 +365,7 @@ namespace Si.Engine
                             Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, (float)Display.BaseDrawScale);
                         }
 
-                        Sprites.RenderPostScaling(o.ScreenRenderTarget);
+                        Sprites.RenderPostScaling(o.ScreenRenderTarget, epoch);
 
                         o.ScreenRenderTarget.EndDraw();
                     }
@@ -279,58 +386,109 @@ namespace Si.Engine
             IsRunning = true;
             //Sprites.ResetPlayer();
 
-            #region Add initial stars.
-
-            for (int i = 0; i < Settings.InitialFrameStarCount; i++)
+            if (ExecutionMode == SiEngineExecutionMode.Play
+                || ExecutionMode == SiEngineExecutionMode.Edit
+                || ExecutionMode == SiEngineExecutionMode.ServerHost)
             {
-                Sprites.Stars.Add(Display.RandomOnScreenLocation());
+                _worldClock?.Start();
             }
 
-            #endregion
-            _worldClock.Start();
-
-            var loadingHeader = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
+            if (ExecutionMode == SiEngineExecutionMode.Play)
+            {
+                var loadingHeader = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
                 Rendering.Materials.Brushes.Red, new SiVector(100, 100), true);
 
-            var loadingDetail = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
-                Rendering.Materials.Brushes.OrangeRed, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
+                var loadingDetail = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
+                    Rendering.Materials.Brushes.OrangeRed, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
 
-            IsInitializing = true;
+                IsInitializing = true;
 
-            HydrateCache(loadingHeader, loadingDetail);
+                HydrateCache(loadingHeader, loadingDetail);
 
-            loadingHeader.QueueForDelete();
-            loadingDetail.QueueForDelete();
+                loadingHeader.QueueForDelete();
+                loadingDetail.QueueForDelete();
+            }
+            else if (ExecutionMode == SiEngineExecutionMode.SharedEngineContent)
+            {
+                HydrateCache();
+            }
+            else if (ExecutionMode == SiEngineExecutionMode.Edit)
+            {
+                //HydrateCache();
+            }
 
-            OnInitialization?.Invoke(this);
+            OnInitializationComplete?.Invoke(this);
 
             IsInitializing = false;
 
-            if (ExecutionType == SiEngineInitializationType.Play)
+
+            if (ExecutionMode == SiEngineExecutionMode.Play)
             {
+                //Add initial stars.
+                for (int i = 0; i < Settings.InitialFrameStarCount; i++)
+                {
+                    Sprites.Stars.AddRandomStarAt(Display.RandomOnScreenLocation());
+                }
+
                 if (Settings.PlayMusic)
                 {
                     Audio.BackgroundMusicSound.Play();
                 }
 
-                Sprites.SkyBoxes.AddAtCenterUniverse();
+                //TODO: Get the random skybox sprite.
+                //Sprites.SkyBoxes.AddAtCenterUniverse();
 
-                Events.Add(1, () => Menus.Show(new MenuStartNewGame(this)));
+                //Events.Add(1, () => AddDemoSprites());
+                Events.Once(() => Menus.Show(new MenuStartNewGame(this)));
             }
         }
 
-        private void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
+        void AddDemoSprites()
         {
-            loadingHeader.SetTextAndCenterX("Loading assets...");
+            /*
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyMerc>());
 
-            loadingHeader.SetTextAndCenterX("Loading reflection cache...");
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyMinnow>());
+
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>());
+
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyScav>());
+
+            for (int i = 0; i < 5; i++)
+                ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemySerf>());
+            */
+
+            //for (int i = 0; i < 3; i++)
+            //ApplySpriteStates(Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>());
+
+            //void ApplySpriteStates(SpriteEnemyBase sprite)
+            //{
+            //    sprite.ClearAIControllers();
+            //    sprite.Location = Display.RandomOnScreenLocation();
+            //    sprite.Orientation = SiVector.FromUnsignedDegrees(sprite.Location.AngleToInUnsignedDegrees(Player.Sprite.Location) + SiRandom.Variance(360, 0.15f));
+            //    sprite.AddAIController(new AILogisticsDemo(this, sprite));
+            //    sprite.SetCurrentAIController<AILogisticsDemo>();
+            //}
+        }
+
+        private void HydrateCache(SpriteTextBlock? loadingHeader = null, SpriteTextBlock? loadingDetail = null)
+        {
+            loadingHeader?.SetTextAndCenterX("Loading assets...");
+            loadingHeader?.SetTextAndCenterX("Loading reflection cache...");
+
             SiReflection.BuildReflectionCacheOfType<SpriteBase>();
             SiReflection.BuildReflectionCacheOfType<AIStateMachine>();
 
             if (Settings.PreCacheAllAssets)
             {
                 Assets.HydrateCache(loadingHeader, loadingDetail);
-                Sprites.HydrateCache(loadingHeader, loadingDetail);
+
+                //I dont think we need to do this any more now that sprites are tied to the assets.
+                //Sprites.HydrateCache(loadingHeader, loadingDetail);
             }
         }
 
@@ -340,18 +498,21 @@ namespace Si.Engine
             {
                 IsRunning = false;
 
+                CommsManager?.Dispose();
+                CommsManager = null;
+
                 OnShutdown?.Invoke(this);
 
-                _worldClock.Dispose();
+                _worldClock?.Dispose();
                 Sprites.Dispose();
                 Rendering.Dispose();
                 Assets.Dispose();
             }
         }
 
-        public bool IsPaused() => _worldClock.IsPaused();
-        public void TogglePause() => _worldClock.TogglePause();
-        public void Pause() => _worldClock.Pause();
-        public void Resume() => _worldClock.Resume();
+        public bool IsPaused() => _worldClock?.IsPaused() == true;
+        public void TogglePause() => _worldClock?.TogglePause();
+        public void Pause() => _worldClock?.Pause();
+        public void Resume() => _worldClock?.Resume();
     }
 }

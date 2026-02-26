@@ -25,7 +25,7 @@ namespace Si.Engine.Manager
         /// will be centered in this window and the window will moved with the players movements.
         /// This can be thought of as the camera.
         /// </summary>
-        public SiVector RenderWindowPosition { get; set; } = new();
+        public SiVector CameraPosition { get; set; } = new();
         public Control DrawingSurface { get; private set; }
         public Screen Screen { get; private set; }
 
@@ -35,10 +35,10 @@ namespace Si.Engine.Manager
         public float SpeedOrientedFrameScalingFactor()
         {
             //#if DEBUG
-            //            return 1.0f; //Juts disabled because it makes it hard to debug collisions. 
+            //return 1.0f; //Juts disabled because it makes it hard to debug collisions. 
             //#endif
             float weightedThrottlePercent = (
-                (_engine.Player.Sprite.OrientationMovementVector.Magnitude() / _engine.Player.Sprite.Speed) * 0.8f //80% of zoom is standard velocity
+                (_engine.Player.Sprite.MovementVector.Magnitude() / _engine.Player.Sprite.Speed) * 0.8f //80% of zoom is standard velocity
                  + (_engine.Player.Sprite.Throttle <= 1 ? 1 : _engine.Player.Sprite.Throttle / _engine.Player.Sprite.MaxThrottle) * 0.2f //20% of the zoom will be the "boost".
                 ).Clamp(0, 1);
 
@@ -60,7 +60,7 @@ namespace Si.Engine.Manager
         public float TotalCanvasDiagonal { get; private set; }
 
         public SiVector CenterCanvas;
-        public SiVector CenterOfCurrentScreen => RenderWindowPosition + CenterCanvas;
+        public SiVector CenterOfCurrentScreen => CameraPosition + CenterCanvas;
 
         /// <summary>
         /// The size of the screen with no scaling.
@@ -143,14 +143,14 @@ namespace Si.Engine.Manager
                 if (SiRandom.FlipCoin())
                 {
                     return new SiVector(
-                        RenderWindowPosition.X + -SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
-                        RenderWindowPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
+                        CameraPosition.X + -SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
+                        CameraPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
                 }
                 else
                 {
                     return new SiVector(
-                        RenderWindowPosition.X + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
-                        RenderWindowPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
+                        CameraPosition.X + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
+                        CameraPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
                 }
             }
             else
@@ -158,14 +158,14 @@ namespace Si.Engine.Manager
                 if (SiRandom.FlipCoin())
                 {
                     return new SiVector(
-                        RenderWindowPosition.X + TotalCanvasSize.Width + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
-                        RenderWindowPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
+                        CameraPosition.X + TotalCanvasSize.Width + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
+                        CameraPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
                 }
                 else
                 {
                     return new SiVector(
-                        RenderWindowPosition.X + TotalCanvasSize.Width + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
-                        RenderWindowPosition.Y + -SiRandom.Between(0, TotalCanvasSize.Height));
+                        CameraPosition.X + TotalCanvasSize.Width + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
+                        CameraPosition.Y + -SiRandom.Between(0, TotalCanvasSize.Height));
                 }
             }
         }

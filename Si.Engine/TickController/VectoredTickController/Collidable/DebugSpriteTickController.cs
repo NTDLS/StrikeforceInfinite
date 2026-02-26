@@ -19,6 +19,8 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
                 sprite.ApplyIntelligence(epoch, displacementVector);
                 sprite.ApplyMotion(epoch, displacementVector);
                 sprite.PerformCollisionDetection(epoch);
+
+                Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
             }
         }
     }

@@ -1,9 +1,8 @@
 ﻿using NTDLS.Helpers;
 using SharpDX.Direct2D1;
+using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Player._Superclass;
-using Si.Engine.Sprite.SupportingClasses;
-using Si.Engine.Sprite.SupportingClasses.Metadata;
+using Si.Engine.Sprite.KinematicBody;
 using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
@@ -11,6 +10,7 @@ using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite._Superclass
 {
@@ -43,8 +43,8 @@ namespace Si.Engine.Sprite._Superclass
         #endregion
 
         public SiRenewableResources RenewableResources { get; set; } = new();
-        private InteractiveSpriteMetadata? _metadata = null;
-        public InteractiveSpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
+        private Metadata? _metadata = null;
+        public Metadata Metadata => _metadata ?? throw new NullReferenceException();
         public List<WeaponBase> Weapons { get; private set; } = new();
 
         /// <summary>
@@ -77,6 +77,30 @@ namespace Si.Engine.Sprite._Superclass
             SetImage(bitmap);
         }
 
+        #region Artificial Intelligence.
+
+        public IAIController? CurrentAIController { get; set; }
+        private readonly Dictionary<Type, IAIController> _aiControllers = new();
+
+        public void AddAIController(IAIController controller)
+            => _aiControllers.Add(controller.GetType(), controller);
+
+        public void ClearAIControllers()
+        {
+            _aiControllers.Clear();
+            CurrentAIController = null;
+        }
+
+        public IAIController GetAIController<T>() where T : IAIController
+            => _aiControllers[typeof(T)];
+
+        public void SetCurrentAIController<T>() where T : IAIController
+        {
+            CurrentAIController = GetAIController<T>();
+        }
+
+        #endregion
+
         /// <summary>
         /// Sets the sprites image, sets speed, shields, adds attachments and weapons
         /// from a .json file in the same path with the same name as the sprite image.
@@ -84,7 +108,7 @@ namespace Si.Engine.Sprite._Superclass
         /// <param name="spriteImagePath"></param>
         private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            _metadata = _engine.Assets.GetMetaData<InteractiveSpriteMetadata>(spriteImagePath);
+            _metadata = _engine.Assets.GetMetadata(spriteImagePath);
 
             SetImage(spriteImagePath);
 
@@ -96,21 +120,15 @@ namespace Si.Engine.Sprite._Superclass
             SetHullHealth(Metadata.Hull);
             SetShieldHealth(Metadata.Shields);
 
-            if (Metadata.Weapons != null)
+            Metadata.Weapons?.ForEach(weapon =>
             {
-                foreach (var weapon in Metadata.Weapons)
-                {
-                    AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount);
-                }
-            }
+                AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount);
+            });
 
-            if (Metadata.Attachments != null)
+            Metadata.Attachments?.ForEach(attachment =>
             {
-                foreach (var attachment in Metadata.Attachments)
-                {
-                    AttachOfType(attachment.Type, attachment.LocationRelativeToOwner);
-                }
-            }
+                AttachOfType(attachment.Type, attachment.LocationRelativeToOwner);
+            });
 
             if (this is SpriteAttachment attach)
             {
@@ -118,7 +136,7 @@ namespace Si.Engine.Sprite._Superclass
                 attach.PositionType = Metadata.PositionType;
             }
 
-            if (this is SpritePlayerBase player)
+            if (this is SpritePlayer player)
             {
                 if (Metadata?.PrimaryWeapon?.Type != null)
                 {
@@ -140,7 +158,7 @@ namespace Si.Engine.Sprite._Superclass
         /// Number that defines how much motion a sprite is in.
         /// </summary>
         public float TotalVelocity
-            => OrientationMovementVector.SumAbs();
+            => MovementVector.SumAbs();
 
         /// <summary>
         /// The total velocity multiplied by the given mass, except for the mass is returned when the velocity is 0;
@@ -161,33 +179,16 @@ namespace Si.Engine.Sprite._Superclass
 
         public void ClearWeapons() => Weapons.Clear();
 
-        public void AddWeapon(string weaponTypeName, int munitionCount)
+        public void AddWeapon(string spritePath, int munitionCount)
         {
-            var weaponType = SiReflection.GetTypeByName(weaponTypeName);
-            if (weaponType == null)
-            {
-                throw new Exception($"The type '{weaponTypeName}' does not exist in the reflection cache.");
-            }
+            var metadata = _engine.Assets.GetMetadata(spritePath)
+                ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
 
-            var weapon = Weapons.Where(o => o.GetType() == weaponType).SingleOrDefault();
+            var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
             if (weapon == null)
             {
-                weapon = SiReflection.CreateInstanceFromType<WeaponBase>(weaponType, [_engine, this]).EnsureNotNull();
-                weapon.RoundQuantity += munitionCount;
-                Weapons.Add(weapon);
-            }
-            else
-            {
-                weapon.RoundQuantity += munitionCount;
-            }
-        }
-
-        public void AddWeapon<T>(int munitionCount) where T : WeaponBase
-        {
-            var weapon = GetWeaponOfType<T>();
-            if (weapon == null)
-            {
-                weapon = SiReflection.CreateInstanceOf<T>([_engine, this]).EnsureNotNull();
+                var type = SiReflection.GetTypeByName(metadata.Class);
+                weapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, spritePath]).EnsureNotNull();
                 weapon.RoundQuantity += munitionCount;
                 Weapons.Add(weapon);
             }
@@ -234,56 +235,24 @@ namespace Si.Engine.Sprite._Superclass
         #region Attachments.
 
         /// <summary>
-        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another sprites children for automatic cleanup when parent is destroyed. 
+        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another
+        /// sprites children for automatic cleanup when parent is destroyed. 
         /// </summary>
         /// <returns></returns>
-        public SpriteAttachment Attach(string imagePath)
+        public SpriteAttachment AttachOfType(string spritePath, SiVector locationRelativeToOwner)
         {
-            var attachment = _engine.Sprites.Attachments.Add(this, imagePath);
-            Attachments.Add(attachment);
-            return attachment;
-        }
-
-        /// <summary>
-        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another sprites children for automatic cleanup when parent is destroyed. 
-        /// </summary>
-        /// <returns></returns>
-        public SpriteAttachment Attach<T>(string imagePath) where T : SpriteAttachment
-        {
-            var attachment = _engine.Sprites.Attachments.AddTypeOf<T>(this, imagePath);
-            Attachments.Add(attachment);
-            return attachment;
-        }
-
-        /// <summary>
-        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another sprites children for automatic cleanup when parent is destroyed. 
-        /// </summary>
-        /// <returns></returns>
-        public SpriteAttachment AttachOfType<T>() where T : SpriteAttachment
-        {
-            var attachment = _engine.Sprites.Attachments.AddTypeOf<T>(this);
-            Attachments.Add(attachment);
-            return attachment;
-        }
-
-        /// <summary>
-        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another sprites children for automatic cleanup when parent is destroyed. 
-        /// </summary>
-        /// <returns></returns>
-        public SpriteAttachment AttachOfType(string typeName, SiVector locationRelativeToOwner)
-        {
-            var attachment = _engine.Sprites.Attachments.AddTypeOf(typeName, this, locationRelativeToOwner);
+            var attachment = _engine.Sprites.Attachments.AddAttachment(spritePath, this, locationRelativeToOwner);
             Attachments.Add(attachment);
             return attachment;
         }
 
         #endregion
 
-        public override void Render(RenderTarget renderTarget)
+        public override void Render(RenderTarget renderTarget, float epoch)
         {
-            base.Render(renderTarget);
+            base.Render(renderTarget, epoch);
 
-            if (Visible)
+            if (IsVisible)
             {
                 if (_lockedOnImage != null && IsLockedOnHard)
                 {
@@ -298,7 +267,7 @@ namespace Si.Engine.Sprite._Superclass
 
         public override bool TryMunitionHit(MunitionBase munition, SiVector hitTestPosition)
         {
-            if (IntersectsAABB(hitTestPosition))
+            if (IntersectsAabb(hitTestPosition))
             {
                 Hit(munition);
                 if (HullHealth <= 0)
@@ -314,10 +283,34 @@ namespace Si.Engine.Sprite._Superclass
         {
             _engine.Events.Add(() =>
             {
-                _engine.Sprites.Animations.AddRandomExplosionAt(this);
-                _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(200, 800));
-                _engine.Sprites.CreateFragmentsOf(this);
-                _engine.Rendering.AddScreenShake(4, 800);
+                switch (Metadata.ExplosionType)
+                {
+                    case ExplosionType.MediumFire:
+                        _engine.Sprites.Animations.AddRandomMediumFireExplosionAt(this);
+                        break;
+                    case ExplosionType.LargeFire:
+                        _engine.Sprites.Animations.AddRandomLargeFireExplosionAt(this);
+                        break;
+                    case ExplosionType.SmallFire:
+                        _engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
+                        break;
+                    case ExplosionType.MicroFire:
+                        _engine.Sprites.Animations.AddRandomMicroFireExplosionAt(this);
+                        break;
+                    case ExplosionType.Energy:
+                        _engine.Sprites.Animations.AddRandomEnergyExplosionAt(this);
+                        break;
+                }
+
+                if (Metadata.ParticleBlastOnExplodeAmount.IsValid())
+                    _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(Metadata.ParticleBlastOnExplodeAmount.Min, Metadata.ParticleBlastOnExplodeAmount.Max));
+
+                if (Metadata.FragmentOnExplode)
+                    _engine.Sprites.CreateFragmentsOf(this);
+
+                if (Metadata.ScreenShakeOnExplodeAmount.IsValid())
+                    _engine.Rendering.AddScreenShake(Metadata.ScreenShakeOnExplodeAmount.Min, Metadata.ScreenShakeOnExplodeAmount.Max);
+
                 _engine.Audio.PlayRandomExplosion();
             });
 
@@ -325,12 +318,14 @@ namespace Si.Engine.Sprite._Superclass
         }
 
         /// <summary>
-        /// Provides a way to make decisions about the sprite that do not necessarily have anything to do with movement.
+        /// Provides a way to make basic decisions about the sprite that do not necessarily have anything to do with movement.
         /// </summary>
         /// <param name="epoch"></param>
         /// <param name="displacementVector"></param>
         public virtual void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
+            CurrentAIController?.ApplyIntelligence(epoch, displacementVector);
+            Weapons?.ForEach(o => o.ApplyIntelligence(epoch));
         }
 
         /// <summary>
@@ -340,7 +335,7 @@ namespace Si.Engine.Sprite._Superclass
         /// </summary>
         public virtual void PerformCollisionDetection(float epoch)
         {
-            if (!Metadata.CollisionDetection)
+            if (!Metadata.CollisionDetection || IsDeadOrExploded || !IsVisible)
             {
                 return;
             }
@@ -364,7 +359,7 @@ namespace Si.Engine.Sprite._Superclass
 
             //IsHighlighted = true;
 
-            var thisCollidable = new PredictedKinematicBody(this, _engine.Display.RenderWindowPosition, epoch);
+            var thisCollidable = new PredictedKinematicBody(this, _engine.Display.CameraPosition, epoch);
 
             foreach (var other in _engine.Collisions.Collidables)
             {
@@ -400,8 +395,8 @@ namespace Si.Engine.Sprite._Superclass
             // normal from A -> B (pick one direction and stick to it).
             var n = (B.Location - A.Location).Normalize();
 
-            var vA = A.OrientationMovementVector;
-            var vB = B.OrientationMovementVector;
+            var vA = A.MovementVector;
+            var vB = B.MovementVector;
 
             var rv = vB - vA; // relative velocity of B w.r.t A
             float velAlongNormal = rv.Dot(n);
@@ -419,12 +414,12 @@ namespace Si.Engine.Sprite._Superclass
             var impulse = j * n;
 
             // Apply impulses
-            A.OrientationMovementVector = vA - impulse * invMassA;
-            B.OrientationMovementVector = vB + impulse * invMassB;
+            A.MovementVector = vA - impulse * invMassA;
+            B.MovementVector = vB + impulse * invMassB;
 
             // I don't want players to bounce too much.
-            if (A is SpritePlayerBase) A.OrientationMovementVector = (A.OrientationMovementVector + vA) * 0.5f;
-            if (B is SpritePlayerBase) B.OrientationMovementVector = (B.OrientationMovementVector + vB) * 0.5f;
+            if (A is SpritePlayer) A.MovementVector = (A.MovementVector + vA) * 0.5f;
+            if (B is SpritePlayer) B.MovementVector = (B.MovementVector + vB) * 0.5f;
         }
     }
 }

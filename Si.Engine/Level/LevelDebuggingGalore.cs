@@ -1,7 +1,5 @@
-﻿using Si.Engine.Core.Types;
-using Si.Engine.Level._Superclass;
+﻿using Si.Engine.Level._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Enemy.Debug;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -70,15 +68,74 @@ namespace Si.Engine.Level
 
         private void AddEnemies()
         {
-            for (int i = 0; i < 1; i++)
+            /*
+            var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
+
+            asteroid.SpriteTag = "DEBUG_ASTEROID";
+            asteroid.Location = new SiVector(1, 1);
+            asteroid.Speed = 1.0f;
+            asteroid.RotationSpeed = 45.ToRadians();
+            //asteroid.Orientation = SiVector.FromUnsignedDegrees(-45);
+            asteroid.IsHighlighted = true;
+            asteroid.SetHullHealth(int.MaxValue);
+            */
+
+            //var sprite = _engine.Sprites.Enemies.Add(@"Sprites\Enemy\Peon\Phoenix.png");
+
+            var sprite = _engine.Sprites.Enemies.Add(@"Sprites\Enemy\Boss\Devastator\Hull.png");
+
+
+            /*
+            for (int i = 0; i < 10; i++)
             {
-                //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                sprite.Location = _engine.Display.RandomOffScreenLocation();
+                //sprite.SetHullHealth(int.MaxValue);
+                sprite.Orientation = SiRandom.RandomOrientationVector();
+
+                sprite.ClearAIControllers();
+                sprite.AddAIController(new AILogisticsHostileEngagement2(_engine, sprite, _engine.Player.Sprite, new AILogisticsHostileEngagement2.ModelParameters()
+                {
+                }));
+                sprite.SetCurrentAIController<AILogisticsHostileEngagement2>();
             }
+            */
+
+            /*
+            var garrison = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyStarbaseGarrison>();
+            garrison.Location = new(500, 500);
+
+            //This is cool!
+            for (int i = 0; i < 25; i++)
+            {
+                var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                sprite.Location = _engine.Display.RandomOffScreenLocation();
+                sprite.SetHullHealth(int.MaxValue);
+                sprite.Orientation = SiRandom.RandomOrientationVector();
+
+                sprite.ClearAIControllers();
+                sprite.AddAIController(new AILogisticsGuardTarget(_engine, sprite, garrison, new AILogisticsGuardTarget.ModelParameters
+                {
+                    MaxDistance = 200
+                }));
+                sprite.SetCurrentAIController<AILogisticsGuardTarget>();
+            }
+            */
+
+            /* //This is cool!
+            for (int i = 0; i < 10; i++)
+            {
+                var sprite = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                sprite.Location = _engine.Display.RandomOffScreenLocation();
+                sprite.SetHullHealth(int.MaxValue);
+                sprite.Orientation = SiRandom.RandomOrientationVector();
+            }
+            */
 
             //_engine.Sprites.Debugs.AddAt(new SiVector(1000, 1000));
 
             //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-            _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyDebugPoly>().Location = new(500, 500);
+            //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyDebugPoly>().Location = new(500, 500);
 
 
             /*
@@ -166,7 +223,7 @@ namespace Si.Engine.Level
 
             asteroid.Location = new SiVector(800, 800);
             asteroid.Speed = 1.0f;
-            asteroid.Orientation = SiVector.FromDegrees(-45);
+            asteroid.Orientation = SiVector.FromUnsignedDegrees(-45);
 
             asteroid.SetHullHealth(100);
         }
@@ -186,7 +243,7 @@ namespace Si.Engine.Level
 
                     asteroid.Location = new SiVector(totalXOffset - asteroidSize * col, totalYOffset - asteroidSize * row);
 
-                    asteroid.Orientation = SiVector.FromDegrees(SiRandom.Between(0, 359));
+                    asteroid.Orientation = SiRandom.RandomOrientationVector();
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
                     asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());

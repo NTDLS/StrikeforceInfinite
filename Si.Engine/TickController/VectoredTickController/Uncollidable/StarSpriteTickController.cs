@@ -4,16 +4,62 @@ using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Rendering;
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Threading;
+using static Si.Engine.Manager.AssetManager;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class StarSpriteTickController : VectoredTickControllerBase<SpriteStar>
+    public class StarSpriteTickController
+        : VectoredTickControllerBase<SpriteStar>
     {
+        private const int _maxDistance = 1000;
+        private readonly Lock _lock = new();
+
+        private List<MetadataContainer>? _starAssets = null;
+        private List<MetadataContainer> StarAssets
+        {
+            get
+            {
+                if (_starAssets == null)
+                {
+                    lock (_lock)
+                    {
+                        //We lazy load these because the assets arent cached untill initilization.
+                        _starAssets ??= Engine.Assets.GetMetadataInDirectory(@"Sprites\Star");
+                    }
+                }
+                return _starAssets;
+            }
+        }
+
         public StarSpriteTickController(EngineCore engine, SpriteManager manager)
             : base(engine, manager)
         {
+        }
+
+        public MetadataContainer? GetRandomStar()
+        {
+            if (StarAssets.Count == 0)
+            {
+                return null;
+            }
+            var index = SiRandom.Between(0, StarAssets.Count - 1);
+            return StarAssets[index];
+        }
+
+        public void AddRandomStarAt(SiVector position)
+        {
+            var randomStarSpritePath = GetRandomStar()?.Asset.SpritePath;
+            if (randomStarSpritePath != null)
+            {
+                var starSprite = Engine.Sprites.Add<SpriteStar>(randomStarSpritePath, (o) =>
+                {
+                    o.Location = position;
+                });
+            }
         }
 
         public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
@@ -22,18 +68,15 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             {
                 #region Add new stars...
 
-                if (SpriteManager.VisibleOfType<SpriteStar>().Count() < Engine.Settings.DeltaFrameTargetStarCount) //Never wan't more than n stars.
+                if (SpriteManager.VisibleOfType<SpriteStar>().Length < Engine.Settings.DeltaFrameTargetStarCount) //Never wan't more than n stars.
                 {
                     if (displacementVector.X > 0)
                     {
                         if (SiRandom.PercentChance(20))
                         {
-                            int x = SiRandom.Between(
-                                Engine.Display.TotalCanvasSize.Width - (int)displacementVector.X,
-                                Engine.Display.TotalCanvasSize.Width);
+                            int x = SiRandom.Between(Engine.Display.TotalCanvasSize.Width - (int)displacementVector.X, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
-
-                            SpriteManager.Stars.Add(Engine.Display.RenderWindowPosition.X + x, Engine.Display.RenderWindowPosition.Y + y);
+                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
 
                     }
@@ -43,7 +86,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, (int)-displacementVector.X);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
-                            SpriteManager.Stars.Add(Engine.Display.RenderWindowPosition.X + x, Engine.Display.RenderWindowPosition.Y + y);
+                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
 
                     }
@@ -53,7 +96,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(Engine.Display.TotalCanvasSize.Height - (int)displacementVector.Y, Engine.Display.TotalCanvasSize.Height);
-                            SpriteManager.Stars.Add(Engine.Display.RenderWindowPosition.X + x, Engine.Display.RenderWindowPosition.Y + y);
+                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
                     }
                     else if (displacementVector.Y < 0)
@@ -62,7 +105,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, (int)-displacementVector.Y);
-                            SpriteManager.Stars.Add(Engine.Display.RenderWindowPosition.X + x, Engine.Display.RenderWindowPosition.Y + y);
+                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
                     }
                 }
@@ -74,7 +117,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                     star.ApplyMotion(epoch, displacementVector);
 
                     //Remove stars that are too far off-screen.
-                    if (Engine.Display.TotalCanvasBounds.Balloon(1000).IntersectsWith(star.RenderBounds) == false)
+                    if (Engine.Display.TotalCanvasBounds.Balloon(_maxDistance).IntersectsWith(star.RenderBounds) == false)
                     {
                         star.QueueForDelete();
                     }

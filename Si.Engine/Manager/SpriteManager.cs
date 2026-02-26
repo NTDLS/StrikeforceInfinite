@@ -5,9 +5,8 @@ using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Player._Superclass;
+using Si.Engine.Sprite.KinematicBody;
 using Si.Engine.Sprite.PowerUp._Superclass;
-using Si.Engine.Sprite.SupportingClasses;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Engine.TickController.VectoredTickController.Collidable;
@@ -78,15 +77,15 @@ namespace Si.Engine.Manager
             TextBlocks = new TextBlocksSpriteTickController(_engine, this);
         }
 
-        public SpriteBase[] Visible() => _collection.Where(o => o.Visible == true).ToArray();
+        public SpriteBase[] Visible() => _collection.Where(o => o.IsVisible == true).ToArray();
 
         public SpriteBase[] All() => _collection.ToArray();
 
-        public List<SpritePlayerBase> AllVisiblePlayers
+        public List<SpritePlayer> AllVisiblePlayers
         {
             get
             {
-                var players = VisibleOfType<SpritePlayerBase>().ToList();
+                var players = VisibleOfType<SpritePlayer>().ToList();
                 players.Add(_engine.Player.Sprite);
                 return players;
             }
@@ -95,7 +94,6 @@ namespace Si.Engine.Manager
         /// <summary>
         /// This is to be used ONLY for the debugger to access the collection. Otherwise, this class managed all access to the internal collection,
         /// </summary>
-        /// <param name="collectionAccessor"></param>
         public void DeveloperOnlyAccess(CollectionAccessor collectionAccessor)
             => collectionAccessor(All());
 
@@ -112,12 +110,27 @@ namespace Si.Engine.Manager
         {
         }
 
-        public T CreateByType<T>() where T : SpriteBase
+        public T Create<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            return (T)Activator.CreateInstance(typeof(T), [_engine]).EnsureNotNull();
+            var metadata = _engine.Assets.GetMetadata(spritePath)
+                ?? throw new Exception($"No metadata found for bitmap path: {spritePath}");
+
+            var metadataBaseType = SiReflection.GetTypeByName(metadata.Class);
+
+            var sprite = (T)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
+            initilizationProc?.Invoke(sprite);
+            return sprite;
         }
 
-        public void Add(SpriteBase item)
+        public T Add<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
+        {
+            var sprite = Create<T>(spritePath);
+            initilizationProc?.Invoke(sprite);
+            Insert(sprite);
+            return sprite;
+        }
+
+        public void Insert(SpriteBase sprite)
         {
             if (_engine.IsInitializing == true)
             {
@@ -126,29 +139,31 @@ namespace Si.Engine.Manager
                 return;
             }
 
-            if (item == null)
+            if (sprite == null)
             {
                 throw new Exception("NULL sprites cannot be added to the manager.");
             }
-            _engine.Events.Add(() => _collection.Add(item));
-        }
+            _engine.Events.Once(() => _collection.Add(sprite));
 
-        public void HardDelete(SpriteBase item)
-        {
-            item.Cleanup();
-            _collection.Remove(item);
+            _engine.MultiplayLobby?.ActionBuffer.RecordSpawn(sprite.GetMultiPlayActionSpawn());
         }
 
         public void HardDeleteAllQueuedDeletions()
         {
-            _collection.Where(o => o.IsQueuedForDeletion).ToList().ForEach(p => p.Cleanup());
+            _collection.Where(o => o.IsQueuedForDeletion).ToList().ForEach(sprite =>
+            {
+                _engine.MultiplayLobby?.ActionBuffer.RecordDelete(sprite.UID);
+
+                sprite.Cleanup();
+            });
+
             _collection.RemoveAll(o => o.IsQueuedForDeletion);
 
             _engine.Events.CleanupQueuedForDeletion();
 
             if (_engine.Player.Sprite.IsDeadOrExploded)
             {
-                _engine.Player.Sprite.Visible = false;
+                _engine.Player.Sprite.IsVisible = false;
                 _engine.Player.Sprite.ReviveDeadOrExploded();
                 _engine.Menus.Show(new MenuStartNewGame(_engine));
             }
@@ -178,31 +193,31 @@ namespace Si.Engine.Manager
             => _collection.OfType<T>().ToArray();
 
         public T[] VisibleOfType<T>() where T : SpriteBase
-            => _collection.OfType<T>().Where(o => o.Visible).ToArray();
+            => _collection.OfType<T>().Where(o => o.IsVisible).ToArray();
 
         public T?[] VisibleDamageable<T>() where T : class
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.Visible && o.Metadata.MunitionDetection).Select(o => o as T).ToArray();
+            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.MunitionDetection).Select(o => o as T).ToArray();
 
         //Probably faster than VisibleDamageable<T>().
         public SpriteInteractiveBase[] VisibleDamageable()
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.Visible && o.Metadata.MunitionDetection == true).ToArray();
+            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).ToArray();
 
         public T?[] VisibleCollidable<T>() where T : class
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.Visible && o.Metadata.CollisionDetection).Select(o => o as T).ToArray();
+            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.CollisionDetection).Select(o => o as T).ToArray();
 
         //Probably faster than VisibleCollidable<T>().
         public SpriteInteractiveBase[] VisibleCollidable()
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.Visible && o.Metadata.CollisionDetection == true).ToArray();
+            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).ToArray();
 
         public PredictedKinematicBody[] VisibleCollidablePredictiveMove(float epoch)
-            => _engine.Sprites.VisibleCollidable().Select(o => new PredictedKinematicBody(o, _engine.Display.RenderWindowPosition, epoch)).ToArray();
+            => _engine.Sprites.VisibleCollidable().Select(o => new PredictedKinematicBody(o, _engine.Display.CameraPosition, epoch)).ToArray();
 
         public SpriteBase[] VisibleOfTypes(Type[] types)
         {
             var result = new List<SpriteBase>();
             foreach (var type in types)
             {
-                result.AddRange(_collection.Where(o => o.Visible == true && type.IsAssignableFrom(o.GetType())));
+                result.AddRange(_collection.Where(o => o.IsVisible == true && type.IsAssignableFrom(o.GetType())));
             }
 
             return result.ToArray();
@@ -234,7 +249,7 @@ namespace Si.Engine.Manager
         {
             var objects = new List<SpriteBase>();
 
-            foreach (var obj in _collection.Where(o => o.Visible == true))
+            foreach (var obj in _collection.Where(o => o.IsVisible == true))
             {
                 if (obj != with)
                 {
@@ -254,7 +269,7 @@ namespace Si.Engine.Manager
         {
             var objects = new List<SpriteBase>();
 
-            foreach (var obj in _collection.Where(o => o.Visible == true))
+            foreach (var obj in _collection.Where(o => o.IsVisible == true))
             {
                 if (obj.IntersectsAABB(location, size))
                 {
@@ -268,7 +283,7 @@ namespace Si.Engine.Manager
         {
             var objects = new List<SpriteBase>();
 
-            foreach (var obj in _collection.Where(o => o.Visible == true || includeInvisible))
+            foreach (var obj in _collection.Where(o => o.IsVisible == true || includeInvisible))
             {
                 if (obj.RenderLocationIntersectsAABB(location, size))
                 {
@@ -278,17 +293,17 @@ namespace Si.Engine.Manager
             return objects.ToArray();
         }
 
-        public SpritePlayerBase AddPlayer(SpritePlayerBase sprite)
+        public SpritePlayer AddPlayer(SpritePlayer sprite)
         {
-            Add(sprite);
+            Insert(sprite);
             return sprite;
         }
 
-        public void RenderPostScaling(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public void RenderPostScaling(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
-            foreach (var sprite in _collection.Where(o => o.Visible == true && o.RenderScaleOrder == SiRenderScaleOrder.PostScale).OrderBy(o => o.Z))
+            foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == SiRenderScaleOrder.PostScale).OrderBy(o => o.Z))
             {
-                sprite.Render(renderTarget);
+                sprite.Render(renderTarget, epoch);
             }
 
             if (RenderRadar)
@@ -310,7 +325,7 @@ namespace Si.Engine.Manager
                     _radarOffset = new SiVector(radarBgImage.Size.Width / 2.0f, radarBgImage.Size.Height / 2.0f); //Best guess until player is visible.
                 }
 
-                if (_engine.Player.Sprite is not null && _engine.Player.Sprite.Visible)
+                if (_engine.Player.Sprite is not null && _engine.Player.Sprite.IsVisible)
                 {
                     float centerOfRadarX = (int)(radarBgImage.Size.Width / 2.0f) - 2.0f; //Subtract half the dot size.
                     float centerOfRadarY = (int)(radarBgImage.Size.Height / 2.0f) - 2.0f; //Subtract half the dot size.
@@ -321,7 +336,7 @@ namespace Si.Engine.Manager
                         );
 
                     //Render radar:
-                    foreach (var sprite in _collection.Where(o => o.Visible == true))
+                    foreach (var sprite in _collection.Where(o => o.IsVisible == true))
                     {
                         //SiPoint scale, SiPoint< float > offset
                         int x = (int)(_radarOffset.X + sprite.Location.X * _radarScale.X);
@@ -333,7 +348,7 @@ namespace Si.Engine.Manager
                             && y < _engine.Display.NaturalScreenSize.Height - radarBgImage.Size.Height + radarBgImage.Size.Height
                             )
                         {
-                            if ((sprite is SpritePlayerBase || sprite is SpriteEnemyBase || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.Visible == true)
+                            if ((sprite is SpritePlayer || sprite is SpriteEnemyBase || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.IsVisible == true)
                             {
                                 sprite.RenderRadar(renderTarget, x, y);
                             }
@@ -355,18 +370,18 @@ namespace Si.Engine.Manager
         /// for drawing then the previous frame will be returned.
         /// </summary>
         /// <returns></returns>
-        public void RenderPreScaling(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public void RenderPreScaling(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
-            foreach (var sprite in _collection.Where(o => o.Visible == true && o.RenderScaleOrder == SiRenderScaleOrder.PreScale).OrderBy(o => o.Z))
+            foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == SiRenderScaleOrder.PreScale).OrderBy(o => o.Z))
             {
                 if (sprite.IsWithinCurrentScaledScreenBounds)
                 {
-                    sprite.Render(renderTarget);
+                    sprite.Render(renderTarget, epoch);
                 }
             }
 
-            _engine.Player.Sprite?.Render(renderTarget);
-            _engine.Menus.Render(renderTarget);
+            _engine.Player.Sprite?.Render(renderTarget, epoch);
+            _engine.Menus.Render(renderTarget, epoch);
 
             if (_engine.Settings.HighlightNaturalBounds)
             {
@@ -402,10 +417,10 @@ namespace Si.Engine.Manager
             }
         }
 
-        public void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
+        public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
         {
             float statusIndex = 0;
-            loadingHeader.SetTextAndCenterX("Loading sprites...");
+            loadingHeader?.SetTextAndCenterX("Loading sprites...");
 
             var assembly = Assembly.GetExecutingAssembly();
             var baseType = typeof(SpriteBase);
@@ -415,7 +430,7 @@ namespace Si.Engine.Manager
 
             foreach (var type in allTypes)
             {
-                loadingDetail.SetTextAndCenterX($"{statusIndex++ / allTypes.Length * 100.0:n0}%");
+                loadingDetail?.SetTextAndCenterX($"{statusIndex++ / allTypes.Length * 100.0:n0}%");
 
                 if (baseType.IsAssignableFrom(type) && type != baseType)
                 {
@@ -429,7 +444,7 @@ namespace Si.Engine.Manager
             }
 
             statusIndex = 0;
-            loadingHeader.SetTextAndCenterX("Loading animations...");
+            loadingHeader?.SetTextAndCenterX("Creating instance types...");
 
             // Create instances of derived types
             foreach (var type in derivedTypes)
@@ -437,10 +452,11 @@ namespace Si.Engine.Manager
                 //Creating the instance of the sprite loads and caches the metadata and images.
                 dynamic instance = Activator.CreateInstance(type, _engine).EnsureNotNull();
 
-                loadingDetail.SetTextAndCenterX($"{statusIndex++ / derivedTypes.Count * 100.0:n0}%");
+                loadingDetail?.SetTextAndCenterX($"{statusIndex++ / derivedTypes.Count * 100.0:n0}%");
                 instance.QueueForDelete();
             }
 
+            loadingHeader?.SetTextAndCenterX("Loading animations...");
             //Pre-cache animations:
             //Animations do not have their own classes, so we need to look for them in the assets and load them.
             var animations = _engine.Assets.Entries.Select(o => o.Value.Key.EnsureNotNull())

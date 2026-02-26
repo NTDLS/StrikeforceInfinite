@@ -1,26 +1,24 @@
-﻿using Si.Engine.AI._Superclass;
-using Si.Engine.Sprite._Superclass;
+﻿using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.PowerUp;
 using Si.Engine.Sprite.PowerUp._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
-using System;
-using System.Collections.Generic;
 
 namespace Si.Engine.Sprite.Enemy._Superclass
 {
     /// <summary>
     /// The enemy base is a sub-class of the ship base. It is used by Peon and Boss enemies.
     /// </summary>
-    public class SpriteEnemyBase : SpriteInteractiveShipBase
+    public class SpriteEnemyBase
+        : SpriteInteractiveShipBase
     {
         public SpriteEnemyBase(EngineCore engine, string imagePath)
                 : base(engine, imagePath)
         {
-            RecalculateOrientationMovementVector();
+            RecalculateMovementVectorFromOrientation();
 
             RadarPositionIndicator = _engine.Sprites.RadarPositions.Add();
-            RadarPositionIndicator.Visible = false;
+            RadarPositionIndicator.IsVisible = false;
 
             RadarPositionText = _engine.Sprites.TextBlocks.CreateRadarPosition(
                 engine.Rendering.TextFormats.RadarPositionIndicator,
@@ -31,24 +29,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
 
         public virtual void AfterCreate() { }
 
-        public override void RotationChanged() => LocationChanged();
-
-        #region Artificial Intelligence.
-
-        public IAIController? CurrentAIController { get; set; }
-        private readonly Dictionary<Type, IAIController> _aiControllers = new();
-
-        public void AddAIController(IAIController controller)
-            => _aiControllers.Add(controller.GetType(), controller);
-
-        public IAIController GetAIController<T>() where T : IAIController => _aiControllers[typeof(T)];
-
-        public void SetCurrentAIController<T>() where T : IAIController
-        {
-            CurrentAIController = GetAIController<T>();
-        }
-
-        #endregion
+        public override void OrientationChanged() => LocationChanged();
 
         public override void Explode()
         {
@@ -109,21 +90,6 @@ namespace Si.Engine.Sprite.Enemy._Superclass
             base.ApplyMotion(epoch, displacementVector);
 
             FixRadarPositionIndicator();
-        }
-
-        public override void ApplyIntelligence(float epoch, SiVector displacementVector)
-        {
-            CurrentAIController?.ApplyIntelligence(epoch, displacementVector);
-
-            if (Weapons != null)
-            {
-                foreach (var weapon in Weapons)
-                {
-                    weapon.ApplyIntelligence(epoch);
-                }
-            }
-
-            base.ApplyIntelligence(epoch, displacementVector);
         }
     }
 }

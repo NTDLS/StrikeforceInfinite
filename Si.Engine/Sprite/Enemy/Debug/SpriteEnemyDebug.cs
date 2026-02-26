@@ -8,10 +8,10 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// </summary>
     internal class SpriteEnemyDebug : SpriteEnemyPeonBase
     {
-        public SpriteEnemyDebug(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Debug\Hull.png")
+        public SpriteEnemyDebug(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
-            AddAIController(new AILogisticsHostileEngagement(_engine, this, _engine.Player.Sprite));
+            AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
             SetCurrentAIController<AILogisticsHostileEngagement>();
         }
     }

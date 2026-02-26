@@ -21,15 +21,12 @@
   <ItemGroup>
     <Compile Remove="Assets\Loadouts\**" />
     <Compile Remove="Resources\**" />
-    <Compile Remove="Sprite\Player\Interfaces\**" />
     <Compile Remove="Utility\**" />
     <EmbeddedResource Remove="Assets\Loadouts\**" />
     <EmbeddedResource Remove="Resources\**" />
-    <EmbeddedResource Remove="Sprite\Player\Interfaces\**" />
     <EmbeddedResource Remove="Utility\**" />
     <None Remove="Assets\Loadouts\**" />
     <None Remove="Resources\**" />
-    <None Remove="Sprite\Player\Interfaces\**" />
     <None Remove="Utility\**" />
   </ItemGroup>
 
@@ -42,7 +39,7 @@
     <PackageReference Include="NTDLS.DelegateThreadPooling" Version="2.0.4" />
     <PackageReference Include="NTDLS.Helpers" Version="1.3.19" />
     <PackageReference Include="NTDLS.Semaphore" Version="3.5.4" />
-    <PackageReference Include="SharpCompress" Version="0.44.4" />
+    <PackageReference Include="SharpCompress" Version="0.44.5" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
@@ -69,6 +66,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Si.Audio\Si.Audio.csproj" />
     <ProjectReference Include="..\Si.Library\Si.Library.csproj" />
+    <ProjectReference Include="..\Si.MpClientToServerComms\Si.MpClientToServerComms.csproj" />
     <ProjectReference Include="..\Si.Rendering\Si.Rendering.csproj" />
   </ItemGroup>
 

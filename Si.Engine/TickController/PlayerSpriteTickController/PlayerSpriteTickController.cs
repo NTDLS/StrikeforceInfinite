@@ -1,8 +1,6 @@
 ﻿using Si.Engine.Persistent;
-using Si.Engine.Sprite.Player;
-using Si.Engine.Sprite.Player._Superclass;
+using Si.Engine.Sprite;
 using Si.Engine.TickController._Superclass;
-using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System;
@@ -14,33 +12,37 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
     /// <summary>
     /// This is the controller for the single local player.
     /// </summary>
-    public class PlayerSpriteTickController : PlayerSpriteTickControllerBase<SpritePlayerBase>
+    public class PlayerSpriteTickController : PlayerSpriteTickControllerBase<SpritePlayer>
     {
         private readonly EngineCore _engine;
         private readonly Stopwatch _inputDelay = new();
 
         public PlayerStats Stats { get; set; } = new(); //This should be saved.
-        public SpritePlayerBase Sprite { get; set; }
+        public SpritePlayer Sprite { get; set; }
 
         public PlayerSpriteTickController(EngineCore engine)
             : base(engine)
         {
             //This is where the player is created.
-            Sprite = new SpriteDebugPlayer(engine) { Visible = false };
-            engine.Sprites.Add(Sprite);
+            Sprite = engine.Sprites.Add<SpritePlayer>(@"Sprites\Player\Ships\Debug.png", (o) =>
+            {
+                o.IsVisible = false;
+            });
+
             _engine = engine;
             _inputDelay.Restart();
         }
 
-        public void InstantiatePlayerClass(Type playerClassType)
+        public void InstantiatePlayerClass(string spritePath)
         {
             //Remove the player from the sprite collection.
             Sprite.QueueForDelete();
             Sprite.Cleanup();
-
-            Sprite = SiReflection.CreateInstanceFromType<SpritePlayerBase>(playerClassType, new object[] { _engine });
-            Sprite.Visible = false;
-            _engine.Sprites.Add(Sprite); //Add the player back to the sprite collection.
+            Sprite = Engine.Sprites.Add<SpritePlayer>(spritePath, (o) =>
+            {
+                o.IsVisible = false;
+            });
+            _engine.Sprites.Insert(Sprite); //Add the player back to the sprite collection.
         }
 
         private float _forwardVelocity = 0;
@@ -56,7 +58,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             Sprite.IsLockedOnSoft = false;
             Sprite.IsLockedOnHard = false;
 
-            if (Sprite.Visible)
+            if (Sprite.IsVisible)
             {
                 #region Weapons Selection and Fire.
 
@@ -243,12 +245,12 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
 
                 if (Sprite.ThrusterAnimation != null)
                 {
-                    Sprite.ThrusterAnimation.Visible = (targetForwardAmount >= throttleFloor);
+                    Sprite.ThrusterAnimation.IsVisible = (targetForwardAmount >= throttleFloor);
                 }
 
                 if (Sprite.BoosterAnimation != null)
                 {
-                    Sprite.BoosterAnimation.Visible =
+                    Sprite.BoosterAnimation.IsVisible =
                         (targetForwardAmount >= throttleFloor)
                         && Engine.Input.IsKeyPressed(SiPlayerKey.SpeedBoost)
                         && _boostForwardVelocity > 0
@@ -262,15 +264,15 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
 
             Sprite.Throttle = 1 + _boostForwardVelocity;
 
-            Sprite.OrientationMovementVector = (Sprite.MakeOrientationMovementVector() * _forwardVelocity) //Forward / Reverse
+            Sprite.MovementVector = (Sprite.MakeMovementVectorFromOrientation() * _forwardVelocity) //Forward / Reverse
                 + (Sprite.MakeMovementVectorFromAngle(Sprite.Orientation.RadiansSigned + 90.ToRadians()) * _lateralVelocity);  //Lateral strafing.
 
             Sprite.PerformCollisionDetection(epoch);
 
-            var displacementVector = Sprite.OrientationMovementVector * epoch;
+            var displacementVector = Sprite.MovementVector * epoch;
 
             //Scroll the background.
-            Engine.Display.RenderWindowPosition += displacementVector;
+            Engine.Display.CameraPosition += displacementVector;
 
             //Move the player in the direction of the background. This keeps the player visually in place, which is in the center screen.
             Sprite.Location += displacementVector;
@@ -282,27 +284,27 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
         {
             Sprite.Reset();
 
-            Engine.Sprites.TextBlocks.PlayerStatsText.Visible = true;
+            Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
             Engine.Sprites.RenderRadar = true;
-            Sprite.Visible = true;
+            Sprite.IsVisible = true;
             Sprite.ShipEngineIdleSound.Play();
             Sprite.AllSystemsGoSound.Play();
         }
 
         public void Show()
         {
-            Engine.Sprites.TextBlocks.PlayerStatsText.Visible = true;
+            Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
             Engine.Sprites.RenderRadar = true;
-            Sprite.Visible = true;
+            Sprite.IsVisible = true;
             Sprite.ShipEngineIdleSound.Play();
             Sprite.AllSystemsGoSound.Play();
         }
 
         public void Hide()
         {
-            Engine.Sprites.TextBlocks.PlayerStatsText.Visible = false;
+            Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = false;
             Engine.Sprites.RenderRadar = false;
-            Sprite.Visible = false;
+            Sprite.IsVisible = false;
             Sprite.ShipEngineIdleSound.Stop();
             Sprite.ShipEngineRoarSound.Stop();
         }

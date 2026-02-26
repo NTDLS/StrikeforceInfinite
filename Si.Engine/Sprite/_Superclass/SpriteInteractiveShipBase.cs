@@ -10,7 +10,8 @@ namespace Si.Engine.Sprite._Superclass
     /// <summary>
     /// The ship base is a ship object that moves, can be hit, explodes and can be the subject of locking weapons.
     /// </summary>
-    public class SpriteInteractiveShipBase : SpriteInteractiveBase
+    public class SpriteInteractiveShipBase
+        : SpriteInteractiveBase
     {
         private readonly Dictionary<string, WeaponBase> _droneWeaponsCache = new();
         public SpriteRadarPositionIndicator? RadarPositionIndicator { get; protected set; }
@@ -79,9 +80,9 @@ namespace Si.Engine.Sprite._Superclass
                 {
                     RadarPositionText.DistanceValue = Math.Abs(DistanceTo(_engine.Player.Sprite));
 
-                    RadarPositionText.Visible = true;
+                    RadarPositionText.IsVisible = _engine.Player.Sprite.IsVisible;
                     RadarPositionText.IsFixedPosition = true;
-                    RadarPositionIndicator.Visible = true;
+                    RadarPositionIndicator.IsVisible = _engine.Player.Sprite.IsVisible;
                     RadarPositionIndicator.IsFixedPosition = true;
 
                     float requiredAngleRadians = _engine.Player.Sprite.AngleToInSignedRadians(this);
@@ -96,8 +97,8 @@ namespace Si.Engine.Sprite._Superclass
                 }
                 else
                 {
-                    RadarPositionText.Visible = false;
-                    RadarPositionIndicator.Visible = false;
+                    RadarPositionText.IsVisible = false;
+                    RadarPositionIndicator.IsVisible = false;
                 }
             }
         }

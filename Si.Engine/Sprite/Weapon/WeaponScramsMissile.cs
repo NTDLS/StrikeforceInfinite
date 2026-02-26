@@ -8,12 +8,10 @@ namespace Si.Engine.Sprite.Weapon
 {
     internal class WeaponScramsMissile : WeaponBase
     {
-        static string Name { get; } = "Scrams Missile";
-
         private bool _toggle = false;
 
-        public WeaponScramsMissile(EngineCore engine, SpriteInteractiveBase owner)
-            : base(engine, owner, Name)
+        public WeaponScramsMissile(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
+            : base(engine, owner, spritePath)
         {
         }
 
@@ -24,7 +22,7 @@ namespace Si.Engine.Sprite.Weapon
                 _fireSound?.Play();
                 RoundQuantity--;
 
-                var offset = Owner.Orientation.RotatedBy(90.ToRadians().Invert(_toggle)) * new SiVector(10, 10);
+                var offset = Owner.Orientation.RotatedBy(90.Invert(_toggle)) * new SiVector(10, 10);
 
                 _toggle = !_toggle;
 

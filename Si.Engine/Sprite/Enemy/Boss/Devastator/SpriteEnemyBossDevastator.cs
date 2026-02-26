@@ -13,12 +13,12 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
         private readonly SpriteAttachment _thrusterLeft;
         private readonly SpriteAttachment _thrusterRight;
 
-        public SpriteEnemyBossDevastator(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Boss\Devastator\Hull.png")
+        public SpriteEnemyBossDevastator(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             Orientation.Degrees = SiRandom.Between(0, 359);
 
-            AddAIController(new AILogisticsHostileEngagement(_engine, this, _engine.Player.Sprite));
+            AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
 
             SetCurrentAIController<AILogisticsHostileEngagement>();
 
@@ -49,7 +49,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
         {
             Throttle = SiMath.Damp(Throttle, TargetThrottle, 0.01f, epoch);
 
-            var offset = this.Orientation * new SiVector(40f, 40f);
+            var offset = Orientation * new SiVector(40f, 40f);
 
             if (_thrusterLeft.IsDeadOrExploded)
             {

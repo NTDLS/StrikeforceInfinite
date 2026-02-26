@@ -1,0 +1,8 @@
+{
+  "Class": "SpriteAnimation",
+  "FrameHeight": 512,
+  "FrameWidth": 512,
+  "FramesPerSecond": 50,
+  "DeleteAfterPlay": "true",
+  "PlayMode": "DeleteAfterPlay"
+}

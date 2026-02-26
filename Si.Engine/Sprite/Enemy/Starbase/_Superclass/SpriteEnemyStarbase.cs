@@ -5,12 +5,13 @@ namespace Si.Engine.Sprite.Enemy.Starbase._Superclass
     /// <summary>
     /// Base class for "starbase" enemies.
     /// </summary>
-    internal class SpriteEnemyStarbase : SpriteEnemyBase
+    internal class SpriteEnemyStarbase
+        : SpriteEnemyBase
     {
         public SpriteEnemyStarbase(EngineCore engine, string imagePath)
             : base(engine, imagePath)
         {
-            RecalculateOrientationMovementVector();
+            RecalculateMovementVectorFromOrientation();
         }
 
         public override void Cleanup()

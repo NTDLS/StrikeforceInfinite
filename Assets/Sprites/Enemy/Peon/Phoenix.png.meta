@@ -1,0 +1,33 @@
+{
+  "Class": "SpriteEnemyPhoenix",
+  "Description": "",
+  "Speed": 300,
+  "MaxThrottle": 1.5,
+  "Hull": 20,
+  "MunitionDetection": true,
+
+  "ExplosionType": "Energy",
+  "FragmentOnExplode": true,
+  "ParticleBlastOnExplodeAmount": {
+    "Min": 200,
+    "Max": 800
+  },
+  "ScreenShakeOnExplodeAmount": {
+    "Min": 5,
+    "Max": 500
+  },
+  
+  "Shields": 10,
+  "Bounty": 10,
+  "Weapons": [
+	{
+	  "Type": "Sprites/Weapon/Vulcan Cannon.png",
+	  "MunitionCount": 2147483647
+	},
+	{
+	  "Type": "Sprites/Weapon/Dual Vulcan Cannon.png",
+	  "MunitionCount": 2147483647
+	}
+	],
+  "Attachments": []
+}

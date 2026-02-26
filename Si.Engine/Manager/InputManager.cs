@@ -1,8 +1,6 @@
 ﻿using SharpDX.DirectInput;
 using SharpDX.XInput;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Enemy.Boss.Devastator;
-using Si.Engine.Sprite.Enemy.Peon;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -389,7 +387,7 @@ namespace Si.Engine.Manager
 
                     asteroid.Location = new SiVector(totalXOffset - asteroidSize * col, totalYOffset - asteroidSize * row);
 
-                    asteroid.Orientation = SiVector.FromDegrees(SiRandom.Between(0, 359));
+                    asteroid.Orientation = SiRandom.RandomOrientationVector();
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
                     asteroid.Throttle = 1;
@@ -430,7 +428,7 @@ namespace Si.Engine.Manager
             {
                 _engine.Invoke(() =>
                 {
-                    _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+                    //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
                 });
             }
             else if (key == Keys.F3)
@@ -454,7 +452,7 @@ namespace Si.Engine.Manager
                     asteroid.Location = _engine.Player.Sprite.Location + new SiVector(100, 100);
                     asteroid.Speed = 1.0f;
                     asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
-                    asteroid.Orientation = SiVector.FromDegrees(-45);
+                    asteroid.Orientation = SiVector.FromUnsignedDegrees(-45);
 
                     asteroid.SetHullHealth(100);
                 });
@@ -494,9 +492,9 @@ namespace Si.Engine.Manager
             {
                 _engine.Invoke(() =>
                 {
-                    var enemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
-                    enemy.Orientation = SiVector.FromDegrees(-90);
-                    enemy.Location = new SiVector(1000, 1000);
+                    //var enemy = _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyBossDevastator>();
+                    //enemy.Orientation = SiVector.FromUnsignedDegrees(-90);
+                    //enemy.Location = new SiVector(1000, 1000);
                 });
             }
             else if (key == Keys.F8)

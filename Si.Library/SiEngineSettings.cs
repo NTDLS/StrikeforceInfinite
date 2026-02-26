@@ -7,6 +7,9 @@ namespace Si.Library
     /// </summary>
     public class SiEngineSettings
     {
+        public string ServerAddress { get; set; } = "127.0.0.1";
+        public int ServerPort { get; set; } = 42719;
+
         public int GraphicsAdapterId { get; set; } = 0;
         public int MunitionTraversalThreads { get; set; } = SiUtility.LesserOf(Environment.ProcessorCount * 2, 16);
         public int WorldClockThreads { get; set; } = 10;
@@ -61,5 +64,11 @@ namespace Si.Library
         /// How much larger than the screen (NaturalScreenSize) that we will make the canvas so we can zoom-out. (2 = 2x larger than screen.).
         /// </summary>
         public float OverdrawScale { get; set; } = 1.5f;
+
+        /// <summary>
+        /// Introduces a delay between frames for debugging purposes.
+        /// 0 = disabled.
+        /// </summary>
+        public int DebugThrottleMs { get; set; } = 0;
     }
 }

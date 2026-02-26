@@ -1,14 +1,12 @@
-﻿using NTDLS.Helpers;
-using Si.Engine.Manager;
+﻿using Si.Engine.Manager;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.TickController._Superclass;
-using Si.Library;
 using Si.Library.Mathematics;
-using System;
 
 namespace Si.Engine.TickController.VectoredTickController.Collidable
 {
-    public class EnemySpriteTickController : VectoredCollidableTickControllerBase<SpriteEnemyBase>
+    public class EnemySpriteTickController
+        : VectoredCollidableTickControllerBase<SpriteEnemyBase>
     {
         private readonly EngineCore _engine;
 
@@ -20,29 +18,18 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
 
         public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
         {
-            foreach (var enemy in Visible())
+            foreach (var sprite in Visible())
             {
-                enemy.ApplyIntelligence(epoch, displacementVector);
-                enemy.ApplyMotion(epoch, displacementVector);
-                enemy.PerformCollisionDetection(epoch);
-                enemy.RenewableResources.RenewAllResources(epoch);
+                sprite.ApplyIntelligence(epoch, displacementVector);
+                sprite.ApplyMotion(epoch, displacementVector);
+                sprite.PerformCollisionDetection(epoch);
+                sprite.RenewableResources.RenewAllResources(epoch);
+
+                Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
             }
         }
 
-        public T AddTypeOf<T>() where T : SpriteEnemyBase
-        {
-            object[] param = { Engine };
-            SpriteEnemyBase obj = (SpriteEnemyBase)Activator.CreateInstance(typeof(T), param).EnsureNotNull();
-
-            obj.Location = Engine.Display.RandomOffScreenLocation();
-            obj.Orientation.Degrees = SiRandom.Between(0, 359);
-            obj.RecalculateOrientationMovementVector();
-
-            obj.BeforeCreate();
-            SpriteManager.Add(obj);
-            obj.AfterCreate();
-
-            return (T)obj;
-        }
+        public new SpriteEnemyBase Add(string spritePath)
+            => _engine.Sprites.Add<SpriteEnemyBase>(spritePath);
     }
 }

@@ -2,11 +2,11 @@
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Player._Superclass;
 using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Rendering;
 using System;
 using static Si.Library.SiConstants;
 
@@ -69,7 +69,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             Location = location ?? firedFrom.Location;
             Orientation = new SiVector(headingRadians);
             Speed = initialSpeed;
-            OrientationMovementVector = Orientation * initialSpeed;
+            MovementVector = Orientation * initialSpeed;
 
             if (firedFrom is SpriteAttachment attachment)
             {
@@ -81,7 +81,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             {
                 FiredFromType = SiFiredFromType.Enemy;
             }
-            else if (firedFrom is SpritePlayerBase)
+            else if (firedFrom is SpritePlayer)
             {
                 FiredFromType = SiFiredFromType.Player;
             }
@@ -108,7 +108,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
                 return;
             }
 
-            Location += OrientationMovementVector * epoch;
+            Location += MovementVector * epoch;
         }
 
         public override void Explode()

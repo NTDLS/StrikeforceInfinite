@@ -1,14 +1,12 @@
-﻿using Newtonsoft.Json;
-using NTDLS.Helpers;
+﻿using NTDLS.Helpers;
 using Si.Audio;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Player._Superclass;
-using Si.Engine.Sprite.SupportingClasses.Metadata;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Sprite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +18,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
     /// A weapon is a "device" that fires a "munition" (_MunitionBase). It must be owned by another sprite.
     /// </summary>
     public class WeaponBase
+        : ISprite
     {
         public Guid UID { get; private set; } = Guid.NewGuid();
         protected EngineCore _engine;
@@ -27,27 +26,29 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         protected DateTime _lastFired = DateTime.Now.AddMinutes(-5);
         protected SiAudioClip? _fireSound;
 
-        public WeaponMetadata? Metadata { get; private set; }
+        public SiVector Location { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public SiVector Orientation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public Metadata? Metadata { get; private set; }
         public List<WeaponsLock> LockedTargets { get; set; } = new();
         public int RoundsFired { get; set; }
         public int RoundQuantity { get; set; }
 
-        public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string name)
+        public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
         {
             Owner = owner;
             _engine = engine;
 
-            LoadMetadata(name);
+            LoadMetadata(spritePath);
         }
 
         /// <summary>
         /// Sets the sprites images and loads other weapon related metadata.
         /// </summary>
         /// <param name="spriteImagePath"></param>
-        public void LoadMetadata(string weaponName)
+        public void LoadMetadata(string spritePath)
         {
-            var metadataJson = _engine.Assets.GetText($@"Sprites\Weapon\{weaponName}.json");
-            Metadata = JsonConvert.DeserializeObject<WeaponMetadata>(metadataJson);
+            Metadata = _engine.Assets.GetMetadata(spritePath);
 
             if (string.IsNullOrEmpty(Metadata?.SoundPath) == false)
             {
@@ -86,9 +87,9 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                     {
                         var munition = new SeekingMunitionBase(_engine, this, Owner, spritePath, location ?? Owner.Location)
                         {
-                            SeekingRotationRateRadians = Metadata.GuidanceRotation.ToRadians(),
-                            MaxSeekingObservationAngleDegrees = Metadata.GuidanceAngle,
-                            MaxSeekingObservationDistance = Metadata.GuidanceDistance
+                            SeekingRotationRateDegrees = Metadata.SeekingRotationRateDegrees,
+                            SeekingEscapeAngleDegrees = Metadata.SeekingEscapeAngleDegrees,
+                            SeekingEscapeDistance = Metadata.SeekingEscapeDistance
                         };
                         return munition;
                     }
@@ -96,8 +97,8 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                     {
                         var munition = new LockingMunitionBase(_engine, this, Owner, spritePath, lockedTarget, location ?? Owner.Location)
                         {
-                            GuidedRotationRateInRadians = Metadata.GuidanceRotation.ToRadians(),
-                            MaxGuidedObservationAngleDegrees = Metadata.GuidanceAngle
+                            GuidedRotationRateDegrees = Metadata.SeekingRotationRateDegrees,
+                            MaxGuidedObservationAngleDegrees = Metadata.SeekingEscapeAngleDegrees
                         };
                         return munition;
                     }
@@ -127,7 +128,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
             LockedTargets.Clear();
 
-            if (Owner is SpritePlayerBase owner)
+            if (Owner is SpritePlayer owner)
             {
                 var potentialTargets = _engine.Sprites.Enemies.Visible();
 

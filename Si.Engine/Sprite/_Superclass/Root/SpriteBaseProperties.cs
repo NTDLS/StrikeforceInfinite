@@ -26,7 +26,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _speed = value;
-                RecalculateOrientationMovementVector();
+                RecalculateMovementVectorFromOrientation();
             }
         }
 
@@ -34,7 +34,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// Vector representing both speed and direction (Orientation * Speed * Throttle).
         /// Typically set by a call to RecalculateOrientationMovementVector()
         /// </summary>
-        public SiVector OrientationMovementVector { get; set; } = new();
+        public SiVector MovementVector { get; set; } = SiVector.One();
 
         private float _throttle = 1.0f;
         /// <summary>
@@ -47,7 +47,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _throttle = value.Clamp(0, float.MaxValue);
-                RecalculateOrientationMovementVector();
+                RecalculateMovementVectorFromOrientation();
             }
         }
 
@@ -64,12 +64,12 @@ namespace Si.Engine.Sprite._Superclass._Root
         #endregion
 
         /// <summary>
-        /// Number or radians to rotate the sprite Orientation along its center at each call to ApplyMotion().
+        /// Number or radians=per-second to rotate the sprite Orientation along its center at each call to ApplyMotion().
         /// Negative for counter-clockwise, positive for clockwise.
         /// </summary>
         public float RotationSpeed { get; set; } = 0;
 
-        private SiVector _orientation = new SiVector();
+        private SiVector _orientation = SiVector.One();
         /// <summary>
         /// The angle in which the sprite is pointing, note that this is NOT the travel angle.
         /// The travel angle is baked into the MovementVector. If you need the movement vector
@@ -82,9 +82,8 @@ namespace Si.Engine.Sprite._Superclass._Root
             set
             {
                 _orientation = value;
-                _orientation.OnChangeEvent += (SiVector vector) => RotationChanged();
-                RotationChanged();
-                RecalculateOrientationMovementVector();
+                _orientation.OnChangeEvent += (SiVector vector) => OrientationChanged();
+                OrientationChanged();
             }
         }
 
@@ -96,6 +95,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         public SiVector RadarDotSize { get; set; } = new SiVector(4, 4);
         public bool IsWithinCurrentScaledScreenBounds => _engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds);
         public bool IsHighlighted { get; set; } = false;
+        public bool HighlightSweptMotionRect { get; set; } = false;
         public int HullHealth { get; private set; } = 0; //Ship hit-points.
         public int ShieldHealth { get; private set; } = 0; //Shield hit-points, these take 1/2 damage.
 
@@ -199,7 +199,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 }
                 else
                 {
-                    return _location - _engine.Display.RenderWindowPosition;
+                    return _location - _engine.Display.CameraPosition;
                 }
             }
         }
@@ -234,7 +234,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         public int Z { get; set; } = 0;
 
         private bool _isVisible = true;
-        public bool Visible
+        public bool IsVisible
         {
             get => _isVisible && !_readyForDeletion;
             set

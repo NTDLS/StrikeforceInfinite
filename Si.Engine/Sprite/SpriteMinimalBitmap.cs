@@ -1,7 +1,7 @@
 ﻿using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.SupportingClasses.Metadata;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Rendering;
 using System;
 using static Si.Library.SiConstants;
 
@@ -10,7 +10,8 @@ namespace Si.Engine.Sprite
     /// <summary>
     /// These are just minimal non-collidable, non interactive, generic bitmap sprites.
     /// </summary>
-    public class SpriteMinimalBitmap : SpriteBase
+    public class SpriteMinimalBitmap
+        : SpriteBase
     {
         /// <summary>
         /// The max travel distance from the creation x,y before the sprite is automatically deleted.
@@ -48,7 +49,7 @@ namespace Si.Engine.Sprite
 
         private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            var metadata = _engine.Assets.GetMetaData<SpriteMinimalBitmapMetadata>(spriteImagePath);
+            var metadata = _engine.Assets.GetMetadata(spriteImagePath);
 
             Speed = metadata.Speed;
             Throttle = metadata.Throttle;

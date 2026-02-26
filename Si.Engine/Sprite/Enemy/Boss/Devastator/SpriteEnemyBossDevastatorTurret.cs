@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
     {
         public bool FireToggler { get; set; }
 
-        public SpriteEnemyBossDevastatorTurret(EngineCore engine)
-            : base(engine, $@"Sprites\Enemy\Boss\Devastator\Turret.png")
+        public SpriteEnemyBossDevastatorTurret(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
 
@@ -21,7 +21,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
             var turretOffset = LocationRelativeToOwner.EnsureNotNull() - (RootOwner.Size / 2.0f);
 
             // Apply the rotated offsets to get the new turret location relative to the base sprite center.
-            Location = RootOwner.Location + turretOffset.RotatedBy(RootOwner.Orientation.RadiansSigned);
+            Location = RootOwner.Location + turretOffset.RotatedBy(RootOwner.Orientation.DegreesSigned);
 
             if (DistanceTo(_engine.Player.Sprite) < 1000)
             {
@@ -40,12 +40,12 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
                 {
                     if (FireToggler)
                     {
-                        var pointRight = Orientation.RotatedBy(90.ToRadians()) * new SiVector(10, 10);
+                        var pointRight = Orientation.RotatedBy(90f) * new SiVector(10, 10);
                         FireToggler = !FireWeapon<WeaponThunderstrikeMissile>(Location + pointRight);
                     }
                     else
                     {
-                        var pointLeft = Orientation.RotatedBy(-90.ToRadians()) * new SiVector(10, 10);
+                        var pointLeft = Orientation.RotatedBy(-90) * new SiVector(10, 10);
                         FireToggler = FireWeapon<WeaponThunderstrikeMissile>(Location + pointLeft);
                     }
                 }

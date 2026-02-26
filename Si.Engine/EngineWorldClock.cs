@@ -1,5 +1,4 @@
 ﻿using NTDLS.DelegateThreadPooling;
-using Si.Engine.Core.Types;
 using Si.Engine.Manager;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
@@ -124,7 +123,7 @@ namespace Si.Engine
 
             _engine.Sprites.TextBlocks.PausedText.X = _engine.Display.NaturalScreenSize.Width / 2 - _engine.Sprites.TextBlocks.PausedText.Size.Width / 2;
             _engine.Sprites.TextBlocks.PausedText.Y = _engine.Display.NaturalScreenSize.Height / 2 - _engine.Sprites.TextBlocks.PausedText.Size.Height / 2;
-            _engine.Sprites.TextBlocks.PausedText.Visible = _isPaused;
+            _engine.Sprites.TextBlocks.PausedText.IsVisible = _isPaused;
         }
 
         public void Pause()
@@ -153,9 +152,15 @@ namespace Si.Engine
                 if (!_isPaused) ExecuteWorldClockTick(elapsedEpochMilliseconds / 1000.0f);
 
                 _engine.Development?.ProcessCommand();
-                _engine.RenderEverything();
 
-                if (_engine.Settings.VerticalSync == false)
+                //We only render if we are in play or edit mode.
+                if (_engine.ExecutionMode == SiEngineExecutionMode.Play || _engine.ExecutionMode == SiEngineExecutionMode.Edit)
+                {
+                    _engine.RenderEverything(elapsedEpochMilliseconds / 1000.0f);
+                }
+
+                //When running as a server host or VSync is disabled, we need to enforce the framerate ourselves.
+                if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost || _engine.Settings.VerticalSync == false)
                 {
                     var elapsedFrameTime = _engine.Display.FrameCounter.ElapsedMicroseconds;
 
@@ -167,7 +172,17 @@ namespace Si.Engine
                     }
                 }
 
+                if (_engine.Settings.DebugThrottleMs > 0)
+                {
+                    Thread.Sleep(_engine.Settings.DebugThrottleMs);
+                }
+
                 if (_isPaused) Thread.Yield();
+
+                if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
+                {
+                    _engine.MultiplayLobby?.FlushActionBuffer();
+                }
 
                 elapsedEpochMilliseconds = _engine.Display.FrameCounter.ElapsedMilliseconds;
                 _engine.Display.FrameCounter.Calculate();

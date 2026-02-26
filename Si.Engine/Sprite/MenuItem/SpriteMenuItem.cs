@@ -35,8 +35,6 @@ namespace Si.Engine.Sprite.MenuItem
             }
         }
 
-        public string Key { get; set; } = string.Empty;
-
         public SiMenuItemType ItemType { get; set; }
 
         public SpriteMenuItem(EngineCore engine, MenuBase menu, TextFormat format, SolidColorBrush color, SiVector location)
@@ -44,7 +42,7 @@ namespace Si.Engine.Sprite.MenuItem
         {
             ItemType = SiMenuItemType.Undefined;
             Menu = menu;
-            Visible = true;
+            IsVisible = true;
         }
     }
 }

@@ -16,8 +16,8 @@ namespace Si.Rendering
             public RawColor4 Gray { get; private set; } = new(0.25f, 0.25f, 0.25f, 1);
             public RawColor4 WhiteSmoke { get; private set; } = new(0.9608f, 0.9608f, 0.9608f, 1);
             public RawColor4 Cyan { get; private set; } = new(0, 1f, 1f, 1f);
-            public RawColor4 OrangeRed { get; private set; } = new(1f, 0.2706f, 0.0000f, 1);
-            public RawColor4 Orange { get; private set; } = new(1.0f, 0.6471f, 0.0f, 1);
+            public RawColor4 OrangeRed { get; private set; } = new(0.9f, 0.2706f, 0.0000f, 1);
+            public RawColor4 Orange { get; private set; } = new(1f, 0.6471f, 0.0f, 1);
             public RawColor4 LawnGreen { get; private set; } = new(0.4863f, 0.9882f, 0f, 1);
             public RawColor4 Transparent { get; private set; } = new(0, 0, 0, 0);
         }

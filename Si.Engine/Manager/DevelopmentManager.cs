@@ -38,7 +38,7 @@ namespace Si.Engine.Manager
 
             "Engine-Pause|state:Required:Boolean|Pauses and un-pauses the engine.",
 
-            "Sprite-Create|typeName:Required:String,x:Required:Numeric,y:Required:Numeric|Creates a sprite at the given position.",
+            "Sprite-Create|spritePath:Required:String,x:Required:Numeric,y:Required:Numeric|Creates a sprite at the given position.",
             "Sprite-ListTypes||Lists all sprite types.",
 
             "Sprite-Watch|uid:Required:Numeric|Starts a watch form to monitor various sprite metrics.",
@@ -159,13 +159,13 @@ namespace Si.Engine.Manager
 
         public void CommandHandler_Display_RenderWindowPosition_Get(InterrogationCommand command)
         {
-            _interrogationForm.WriteLine($"\t{_engine.Display.RenderWindowPosition}", System.Drawing.Color.Black);
+            _interrogationForm.WriteLine($"\t{_engine.Display.CameraPosition}", System.Drawing.Color.Black);
         }
 
         public void CommandHandler_Display_RenderWindowPosition_Set(InterrogationCommand command)
         {
-            _engine.Display.RenderWindowPosition.X = command.ParameterValue<float>("x");
-            _engine.Display.RenderWindowPosition.Y = command.ParameterValue<float>("y");
+            _engine.Display.CameraPosition.X = command.ParameterValue<float>("x");
+            _engine.Display.CameraPosition.Y = command.ParameterValue<float>("y");
         }
 
         public void CommandHandler_Display_RenderWindowPosition_CenterOn(InterrogationCommand command)
@@ -176,8 +176,8 @@ namespace Si.Engine.Manager
                 var baseSprite = o.Where(o => o.UID == spriteUID).FirstOrDefault();
                 if (baseSprite != null)
                 {
-                    _engine.Display.RenderWindowPosition.X = baseSprite.X;
-                    _engine.Display.RenderWindowPosition.Y = baseSprite.Y;
+                    _engine.Display.CameraPosition.X = baseSprite.X;
+                    _engine.Display.CameraPosition.Y = baseSprite.Y;
                 }
             });
         }
@@ -263,7 +263,7 @@ namespace Si.Engine.Manager
         public void CommandHandler_Display_Metrics(InterrogationCommand command)
         {
             var infoText =
-                  $"\t         Background Offset: {_engine.Display.RenderWindowPosition}\r\n"
+                  $"\t         Background Offset: {_engine.Display.CameraPosition}\r\n"
                 + $"\t           Base Draw Scale: {_engine.Display.BaseDrawScale:n4}\r\n"
                 + $"\t             Overdraw Size: {_engine.Display.OverdrawSize}\r\n"
                 + $"\t       Natural Screen Size: {_engine.Display.NaturalScreenSize}\r\n"
@@ -349,8 +349,8 @@ namespace Si.Engine.Manager
 
         public void CommandHandler_Sprite_Create(InterrogationCommand command)
         {
-            var typeName = command.ParameterValue<string>("typeName");
-            if (typeName == null)
+            var spritePath = command.ParameterValue<string>("spritePath");
+            if (spritePath == null)
             {
                 return;
             }
@@ -358,11 +358,10 @@ namespace Si.Engine.Manager
             var x = command.ParameterValue<uint>("x");
             var y = command.ParameterValue<uint>("y");
 
-            var sprite = SiReflection.CreateInstanceFromTypeName<SpriteBase>(typeName, new[] { _engine });
-            sprite.Location = new SiVector(x, y);
-            sprite.Visible = true;
 
-            _engine.Sprites.Add(sprite);
+            var sprite = _engine.Sprites.Create<SpriteBase>(spritePath);
+            sprite.Location = new SiVector(x, y);
+            sprite.IsVisible = true;
 
             _interrogationForm.WriteLine($"\tCreatedUID: {sprite.UID}", System.Drawing.Color.Black);
         }
@@ -674,7 +673,7 @@ namespace Si.Engine.Manager
                 var sprite = o.Where(o => o.UID == uid).FirstOrDefault();
                 if (sprite != null)
                 {
-                    sprite.Visible = command.ParameterValue<bool>("state");
+                    sprite.IsVisible = command.ParameterValue<bool>("state");
                 }
             });
         }

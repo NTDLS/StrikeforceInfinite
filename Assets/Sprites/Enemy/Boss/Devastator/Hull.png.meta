@@ -1,0 +1,50 @@
+{
+  "Class": "SpriteEnemyBossDevastator",
+  "Name":"Devastator",
+  "Description": "TODO: Add a description",
+  "MunitionDetection": true,
+  "CollisionDetection": true,
+  "Speed": 175,
+  "Mass": 200,
+  "Hull": 200,
+  "Shields": 100,
+  "Bounty": 50,
+  "Weapons": [],
+  "Attachments": [
+    {
+      "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Left.png",
+      "X": 65,
+      "Y": 8
+    },
+    {
+      "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Right.png",
+      "X": 65,
+      "Y": 75
+    },
+    {
+      "Type": "Sprites/Enemy/Boss/Devastator/Gun.Left.png",
+      "X": 90,
+      "Y": 20
+    },
+    {
+      "Type": "Sprites/Enemy/Boss/Devastator/Gun.Right.png",
+      "X": 90,
+      "Y": 63
+    },
+    {
+      "Type": "Sprites/Enemy/Boss/Devastator/Turret.png",
+      "X": 35,
+      "Y": 40
+    },
+    {
+      "Type": "Sprites/Enemy/Boss/Devastator/Jet.Left.png",
+      "X": -40,
+      "Y": 24
+    },
+	{
+      "Type": "Sprites/Enemy/Boss/Devastator/Jet.Right.png",
+      "X": -40,
+      "Y": 57
+    }
+  ]  
+}

@@ -2,10 +2,11 @@
 
 namespace Si.Engine.Sprite.Enemy.Peon
 {
-    internal class SpriteEnemySerf : SpriteEnemyPeonBase
+    internal class SpriteEnemySerf
+        : SpriteEnemyPeonBase
     {
-        public SpriteEnemySerf(EngineCore engine)
-            : base(engine, @"Sprites\Enemy\Peon\Serf.png")
+        public SpriteEnemySerf(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
     }

@@ -4,6 +4,9 @@
     {
         public static string FriendlyName = "Strikeforce Infinite";
 
+        public const string MultiplayServerAddress = "127.0.0.1";
+        public const int MultiplayServerTCPPort = 6785;
+
         public static class Mass
         {
             public const float Minuscule = 0.1f;
@@ -19,6 +22,14 @@
             None,
             Clockwise,
             CounterClockwise
+        }
+
+        public enum SiLogSeverity
+        {
+            Trace = 0, //Super-verbose, debug-like information.
+            Verbose = 1, //General status messages.
+            Warning = 2, //Something the user might want to be aware of.
+            Exception = 3 //An actual exception has been thrown.
         }
 
         public enum MunitionType
@@ -46,6 +57,15 @@
             Independent
         }
 
+        public enum ExplosionType
+        {
+            MediumFire,
+            LargeFire,
+            SmallFire,
+            MicroFire,
+            Energy
+        }
+
         /// <summary>
         /// Determines the behavior of a attachment sprite's orientation.
         /// </summary>
@@ -62,11 +82,19 @@
             Independent
         }
 
-        public enum SiEngineInitializationType
+        public enum SiEngineExecutionMode
         {
             None,
             Play,
-            Edit
+            Edit,
+            /// <summary>
+            /// The engine instance is intended to run a level on the server for multiplayer games.
+            /// </summary>
+            ServerHost,
+            /// <summary>
+            /// This engine instance is intended to be shared content only, not to run a level.
+            /// </summary>
+            SharedEngineContent
         }
 
         public enum SiWeaponsLockType

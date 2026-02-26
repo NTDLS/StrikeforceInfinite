@@ -46,25 +46,37 @@ namespace Si.Client.Forms
 
             if (sprite is SpriteEnemyBase enemy)
             {
-                UpsertVariable("AI Controller", $"{enemy.CurrentAIController}");
+                if (enemy.CurrentAIController != null)
+                {
+                    string aiControllerTypeName = enemy.CurrentAIController.GetType().Name;
+                    if (enemy.CurrentAIController.CurrentAIState != null)
+                    {
+                        aiControllerTypeName += $" (State: {enemy.CurrentAIController.CurrentAIState.GetType().Name})";
+                    }
+                    UpsertVariable("AI Controller", $"{aiControllerTypeName}");
+                }
+                else
+                {
+                    UpsertVariable("AI Controller", $"<none>");
+                }
             }
 
             UpsertVariable("UID", $"{sprite.UID}");
             UpsertVariable("Owner UID", $"{sprite.OwnerUID:n0}");
             UpsertVariable("Name", $"{sprite.GetType().Name}");
             UpsertVariable("Tag", $"{sprite.SpriteTag:n0}");
-            UpsertVariable("Is Visible?", $"{sprite.Visible:n0}");
+            UpsertVariable("Is Visible?", $"{sprite.IsVisible:n0}");
             UpsertVariable("Size", $"{sprite.Size:n0}");
             UpsertVariable("Bounds", $"{sprite.Bounds:n0}");
             UpsertVariable("Ready for Delete?", $"{sprite.IsQueuedForDeletion}");
             UpsertVariable("Is Dead?", $"{sprite.IsDeadOrExploded}");
             UpsertVariable("Location", $"{sprite.Location}");
             UpsertVariable("Location (Render)", $"{sprite.RenderLocation}");
-            UpsertVariable("Background Offset", $"{_engine.Display.RenderWindowPosition}");
+            UpsertVariable("Background Offset", $"{_engine.Display.CameraPosition}");
             UpsertVariable("Rotation Speed", $"{sprite.RotationSpeed:n2}");
             UpsertVariable("Speed", $"{sprite.Speed:n2}");
             UpsertVariable("Throttle", $"{sprite.Throttle:n2}");
-            UpsertVariable("Movement Vector", $"{sprite.OrientationMovementVector}");
+            UpsertVariable("Movement Vector", $"{sprite.MovementVector}");
             UpsertVariable("Angle to Player", $"{sprite.AngleToInSignedDegrees(_engine.Player.Sprite):n2}");
             UpsertVariable("Angle", $"{sprite.Orientation:n2}");
             UpsertVariable("Angle Degrees", $"{sprite.Orientation.Degrees:n2}");

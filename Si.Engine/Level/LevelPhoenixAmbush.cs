@@ -1,7 +1,5 @@
-﻿using Si.Engine.Core.Types;
-using Si.Engine.Level._Superclass;
+﻿using Si.Engine.Level._Superclass;
 using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Enemy.Peon;
 using Si.Library;
 using System.Linq;
 
@@ -62,7 +60,7 @@ namespace Si.Engine.Level
 
         private void AddEnemyCallback(SiDefermentEvent sender, object? refObj)
         {
-            _engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
+            //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
         }
     }
 }

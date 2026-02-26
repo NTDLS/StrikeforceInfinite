@@ -1,21 +1,19 @@
 ﻿using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.Mathematics;
-using System.IO;
 
 namespace Si.Engine.Sprite
 {
-    public class SpriteStar : SpriteBase
+    public class SpriteStar
+        : SpriteBase
     {
-        private const string _assetPath = @"Sprites\Star\";
         private readonly int _imageCount = 5;
         private readonly int selectedImageIndex = 0;
 
-        public SpriteStar(EngineCore engine)
+        public SpriteStar(EngineCore engine, string spritePath)
             : base(engine)
         {
-            selectedImageIndex = SiRandom.Between(0, _imageCount - 1);
-            SetImage(Path.Combine(_assetPath, $"{selectedImageIndex}.png"));
+            SetImage(spritePath);
 
             X = SiRandom.Between(0, engine.Display.TotalCanvasSize.Width);
             Y = SiRandom.Between(0, engine.Display.TotalCanvasSize.Height);

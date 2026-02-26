@@ -12,7 +12,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
     internal class LockingMunitionBase : MunitionBase
     {
         public int MaxGuidedObservationAngleDegrees { get; set; } = 90;
-        public float GuidedRotationRateInRadians { get; set; } = SiMath.DegToRad(3);
+        public float GuidedRotationRateDegrees { get; set; } = 3;
         public SpriteInteractiveBase? LockedTarget { get; private set; }
 
         public LockingMunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string? imagePath,
@@ -26,13 +26,13 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         {
             if (LockedTarget != null)
             {
-                if (LockedTarget.Visible)
+                if (LockedTarget.IsVisible)
                 {
                     var deltaAngle = this.HeadingAngleToInSignedDegrees(LockedTarget);
 
                     if (Math.Abs((float)deltaAngle) < MaxGuidedObservationAngleDegrees && !deltaAngle.IsNearZero())
                     {
-                        RotateMovementVector(GuidedRotationRateInRadians * (deltaAngle > 0 ? 1 : -1));
+                        RotateMovementVector(GuidedRotationRateDegrees * (deltaAngle > 0 ? 1 : -1), epoch);
                     }
                 }
             }

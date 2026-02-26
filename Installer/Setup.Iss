@@ -30,7 +30,7 @@
  
 [Files]
  Source: "publish\*.*";                DestDir: "{app}"; Components: Client; Flags: IgnoreVersion; 
- Source: "Si.Assets.7z";               DestDir: "{app}"; Components: Assets; Flags: IgnoreVersion recursesubdirs;
+ Source: "Si.Assets.rez";              DestDir: "{app}"; Components: Assets; Flags: IgnoreVersion recursesubdirs;
 
  Source: "Fonts\Digital-7 (Mono).ttf"; DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Digital-7 Mono";  Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\Digital-7.ttf";        DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "digital-7";       Flags: onlyifdoesntexist uninsneveruninstall

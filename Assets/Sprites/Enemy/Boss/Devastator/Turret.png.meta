@@ -1,0 +1,15 @@
+{
+  "Class": "SpriteEnemyBossDevastatorTurret",
+  "Description": "",
+  "MunitionDetection": true,
+  "Hull": 200,
+  "Mass": 15,
+  "Shields": 0,
+  "Bounty": 50,
+  "Weapons": [
+	{
+	  "Type": "Sprites/Weapon/Thunderstrike Missile.png",
+	  "MunitionCount": 2147483647
+	}
+  ]
+}

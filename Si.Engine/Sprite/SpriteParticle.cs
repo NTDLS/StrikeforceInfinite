@@ -5,6 +5,7 @@ using Si.Engine.Sprite._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Rendering;
 using System.Drawing;
 using static Si.Library.SiConstants;
 
@@ -105,9 +106,9 @@ namespace Si.Engine.Sprite
             }
         }
 
-        public override void Render(RenderTarget renderTarget)
+        public override void Render(RenderTarget renderTarget, float epoch)
         {
-            if (Visible)
+            if (IsVisible)
             {
                 switch (Shape)
                 {

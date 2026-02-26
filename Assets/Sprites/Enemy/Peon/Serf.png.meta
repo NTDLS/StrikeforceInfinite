@@ -1,0 +1,20 @@
+{
+  "Class": "SpriteEnemySerf",
+  "Description": "",
+  "Speed": 300,
+  "MaxThrottle": 1.5,
+  "Hull": 20,
+  "Shields": 10,
+  "Bounty": 10,
+  "Weapons": [
+	{
+	  "Type": "Sprites/Weapon/Vulcan Cannon.png",
+	  "MunitionCount": 2147483647
+	},
+	{
+	  "Type": "Sprites/Weapon/Dual Vulcan Cannon.png",
+	  "MunitionCount": 2147483647
+	}
+	],
+  "Attachments": []
+}

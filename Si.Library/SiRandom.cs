@@ -1,4 +1,6 @@
-﻿namespace Si.Library
+﻿using Si.Library.Mathematics;
+
+namespace Si.Library
 {
     public class SiRandom
     {
@@ -13,7 +15,10 @@
         /// <param name="variancePercentWholeNumber"></param>
         /// <returns></returns>
         public static float Variance(float value, float variancePercentDecimal)
-            => value + RandomSign(value * variancePercentDecimal);
+        {
+            float range = value * variancePercentDecimal;
+            return value + Between(-range, range);
+        }
 
         /// <summary>
         /// 50/50 chance to return a positive/negative of the given value.
@@ -35,6 +40,23 @@
         public static T OneOf<T>(T[] values)
             => values[Between(0, values.Length - 1)];
 
+        public static T OneOf<T>(IList<T> values)
+        {
+            if (values == null || values.Count == 0)
+                throw new ArgumentException("Collection cannot be empty.", nameof(values));
+
+            return values[Between(0, values.Count - 1)];
+        }
+
+        public static T? OneOfNullable<T>(IList<T>? values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return default;
+            }
+            return values[Between(0, values.Count - 1)];
+        }
+
         public static bool ChanceIn(int chanceIn, int outOf)
             => Generator.Next(1, outOf + 1) <= chanceIn;
 
@@ -54,5 +76,8 @@
 
         public static int Between(int minValue, int maxValue)
             => Generator.Next(minValue, maxValue + 1);
+
+        public static SiVector RandomOrientationVector()
+            => SiVector.FromUnsignedDegrees(Between(0, 359));
     }
 }

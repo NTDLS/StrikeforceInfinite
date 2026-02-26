@@ -6,6 +6,7 @@ using SharpCompress.Archives;
 using SharpCompress.Common;
 using Si.Audio;
 using Si.Engine.Sprite;
+using Si.Library;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,10 +23,46 @@ namespace Si.Engine.Manager
         private const string _assetPackagePath = "Si.Assets.rez";
 #endif
 
+        public enum BaseAssetType
+        {
+            Meta,
+            Asset
+        }
+
+        public class MetadataContainer
+        {
+            public AssetContainer Asset { get; set; }
+            public Metadata Metadata { get; set; }
+
+            public MetadataContainer(AssetContainer container, Metadata metadata)
+            {
+                Asset = container;
+                Metadata = metadata;
+            }
+        }
+
+        public class AssetContainer
+        {
+            public BaseAssetType BaseAssetType { get; set; }
+            public string? Directory { get; set; }
+            public string SpritePath { get; set; }
+            public object Object { get; set; }
+
+            public AssetContainer(BaseAssetType baseAssetType, string spritePath, object obj)
+            {
+                BaseAssetType = baseAssetType;
+                Directory = Path.GetDirectoryName(spritePath)?.ToLower();
+                SpritePath = spritePath;
+                Object = obj;
+            }
+        }
+
+        public string AssetPackagePath => _assetPackagePath;
         private readonly EngineCore _engine;
-        private readonly OptimisticCriticalResource<Dictionary<string, object>> _collection = new();
+        private readonly OptimisticCriticalResource<Dictionary<string, AssetContainer>> _collection = new();
         private readonly IArchive? _archive = null;
         private readonly Dictionary<string, IArchiveEntry> _entryHashes;
+
         public Dictionary<string, IArchiveEntry> Entries => _entryHashes;
 
         public AssetManager(EngineCore engine)
@@ -48,13 +85,30 @@ namespace Si.Engine.Manager
             _archive?.Dispose();
         }
 
-        public T GetMetaData<T>(string spriteImagePath, bool avoidCache = false)
+        public static bool IsDirectoryFromAttrib(IEntry entry) =>
+            entry.Attrib.HasValue && ((FileAttributes)entry.Attrib.Value & FileAttributes.Directory) != 0;
+
+        /// <summary>
+        /// Gets the metadata for all assets in a directory.
+        /// This REQUIRES that the assets already be cached.
+        /// </summary>
+        public List<MetadataContainer> GetMetadataInDirectory(string directory, bool avoidCache = false)
         {
-            string metadataFile = $"{spriteImagePath}.json".Replace('\\', '/');
+            var assetMetadatas = _collection.Read(o =>
+                o.Where(kv => kv.Value.BaseAssetType == BaseAssetType.Meta
+                && string.Equals(kv.Value.Directory, directory, StringComparison.OrdinalIgnoreCase))
+                .Select(kv => new MetadataContainer(kv.Value, (Metadata)kv.Value.Object))).ToList();
+
+            return assetMetadatas ?? [];
+        }
+
+        public Metadata GetMetadata(string spritePath, bool avoidCache = false)
+        {
+            string metadataFile = $"{spritePath}.meta".Replace('\\', '/');
 
             if (avoidCache)
             {
-                return JsonConvert.DeserializeObject<T>(GetText(metadataFile)).EnsureNotNull();
+                return JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)).EnsureNotNull();
             }
 
             string key = $"meta:{metadataFile.ToLower()}";
@@ -62,16 +116,16 @@ namespace Si.Engine.Manager
             var cached = _collection.Read(o =>
             {
                 o.TryGetValue(key, out var value);
-                return value;
+                return value?.Object;
             });
 
             if (cached != null)
             {
-                return (T)cached;
+                return (Metadata)cached;
             }
 
-            var metadata = JsonConvert.DeserializeObject<T>(GetText(metadataFile)).EnsureNotNull();
-            _collection.Write(o => o.Add(key, metadata ?? throw new NullReferenceException()));
+            var metadata = JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)) ?? new Metadata();
+            _collection.Write(o => o.Add(key, new AssetContainer(BaseAssetType.Meta, spritePath, metadata.EnsureNotNull())));
             return metadata;
         }
 
@@ -123,8 +177,8 @@ namespace Si.Engine.Manager
 
             var cached = _collection.Read(o =>
             {
-                o.TryGetValue(path, out object? value);
-                return value as string;
+                o.TryGetValue(path, out var value);
+                return value?.Object as string;
             });
             if (cached != null)
             {
@@ -134,7 +188,7 @@ namespace Si.Engine.Manager
             try
             {
                 var text = GetCompressedText(path);
-                _collection.Write(o => o.TryAdd(path, text));
+                _collection.Write(o => o.TryAdd(path, new AssetContainer(BaseAssetType.Asset, path, text)));
                 return text;
             }
             catch
@@ -150,11 +204,12 @@ namespace Si.Engine.Manager
             var cacheKey = $"{path}:{initialVolume}:{loopForever}";
             var cached = _collection.Read(o =>
             {
-                if (o.TryGetValue(cacheKey, out object? value))
+                if (o.TryGetValue(cacheKey, out var value))
                 {
-                    ((SiAudioClip)value).SetInitialVolume(initialVolume);
-                    ((SiAudioClip)value).SetLoopForever(loopForever);
-                    return (SiAudioClip)value;
+                    var audioClip = value.Object as SiAudioClip;
+                    audioClip?.SetInitialVolume(initialVolume);
+                    audioClip?.SetLoopForever(loopForever);
+                    return audioClip;
                 }
                 return null;
             });
@@ -166,7 +221,7 @@ namespace Si.Engine.Manager
 
             using var stream = GetCompressedStream(path);
             var result = new SiAudioClip(stream, initialVolume, loopForever);
-            _collection.Write(o => o.TryAdd(cacheKey, result));
+            _collection.Write(o => o.TryAdd(cacheKey, new AssetContainer(BaseAssetType.Asset, path, result)));
             stream.Close();
             return result;
         }
@@ -177,8 +232,8 @@ namespace Si.Engine.Manager
 
             var cached = _collection.Read(o =>
             {
-                o.TryGetValue(path, out object? value);
-                return value as SharpDX.Direct2D1.Bitmap;
+                o.TryGetValue(path, out var value);
+                return value?.Object as SharpDX.Direct2D1.Bitmap;
             });
 
             if (cached != null)
@@ -188,13 +243,13 @@ namespace Si.Engine.Manager
 
             using var stream = GetCompressedStream(path);
             var bitmap = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
-            _collection.Write(o => o.TryAdd(path, bitmap));
+            _collection.Write(o => o.TryAdd(path, new AssetContainer(BaseAssetType.Asset, path, bitmap)));
             return bitmap;
         }
 
-        public void HydrateCache(SpriteTextBlock loadingHeader, SpriteTextBlock loadingDetail)
+        public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
         {
-            loadingHeader.SetTextAndCenterX("Loading packed assets...");
+            loadingHeader?.SetTextAndCenterX("Loading packed assets...");
 
             using var archive = ArchiveFactory.Open(_assetPackagePath);
             using var dtp = new DelegateThreadPool(new DelegateThreadPoolConfiguration()
@@ -208,8 +263,12 @@ namespace Si.Engine.Manager
 
             foreach (var entry in archive.Entries)
             {
+                /// Skip entries with '@' in the name as they are likely to be used for internal purposes and not actual assets.
+                if (entry.Key?.Contains('@') == true) continue;
+
                 switch (Path.GetExtension(entry.Key.EnsureNotNull()).ToLower())
                 {
+                    case ".meta":
                     case ".json":
                     case ".txt":
                         threadPoolTracker.Enqueue(() => GetText(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
@@ -226,15 +285,20 @@ namespace Si.Engine.Manager
                         Interlocked.Increment(ref statusIndex);
                         break;
                 }
+
+                if (!IsDirectoryFromAttrib(entry) && !entry.Key.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
+                {
+                    GetMetadata(entry.Key);
+                }
             }
 
             threadPoolTracker.WaitForCompletion(TimeSpan.FromMilliseconds(100), () =>
             {
-                loadingDetail.SetTextAndCenterX($"{statusIndex / statusEntryCount * 100.0:n0}%");
+                loadingDetail?.SetTextAndCenterX($"{statusIndex / statusEntryCount * 100.0:n0}%");
                 return true;
             });
 
-            loadingDetail.SetTextAndCenterX($"100%");
+            loadingDetail?.SetTextAndCenterX($"100%");
         }
 
         private string GetCompressedText(string path)
@@ -261,5 +325,27 @@ namespace Si.Engine.Manager
 
             throw new FileNotFoundException(path);
         }
+
+        #region Explicit helpers for common assets to avoid typos and ease refactoring.
+
+        public string GetRandomGamerTag()
+        {
+            var gamerTagsText = GetText($@"Text\GamerTags.txt");
+            var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
+
+            var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
+            return gamerTags[randomIndex];
+        }
+
+        public string GetRandomLobbyName()
+        {
+            var gamerTagsText = GetText($@"Text\LobbyNames.txt");
+            var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
+
+            var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
+            return gamerTags[randomIndex];
+        }
+
+        #endregion
     }
 }

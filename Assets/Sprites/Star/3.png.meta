@@ -1,0 +1,7 @@
+{
+  "Class": "SpriteStar",
+  "Speed": 250,
+  "Mass": 0,
+  "MunitionDetection": false,
+  "CollisionDetection": false
+}

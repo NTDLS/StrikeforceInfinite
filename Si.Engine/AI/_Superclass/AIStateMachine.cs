@@ -2,13 +2,15 @@
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.Mathematics;
 using System;
+using System.Collections.Generic;
 
 namespace Si.Engine.AI._Superclass
 {
     /// <summary>
     /// A sprite that is controlled by an AI state-machine.
     /// </summary>
-    public class AIStateMachine : IAIController
+    public class AIStateMachine
+        : IAIController
     {
         /// <summary>
         /// Reference to the engine core class.
@@ -18,17 +20,17 @@ namespace Si.Engine.AI._Superclass
         /// <summary>
         /// Reference to the sprite that is being controlled by this AI model.
         /// </summary>
-        public SpriteInteractiveShipBase Owner { get; private set; }
+        public SpriteInteractiveBase Owner { get; private set; }
 
         /// <summary>
-        /// Reference to the object that the sprite is observing.
+        /// Collection of objects that the sprite is observing.
         /// </summary>
-        public SpriteBase ObservedObject { get; private set; }
+        public List<SpriteBase> ObservedObjects { get; private set; } = [];
 
         /// <summary>
         /// The current state that the AI is in.
         /// </summary>
-        public AIStateHandler? CurrentState { get; private set; }
+        public AIStateHandler? CurrentAIState { get; private set; }
 
         public DateTime StateChangeDateTime { get; set; }
 
@@ -39,14 +41,14 @@ namespace Si.Engine.AI._Superclass
         /// <summary>
         /// Fired when the state is changed through a call to ChangeState().
         /// </summary>
-        public event StateChanged? OnStateChanged;
-        public delegate void StateChanged(AIStateMachine sender);
+        public event AIStateChanged? OnAIStateChanged;
+        public delegate void AIStateChanged(AIStateMachine sender);
 
         /// <summary>
         /// Fired when the engine wants the sprite to make a decision based on the current AI state.
         /// </summary>
         public event ApplyIntelligenceProc? OnApplyIntelligence;
-        public delegate void ApplyIntelligenceProc(float epoch, SiVector displacementVector, AIStateHandler state);
+        public delegate void ApplyIntelligenceProc(float epoch, SiVector displacementVector, AIStateHandler? state);
 
         #endregion
 
@@ -56,30 +58,27 @@ namespace Si.Engine.AI._Superclass
         /// <param name="engine">Reference to the engine core class.</param>
         /// <param name="owner">Reference to the sprite that is being controlled by this AI model.</param>
         /// <param name="observedObject">Reference to the object that the sprite is observing (probably the player, but can be other objects).</param>
-        public AIStateMachine(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase observedObject)
+        public AIStateMachine(EngineCore engine, SpriteInteractiveBase owner, List<SpriteBase>? observedObjects = null)
         {
             Engine = engine;
             Owner = owner;
-            ObservedObject = observedObject;
+            ObservedObjects = observedObjects ?? [];
         }
 
-        void IAIController.ApplyIntelligence(float epoch, SiVector displacementVector)
+        public void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
-            if (CurrentState != null)
-            {
-                OnApplyIntelligence?.Invoke(epoch, displacementVector, CurrentState);
-            }
+            OnApplyIntelligence?.Invoke(epoch, displacementVector, CurrentAIState);
+            CurrentAIState?.Tick(epoch);
         }
 
         /// <summary>
         /// Sets a new AI state.
         /// </summary>
-        /// <param name="state"></param>
-        public void ChangeState(AIStateHandler state)
+        public void SetAIState(AIStateHandler state)
         {
             StateChangeDateTime = DateTime.UtcNow;
-            CurrentState = state;
-            OnStateChanged?.Invoke(this);
+            CurrentAIState = state;
+            OnAIStateChanged?.Invoke(this);
         }
     }
 }

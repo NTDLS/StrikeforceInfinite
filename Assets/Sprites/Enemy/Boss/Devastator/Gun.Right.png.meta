@@ -1,0 +1,13 @@
+{
+  "Class": "SpriteEnemyBossDevastatorRightGun",
+  "Description": "",
+  "MunitionDetection": true,
+  "Hull": 50,
+  "Shields": 0,
+  "Weapons": [
+	{
+	  "Type": "Sprites/Weapon/Lancer.png",
+	  "MunitionCount": 2147483647
+	}
+  ]
+}

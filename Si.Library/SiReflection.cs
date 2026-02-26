@@ -43,6 +43,7 @@ namespace Si.Library
             return allTypes;
         }
 
+        /*
         public static string GetStaticPropertyValue(string typeName, string propertyName)
         {
             string key = $"[{typeName}].[{propertyName}]";
@@ -72,33 +73,35 @@ namespace Si.Library
 
             throw new Exception("Static property not found: {typeName}->{propertyName}.");
         }
+        */
 
         public static T CreateInstanceFromType<T>(Type type, object[] constructorArgs)
         {
+
             return (T)Activator.CreateInstance(type, constructorArgs).EnsureNotNull();
         }
 
-        public static T CreateInstanceFromType<T>(Type type)
-        {
-            return (T)Activator.CreateInstance(type).EnsureNotNull();
-        }
+        //public static T CreateInstanceFromType<T>(Type type)
+        //{
+        //    return (T)Activator.CreateInstance(type).EnsureNotNull();
+        //}
 
-        public static T CreateInstanceFromTypeName<T>(string typeName, object[] constructorArgs)
-        {
-            var type = GetTypeByName(typeName);
-            return (T)Activator.CreateInstance(type, constructorArgs).EnsureNotNull();
-        }
+        //public static T CreateInstanceFromTypeName<T>(string typeName, object[] constructorArgs)
+        //{
+        //    var type = GetTypeByName(typeName);
+        //    return (T)Activator.CreateInstance(type, constructorArgs).EnsureNotNull();
+        //}
 
-        public static T CreateInstanceFromTypeName<T>(string typeName)
-        {
-            var type = GetTypeByName(typeName);
-            return (T)Activator.CreateInstance(type).EnsureNotNull();
-        }
+        //public static T CreateInstanceFromTypeName<T>(string typeName)
+        //{
+        //    var type = GetTypeByName(typeName);
+        //    return (T)Activator.CreateInstance(type).EnsureNotNull();
+        //}
 
-        public static bool DoesTypeExist(string typeName)
-        {
-            return GetTypeByName(typeName) != null;
-        }
+        //public static bool DoesTypeExist(string typeName)
+        //{
+        //    return GetTypeByName(typeName) != null;
+        //}
 
         public static Type GetTypeByName(string typeName)
         {
@@ -137,9 +140,9 @@ namespace Si.Library
             }
         }
 
-        public static T? CreateInstanceOf<T>(object[] constructorArgs)
-        {
-            return (T?)Activator.CreateInstance(typeof(T), constructorArgs);
-        }
+        //public static T? CreateInstanceOf<T>(object[] constructorArgs)
+        //{
+        //    return (T?)Activator.CreateInstance(typeof(T), constructorArgs);
+        //}
     }
 }

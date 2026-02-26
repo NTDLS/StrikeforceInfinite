@@ -20,6 +20,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             {
                 sprite.ApplyIntelligence(epoch, displacementVector);
                 sprite.ApplyMotion(epoch, displacementVector);
+
+                Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
             }
         }
 
@@ -28,7 +30,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             object[] param = { Engine };
             var obj = (SpritePowerupBase)Activator.CreateInstance(typeof(T), param).EnsureNotNull();
             obj.Location = new SiVector(x, y);
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return (T)obj;
         }
     }

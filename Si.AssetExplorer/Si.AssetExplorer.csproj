@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Krypton.Docking" Version="100.26.1.19" />
+    <PackageReference Include="Krypton.Navigator" Version="100.26.1.19" />
+    <PackageReference Include="Krypton.Toolkit" Version="100.26.1.19" />
+    <PackageReference Include="NTDLS.Persistence" Version="1.3.1" />
+    <PackageReference Include="NTDLS.WinFormsHelpers" Version="1.3.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Si.Engine\Si.Engine.csproj" />
+    <ProjectReference Include="..\Si.Library\Si.Library.csproj" />
+    <ProjectReference Include="..\Si.Rendering\Si.Rendering.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

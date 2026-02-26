@@ -1,6 +1,7 @@
 ﻿using Si.Engine.Sprite._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Rendering;
 using System;
 using static Si.Library.SiConstants;
 
@@ -40,7 +41,7 @@ namespace Si.Engine.Sprite
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)
         {
-            Orientation.Degrees += RotationSpeed * epoch;
+            Orientation.Radians += RotationSpeed * epoch;
 
             if (VectorType == ParticleVectorType.FollowOrientation)
             {

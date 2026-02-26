@@ -25,6 +25,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             foreach (var particle in Visible())
             {
                 particle.ApplyMotion(epoch, displacementVector);
+                Engine.MultiplayLobby?.ActionBuffer.RecordMotion(particle.GetMultiPlayActionVector());
             }
         }
 
@@ -47,7 +48,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public SpriteParticle AddAt(SpriteBase sprite, Color4 color, Size? size = null)
         {
             var obj = new SpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 
@@ -55,9 +56,9 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
             var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1), color)
             {
-                Visible = true
+                IsVisible = true
             };
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 
@@ -65,9 +66,9 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
             var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1))
             {
-                Visible = true
+                IsVisible = true
             };
-            SpriteManager.Add(obj);
+            SpriteManager.Insert(obj);
             return obj;
         }
 
@@ -141,7 +142,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
                 var p = AddAt(nozzleWorldPos, color, size ?? new Size(2, 2));
 
-                p.Visible = true;
+                p.IsVisible = true;
                 p.VectorType = ParticleVectorType.FollowOrientation;
                 p.Orientation.Degrees = SiMath.WrapDegreesUnsigned(angle);
                 p.Speed = SiRandom.Between(minSpeed, maxSpeed);

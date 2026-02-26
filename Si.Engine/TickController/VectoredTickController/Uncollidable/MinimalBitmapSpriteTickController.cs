@@ -8,7 +8,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
     /// <summary>
     /// These are just minimal non-collidable, non interactive, generic bitmap sprites.
     /// </summary>
-    public class MinimalBitmapSpriteTickController : VectoredCollidableTickControllerBase<SpriteMinimalBitmap>
+    public class MinimalBitmapSpriteTickController
+        : VectoredCollidableTickControllerBase<SpriteMinimalBitmap>
     {
         public MinimalBitmapSpriteTickController(EngineCore engine, SpriteManager manager)
             : base(engine, manager)
@@ -20,6 +21,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             foreach (var sprite in Visible())
             {
                 sprite.ApplyMotion(epoch, displacementVector);
+
+                Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
             }
         }
     }
