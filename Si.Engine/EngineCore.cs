@@ -427,7 +427,7 @@ namespace Si.Engine
                 //Add initial stars.
                 for (int i = 0; i < Settings.InitialFrameStarCount; i++)
                 {
-                    Sprites.Stars.AddAt(Display.RandomOnScreenLocation());
+                    Sprites.Stars.AddRandomStarAt(Display.RandomOnScreenLocation());
                 }
 
                 if (Settings.PlayMusic)

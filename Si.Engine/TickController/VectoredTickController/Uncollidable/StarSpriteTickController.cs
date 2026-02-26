@@ -7,6 +7,7 @@ using Si.Library.Mathematics;
 using Si.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using static Si.Engine.Manager.AssetManager;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
@@ -14,18 +15,20 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
     public class StarSpriteTickController
         : VectoredTickControllerBase<SpriteStar>
     {
-        List<MetadataContainer> _starAssets = new();
+        private const int _maxDistance = 1000;
+        private readonly Lock _lock = new();
 
+        private List<MetadataContainer>? _starAssets = null;
         private List<MetadataContainer> StarAssets
         {
             get
             {
-                if (_starAssets.Count == 0)
+                if (_starAssets == null)
                 {
-                    lock (this)
+                    lock (_lock)
                     {
-                        if (_starAssets.Count == 0)
-                            _starAssets = Engine.Assets.GetMetadataInDirectory(@"Sprites\Star");
+                        //We lazy load these because the assets arent cached untill initilization.
+                        _starAssets ??= Engine.Assets.GetMetadataInDirectory(@"Sprites\Star");
                     }
                 }
                 return _starAssets;
@@ -47,7 +50,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             return StarAssets[index];
         }
 
-        public void AddAt(SiVector position)
+        public void AddRandomStarAt(SiVector position)
         {
             var randomStarSpritePath = GetRandomStar()?.Asset.SpritePath;
             if (randomStarSpritePath != null)
@@ -71,7 +74,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(Engine.Display.TotalCanvasSize.Width - (int)displacementVector.X, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
-                            AddAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
+                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
 
                     }
@@ -81,7 +84,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, (int)-displacementVector.X);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
-                            AddAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
+                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
 
                     }
@@ -91,7 +94,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(Engine.Display.TotalCanvasSize.Height - (int)displacementVector.Y, Engine.Display.TotalCanvasSize.Height);
-                            AddAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
+                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
                     }
                     else if (displacementVector.Y < 0)
@@ -100,7 +103,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, (int)-displacementVector.Y);
-                            AddAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
+                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
                     }
                 }
@@ -112,7 +115,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                     star.ApplyMotion(epoch, displacementVector);
 
                     //Remove stars that are too far off-screen.
-                    if (Engine.Display.TotalCanvasBounds.Balloon(1000).IntersectsWith(star.RenderBounds) == false)
+                    if (Engine.Display.TotalCanvasBounds.Balloon(_maxDistance).IntersectsWith(star.RenderBounds) == false)
                     {
                         star.QueueForDelete();
                     }
