@@ -5,7 +5,6 @@ using Si.AssetExplorer.Forms;
 using Si.Engine;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.ExtensionMethods;
-using Si.Library.Mathematics;
 
 namespace Si.AssetExplorer
 {

@@ -362,7 +362,10 @@ namespace Si.Engine.Sprite._Superclass
 
             var thisCollidable = new PredictedKinematicBody(this, _engine.Display.CameraPosition, epoch);
 
-            foreach (var other in _engine.Collisions.Collidables)
+            /// It is important to remeber that need to verify the visibility of sprites that are colliding
+            ///     because the collection of collidables is a snapshot from the start of the tick and the
+            ///     visibility can change between that snapshot and this calculation.
+            foreach (var other in _engine.Collisions.Collidables.Where(o => o.Sprite.IsVisible))
             {
                 if (thisCollidable.Sprite == other.Sprite || _engine.Collisions.IsAlreadyHandled(thisCollidable.Sprite, other.Sprite))
                 {

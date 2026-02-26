@@ -3,6 +3,7 @@ using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using Si.Library.Sprite;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using static Si.Library.SiConstants;
@@ -30,11 +31,25 @@ namespace Si.Engine.Sprite._Superclass._Root
             }
         }
 
+        private SiVector _movementVector = SiVector.One();
         /// <summary>
         /// Vector representing both speed and direction (Orientation * Speed * Throttle).
         /// Typically set by a call to RecalculateOrientationMovementVector()
         /// </summary>
-        public SiVector MovementVector { get; set; } = SiVector.One();
+        public SiVector MovementVector
+        {
+            get
+            {
+                return _movementVector;
+            }
+            set
+            {
+                if (value.IsNan())
+                    throw new Exception("MovementVector is invalid");
+
+                _movementVector = value;
+            }
+        }
 
         private float _throttle = 1.0f;
         /// <summary>
@@ -81,6 +96,9 @@ namespace Si.Engine.Sprite._Superclass._Root
             get => _orientation;
             set
             {
+                if (value.IsNan())
+                    throw new Exception("Orientation is invalid");
+
                 _orientation = value;
                 _orientation.OnChangeEvent += (SiVector vector) => OrientationChanged();
                 OrientationChanged();
@@ -167,6 +185,9 @@ namespace Si.Engine.Sprite._Superclass._Root
             get => _location.Clone(); //Changes made to the location object do not affect the sprite.
             set
             {
+                if (value.IsNan())
+                    throw new Exception("Location is invalid");
+
                 _location = value;
                 LocationChanged();
             }

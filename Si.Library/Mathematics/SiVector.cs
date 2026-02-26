@@ -1,4 +1,5 @@
-﻿using Si.Library.Sprite;
+﻿using Si.Library.ExtensionMethods;
+using Si.Library.Sprite;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 
@@ -44,6 +45,26 @@ namespace Si.Library.Mathematics
             X = p.X;
             Y = p.Y;
         }
+
+        #endregion
+
+        #region Valiatation helpers (not that I'mnot sure if these should use || or &&)
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNan()
+            => float.IsNaN(X) || float.IsNaN(Y);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsInfinity()
+            => float.IsInfinity(X) || float.IsInfinity(Y);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNegativeInfinity()
+            => float.IsNegativeInfinity(X) || float.IsNegativeInfinity(Y);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNearZero()
+            => X.IsNearZero() || Y.IsNearZero();
 
         #endregion
 

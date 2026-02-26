@@ -56,7 +56,13 @@ namespace Si.Engine.Manager
             return collisionPair;
         }
 
-        public void Reset(float epoch)
+        /// <summary>
+        /// This is where we snapshot all of the collidable sprites before the tick.
+        /// It is important to remeber that we will later need to verify the visibility of sprites that are colliding
+        ///     since that state can change between this recording and the collision calculation.
+        /// </summary>
+        /// <param name="epoch"></param>
+        public void SnapshotCollidables(float epoch)
         {
             Collidables = _engine.Sprites.VisibleCollidablePredictiveMove(epoch);
             Detected.Clear();

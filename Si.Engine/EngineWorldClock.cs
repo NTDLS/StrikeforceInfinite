@@ -201,7 +201,7 @@ namespace Si.Engine
             //  other operations in parallel with the exception of deleting sprites that are queued for deletion -
             //  which is why we do that after the threads have completed.
 
-            _engine.Collisions.Reset(epoch);
+            _engine.Collisions.SnapshotCollidables(epoch);
 
             _engine.Menus.ExecuteWorldClockTick();
             _engine.Situations.ExecuteWorldClockTick();

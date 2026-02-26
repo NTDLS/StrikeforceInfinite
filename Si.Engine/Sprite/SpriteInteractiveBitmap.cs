@@ -48,8 +48,6 @@ namespace Si.Engine.Sprite
                 RecalculateMovementVectorFromAngle(Orientation.RadiansSigned);
             }
 
-            Console.WriteLine($"{UID}: {MovementVector}");
-
             base.ApplyMotion(epoch, displacementVector);
 
             if (CleanupMode == ParticleCleanupMode.FadeToBlack)
