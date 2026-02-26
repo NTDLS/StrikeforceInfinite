@@ -359,7 +359,7 @@ namespace Si.Engine.Manager
             var y = command.ParameterValue<uint>("y");
 
 
-            var sprite = _engine.Sprites.Create<SpriteBase>(spritePath);
+            var sprite = _engine.Sprites.Create(spritePath);
             sprite.Location = new SiVector(x, y);
             sprite.IsVisible = true;
 

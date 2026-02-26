@@ -130,7 +130,7 @@ namespace Si.AssetExplorer
                     _engine.Sprites.QueueAllForDeletion();
                     _engine.Sprites.HardDeleteAllQueuedDeletions();
 
-                    var sprite = _engine.Sprites.Add<SpriteBase>(node.AssetKey, (o) =>
+                    _engine.Sprites.Add(node.AssetKey, (o) =>
                     {
                         o.IsVisible = true;
                         o.Location = _engine.Display.CenterCanvas;

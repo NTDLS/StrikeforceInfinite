@@ -110,6 +110,9 @@ namespace Si.Engine.Manager
         {
         }
 
+        public SpriteBase Create(string spritePath, Action<SpriteBase>? initilizationProc = null)
+            => Create<SpriteBase>(spritePath, initilizationProc);
+
         public T Create<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
         {
             var metadata = _engine.Assets.GetMetadata(spritePath)
@@ -123,6 +126,9 @@ namespace Si.Engine.Manager
             initilizationProc?.Invoke(sprite);
             return sprite;
         }
+
+        public SpriteBase Add(string spritePath, Action<SpriteBase>? initilizationProc = null)
+            => Add<SpriteBase>(spritePath, initilizationProc);
 
         public T Add<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
         {
