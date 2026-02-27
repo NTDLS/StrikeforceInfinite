@@ -3,23 +3,11 @@
   "Name": "Scuttle Missile Missile",
   "Description": "",
   "SoundPath": "Sounds\\Weapons\\Scuttle Missile.wav",
-  "SpritePaths": ["Sprites\\Weapon\\Scuttle Missile.png"],
+  "MunitionSpritePaths": ["Sprites\\Weapon\\Munitions\\Scuttle Missile.png"],
   "SoundVolumne": 0.4,
-  
-  "MunitionType": "Locking",
-
-  "Damage": 10,
   "FireDelayMilliseconds": 1000,
-  "Speed": 750,
-  "SpeedVariancePercent": 0.10,
-  "ExplodesOnImpact": true,
-  
   "MinLockDistance": 100,
   "MaxLockDistance": 600,
   "MaxLocks": 2,
-  "MaxLockOnAngle": 40,
- 
-  "SeekingEscapeDistance": 500,
-  "SeekingEscapeAngleDegrees": 90,
-  "SeekingRotationRateDegrees": 45
+  "MaxLockOnAngle": 40
 }

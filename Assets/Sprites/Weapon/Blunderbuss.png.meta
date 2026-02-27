@@ -2,13 +2,8 @@
   "Class": "WeaponBlunderbuss",
   "Name": "Blunderbuss",
   "Description": "",
-  "MunitionType": "Projectile",
   "SoundPath": "Sounds\\Weapons\\Blunderbuss.wav",
-  "SpritePaths": ["Sprites\\Weapon\\Blunderbuss.png"],
+  "MunitionSpritePaths": ["Sprites\\Weapon\\Munitions\\Blunderbuss.png"],
   "SoundVolumne": 0.4,
-  "Damage": 2,
-  "Speed": 2000,
-  "FireDelayMilliseconds": 250,
-  "AngleVarianceDegrees": 10.0,
-  "SpeedVariancePercent": 0.10
+  "FireDelayMilliseconds": 250
 }

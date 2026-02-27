@@ -1,0 +1,9 @@
+{
+  "Class": "ProjectileMunitionBase",
+  "Name": "Blunderbuss",
+  "Description": "",
+  "Damage": 2,
+  "Speed": 2000,
+  "AngleVarianceDegrees": 10.0,
+  "SpeedVariancePercent": 0.10
+}

@@ -1,0 +1,10 @@
+{
+  "Class": "ProjectileMunitionBase",
+  "Name": "Dual Vulcan Cannon",
+  "Description": "",
+ 
+  "Damage": 2,
+  "Speed": 1250,
+  "AngleVarianceDegrees": 1.5,
+  "SpeedVariancePercent": 0.05
+}

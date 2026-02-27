@@ -57,8 +57,8 @@ namespace Si.Engine.Sprite._Superclass
         {
             _engine = engine;
 
-            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked On.png");
-            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked Soft.png");
+            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
+            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
         }
 
         public SpriteInteractiveBase(EngineCore engine, Bitmap bitmap)
@@ -66,8 +66,8 @@ namespace Si.Engine.Sprite._Superclass
         {
             _engine = engine;
 
-            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked On.png");
-            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked Soft.png");
+            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
+            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
 
             SetImage(bitmap);
         }

@@ -1,0 +1,15 @@
+{
+  "Class": "LockingMunitionBase",
+  "Name": "Scrams Missile",
+  "Description": "",
+  
+  "Damage": 5,
+  "Speed": 700,
+  "SpeedVariancePercent": 0.10,
+
+  "ExplodesOnImpact": true,
+  
+  "SeekingEscapeDistance": 500,
+  "SeekingEscapeAngleDegrees": 90,
+  "SeekingRotationRateDegrees": 60
+}

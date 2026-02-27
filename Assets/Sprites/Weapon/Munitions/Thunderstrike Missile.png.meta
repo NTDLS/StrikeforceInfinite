@@ -1,0 +1,13 @@
+{
+  "Class": "SeekingMunitionBase",
+  "Name": "Thunderstrike Missile",
+  "Description": "",
+    
+  "Damage": 20,
+  "Speed": 950,
+  "ExplodesOnImpact": true,
+  
+  "SeekingEscapeAngleDegrees": 20,
+  "SeekingEscapeDistance": 1000,
+  "SeekingRotationRateDegrees": 45
+}

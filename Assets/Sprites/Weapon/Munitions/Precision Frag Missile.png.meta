@@ -1,0 +1,15 @@
+{
+  "Class": "LockingMunitionBase",
+  "Name": "Precision Frag Missile",
+  "Description": "",
+    
+  "Damage": 8,
+  "Speed": 800,
+  "SpeedVariancePercent": 0.10,
+
+  "ExplodesOnImpact": true,
+  
+  "SeekingEscapeDistance": 500,
+  "SeekingEscapeAngleDegrees": 90,
+  "SeekingRotationRateDegrees": 40
+}

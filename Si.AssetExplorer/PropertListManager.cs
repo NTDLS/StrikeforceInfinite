@@ -177,6 +177,7 @@ namespace Si.AssetExplorer
             //PrimaryWeapon
             //Attachments
             //Weapons
+            //MunitionSpritePaths
 
             var groupHealth = new ListViewGroup("Health", HorizontalAlignment.Left);
             _listView.Groups.Add(groupHealth);

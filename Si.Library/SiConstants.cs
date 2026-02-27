@@ -66,7 +66,7 @@
             Energy,     //These are going to be particle weapons.
             Locking,    //These are munitions that lock on to a target.
             Projectile, //These are conventional "bullet" type munitions.
-            Seeking     //Seeks to whatever target is in front of it - no locking.
+            Seeking     //Seeks to whatever target is in front of it - but without locking.
         }
 
         /// <summary>

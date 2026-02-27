@@ -12,21 +12,6 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
     /// </summary>
     internal class SeekingMunitionBase : MunitionBase
     {
-        /// <summary>
-        /// The max distance at which the munition will attempt to seek an object.
-        /// </summary>
-        public int SeekingEscapeDistance { get; set; } = 1000;
-
-        /// <summary>
-        /// The angle in degrees at which the munition will attempt to seek an object.
-        /// </summary>
-        public int SeekingEscapeAngleDegrees { get; set; } = 20;
-
-        /// <summary>
-        /// The rate in degrees per second at which the munition will rotate to seek an object.
-        /// </summary>
-        public float SeekingRotationRateDegrees { get; set; } = 4;
-
         public SeekingMunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string? spritePath, SiVector? location = null)
             : base(engine, weapon, firedFrom, spritePath, location)
         {
@@ -36,13 +21,13 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         {
             if (FiredFromType == SiFiredFromType.Enemy)
             {
-                if (DistanceTo(_engine.Player.Sprite) < SeekingEscapeDistance)
+                if (DistanceTo(_engine.Player.Sprite) < Metadata.SeekingEscapeDistance)
                 {
                     var deltaAngle = this.HeadingAngleToInSignedDegrees(_engine.Player.Sprite);
 
-                    if (Math.Abs((float)deltaAngle) < SeekingEscapeAngleDegrees && !deltaAngle.IsNearZero())
+                    if (Math.Abs((float)deltaAngle) < Metadata.SeekingEscapeAngleDegrees && !deltaAngle.IsNearZero())
                     {
-                        RotateMovementVector(SeekingRotationRateDegrees * (deltaAngle > 0 ? 1 : -1), epoch);
+                        RotateMovementVector(Metadata.SeekingRotationRateDegrees ?? 0 * (deltaAngle > 0 ? 1 : -1), epoch);
                     }
                 }
             }
@@ -52,7 +37,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
 
                 foreach (var enemy in _engine.Sprites.Enemies.Visible())
                 {
-                    if (DistanceTo(enemy) < SeekingEscapeDistance)
+                    if (DistanceTo(enemy) < Metadata.SeekingEscapeDistance)
                     {
                         var deltaAngle = this.HeadingAngleToInSignedDegrees(enemy);
                         if (smallestAngle == null || Math.Abs(deltaAngle) < Math.Abs((float)smallestAngle))
@@ -62,9 +47,9 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
                     }
                 }
 
-                if (smallestAngle != null && Math.Abs((float)smallestAngle) < SeekingEscapeAngleDegrees && !smallestAngle.IsNearZero())
+                if (smallestAngle != null && Math.Abs((float)smallestAngle) < Metadata.SeekingEscapeAngleDegrees && !smallestAngle.IsNearZero())
                 {
-                    RotateMovementVector(SeekingRotationRateDegrees * (smallestAngle > 0 ? 1 : -1), epoch);
+                    RotateMovementVector(Metadata.SeekingRotationRateDegrees ?? 0 * (smallestAngle > 0 ? 1 : -1), epoch);
                 }
             }
 

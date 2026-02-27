@@ -155,8 +155,8 @@ namespace Si.Engine.Sprite
         /// <summary>
         /// If the sprite has an image, these are the paths to the bitmaps (be default, they are used at random)..
         /// </summary>
-        [MetaData("Sprite Paths", "The paths to the bitmaps for the sprite.", PropertyEditorType.MultipleSpritePicker)]
-        public string[]? SpritePaths { get; set; }
+        [MetaData("Sprite Paths", "The paths to the munitions for the weapon.", PropertyEditorType.MultipleSpritePicker)]
+        public string[]? MunitionSpritePaths { get; set; }
 
         [MetaData("Sound Path", "The path to the sound file for the sprite.", PropertyEditorType.String)]
         public string? SoundPath { get; set; }

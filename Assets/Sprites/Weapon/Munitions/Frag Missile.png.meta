@@ -1,0 +1,15 @@
+{
+  "Class": "SeekingMunitionBase",
+  "Name": "Frag Missile",
+  "Description": "",
+
+  "Damage": 10,
+  "Speed": 700,
+  "ExplodesOnImpact": true,
+  "AngleVarianceDegrees": 0,
+  "SpeedVariancePercent": 0.10,
+  
+  "SeekingEscapeAngleDegrees": 20,
+  "SeekingEscapeDistance": 1000,
+  "SeekingRotationRateDegrees": 45
+}
