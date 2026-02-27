@@ -5,8 +5,6 @@ namespace Si.AssetExplorer.Forms
     public partial class FormPropertyString
         : KryptonForm
     {
-        //DONE!
-
         public string Value => kryptonTextBoxWorking.Text;
 
         public FormPropertyString()
@@ -21,8 +19,7 @@ namespace Si.AssetExplorer.Forms
             kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
 
             kryptonTextBoxWorking.MaxLength = (int?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
-            kryptonTextBoxWorking.Text = propertyItem.WorkingValue?.ToString() ?? propertyItem.DefaultValue?.ToString() ?? string.Empty;
-            kryptonTextBoxDefault.Text = propertyItem.DefaultValue?.ToString() ?? string.Empty;
+            kryptonTextBoxWorking.Text = propertyItem.WorkingValue?.ToString() ?? string.Empty;
 
             AcceptButton = kryptonButtonSave;
             CancelButton = kryptonButtonCancel;

@@ -125,7 +125,7 @@ namespace Si.AssetExplorer
             }
         }
 
-        private void PropertiesEdited(SpriteBase sprite, Metadata metadata)
+        private void PropertiesEdited(SpriteBase sprite, PropertyItem propertyItem)
         {
 
         }

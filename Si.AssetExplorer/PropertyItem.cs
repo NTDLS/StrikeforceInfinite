@@ -9,8 +9,6 @@ namespace Si.AssetExplorer
     public class PropertyItem
         : ListViewItem
     {
-        private readonly static Metadata _defaults = new();
-
         /// <summary>
         /// Gets or sets the metadata attributes associated with the object.
         /// </summary>
@@ -22,18 +20,16 @@ namespace Si.AssetExplorer
         /// Actual value of this meta data attribute.
         /// </summary>
         public object? WorkingValue { get; set; }
-
-        /// <summary>
-        /// Default value of this meta data attribute.
-        /// </summary>
-        public object? DefaultValue { get; set; }
+        public Metadata MetaData { get; set; }
+        public string PropertyName { get; set; }
 
         public PropertyItem(Metadata metaData, string propertyName, ListViewGroup? group)
         {
             Group = group;
+            MetaData = metaData;
+            PropertyName = propertyName;
 
             WorkingValue = SiReflection.GetPropertyValue(metaData, propertyName);
-            DefaultValue = SiReflection.GetPropertyValue(_defaults, propertyName);
 
             Attributes = metaData.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -48,7 +44,6 @@ namespace Si.AssetExplorer
 
             Text = NTDLS.Helpers.Text.SeparateCamelCase(propertyName);
             SubItems.Add(PropertyStringifier(WorkingValue));
-            SubItems.Add(PropertyStringifier(DefaultValue));
         }
 
         public static string? PropertyStringifier(object? value)

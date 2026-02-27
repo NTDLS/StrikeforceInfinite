@@ -6,8 +6,6 @@ namespace Si.AssetExplorer.Forms
     public partial class FormPropertyVector
         : KryptonForm
     {
-        //DONE!
-
         public SiVector Value => new((float)kryptonNumericUpDownWorkingX.Value, (float)kryptonNumericUpDownWorkingY.Value);
 
         public FormPropertyVector()
@@ -20,14 +18,6 @@ namespace Si.AssetExplorer.Forms
             InitializeComponent();
             kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-
-            kryptonNumericUpDownDefaultX.Minimum = decimal.MinValue;
-            kryptonNumericUpDownDefaultX.Maximum = decimal.MaxValue;
-            kryptonNumericUpDownDefaultX.Value = (decimal?)(propertyItem.DefaultValue as SiVector)?.X ?? 0;
-
-            kryptonNumericUpDownDefaultY.Minimum = decimal.MinValue;
-            kryptonNumericUpDownDefaultY.Maximum = decimal.MaxValue;
-            kryptonNumericUpDownDefaultY.Value = (decimal?)(propertyItem.DefaultValue as SiVector)?.Y ?? 0;
 
             kryptonNumericUpDownWorkingX.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
             kryptonNumericUpDownWorkingX.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;

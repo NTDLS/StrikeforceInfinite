@@ -12,12 +12,12 @@ namespace Si.AssetExplorer
         private readonly EngineCore _engineCore;
         private readonly KryptonListView _listView;
         private readonly Action<string, LoggingLevel?> _writeOutput;
-        private readonly Action<SpriteBase, Metadata> _propertiesEdited;
+        private readonly Action<SpriteBase, PropertyItem> _propertiesEdited;
         private SpriteBase? _lastSprite;
 
         public PropertListManager(KryptonListView listView, EngineCore engineCore,
             Action<string, LoggingLevel?> writeOutput,
-            Action<SpriteBase, Metadata> propertiesEdited)
+            Action<SpriteBase, PropertyItem> propertiesEdited)
         {
             _engineCore = engineCore;
             _listView = listView;
@@ -44,7 +44,7 @@ namespace Si.AssetExplorer
                 return;
             }
 
-            object? newValue = null;
+            object? newValue;
 
             switch (selectedItem.Attributes?.EditorType)
             {
@@ -135,6 +135,8 @@ namespace Si.AssetExplorer
                         break;
                     }
             }
+
+            _propertiesEdited(_lastSprite, selectedItem);
         }
 
         public void PopulateProperties(SpriteBase sprite)

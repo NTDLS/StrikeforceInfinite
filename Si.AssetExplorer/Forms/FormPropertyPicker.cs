@@ -15,13 +15,14 @@ namespace Si.AssetExplorer.Forms
         public FormPropertyPicker(PropertyItem propertyItem)
         {
             InitializeComponent();
-            kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-            kryptonNumericUpDown.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
-            kryptonNumericUpDownDefaultValue.Value = Convert.ToDecimal(propertyItem.DefaultValue);
+            //kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            //kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            //kryptonNumericUpDown.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
 
             AcceptButton = kryptonButtonSave;
             CancelButton = kryptonButtonCancel;
+
+            throw new System.NotImplementedException();
         }
 
         private void KryptonButtonSave_Click(object sender, EventArgs e)

@@ -5,8 +5,6 @@ namespace Si.AssetExplorer.Forms
     public partial class FormPropertyBoolean
         : KryptonForm
     {
-        //DONE!
-
         public bool Value => kryptonCheckBoxWorking.Checked;
 
         public FormPropertyBoolean()
@@ -19,8 +17,7 @@ namespace Si.AssetExplorer.Forms
             InitializeComponent();
             kryptonCheckBoxWorking.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-            kryptonCheckBoxWorking.Checked = Convert.ToBoolean(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
-            kryptonCheckBoxDefault.Checked = Convert.ToBoolean(propertyItem.DefaultValue);
+            kryptonCheckBoxWorking.Checked = Convert.ToBoolean(propertyItem.WorkingValue ?? false);
 
             AcceptButton = kryptonButtonSave;
             CancelButton = kryptonButtonCancel;

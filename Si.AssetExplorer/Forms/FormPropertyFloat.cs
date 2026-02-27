@@ -5,8 +5,6 @@ namespace Si.AssetExplorer.Forms
     public partial class FormPropertyFloat
         : KryptonForm
     {
-        //DONE!
-
         public float Value => Convert.ToSingle(kryptonNumericUpDownWorking.Value);
 
         public FormPropertyFloat()
@@ -20,13 +18,9 @@ namespace Si.AssetExplorer.Forms
             kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
 
-            kryptonNumericUpDownDefault.Minimum = decimal.MinValue;
-            kryptonNumericUpDownDefault.Maximum = decimal.MaxValue;
-            kryptonNumericUpDownDefault.Value = Convert.ToDecimal(propertyItem.DefaultValue);
-
             kryptonNumericUpDownWorking.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
             kryptonNumericUpDownWorking.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
-            kryptonNumericUpDownWorking.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
+            kryptonNumericUpDownWorking.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? 0f);
 
             AcceptButton = kryptonButtonSave;
             CancelButton = kryptonButtonCancel;

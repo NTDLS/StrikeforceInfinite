@@ -1,17 +1,30 @@
 ﻿using Krypton.Toolkit;
+using NTDLS.Helpers;
+using Si.Library;
 
 namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertyEnum
         : KryptonForm
     {
-        //DONE!
-
-        public decimal Value => 0;// kryptonDropButtonWorking.Value;
+        public int Value => ((ComboboxItem)kryptonComboBoxWorking.SelectedItem.EnsureNotNull()).Value;
 
         public FormPropertyEnum()
         {
             InitializeComponent();
+        }
+
+        class ComboboxItem
+        {
+            public string Text { get; set; }
+            public int Value { get; set; }
+            public override string ToString() => Text;
+
+            public ComboboxItem(string text, int value)
+            {
+                Text = text;
+                Value = value;
+            }
         }
 
         public FormPropertyEnum(PropertyItem propertyItem)
@@ -32,11 +45,13 @@ namespace Si.AssetExplorer.Forms
                 var text = value.ToString();
                 if (text != null && text != string.Empty)
                 {
+                    var item = new ComboboxItem(text, Convert.ToInt32(value));
+
                     if (text == propertyItem.WorkingValue?.ToString())
                     {
-                        selectedItem = value;
+                        selectedItem = item;
                     }
-                    kryptonComboBoxWorking.Items.Add(text);
+                    kryptonComboBoxWorking.Items.Add(item);
                 }
             }
             if (selectedItem != null)
@@ -44,14 +59,18 @@ namespace Si.AssetExplorer.Forms
                 kryptonComboBoxWorking.SelectedItem = selectedItem;
             }
 
-            kryptonTextBoxDefault.Text = propertyItem.DefaultValue?.ToString();
-
             AcceptButton = kryptonButtonSave;
             CancelButton = kryptonButtonCancel;
         }
 
         private void KryptonButtonSave_Click(object sender, EventArgs e)
         {
+            if (kryptonComboBoxWorking.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a value.", SiConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             DialogResult = DialogResult.OK;
             Close();
         }
