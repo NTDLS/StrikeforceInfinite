@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace Si.Library.Mathematics
 {
@@ -21,8 +22,8 @@ namespace Si.Library.Mathematics
         public static SiVector UnitOfY() => new(0f, 1f);
         public static SiVector One() => new(1f, 1f);
 
-        public float X;
-        public float Y;
+        public float X { get; set; }
+        public float Y { get; set; }
 
         #region ~Ctor. 
 
@@ -329,6 +330,8 @@ namespace Si.Library.Mathematics
         /// <summary>
         /// Angle in radians between [0,2π]
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public float Radians
         {
             get
@@ -353,6 +356,8 @@ namespace Si.Library.Mathematics
         /// <summary>
         /// Angle in radians between [−π,+π]
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public float RadiansSigned
         {
             get => SiMath.CardinalToRad(X, Y);
@@ -369,6 +374,8 @@ namespace Si.Library.Mathematics
         /// <summary>
         /// Angle in degrees between [−0,360]
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public float Degrees
         {
             get
@@ -396,6 +403,8 @@ namespace Si.Library.Mathematics
         /// <summary>
         /// Angle in degrees between [−180,180]
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public float DegreesSigned
         {
             get

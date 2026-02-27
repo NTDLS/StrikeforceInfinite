@@ -72,7 +72,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
                 Metadata.Attachments?.ForEach(attachment =>
                 {
-                    var locationRelativeToOwner = new SiVector(attachment.X ?? 0, attachment.Y ?? 0);
+                    var locationRelativeToOwner = new SiVector(attachment.AttachmentPosition?.X ?? 0, attachment.AttachmentPosition?.Y ?? 0);
                     interactive.AttachOfType(attachment.Type.EnsureNotNull(), locationRelativeToOwner);
                 });
             }

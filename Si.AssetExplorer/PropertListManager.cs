@@ -172,6 +172,7 @@ namespace Si.AssetExplorer
             var groupAnimation = new ListViewGroup("Animation", HorizontalAlignment.Left);
             var groupWeapons = new ListViewGroup("Weapons", HorizontalAlignment.Left);
             var groupMunitions = new ListViewGroup("Munitions", HorizontalAlignment.Left);
+            var groupAudio = new ListViewGroup("Audio", HorizontalAlignment.Left);
 
             // --- Add ALL groups first (important)
             _listView.Groups.AddRange(new[]
@@ -189,8 +190,7 @@ namespace Si.AssetExplorer
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "Name", groupBase));
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "Type", groupBase));
 
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "X", groupAttachment));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Y", groupAttachment));
+                _listView.Items.Add(new PropertyItem(sprite.Metadata, "AttachmentPosition", groupAttachment));
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "PositionType", groupAttachment));
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "OrientationType", groupAttachment));
 
@@ -228,8 +228,10 @@ namespace Si.AssetExplorer
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "MaxLocks", groupWeapons));
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "MinLockDistance", groupWeapons));
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "MunitionCount", groupWeapons));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SoundPath", groupWeapons));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SoundVolume", groupWeapons));
+
+                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SoundVolume", groupAudio));
+                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SoundPath", groupAudio));
+                _listView.Items.Add(new PropertyItem(sprite.Metadata, "LoopSound", groupAudio));
 
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "AngleVarianceDegrees", groupMunitions));
                 _listView.Items.Add(new PropertyItem(sprite.Metadata, "Damage", groupMunitions));

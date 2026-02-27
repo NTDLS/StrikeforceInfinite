@@ -125,7 +125,7 @@ namespace Si.Engine.Manager
             }
 
             var metadata = JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)) ?? new Metadata();
-            _collection.Write(o => o.Add(key, new AssetContainer(BaseAssetType.Meta, spritePath, metadata.EnsureNotNull())));
+            _collection.Write(o => o[key] = new AssetContainer(BaseAssetType.Meta, spritePath, metadata.EnsureNotNull()));
             return metadata;
         }
 
@@ -197,18 +197,20 @@ namespace Si.Engine.Manager
             }
         }
 
-        public SiAudioClip GetAudio(string path, float initialVolume = 1, bool loopForever = false)
+        public SiAudioClip GetAudio(string path, float? volume = null)
         {
+            var metadata = GetMetadata(path);
+
             path = path.ToLower().Replace('\\', '/');
 
-            var cacheKey = $"{path}:{initialVolume}:{loopForever}";
+            var cacheKey = $"{path}:{volume ?? metadata.SoundVolume ?? 1}:{metadata.LoopSound ?? false}";
             var cached = _collection.Read(o =>
             {
                 if (o.TryGetValue(cacheKey, out var value))
                 {
                     var audioClip = value.Object as SiAudioClip;
-                    audioClip?.SetInitialVolume(initialVolume);
-                    audioClip?.SetLoopForever(loopForever);
+                    audioClip?.SetInitialVolume(volume ?? metadata.SoundVolume ?? 1);
+                    audioClip?.SetLoopForever(metadata.LoopSound ?? false);
                     return audioClip;
                 }
                 return null;
@@ -220,7 +222,7 @@ namespace Si.Engine.Manager
             }
 
             using var stream = GetCompressedStream(path);
-            var result = new SiAudioClip(stream, initialVolume, loopForever);
+            var result = new SiAudioClip(stream, volume ?? metadata.SoundVolume ?? 1, metadata.LoopSound ?? false);
             _collection.Write(o => o.TryAdd(cacheKey, new AssetContainer(BaseAssetType.Asset, path, result)));
             stream.Close();
             return result;

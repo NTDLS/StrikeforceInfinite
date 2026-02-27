@@ -45,20 +45,20 @@ namespace Si.Engine.Sprite
         {
             OnHit += SpritePlayer_OnHit;
 
-            AmmoLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Low.wav", 0.75f);
-            SystemsFailingSound = _engine.Assets.GetAudio(@"Sounds\Ship\Systems Failing.wav", 0.75f);
-            HullBreachedSound = _engine.Assets.GetAudio(@"Sounds\Ship\Hull Breached.wav", 0.75f);
-            IntegrityLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Integrity Low.wav", 0.75f);
-            ShieldFailSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Fail.wav", 0.75f);
-            ShieldDownSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Down.wav", 0.75f);
-            ShieldMaxSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Max.wav", 0.75f);
-            ShieldNominalSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Nominal.wav", 0.75f);
-            AllSystemsGoSound = _engine.Assets.GetAudio(@"Sounds\Ship\All Systems Go.wav", 0.75f);
-            AmmoLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Low.wav", 0.75f);
-            AmmoEmptySound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Empty.wav", 0.75f);
-            ShipEngineRoarSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Roar.wav", 0.5f, true);
-            ShipEngineIdleSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Idle.wav", 0.5f, true);
-            ShipEngineBoostSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Boost.wav", 0.5f, true);
+            AmmoLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Low.wav");
+            SystemsFailingSound = _engine.Assets.GetAudio(@"Sounds\Ship\Systems Failing.wav");
+            HullBreachedSound = _engine.Assets.GetAudio(@"Sounds\Ship\Hull Breached.wav");
+            IntegrityLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Integrity Low.wav");
+            ShieldFailSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Fail.wav");
+            ShieldDownSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Down.wav");
+            ShieldMaxSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Max.wav");
+            ShieldNominalSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Nominal.wav");
+            AllSystemsGoSound = _engine.Assets.GetAudio(@"Sounds\Ship\All Systems Go.wav");
+            AmmoLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Low.wav");
+            AmmoEmptySound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Empty.wav");
+            ShipEngineRoarSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Roar.wav");
+            ShipEngineIdleSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Idle.wav");
+            ShipEngineBoostSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Boost.wav");
 
             Orientation = SiVector.One();
             Throttle = 0;

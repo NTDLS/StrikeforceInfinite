@@ -42,7 +42,7 @@ namespace Si.AssetExplorer
                 .Where(x => x.Attr != null)
                 .FirstOrDefault()?.Attr;
 
-            Text = NTDLS.Helpers.Text.SeparateCamelCase(propertyName);
+            Text = NTDLS.Helpers.Text.SeparateCamelCase(Attributes?.FriendlyName ?? propertyName);
             SubItems.Add(PropertyStringifier(WorkingValue));
         }
 

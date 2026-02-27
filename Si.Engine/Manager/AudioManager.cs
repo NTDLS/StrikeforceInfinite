@@ -21,22 +21,22 @@ namespace Si.Engine.Manager
         {
             _engine = engine;
 
-            Click = _engine.Assets.GetAudio(@"Sounds\Other\Click.wav", 0.70f, false);
-            DoorIsAjarSound = _engine.Assets.GetAudio(@"Sounds\Ship\Door Is Ajar.wav", 0.50f, false);
-            RadarBlipsSound = _engine.Assets.GetAudio(@"Sounds\Ship\Radar Blips.wav", 0.20f, false);
-            LockedOnBlip = _engine.Assets.GetAudio(@"Sounds\Ship\Locked On.wav", 0.20f, false);
-            BackgroundMusicSound = _engine.Assets.GetAudio(@"Sounds\Music\Background.wav", 0.25f, true);
+            Click = _engine.Assets.GetAudio(@"Sounds\Other\Click.wav");
+            DoorIsAjarSound = _engine.Assets.GetAudio(@"Sounds\Ship\Door Is Ajar.wav");
+            RadarBlipsSound = _engine.Assets.GetAudio(@"Sounds\Ship\Radar Blips.wav");
+            LockedOnBlip = _engine.Assets.GetAudio(@"Sounds\Ship\Locked On.wav");
+            BackgroundMusicSound = _engine.Assets.GetAudio(@"Sounds\Music\Background.wav");
         }
 
         public void PlayRandomShieldHit()
         {
-            var audioClip = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Hit.wav", 1.0f);
+            var audioClip = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Hit.wav");
             audioClip?.Play();
         }
 
         public void PlayRandomHullHit()
         {
-            var audioClip = _engine.Assets.GetAudio(@"Sounds\Ship\Object Hit.wav", 1.0f);
+            var audioClip = _engine.Assets.GetAudio(@"Sounds\Ship\Object Hit.wav");
             audioClip?.Play();
         }
 
@@ -45,7 +45,7 @@ namespace Si.Engine.Manager
             const string assetPath = @"Sounds\Explode\";
             int assetCount = 4;
             int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
-            var audioClip = _engine.Assets.GetAudio(Path.Combine(assetPath, $"{selectedAssetIndex}.wav"), 1.0f);
+            var audioClip = _engine.Assets.GetAudio(Path.Combine(assetPath, $"{selectedAssetIndex}.wav"));
             audioClip?.Play();
         }
     }

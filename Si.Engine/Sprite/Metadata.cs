@@ -1,4 +1,5 @@
 ﻿using Si.Library;
+using Si.Library.Mathematics;
 using System.Collections.Generic;
 using static Si.Library.SiConstants;
 
@@ -6,6 +7,12 @@ namespace Si.Engine.Sprite
 {
     public class Metadata
     {
+        [MetaData("Sound Volume", "Volumne of the sound expressed in percentages.", PropertyEditorType.MultipleSpritePicker, minValue: 0, maxValue: 1)]
+        public float? SoundVolume { get; set; }
+
+        [MetaData("Loop Sound", "Indicates whether the sound should loop when played.", PropertyEditorType.Boolean)]
+        public bool? LoopSound { get; set; }
+
         [MetaData("Class", "The class of the sprite, used for categorization and behavior assignment.", PropertyEditorType.String)]
         public string @Class { get; set; } = string.Empty;
 
@@ -19,11 +26,8 @@ namespace Si.Engine.Sprite
         [MetaData("Type", "THIS SHOULD BE ELIMINATED IN FAVOR OF A SPRITE PATH.", PropertyEditorType.String)]
         public string? Type { get; set; }
 
-        [MetaData("X", "The X coordinate of the sprite's location relative to its owner.", PropertyEditorType.Float)]
-        public float? X { get; set; }
-
-        [MetaData("Y", "The Y coordinate of the sprite's location relative to its owner.", PropertyEditorType.Float)]
-        public float? Y { get; set; }
+        [MetaData("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.", PropertyEditorType.Vector)]
+        public SiVector? AttachmentPosition { get; set; }
 
         #region InteractiveSpriteAttachmentMetadata
 
@@ -157,9 +161,6 @@ namespace Si.Engine.Sprite
 
         [MetaData("Sound Path", "The path to the sound file for the sprite.", PropertyEditorType.String)]
         public string? SoundPath { get; set; }
-
-        [MetaData("Sound Volume", "The volume of the sound for the sprite.", PropertyEditorType.Float)]
-        public float? SoundVolume { get; set; }
 
         /// <summary>
         /// The variance in degrees that the loaded munition will use for an initial heading angle.

@@ -14,48 +14,39 @@
   "Attachments": [
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 563,
-      "Y": 151
+      "AttachmentPosition": { "X": 563, "Y": 151 }
     },
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 563,
-      "Y": 372
+      "AttachmentPosition": { "X": 563, "Y": 372 }
     },
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 567,
-      "Y": 668
+      "AttachmentPosition": { "X": 567, "Y": 668 }
     },
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 563,
-      "Y": 964
+      "AttachmentPosition": { "X": 563, "Y": 964 }
     },
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 563,
-      "Y": 1186
+      "AttachmentPosition": { "X": 563, "Y": 1186 }
     },
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 58,
-      "Y": 368
+      "AttachmentPosition": { "X": 58, "Y": 368 }
     },
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 55,
-      "Y": 969
+      "AttachmentPosition": { "X": 55, "Y": 969 }
     },
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 1067,
-      "Y": 365
+      "AttachmentPosition": { "X": 1067, "Y": 365 }
     },
     {
       "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
-      "X": 1070,
-      "Y": 971
+      "AttachmentPosition": { "X": 1070, "Y": 971 }
     }
   ]  
 }
