@@ -1,10 +1,9 @@
-﻿using Krypton.Toolkit;
-using Si.Library.Mathematics;
+﻿using Si.Library.Mathematics;
 
 namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertyVector
-        : KryptonForm
+        : Form
     {
         public SiVector Value => new((float)kryptonNumericUpDownWorkingX.Value, (float)kryptonNumericUpDownWorkingY.Value);
 
@@ -31,13 +30,13 @@ namespace Si.AssetExplorer.Forms
             CancelButton = kryptonButtonCancel;
         }
 
-        private void KryptonButtonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void KryptonButtonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();

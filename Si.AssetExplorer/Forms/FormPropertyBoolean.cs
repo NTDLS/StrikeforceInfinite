@@ -1,9 +1,7 @@
-﻿using Krypton.Toolkit;
-
-namespace Si.AssetExplorer.Forms
+﻿namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertyBoolean
-        : KryptonForm
+        : Form
     {
         public bool Value => kryptonCheckBoxWorking.Checked;
 
@@ -23,13 +21,13 @@ namespace Si.AssetExplorer.Forms
             CancelButton = kryptonButtonCancel;
         }
 
-        private void KryptonButtonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void KryptonButtonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();

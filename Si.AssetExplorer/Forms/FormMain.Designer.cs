@@ -1,5 +1,4 @@
-﻿using Krypton.Toolkit;
-using Talkster.Client.Controls;
+﻿using Talkster.Client.Controls;
 
 namespace Si.AssetExplorer
 {
@@ -32,39 +31,30 @@ namespace Si.AssetExplorer
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            splitContainerLeft = new KryptonSplitContainer();
+            splitContainerLeft = new SplitContainer();
             treeViewAssets = new DoubleBufferedTreeView();
-            splitContainerRight = new KryptonSplitContainer();
-            splitContainerProperties = new KryptonSplitContainer();
-            pictureBoxPreview = new KryptonPictureBox();
-            listViewProperties = new KryptonListView();
-            columnHeaderName = new ColumnHeader();
-            columnHeaderValue = new ColumnHeader();
-            columnHeaderDefault = new ColumnHeader();
-            splitContainerBottom = new KryptonSplitContainer();
-            richTextBoxOutput = new KryptonRichTextBox();
-            kryptonToolStrip1 = new KryptonToolStrip();
+            splitContainerRight = new SplitContainer();
+            splitContainerProperties = new SplitContainer();
+            pictureBoxPreview = new PictureBox();
+            listViewProperties = new ListView();
+            splitContainerBottom = new SplitContainer();
+            richTextBoxOutput = new RichTextBox();
+            kryptonToolStrip1 = new ToolStrip();
             toolStripButtonSettings = new ToolStripButton();
             toolStripButtonDevelopmentConsole = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
-            (splitContainerLeft.Panel1).BeginInit();
+
             splitContainerLeft.Panel1.SuspendLayout();
-            (splitContainerLeft.Panel2).BeginInit();
+
             splitContainerLeft.Panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).BeginInit();
-            (splitContainerRight.Panel1).BeginInit();
-            (splitContainerRight.Panel2).BeginInit();
             splitContainerRight.Panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).BeginInit();
-            (splitContainerProperties.Panel1).BeginInit();
             splitContainerProperties.Panel1.SuspendLayout();
-            (splitContainerProperties.Panel2).BeginInit();
             splitContainerProperties.Panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxPreview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainerBottom).BeginInit();
-            (splitContainerBottom.Panel1).BeginInit();
             splitContainerBottom.Panel1.SuspendLayout();
-            (splitContainerBottom.Panel2).BeginInit();
             splitContainerBottom.Panel2.SuspendLayout();
             kryptonToolStrip1.SuspendLayout();
             SuspendLayout();
@@ -100,7 +90,6 @@ namespace Si.AssetExplorer
             // 
             // 
             // 
-            splitContainerRight.Panel1.PanelBackStyle = PaletteBackStyle.ControlToolTip;
             // 
             // 
             // 
@@ -138,7 +127,6 @@ namespace Si.AssetExplorer
             // 
             // listViewProperties
             // 
-            listViewProperties.Columns.AddRange(new ColumnHeader[] { columnHeaderName, columnHeaderValue, columnHeaderDefault });
             listViewProperties.Dock = DockStyle.Fill;
             listViewProperties.HideSelection = false;
             listViewProperties.Location = new Point(0, 0);
@@ -146,18 +134,6 @@ namespace Si.AssetExplorer
             listViewProperties.Size = new Size(165, 256);
             listViewProperties.TabIndex = 0;
             listViewProperties.View = View.Details;
-            // 
-            // columnHeaderName
-            // 
-            columnHeaderName.Text = "Name";
-            // 
-            // columnHeaderValue
-            // 
-            columnHeaderValue.Text = "Value";
-            // 
-            // columnHeaderDefault
-            // 
-            columnHeaderDefault.Text = "Default";
             // 
             // splitContainerBottom
             // 
@@ -227,25 +203,17 @@ namespace Si.AssetExplorer
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             Text = "Asset Manager";
-            (splitContainerLeft.Panel1).EndInit();
             splitContainerLeft.Panel1.ResumeLayout(false);
-            (splitContainerLeft.Panel2).EndInit();
             splitContainerLeft.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).EndInit();
-            (splitContainerRight.Panel1).EndInit();
-            (splitContainerRight.Panel2).EndInit();
             splitContainerRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).EndInit();
-            (splitContainerProperties.Panel1).EndInit();
             splitContainerProperties.Panel1.ResumeLayout(false);
             splitContainerProperties.Panel1.PerformLayout();
-            (splitContainerProperties.Panel2).EndInit();
             splitContainerProperties.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxPreview).EndInit();
-            (splitContainerBottom.Panel1).EndInit();
             splitContainerBottom.Panel1.ResumeLayout(false);
-            (splitContainerBottom.Panel2).EndInit();
             splitContainerBottom.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerBottom).EndInit();
             kryptonToolStrip1.ResumeLayout(false);
@@ -256,19 +224,16 @@ namespace Si.AssetExplorer
 
         #endregion
 
-        private KryptonSplitContainer splitContainerLeft;
+        private SplitContainer splitContainerLeft;
         private DoubleBufferedTreeView treeViewAssets;
-        private KryptonSplitContainer splitContainerRight;
-        private KryptonSplitContainer splitContainerBottom;
-        private KryptonSplitContainer splitContainerProperties;
-        private KryptonPictureBox pictureBoxPreview;
-        private KryptonListView listViewProperties;
-        private KryptonRichTextBox richTextBoxOutput;
-        private KryptonToolStrip kryptonToolStrip1;
+        private SplitContainer splitContainerRight;
+        private SplitContainer splitContainerBottom;
+        private SplitContainer splitContainerProperties;
+        private PictureBox pictureBoxPreview;
+        private ListView listViewProperties;
+        private RichTextBox richTextBoxOutput;
+        private ToolStrip kryptonToolStrip1;
         private ToolStripButton toolStripButtonSettings;
         private ToolStripButton toolStripButtonDevelopmentConsole;
-        private ColumnHeader columnHeaderName;
-        private ColumnHeader columnHeaderValue;
-        private ColumnHeader columnHeaderDefault;
     }
 }

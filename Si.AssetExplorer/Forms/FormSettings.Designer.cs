@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            kryptonComboBoxTheme = new Krypton.Toolkit.KryptonComboBox();
-            kryptonLabelTheme = new Krypton.Toolkit.KryptonLabel();
-            kryptonButtonSave = new Krypton.Toolkit.KryptonButton();
-            kryptonButtonCancel = new Krypton.Toolkit.KryptonButton();
+            kryptonComboBoxTheme = new ComboBox();
+            kryptonLabelTheme = new Label();
+            kryptonButtonSave = new Button();
+            kryptonButtonCancel = new Button();
             ((System.ComponentModel.ISupportInitialize)kryptonComboBoxTheme).BeginInit();
             SuspendLayout();
             // 
@@ -42,7 +42,6 @@
             kryptonComboBoxTheme.Location = new Point(12, 43);
             kryptonComboBoxTheme.Name = "kryptonComboBoxTheme";
             kryptonComboBoxTheme.Size = new Size(284, 22);
-            kryptonComboBoxTheme.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             kryptonComboBoxTheme.TabIndex = 0;
             kryptonComboBoxTheme.Text = "Theme";
             // 
@@ -52,7 +51,7 @@
             kryptonLabelTheme.Name = "kryptonLabelTheme";
             kryptonLabelTheme.Size = new Size(90, 25);
             kryptonLabelTheme.TabIndex = 2;
-            kryptonLabelTheme.Values.Text = "Theme";
+            kryptonLabelTheme.Text = "Theme";
             // 
             // kryptonButtonSave
             // 
@@ -60,8 +59,8 @@
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 3;
-            kryptonButtonSave.Values.DropDownArrowColor = Color.Empty;
-            kryptonButtonSave.Values.Text = "Save";
+            
+            kryptonButtonSave.Text = "Save";
             kryptonButtonSave.Click += kryptonButtonSave_Click;
             // 
             // kryptonButtonCancel
@@ -70,8 +69,8 @@
             kryptonButtonCancel.Name = "kryptonButtonCancel";
             kryptonButtonCancel.Size = new Size(90, 25);
             kryptonButtonCancel.TabIndex = 4;
-            kryptonButtonCancel.Values.DropDownArrowColor = Color.Empty;
-            kryptonButtonCancel.Values.Text = "Cancel";
+            
+            kryptonButtonCancel.Text = "Cancel";
             kryptonButtonCancel.Click += kryptonButtonCancel_Click;
             // 
             // FormSettings
@@ -94,9 +93,9 @@
 
         #endregion
 
-        private Krypton.Toolkit.KryptonComboBox kryptonComboBoxTheme;
-        private Krypton.Toolkit.KryptonLabel kryptonLabelTheme;
-        private Krypton.Toolkit.KryptonButton kryptonButtonSave;
-        private Krypton.Toolkit.KryptonButton kryptonButtonCancel;
+        private ComboBox kryptonComboBoxTheme;
+        private Label kryptonLabelTheme;
+        private Button kryptonButtonSave;
+        private Button kryptonButtonCancel;
     }
 }

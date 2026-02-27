@@ -1,7 +1,4 @@
-﻿using Krypton.Toolkit;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using NTDLS.Persistence;
+﻿using NTDLS.Persistence;
 
 namespace Si.AssetExplorer
 {
@@ -30,7 +27,7 @@ namespace Si.AssetExplorer
             LocalUserApplicationData.SaveToDisk(Constants.AppName, Instance);
         }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public PaletteMode Theme { get; set; } = Theming.IsWindowsDarkMode() ? PaletteMode.SparklePurple : PaletteMode.ProfessionalSystem;
+        //[JsonConverter(typeof(StringEnumConverter))]
+        //public PaletteMode Theme { get; set; } = Theming.IsWindowsDarkMode() ? PaletteMode.SparklePurple : PaletteMode.ProfessionalSystem;
     }
 }

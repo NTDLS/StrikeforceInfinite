@@ -29,20 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertyVector));
-            kryptonNumericUpDownWorkingX = new Krypton.Toolkit.KryptonNumericUpDown();
-            kryptonLabelName = new Krypton.Toolkit.KryptonLabel();
-            kryptonButtonCancel = new Krypton.Toolkit.KryptonButton();
-            kryptonButtonSave = new Krypton.Toolkit.KryptonButton();
-            kryptonTextBoxDescription = new Krypton.Toolkit.KryptonTextBox();
-            kryptonLabelDescription = new Krypton.Toolkit.KryptonLabel();
-            kryptonNumericUpDownWorkingY = new Krypton.Toolkit.KryptonNumericUpDown();
-            kryptonLabelWorkingX = new Krypton.Toolkit.KryptonLabel();
-            kryptonLabelWorkingY = new Krypton.Toolkit.KryptonLabel();
+            kryptonNumericUpDownWorkingX = new NumericUpDown();
+            kryptonLabelName = new Label();
+            kryptonButtonCancel = new Button();
+            kryptonButtonSave = new Button();
+            kryptonTextBoxDescription = new TextBox();
+            kryptonLabelDescription = new Label();
+            kryptonNumericUpDownWorkingY = new NumericUpDown();
+            kryptonLabelWorkingX = new Label();
+            kryptonLabelWorkingY = new Label();
             SuspendLayout();
             // 
             // kryptonNumericUpDownWorkingX
             // 
-            kryptonNumericUpDownWorkingX.AllowDecimals = true;
             kryptonNumericUpDownWorkingX.DecimalPlaces = 5;
             kryptonNumericUpDownWorkingX.Increment = new decimal(new int[] { 1, 0, 0, 0 });
             kryptonNumericUpDownWorkingX.Location = new Point(40, 44);
@@ -59,7 +58,7 @@
             kryptonLabelName.Name = "kryptonLabelName";
             kryptonLabelName.Size = new Size(346, 25);
             kryptonLabelName.TabIndex = 0;
-            kryptonLabelName.Values.Text = "Property Name";
+            kryptonLabelName.Text = "Property Name";
             // 
             // kryptonButtonCancel
             // 
@@ -67,9 +66,9 @@
             kryptonButtonCancel.Name = "kryptonButtonCancel";
             kryptonButtonCancel.Size = new Size(90, 25);
             kryptonButtonCancel.TabIndex = 8;
-            kryptonButtonCancel.Values.DropDownArrowColor = Color.Empty;
-            kryptonButtonCancel.Values.Text = "Cancel";
-            kryptonButtonCancel.Click += KryptonButtonCancel_Click;
+            
+            kryptonButtonCancel.Text = "Cancel";
+            kryptonButtonCancel.Click += ButtonCancel_Click;
             // 
             // kryptonButtonSave
             // 
@@ -77,9 +76,9 @@
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 7;
-            kryptonButtonSave.Values.DropDownArrowColor = Color.Empty;
-            kryptonButtonSave.Values.Text = "Save";
-            kryptonButtonSave.Click += KryptonButtonSave_Click;
+            
+            kryptonButtonSave.Text = "Save";
+            kryptonButtonSave.Click += ButtonSave_Click;
             // 
             // kryptonTextBoxDescription
             // 
@@ -98,7 +97,7 @@
             kryptonLabelDescription.Name = "kryptonLabelDescription";
             kryptonLabelDescription.Size = new Size(90, 25);
             kryptonLabelDescription.TabIndex = 5;
-            kryptonLabelDescription.Values.Text = "Description";
+            kryptonLabelDescription.Text = "Description";
             // 
             // kryptonNumericUpDownWorkingY
             // 
@@ -117,7 +116,7 @@
             kryptonLabelWorkingX.Name = "kryptonLabelWorkingX";
             kryptonLabelWorkingX.Size = new Size(22, 25);
             kryptonLabelWorkingX.TabIndex = 1;
-            kryptonLabelWorkingX.Values.Text = "X";
+            kryptonLabelWorkingX.Text = "X";
             // 
             // kryptonLabelWorkingY
             // 
@@ -125,7 +124,7 @@
             kryptonLabelWorkingY.Name = "kryptonLabelWorkingY";
             kryptonLabelWorkingY.Size = new Size(22, 25);
             kryptonLabelWorkingY.TabIndex = 3;
-            kryptonLabelWorkingY.Values.Text = "Y";
+            kryptonLabelWorkingY.Text = "Y";
             // 
             // FormPropertyVector
             // 
@@ -152,14 +151,14 @@
 
         #endregion
 
-        private Krypton.Toolkit.KryptonNumericUpDown kryptonNumericUpDownWorkingX;
-        private Krypton.Toolkit.KryptonLabel kryptonLabelName;
-        private Krypton.Toolkit.KryptonButton kryptonButtonCancel;
-        private Krypton.Toolkit.KryptonButton kryptonButtonSave;
-        private Krypton.Toolkit.KryptonTextBox kryptonTextBoxDescription;
-        private Krypton.Toolkit.KryptonLabel kryptonLabelDescription;
-        private Krypton.Toolkit.KryptonNumericUpDown kryptonNumericUpDownWorkingY;
-        private Krypton.Toolkit.KryptonLabel kryptonLabelWorkingX;
-        private Krypton.Toolkit.KryptonLabel kryptonLabelWorkingY;
+        private NumericUpDown kryptonNumericUpDownWorkingX;
+        private Label kryptonLabelName;
+        private Button kryptonButtonCancel;
+        private Button kryptonButtonSave;
+        private TextBox kryptonTextBoxDescription;
+        private Label kryptonLabelDescription;
+        private NumericUpDown kryptonNumericUpDownWorkingY;
+        private Label kryptonLabelWorkingX;
+        private Label kryptonLabelWorkingY;
     }
 }

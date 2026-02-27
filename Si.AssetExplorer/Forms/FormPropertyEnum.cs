@@ -1,11 +1,10 @@
-﻿using Krypton.Toolkit;
-using NTDLS.Helpers;
+﻿using NTDLS.Helpers;
 using Si.Library;
 
 namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertyEnum
-        : KryptonForm
+        : Form
     {
         public int Value => ((ComboboxItem)kryptonComboBoxWorking.SelectedItem.EnsureNotNull()).Value;
 
@@ -63,7 +62,7 @@ namespace Si.AssetExplorer.Forms
             CancelButton = kryptonButtonCancel;
         }
 
-        private void KryptonButtonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             if (kryptonComboBoxWorking.SelectedItem == null)
             {
@@ -75,7 +74,7 @@ namespace Si.AssetExplorer.Forms
             Close();
         }
 
-        private void KryptonButtonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();

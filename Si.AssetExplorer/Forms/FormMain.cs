@@ -1,4 +1,3 @@
-using Krypton.Toolkit;
 using NTDLS.Helpers;
 using Si.AssetExplorer.Controls;
 using Si.AssetExplorer.Forms;
@@ -10,21 +9,16 @@ using static Si.Library.SiConstants;
 
 namespace Si.AssetExplorer
 {
-    public partial class FormMain : KryptonForm
+    public partial class FormMain : Form
     {
         private readonly EngineCore _engine;
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
         private readonly PropertListManager _propertListManager;
-        private readonly RichTextBox _richTextBox;
 
         public FormMain()
         {
             InitializeComponent();
-
-            // KryptonRichTextBox is a composite control; the real editor is inside.
-            _richTextBox = richTextBoxOutput.Controls.OfType<RichTextBox>().FirstOrDefault()
-                ?? throw new InvalidOperationException("Could not find inner RichTextBox inside KryptonRichTextBox.");
 
             WriteOutput("Instanciating EngineCore.", LoggingLevel.Verbose);
 
@@ -180,17 +174,17 @@ namespace Si.AssetExplorer
                 _ => AssetExplorerColors.Default
             };
 
-            _richTextBox.SelectionStart = _richTextBox.TextLength;
-            _richTextBox.SelectionLength = 0;
-            _richTextBox.SelectionColor = color;
-            _richTextBox.AppendText(text + Environment.NewLine);
-            _richTextBox.SelectionColor = _richTextBox.ForeColor;
+            richTextBoxOutput.SelectionStart = richTextBoxOutput.TextLength;
+            richTextBoxOutput.SelectionLength = 0;
+            richTextBoxOutput.SelectionColor = color;
+            richTextBoxOutput.AppendText(text + Environment.NewLine);
+            richTextBoxOutput.SelectionColor = richTextBoxOutput.ForeColor;
 
             // Reset selection to end.
-            _richTextBox.Select(_richTextBox.TextLength, 0);
-            _richTextBox.SelectionColor = _richTextBox.ForeColor;
+            richTextBoxOutput.Select(richTextBoxOutput.TextLength, 0);
+            richTextBoxOutput.SelectionColor = richTextBoxOutput.ForeColor;
 
-            _richTextBox.ScrollToCaret();
+            richTextBoxOutput.ScrollToCaret();
         }
 
         #region Tooklstrip buttons

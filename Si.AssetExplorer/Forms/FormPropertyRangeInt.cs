@@ -1,10 +1,9 @@
-﻿using Krypton.Toolkit;
-using Si.Library;
+﻿using Si.Library;
 
 namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertyRangeInt
-        : KryptonForm
+        : Form
     {
         public SiRange<int> Value => new((int)kryptonNumericUpDownWorkingMin.Value, (int)kryptonNumericUpDownWorkingMax.Value);
 
@@ -31,13 +30,13 @@ namespace Si.AssetExplorer.Forms
             CancelButton = kryptonButtonCancel;
         }
 
-        private void KryptonButtonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void KryptonButtonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();

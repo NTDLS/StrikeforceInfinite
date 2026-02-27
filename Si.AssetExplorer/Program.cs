@@ -1,11 +1,7 @@
-using Krypton.Toolkit;
-
 namespace Si.AssetExplorer
 {
     internal static class Program
     {
-        public static KryptonManager ThemeManager = new();
-
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -26,8 +22,6 @@ namespace Si.AssetExplorer
             Settings.Save(); //Create a default persisted state if one does not exist.
 
             //CreateMetaFiles(@"C:\NTDLS\StrikeforceInfinite\Assets");
-
-            ThemeManager.GlobalPaletteMode = Settings.Instance.Theme;
 
             Application.Run(new FormMain());
         }

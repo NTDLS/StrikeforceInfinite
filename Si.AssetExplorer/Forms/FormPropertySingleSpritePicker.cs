@@ -1,9 +1,7 @@
-﻿using Krypton.Toolkit;
-
-namespace Si.AssetExplorer.Forms
+﻿namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertySingleSpritePicker
-        : KryptonForm
+        : Form
     {
         public decimal Value => kryptonNumericUpDown.Value;
 
@@ -25,13 +23,13 @@ namespace Si.AssetExplorer.Forms
             throw new System.NotImplementedException();
         }
 
-        private void KryptonButtonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void KryptonButtonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
