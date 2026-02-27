@@ -52,7 +52,7 @@ namespace Si.Engine.Menu
                 offsetY += playerSprite.Size.Height / 2.0f + previousSpriteSize / 2.0f + 25;
                 previousSpriteSize = playerSprite.Size.Height;
 
-                var menuItem = AddSelectableItem(new SiVector(offsetX + 75, offsetY), playerSprite.Metadata.Name, playerSprite.Metadata.Name);
+                var menuItem = AddSelectableItem(new SiVector(offsetX + 75, offsetY), playerSprite.Metadata.Name ?? "Unknown Ship", playerSprite.Metadata.Name ?? "Unknown Ship");
                 menuItem.Y -= menuItem.Size.Height / 2;
 
                 menuItem.UserData = playerShipContainer.Asset.SpritePath;

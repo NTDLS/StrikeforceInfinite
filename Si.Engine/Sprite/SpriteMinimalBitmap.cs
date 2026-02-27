@@ -33,24 +33,12 @@ namespace Si.Engine.Sprite
         public SpriteMinimalBitmap(EngineCore engine, string spritePath)
             : base(engine, spritePath)
         {
-            SetImageAndLoadMetadata(spritePath);
         }
 
         public SpriteMinimalBitmap(EngineCore engine, SharpDX.Direct2D1.Bitmap bitmap)
             : base(engine, null)
         {
             SetImage(bitmap);
-        }
-
-        private void SetImageAndLoadMetadata(string spritePath)
-        {
-            var metadata = _engine.Assets.GetMetadata(spritePath);
-
-            Speed = metadata.Speed;
-            Throttle = metadata.Throttle;
-            MaxThrottle = metadata.MaxThrottle;
-
-            SetImage(spritePath);
         }
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)

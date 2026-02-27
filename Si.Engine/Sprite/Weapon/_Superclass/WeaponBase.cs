@@ -52,7 +52,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
             if (string.IsNullOrEmpty(Metadata?.SoundPath) == false)
             {
-                _fireSound = _engine.Assets.GetAudio(Metadata.SoundPath, Metadata.SoundVolume);
+                _fireSound = _engine.Assets.GetAudio(Metadata.SoundPath, Metadata.SoundVolume ?? 0);
             }
         }
 
@@ -65,8 +65,8 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
             string? spritePath = null;
 
-            int? spriteCount = Metadata.EnsureNotNull().SpritePaths.Length;
-            if (spriteCount > 0)
+            int? spriteCount = Metadata.EnsureNotNull().SpritePaths?.Length;
+            if (Metadata.SpritePaths != null && spriteCount > 0)
             {
                 spritePath = Metadata.SpritePaths[SiRandom.Between(0, ((int)spriteCount) - 1)];
             }
@@ -87,9 +87,9 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                     {
                         var munition = new SeekingMunitionBase(_engine, this, Owner, spritePath, location ?? Owner.Location)
                         {
-                            SeekingRotationRateDegrees = Metadata.SeekingRotationRateDegrees,
-                            SeekingEscapeAngleDegrees = Metadata.SeekingEscapeAngleDegrees,
-                            SeekingEscapeDistance = Metadata.SeekingEscapeDistance
+                            SeekingRotationRateDegrees = Metadata.SeekingRotationRateDegrees ?? 0,
+                            SeekingEscapeAngleDegrees = Metadata.SeekingEscapeAngleDegrees ?? 0,
+                            SeekingEscapeDistance = Metadata.SeekingEscapeDistance ?? 0
                         };
                         return munition;
                     }
@@ -97,8 +97,8 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                     {
                         var munition = new LockingMunitionBase(_engine, this, Owner, spritePath, lockedTarget, location ?? Owner.Location)
                         {
-                            GuidedRotationRateDegrees = Metadata.SeekingRotationRateDegrees,
-                            MaxGuidedObservationAngleDegrees = Metadata.SeekingEscapeAngleDegrees
+                            GuidedRotationRateDegrees = Metadata.SeekingRotationRateDegrees ?? 0,
+                            MaxGuidedObservationAngleDegrees = Metadata.SeekingEscapeAngleDegrees ?? 0
                         };
                         return munition;
                     }
@@ -134,10 +134,10 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
                 foreach (var potentialTarget in potentialTargets)
                 {
-                    if (Metadata.MunitionType == MunitionType.Locking && Owner.IsPointingAt(potentialTarget, Metadata.MaxLockOnAngle))
+                    if (Metadata.MunitionType == MunitionType.Locking && Owner.IsPointingAt(potentialTarget, Metadata.MaxLockOnAngle ?? 0))
                     {
                         var distance = Owner.DistanceTo(potentialTarget);
-                        if (distance.IsBetween(Metadata.MinLockDistance, Metadata.MaxLockDistance))
+                        if (distance.IsBetween(Metadata.MinLockDistance ?? 0, Metadata.MaxLockDistance ?? 0))
                         {
                             LockedTargets.Add(new WeaponsLock(potentialTarget, Owner.DistanceTo(potentialTarget)));
                         }
@@ -146,14 +146,14 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
                 LockedTargets = LockedTargets.OrderBy(o => o.Distance).ToList();
 
-                foreach (var hardLock in LockedTargets.Take(Metadata.MaxLocks))
+                foreach (var hardLock in LockedTargets.Take(Metadata.MaxLocks ?? 0))
                 {
                     hardLock.LockType = SiWeaponsLockType.Hard;
                     hardLock.Sprite.IsLockedOnHard = true;
                     hardLock.Sprite.IsLockedOnSoft = false;
                 }
 
-                foreach (var softLock in LockedTargets.Skip(Metadata.MaxLocks))
+                foreach (var softLock in LockedTargets.Skip(Metadata.MaxLocks ?? 0))
                 {
                     softLock.LockType = SiWeaponsLockType.Soft;
                     softLock.Sprite.IsLockedOnHard = false;
@@ -173,10 +173,10 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 _engine.Player.Sprite.IsLockedOnSoft = false;
                 _engine.Player.Sprite.IsLockedOnHard = false;
 
-                if (Metadata.MunitionType == MunitionType.Locking && Owner.IsPointingAt(_engine.Player.Sprite, Metadata.MaxLockOnAngle))
+                if (Metadata.MunitionType == MunitionType.Locking && Owner.IsPointingAt(_engine.Player.Sprite, Metadata.MaxLockOnAngle ?? 0))
                 {
                     var distance = Owner.DistanceTo(_engine.Player.Sprite);
-                    if (distance.IsBetween(Metadata.MinLockDistance, Metadata.MaxLockDistance))
+                    if (distance.IsBetween(Metadata.MinLockDistance ?? 0, Metadata.MaxLockDistance ?? 0))
                     {
                         _engine.Player.Sprite.IsLockedOnHard = true;
                         _engine.Player.Sprite.IsLockedOnSoft = false;

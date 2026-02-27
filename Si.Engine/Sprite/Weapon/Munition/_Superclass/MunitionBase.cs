@@ -55,15 +55,15 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             float headingRadians = angle == null ? firedFrom.Orientation.RadiansSigned : (float)angle;
             if (weapon.Metadata.AngleVarianceDegrees > 0)
             {
-                var randomNumber = SiMath.DegToRad(SiRandom.Between(0, weapon.Metadata.AngleVarianceDegrees * 100.0f) / 100.0f);
+                var randomNumber = SiMath.DegToRad(SiRandom.Between(0, weapon.Metadata.AngleVarianceDegrees ?? 0 * 100.0f) / 100.0f);
                 headingRadians += (SiRandom.FlipCoin() ? 1 : -1) * randomNumber;
             }
 
-            float initialSpeed = weapon.Metadata.Speed;
+            float initialSpeed = weapon.Metadata.Speed ?? 0;
             if (weapon.Metadata.SpeedVariancePercent > 0)
             {
-                var randomNumber = SiRandom.Between(0, weapon.Metadata.SpeedVariancePercent * 100.0f) / 100.0f;
-                var variance = randomNumber * weapon.Metadata.Speed;
+                var randomNumber = SiRandom.Between(0, weapon.Metadata.SpeedVariancePercent ?? 0 * 100.0f) / 100.0f;
+                var variance = randomNumber * weapon.Metadata.Speed ?? 0;
                 initialSpeed += (SiRandom.FlipCoin() ? 1 : -1) * variance;
             }
 

@@ -45,10 +45,10 @@ namespace Si.Engine.Sprite.KinematicBody
         /// Predicted bounds after next call to ApplyMotion().
         /// </summary>
         public RectangleF Bounds => new(
-            (PredictedLocation.X - Size.Width / 2.0f) - (Sprite.Metadata.CollisionPolyAugmentation / 2.0f),
-            (PredictedLocation.Y - Size.Height / 2.0f) - (Sprite.Metadata.CollisionPolyAugmentation / 2.0f),
-            Size.Width + (Sprite.Metadata.CollisionPolyAugmentation / 2.0f),
-            Size.Height + (Sprite.Metadata.CollisionPolyAugmentation / 2.0f));
+            (PredictedLocation.X - Size.Width / 2.0f) - (Sprite.Metadata.CollisionPolyAugmentation ?? 0 / 2.0f),
+            (PredictedLocation.Y - Size.Height / 2.0f) - (Sprite.Metadata.CollisionPolyAugmentation ?? 0 / 2.0f),
+            Size.Width + (Sprite.Metadata.CollisionPolyAugmentation ?? 0 / 2.0f),
+            Size.Height + (Sprite.Metadata.CollisionPolyAugmentation ?? 0 / 2.0f));
 
         /// <summary>
         /// Predicted render bounds after next call to ApplyMotion().

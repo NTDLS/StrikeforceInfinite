@@ -68,26 +68,24 @@ namespace Si.Engine.Sprite
 
             if (ThrusterAnimation == null || ThrusterAnimation.IsQueuedForDeletion == true)
             {
-                ThrusterAnimation = new SpriteAnimation(_engine, @"Sprites\Animation\ThrustStandard32x32.png")
+                ThrusterAnimation = _engine.Sprites.Animations.Add(@"Sprites\Animation\ThrustStandard32x32.png", (o) =>
                 {
-                    SpriteTag = "PlayerForwardThrust",
-                    IsVisible = false,
-                    OwnerUID = UID
-                };
-                _engine.Sprites.Animations.Insert(ThrusterAnimation, this);
-                ThrusterAnimation.OnVisibilityChanged += (sender) => UpdateThrustAnimationPositions();
+                    o.SpriteTag = "PlayerForwardThrust";
+                    o.IsVisible = false;
+                    o.OwnerUID = UID;
+                    o.OnVisibilityChanged += (sender) => UpdateThrustAnimationPositions();
+                });
             }
 
             if (BoosterAnimation == null || BoosterAnimation.IsQueuedForDeletion == true)
             {
-                BoosterAnimation = new SpriteAnimation(_engine, @"Sprites\Animation\ThrustBoost32x32.png")
+                BoosterAnimation = _engine.Sprites.Animations.Add(@"Sprites\Animation\ThrustBoost32x32.png", (o) =>
                 {
-                    SpriteTag = "PlayerForwardThrust",
-                    IsVisible = false,
-                    OwnerUID = UID
-                };
-                _engine.Sprites.Animations.Insert(BoosterAnimation, this);
-                BoosterAnimation.OnVisibilityChanged += (sender) => UpdateThrustAnimationPositions();
+                    o.SpriteTag = "PlayerForwardThrust";
+                    o.IsVisible = false;
+                    o.OwnerUID = UID;
+                    o.OnVisibilityChanged += (sender) => UpdateThrustAnimationPositions();
+                });
             }
 
             CenterInUniverse();
@@ -124,12 +122,15 @@ namespace Si.Engine.Sprite
             string primaryWeapon = $"{primaryWeaponMetadata.Name} x{primaryWeaponMetadata.MunitionCount}";
 
             string secondaryWeapons = string.Empty;
-            foreach (var weapon in Metadata.Weapons)
+            if (Metadata.Weapons != null)
             {
-                var secondaryWeaponType = weapon?.Type;
-                var secondaryWeaponMetadata = _engine.Assets.GetMetadata(secondaryWeaponType.EnsureNotNull());
+                foreach (var weapon in Metadata.Weapons)
+                {
+                    var secondaryWeaponType = weapon?.Type;
+                    var secondaryWeaponMetadata = _engine.Assets.GetMetadata(secondaryWeaponType.EnsureNotNull());
 
-                secondaryWeapons += $"{secondaryWeaponMetadata.Name} x{secondaryWeaponMetadata.MunitionCount}\n{new string(' ', 20)}";
+                    secondaryWeapons += $"{secondaryWeaponMetadata.Name} x{secondaryWeaponMetadata.MunitionCount}\n{new string(' ', 20)}";
+                }
             }
 
             string result = $"             Name : {Metadata.Name}\n";

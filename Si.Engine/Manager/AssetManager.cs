@@ -69,7 +69,7 @@ namespace Si.Engine.Manager
         {
             _engine = engine;
 
-            _archive = ArchiveFactory.Open(_assetPackagePath, new SharpCompress.Readers.ReaderOptions()
+            _archive = ArchiveFactory.OpenArchive(_assetPackagePath, new SharpCompress.Readers.ReaderOptions()
             {
                 ArchiveEncoding = new ArchiveEncoding()
                 {
@@ -251,7 +251,7 @@ namespace Si.Engine.Manager
         {
             loadingHeader?.SetTextAndCenterX("Loading packed assets...");
 
-            using var archive = ArchiveFactory.Open(_assetPackagePath);
+            using var archive = ArchiveFactory.OpenArchive(_assetPackagePath);
             using var dtp = new DelegateThreadPool(new DelegateThreadPoolConfiguration()
             {
                 InitialThreadCount = Environment.ProcessorCount

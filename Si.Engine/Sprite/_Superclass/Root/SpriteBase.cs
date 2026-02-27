@@ -5,6 +5,7 @@ using Si.Library.Mathematics;
 using Si.Library.Sprite;
 using System;
 using System.Drawing;
+using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite._Superclass._Root
 {
@@ -16,7 +17,7 @@ namespace Si.Engine.Sprite._Superclass._Root
     {
         protected EngineCore _engine;
 
-        private SharpDX.Direct2D1.Bitmap? _image;
+        public SharpDX.Direct2D1.Bitmap? SpriteBitmap { get; private set; }
         private bool _readyForDeletion;
         private SiVector _location = new();
         private Size _size;
@@ -48,37 +49,38 @@ namespace Si.Engine.Sprite._Superclass._Root
             SetImage(spritePath);
 
             // Set standard variables here:
-            Speed = Metadata.Speed;
-            Throttle = Metadata.Throttle;
-            MaxThrottle = Metadata.MaxThrottle;
+            Speed = Metadata.Speed ?? 0;
+            Throttle = Metadata.Throttle ?? 0;
+            MaxThrottle = Metadata.MaxThrottle ?? 0;
 
-            SetHullHealth(Metadata.Hull);
-            SetShieldHealth(Metadata.Shields);
+            SetHullHealth(Metadata.Hull ?? 0);
+            SetShieldHealth(Metadata.Shields ?? 0);
 
             if (this is SpriteInteractiveBase interactive)
             {
                 Metadata.Weapons?.ForEach(weapon =>
                 {
-                    interactive.AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount);
+                    interactive.AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount ?? 0);
                 });
 
                 Metadata.Attachments?.ForEach(attachment =>
                 {
-                    interactive.AttachOfType(attachment.Type, attachment.LocationRelativeToOwner);
+                    var locationRelativeToOwner = new SiVector(attachment.X ?? 0, attachment.Y ?? 0);
+                    interactive.AttachOfType(attachment.Type.EnsureNotNull(), locationRelativeToOwner);
                 });
             }
 
             if (this is SpriteAttachment attach)
             {
-                attach.OrientationType = Metadata.OrientationType;
-                attach.PositionType = Metadata.PositionType;
+                attach.OrientationType = Metadata.OrientationType ?? AttachmentOrientationType.Independent;
+                attach.PositionType = Metadata.PositionType ?? AttachmentPositionType.Independent;
             }
 
             if (this is SpritePlayer player)
             {
                 if (Metadata?.PrimaryWeapon?.Type != null)
                 {
-                    player.SetPrimaryWeapon(Metadata.PrimaryWeapon.Type, Metadata.PrimaryWeapon.MunitionCount);
+                    player.SetPrimaryWeapon(Metadata.PrimaryWeapon.Type, Metadata.PrimaryWeapon.MunitionCount ?? 0);
                     player.SelectFirstAvailableUsableSecondaryWeapon();
                 }
             }
@@ -127,14 +129,14 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public void SetImage(SharpDX.Direct2D1.Bitmap bitmap)
         {
-            _image = bitmap;
-            _size = new Size((int)_image.Size.Width, (int)_image.Size.Height);
+            SpriteBitmap = bitmap;
+            _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
         }
 
         public void SetImage(string spritePath)
         {
-            _image = _engine.Assets.GetBitmap(spritePath);
-            _size = new Size((int)_image.Size.Width, (int)_image.Size.Height);
+            SpriteBitmap = _engine.Assets.GetBitmap(spritePath);
+            _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
         }
 
         /// <summary>
