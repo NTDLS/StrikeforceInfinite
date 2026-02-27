@@ -35,18 +35,15 @@
             kryptonButtonSave = new Button();
             kryptonTextBoxDescription = new TextBox();
             kryptonLabelDescription = new Label();
+            ((System.ComponentModel.ISupportInitialize)kryptonNumericUpDownWorking).BeginInit();
             SuspendLayout();
             // 
             // kryptonNumericUpDownWorking
             // 
-            kryptonNumericUpDownWorking.Increment = new decimal(new int[] { 1, 0, 0, 0 });
             kryptonNumericUpDownWorking.Location = new Point(12, 43);
-            kryptonNumericUpDownWorking.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            kryptonNumericUpDownWorking.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
             kryptonNumericUpDownWorking.Name = "kryptonNumericUpDownWorking";
-            kryptonNumericUpDownWorking.Size = new Size(139, 22);
+            kryptonNumericUpDownWorking.Size = new Size(139, 23);
             kryptonNumericUpDownWorking.TabIndex = 1;
-            kryptonNumericUpDownWorking.Value = new decimal(new int[] { 0, 0, 0, 0 });
             // 
             // kryptonLabelName
             // 
@@ -71,7 +68,6 @@
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 4;
-            
             kryptonButtonSave.Text = "Save";
             kryptonButtonSave.Click += ButtonSave_Click;
             // 
@@ -98,7 +94,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(368, 230);
+            ClientSize = new Size(368, 224);
             Controls.Add(kryptonLabelDescription);
             Controls.Add(kryptonTextBoxDescription);
             Controls.Add(kryptonButtonCancel);
@@ -110,6 +106,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
+            ((System.ComponentModel.ISupportInitialize)kryptonNumericUpDownWorking).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }

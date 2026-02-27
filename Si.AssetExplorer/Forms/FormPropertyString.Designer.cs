@@ -47,27 +47,25 @@
             // 
             // kryptonButtonCancel
             // 
-            kryptonButtonCancel.Location = new Point(265, 188);
+            kryptonButtonCancel.Location = new Point(265, 187);
             kryptonButtonCancel.Name = "kryptonButtonCancel";
             kryptonButtonCancel.Size = new Size(90, 25);
             kryptonButtonCancel.TabIndex = 5;
-            
             kryptonButtonCancel.Text = "Cancel";
             kryptonButtonCancel.Click += ButtonCancel_Click;
             // 
             // kryptonButtonSave
             // 
-            kryptonButtonSave.Location = new Point(169, 188);
+            kryptonButtonSave.Location = new Point(169, 187);
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 4;
-            
             kryptonButtonSave.Text = "Save";
             kryptonButtonSave.Click += ButtonSave_Click;
             // 
             // kryptonTextBoxDescription
             // 
-            kryptonTextBoxDescription.Location = new Point(12, 103);
+            kryptonTextBoxDescription.Location = new Point(12, 102);
             kryptonTextBoxDescription.Multiline = true;
             kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
             kryptonTextBoxDescription.ReadOnly = true;
@@ -78,7 +76,7 @@
             // 
             // kryptonLabelDescription
             // 
-            kryptonLabelDescription.Location = new Point(12, 72);
+            kryptonLabelDescription.Location = new Point(12, 71);
             kryptonLabelDescription.Name = "kryptonLabelDescription";
             kryptonLabelDescription.Size = new Size(90, 25);
             kryptonLabelDescription.TabIndex = 2;
@@ -95,7 +93,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(368, 234);
+            ClientSize = new Size(368, 224);
             Controls.Add(kryptonTextBoxWorking);
             Controls.Add(kryptonLabelDescription);
             Controls.Add(kryptonTextBoxDescription);

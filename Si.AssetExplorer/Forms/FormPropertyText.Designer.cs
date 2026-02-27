@@ -47,27 +47,25 @@
             // 
             // kryptonButtonCancel
             // 
-            kryptonButtonCancel.Location = new Point(268, 243);
+            kryptonButtonCancel.Location = new Point(268, 240);
             kryptonButtonCancel.Name = "kryptonButtonCancel";
             kryptonButtonCancel.Size = new Size(90, 25);
             kryptonButtonCancel.TabIndex = 5;
-            
             kryptonButtonCancel.Text = "Cancel";
             kryptonButtonCancel.Click += ButtonCancel_Click;
             // 
             // kryptonButtonSave
             // 
-            kryptonButtonSave.Location = new Point(169, 243);
+            kryptonButtonSave.Location = new Point(169, 240);
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 4;
-            
             kryptonButtonSave.Text = "Save";
             kryptonButtonSave.Click += ButtonSave_Click;
             // 
             // kryptonTextBoxDescription
             // 
-            kryptonTextBoxDescription.Location = new Point(12, 158);
+            kryptonTextBoxDescription.Location = new Point(12, 155);
             kryptonTextBoxDescription.Multiline = true;
             kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
             kryptonTextBoxDescription.ReadOnly = true;
@@ -97,7 +95,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(369, 288);
+            ClientSize = new Size(369, 279);
             Controls.Add(kryptonTextBoxWorking);
             Controls.Add(kryptonLabelDescription);
             Controls.Add(kryptonTextBoxDescription);

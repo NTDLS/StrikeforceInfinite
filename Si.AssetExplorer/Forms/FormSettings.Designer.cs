@@ -29,47 +29,25 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            kryptonComboBoxTheme = new ComboBox();
-            kryptonLabelTheme = new Label();
             kryptonButtonSave = new Button();
             kryptonButtonCancel = new Button();
-            ((System.ComponentModel.ISupportInitialize)kryptonComboBoxTheme).BeginInit();
             SuspendLayout();
-            // 
-            // kryptonComboBoxTheme
-            // 
-            kryptonComboBoxTheme.DropDownWidth = 284;
-            kryptonComboBoxTheme.Location = new Point(12, 43);
-            kryptonComboBoxTheme.Name = "kryptonComboBoxTheme";
-            kryptonComboBoxTheme.Size = new Size(284, 22);
-            kryptonComboBoxTheme.TabIndex = 0;
-            kryptonComboBoxTheme.Text = "Theme";
-            // 
-            // kryptonLabelTheme
-            // 
-            kryptonLabelTheme.Location = new Point(12, 12);
-            kryptonLabelTheme.Name = "kryptonLabelTheme";
-            kryptonLabelTheme.Size = new Size(90, 25);
-            kryptonLabelTheme.TabIndex = 2;
-            kryptonLabelTheme.Text = "Theme";
             // 
             // kryptonButtonSave
             // 
-            kryptonButtonSave.Location = new Point(448, 116);
+            kryptonButtonSave.Location = new Point(134, 132);
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 3;
-            
             kryptonButtonSave.Text = "Save";
             kryptonButtonSave.Click += kryptonButtonSave_Click;
             // 
             // kryptonButtonCancel
             // 
-            kryptonButtonCancel.Location = new Point(544, 116);
+            kryptonButtonCancel.Location = new Point(230, 132);
             kryptonButtonCancel.Name = "kryptonButtonCancel";
             kryptonButtonCancel.Size = new Size(90, 25);
             kryptonButtonCancel.TabIndex = 4;
-            
             kryptonButtonCancel.Text = "Cancel";
             kryptonButtonCancel.Click += kryptonButtonCancel_Click;
             // 
@@ -77,24 +55,17 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(649, 155);
+            ClientSize = new Size(332, 169);
             Controls.Add(kryptonButtonCancel);
             Controls.Add(kryptonButtonSave);
-            Controls.Add(kryptonLabelTheme);
-            Controls.Add(kryptonComboBoxTheme);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormSettings";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Settings";
-            ((System.ComponentModel.ISupportInitialize)kryptonComboBoxTheme).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private ComboBox kryptonComboBoxTheme;
-        private Label kryptonLabelTheme;
         private Button kryptonButtonSave;
         private Button kryptonButtonCancel;
     }

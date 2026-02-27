@@ -38,19 +38,17 @@
             kryptonNumericUpDownWorkingY = new NumericUpDown();
             kryptonLabelWorkingX = new Label();
             kryptonLabelWorkingY = new Label();
+            ((System.ComponentModel.ISupportInitialize)kryptonNumericUpDownWorkingX).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)kryptonNumericUpDownWorkingY).BeginInit();
             SuspendLayout();
             // 
             // kryptonNumericUpDownWorkingX
             // 
             kryptonNumericUpDownWorkingX.DecimalPlaces = 5;
-            kryptonNumericUpDownWorkingX.Increment = new decimal(new int[] { 1, 0, 0, 0 });
-            kryptonNumericUpDownWorkingX.Location = new Point(40, 44);
-            kryptonNumericUpDownWorkingX.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            kryptonNumericUpDownWorkingX.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
+            kryptonNumericUpDownWorkingX.Location = new Point(40, 40);
             kryptonNumericUpDownWorkingX.Name = "kryptonNumericUpDownWorkingX";
-            kryptonNumericUpDownWorkingX.Size = new Size(139, 22);
+            kryptonNumericUpDownWorkingX.Size = new Size(139, 23);
             kryptonNumericUpDownWorkingX.TabIndex = 2;
-            kryptonNumericUpDownWorkingX.Value = new decimal(new int[] { 0, 0, 0, 0 });
             // 
             // kryptonLabelName
             // 
@@ -62,27 +60,25 @@
             // 
             // kryptonButtonCancel
             // 
-            kryptonButtonCancel.Location = new Point(265, 190);
+            kryptonButtonCancel.Location = new Point(265, 187);
             kryptonButtonCancel.Name = "kryptonButtonCancel";
             kryptonButtonCancel.Size = new Size(90, 25);
             kryptonButtonCancel.TabIndex = 8;
-            
             kryptonButtonCancel.Text = "Cancel";
             kryptonButtonCancel.Click += ButtonCancel_Click;
             // 
             // kryptonButtonSave
             // 
-            kryptonButtonSave.Location = new Point(169, 190);
+            kryptonButtonSave.Location = new Point(169, 187);
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 7;
-            
             kryptonButtonSave.Text = "Save";
             kryptonButtonSave.Click += ButtonSave_Click;
             // 
             // kryptonTextBoxDescription
             // 
-            kryptonTextBoxDescription.Location = new Point(12, 105);
+            kryptonTextBoxDescription.Location = new Point(12, 102);
             kryptonTextBoxDescription.Multiline = true;
             kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
             kryptonTextBoxDescription.ReadOnly = true;
@@ -93,7 +89,7 @@
             // 
             // kryptonLabelDescription
             // 
-            kryptonLabelDescription.Location = new Point(12, 74);
+            kryptonLabelDescription.Location = new Point(12, 71);
             kryptonLabelDescription.Name = "kryptonLabelDescription";
             kryptonLabelDescription.Size = new Size(90, 25);
             kryptonLabelDescription.TabIndex = 5;
@@ -101,20 +97,16 @@
             // 
             // kryptonNumericUpDownWorkingY
             // 
-            kryptonNumericUpDownWorkingY.Increment = new decimal(new int[] { 1, 0, 0, 0 });
-            kryptonNumericUpDownWorkingY.Location = new Point(213, 44);
-            kryptonNumericUpDownWorkingY.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            kryptonNumericUpDownWorkingY.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
+            kryptonNumericUpDownWorkingY.Location = new Point(213, 40);
             kryptonNumericUpDownWorkingY.Name = "kryptonNumericUpDownWorkingY";
-            kryptonNumericUpDownWorkingY.Size = new Size(120, 22);
+            kryptonNumericUpDownWorkingY.Size = new Size(120, 23);
             kryptonNumericUpDownWorkingY.TabIndex = 4;
-            kryptonNumericUpDownWorkingY.Value = new decimal(new int[] { 0, 0, 0, 0 });
             // 
             // kryptonLabelWorkingX
             // 
             kryptonLabelWorkingX.Location = new Point(12, 43);
             kryptonLabelWorkingX.Name = "kryptonLabelWorkingX";
-            kryptonLabelWorkingX.Size = new Size(22, 25);
+            kryptonLabelWorkingX.Size = new Size(22, 20);
             kryptonLabelWorkingX.TabIndex = 1;
             kryptonLabelWorkingX.Text = "X";
             // 
@@ -122,7 +114,7 @@
             // 
             kryptonLabelWorkingY.Location = new Point(185, 43);
             kryptonLabelWorkingY.Name = "kryptonLabelWorkingY";
-            kryptonLabelWorkingY.Size = new Size(22, 25);
+            kryptonLabelWorkingY.Size = new Size(22, 20);
             kryptonLabelWorkingY.TabIndex = 3;
             kryptonLabelWorkingY.Text = "Y";
             // 
@@ -130,7 +122,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(368, 235);
+            ClientSize = new Size(368, 224);
             Controls.Add(kryptonLabelWorkingY);
             Controls.Add(kryptonLabelWorkingX);
             Controls.Add(kryptonNumericUpDownWorkingY);
@@ -145,6 +137,8 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
+            ((System.ComponentModel.ISupportInitialize)kryptonNumericUpDownWorkingX).EndInit();
+            ((System.ComponentModel.ISupportInitialize)kryptonNumericUpDownWorkingY).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }

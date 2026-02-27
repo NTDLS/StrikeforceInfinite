@@ -35,19 +35,16 @@
             kryptonButtonSave = new Button();
             kryptonTextBoxDescription = new TextBox();
             kryptonLabelDescription = new Label();
+            ((System.ComponentModel.ISupportInitialize)kryptonNumericUpDown).BeginInit();
             SuspendLayout();
             // 
             // kryptonNumericUpDown
             // 
             kryptonNumericUpDown.DecimalPlaces = 5;
-            kryptonNumericUpDown.Increment = new decimal(new int[] { 1, 0, 0, 0 });
             kryptonNumericUpDown.Location = new Point(12, 43);
-            kryptonNumericUpDown.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            kryptonNumericUpDown.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
             kryptonNumericUpDown.Name = "kryptonNumericUpDown";
-            kryptonNumericUpDown.Size = new Size(139, 22);
+            kryptonNumericUpDown.Size = new Size(139, 23);
             kryptonNumericUpDown.TabIndex = 1;
-            kryptonNumericUpDown.Value = new decimal(new int[] { 0, 0, 0, 0 });
             // 
             // kryptonLabelName
             // 
@@ -63,7 +60,6 @@
             kryptonButtonCancel.Name = "kryptonButtonCancel";
             kryptonButtonCancel.Size = new Size(90, 25);
             kryptonButtonCancel.TabIndex = 5;
-            
             kryptonButtonCancel.Text = "Cancel";
             kryptonButtonCancel.Click += ButtonCancel_Click;
             // 
@@ -73,7 +69,6 @@
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 4;
-            
             kryptonButtonSave.Text = "Save";
             kryptonButtonSave.Click += ButtonSave_Click;
             // 
@@ -100,7 +95,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(368, 230);
+            ClientSize = new Size(368, 224);
             Controls.Add(kryptonLabelDescription);
             Controls.Add(kryptonTextBoxDescription);
             Controls.Add(kryptonButtonCancel);
@@ -112,6 +107,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
+            ((System.ComponentModel.ISupportInitialize)kryptonNumericUpDown).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }

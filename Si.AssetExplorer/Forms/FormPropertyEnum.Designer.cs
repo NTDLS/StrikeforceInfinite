@@ -35,7 +35,6 @@
             kryptonTextBoxDescription = new TextBox();
             kryptonLabelDescription = new Label();
             kryptonComboBoxWorking = new ComboBox();
-            ((System.ComponentModel.ISupportInitialize)kryptonComboBoxWorking).BeginInit();
             SuspendLayout();
             // 
             // kryptonLabelName
@@ -48,7 +47,7 @@
             // 
             // kryptonButtonCancel
             // 
-            kryptonButtonCancel.Location = new Point(268, 187);
+            kryptonButtonCancel.Location = new Point(265, 187);
             kryptonButtonCancel.Name = "kryptonButtonCancel";
             kryptonButtonCancel.Size = new Size(90, 25);
             kryptonButtonCancel.TabIndex = 5;
@@ -57,7 +56,7 @@
             // 
             // kryptonButtonSave
             // 
-            kryptonButtonSave.Location = new Point(172, 187);
+            kryptonButtonSave.Location = new Point(169, 187);
             kryptonButtonSave.Name = "kryptonButtonSave";
             kryptonButtonSave.Size = new Size(90, 25);
             kryptonButtonSave.TabIndex = 4;
@@ -87,16 +86,16 @@
             // 
             kryptonComboBoxWorking.DropDownStyle = ComboBoxStyle.DropDownList;
             kryptonComboBoxWorking.DropDownWidth = 343;
-            kryptonComboBoxWorking.Location = new Point(12, 43);
+            kryptonComboBoxWorking.Location = new Point(12, 40);
             kryptonComboBoxWorking.Name = "kryptonComboBoxWorking";
-            kryptonComboBoxWorking.Size = new Size(343, 22);
+            kryptonComboBoxWorking.Size = new Size(343, 23);
             kryptonComboBoxWorking.TabIndex = 1;
             // 
             // FormPropertyEnum
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(368, 234);
+            ClientSize = new Size(368, 224);
             Controls.Add(kryptonComboBoxWorking);
             Controls.Add(kryptonLabelDescription);
             Controls.Add(kryptonTextBoxDescription);
@@ -108,7 +107,6 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
-            ((System.ComponentModel.ISupportInitialize)kryptonComboBoxWorking).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
