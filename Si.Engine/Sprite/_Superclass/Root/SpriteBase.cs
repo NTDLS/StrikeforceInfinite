@@ -50,7 +50,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
             // Set standard variables here:
             Speed = Metadata.Speed ?? 0;
-            Throttle = Metadata.Throttle ?? 0;
+            Throttle = Metadata.Throttle ?? 1; //We assume a throttle of 100% becasuse this is a factor of speed - I dont want to require throttle when speed is specified.
             MaxThrottle = Metadata.MaxThrottle ?? 0;
 
             SetHullHealth(Metadata.Hull ?? 0);

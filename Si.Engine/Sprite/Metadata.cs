@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Si.Library;
-using Si.Library.Mathematics;
+﻿using Si.Library;
 using System.Collections.Generic;
 using static Si.Library.SiConstants;
 
@@ -208,10 +205,6 @@ namespace Si.Engine.Sprite
 
         [MetaData("Explodes On Impact", "Indicates whether the munition explodes on impact.", PropertyEditorType.Boolean)]
         public bool ExplodesOnImpact { get; set; } = false;
-
-        [MetaData("Munition Type", "The type of munition.", PropertyEditorType.Enum)]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public MunitionType? MunitionType { get; set; }
 
         /// <summary>
         /// The viewing angle that the munition will use for seeking/locking.

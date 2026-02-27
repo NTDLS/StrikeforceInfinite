@@ -12,7 +12,8 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
     /// </summary>
     internal class SeekingMunitionBase : MunitionBase
     {
-        public SeekingMunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string? spritePath, SiVector? location = null)
+        public SeekingMunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string spritePath,
+             SpriteInteractiveBase lockedTarget, SiVector location)
             : base(engine, weapon, firedFrom, spritePath, location)
         {
         }

@@ -61,14 +61,6 @@
             Exception = 3 //An actual exception has been thrown.
         }
 
-        public enum MunitionType
-        {
-            Energy,     //These are going to be particle weapons.
-            Locking,    //These are munitions that lock on to a target.
-            Projectile, //These are conventional "bullet" type munitions.
-            Seeking     //Seeks to whatever target is in front of it - but without locking.
-        }
-
         /// <summary>
         /// Determines the behavior of a attachment sprite's position.
         /// </summary>

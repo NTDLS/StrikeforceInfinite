@@ -1,5 +1,4 @@
 ﻿using NTDLS.Helpers;
-using SharpCompress.Compressors.ZStandard.Unsafe;
 using Si.Audio;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
@@ -8,7 +7,6 @@ using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
-using Si.Library.Sprite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,17 +62,24 @@ namespace Si.Engine.Sprite.Weapon._Superclass
             string? munitionSpritePath = null;
 
             int? spriteCount = Metadata.EnsureNotNull().MunitionSpritePaths?.Length;
+
             if (Metadata.MunitionSpritePaths != null && spriteCount > 0)
-            {
                 munitionSpritePath = Metadata.MunitionSpritePaths[SiRandom.Between(0, spriteCount.Value - 1)];
-            }
+
             if (munitionSpritePath == null)
-            {
                 throw new Exception($"Weapon {Metadata.Name} does not have a munition sprite path defined.");
-            }
 
             var munitionSpriteMeta = _engine.Assets.GetMetadata(munitionSpritePath);
 
+            var munitionSpriteType = SiReflection.GetTypeByName(munitionSpriteMeta.Class
+                ?? throw new Exception($"The munition sprite {munitionSpritePath} does not have a type defined in its metadata."));
+
+            var munitionSprite = (MunitionBase)Activator.CreateInstance(munitionSpriteType,
+                [_engine, this, Owner, munitionSpritePath, lockedTarget, location ?? Owner.Location]).EnsureNotNull();
+
+            return munitionSprite;
+
+            /*
             switch (munitionSpriteMeta.MunitionType)
             {
                 case MunitionType.Projectile:
@@ -100,6 +105,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 default:
                     throw new Exception($"The weapon type {Metadata.MunitionType} is not implemented.");
             }
+            */
         }
 
         public virtual void ApplyIntelligence(float epoch)
