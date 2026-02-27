@@ -14,6 +14,7 @@ namespace Si.Engine.Sprite
 
         [MetaData("Name", "The name of the sprite, used for identification and display purposes.", PropertyEditorType.String)]
         public string Name { get; set; } = string.Empty;
+
         [MetaData("Description", "A brief description of the sprite.", PropertyEditorType.String)]
         public string Description { get; set; } = string.Empty;
 
@@ -23,6 +24,7 @@ namespace Si.Engine.Sprite
 
         [MetaData("X", "The X coordinate of the sprite's location relative to its owner.", PropertyEditorType.Float)]
         public float X { get; set; }
+
         [MetaData("Y", "The Y coordinate of the sprite's location relative to its owner.", PropertyEditorType.Float)]
         public float Y { get; set; }
 
@@ -38,22 +40,28 @@ namespace Si.Engine.Sprite
 
         [MetaData("Orientation Type", "Determines how the sprite's orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.", PropertyEditorType.Enum, enumType: typeof(AttachmentOrientationType))]
         public AttachmentOrientationType OrientationType { get; set; } = AttachmentOrientationType.FixedToOwner;
+
         [MetaData("Position Type", "Determines how the sprite's position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.", PropertyEditorType.Enum, enumType: typeof(AttachmentPositionType))]
         public AttachmentPositionType PositionType { get; set; } = AttachmentPositionType.FixedToOwner;
 
         [MetaData("Explosion Type", "Determines the type of explosion effect for the sprite.", PropertyEditorType.Enum, enumType: typeof(ExplosionType))]
         public ExplosionType ExplosionType { get; set; } = ExplosionType.MediumFire;
+
         [MetaData("Particle Blast On Explode Amount", "Specifies the amount of particles generated when the sprite explodes.", PropertyEditorType.RangeInt)]
         public SiRange<int> ParticleBlastOnExplodeAmount { get; set; } = new SiRange<int>(1, 5000);
+
         [MetaData("Fragment On Explode", "Indicates whether the sprite should fragment upon explosion.", PropertyEditorType.Boolean)]
         public bool FragmentOnExplode { get; set; } = true;
+
         [MetaData("Screen Shake On Explode Amount", "Specifies the intensity of screen shake when the sprite explodes.", PropertyEditorType.RangeInt)]
         public SiRange<int> ScreenShakeOnExplodeAmount { get; set; } = new SiRange<int>(1, 1000);
 
         [MetaData("Speed", "The speed of the sprite.", PropertyEditorType.Float)]
         public float Speed { get; set; } = 1f;
+
         [MetaData("Max Throttle", "The maximum throttle of the sprite.", PropertyEditorType.Float)]
         public float MaxThrottle { get; set; } = 1.0f;
+
         [MetaData("Throttle", "The throttle of the sprite, which determines its current speed as a percentage of its maximum speed.", PropertyEditorType.Float)]
         public float Throttle { get; set; } = 1.0f;
 
@@ -114,8 +122,10 @@ namespace Si.Engine.Sprite
         /// </summary>
         [MetaData("Primary Weapon", "The primary weapon assigned to the sprite.", PropertyEditorType.SingleSpritePicker)]
         public Metadata? PrimaryWeapon { get; set; }
+
         [MetaData("Attachments", "The list of attachments for the sprite.", PropertyEditorType.MultipleSpritePicker)]
         public List<Metadata> Attachments { get; set; } = new();
+
         [MetaData("Weapons", "The list of weapons for the sprite.", PropertyEditorType.MultipleSpritePicker)]
         public List<Metadata> Weapons { get; set; } = new();
 
@@ -132,10 +142,13 @@ namespace Si.Engine.Sprite
 
         [MetaData("Frame Width", "The width of each frame in the sprite animation.", PropertyEditorType.Integer)]
         public int FrameWidth { get; set; }
+
         [MetaData("Frame Height", "The height of each frame in the sprite animation.", PropertyEditorType.Integer)]
         public int FrameHeight { get; set; }
+
         [MetaData("Frames Per Second", "The number of frames displayed per second in the sprite animation.", PropertyEditorType.Float)]
         public float FramesPerSecond { get; set; }
+
         [MetaData("Play Mode", "The play mode of the sprite animation.", PropertyEditorType.Enum, enumType: typeof(SiAnimationPlayMode))]
         public SiAnimationPlayMode PlayMode { get; set; }
 
@@ -151,6 +164,7 @@ namespace Si.Engine.Sprite
 
         [MetaData("Sound Path", "The path to the sound file for the sprite.", PropertyEditorType.String)]
         public string? SoundPath { get; set; }
+
         [MetaData("Sound Volume", "The volume of the sound for the sprite.", PropertyEditorType.Float)]
         public float SoundVolume { get; set; } = 1.0f;
 
@@ -177,21 +191,25 @@ namespace Si.Engine.Sprite
         /// </summary>
         [MetaData("Max Lock-On Angle", "The maximum angle, in degrees, within which a target can be locked on.", PropertyEditorType.Integer)]
         public int MaxLockOnAngle { get; set; } = 10;
+
         /// <summary>
         /// Gets or sets the maximum number of targets that can be locked on at once.
         /// </summary>
         [MetaData("Max Locks", "The maximum number of targets that can be locked on at once.", PropertyEditorType.Integer)]
         public int MaxLocks { get; set; } = 1;
+
         /// <summary>
         /// Gets or sets the minimum distance, in units, required to initiate a lock.
         /// </summary>
         [MetaData("Min Lock Distance", "The minimum distance, in units, required to initiate a lock.", PropertyEditorType.Float)]
         public float MinLockDistance { get; set; } = 50;
+
         /// <summary>
         /// Gets or sets the maximum distance, in units, required to initiate a lock.
         /// </summary>
         [MetaData("Max Lock Distance", "The maximum distance, in units, required to initiate a lock.", PropertyEditorType.Float)]
         public float MaxLockDistance { get; set; } = 100;
+
         [MetaData("Explodes On Impact", "Indicates whether the munition explodes on impact.", PropertyEditorType.Boolean)]
         public bool ExplodesOnImpact { get; set; } = false;
 
