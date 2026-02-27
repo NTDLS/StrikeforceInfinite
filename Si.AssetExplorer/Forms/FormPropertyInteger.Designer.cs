@@ -1,6 +1,6 @@
 ﻿namespace Si.AssetExplorer.Forms
 {
-    partial class FormPropertyDecimal
+    partial class FormPropertyInteger
     {
         /// <summary>
         /// Required designer variable.
@@ -28,29 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertyDecimal));
-            kryptonNumericUpDown = new Krypton.Toolkit.KryptonNumericUpDown();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertyInteger));
+            kryptonNumericUpDownWorking = new Krypton.Toolkit.KryptonNumericUpDown();
             kryptonLabelName = new Krypton.Toolkit.KryptonLabel();
             kryptonButtonCancel = new Krypton.Toolkit.KryptonButton();
             kryptonButtonSave = new Krypton.Toolkit.KryptonButton();
             kryptonTextBoxDescription = new Krypton.Toolkit.KryptonTextBox();
             kryptonLabelDescription = new Krypton.Toolkit.KryptonLabel();
             kryptonLabelDefaultValue = new Krypton.Toolkit.KryptonLabel();
-            kryptonNumericUpDownDefaultValue = new Krypton.Toolkit.KryptonNumericUpDown();
+            kryptonNumericUpDownDefault = new Krypton.Toolkit.KryptonNumericUpDown();
             SuspendLayout();
             // 
-            // kryptonNumericUpDown
+            // kryptonNumericUpDownWorking
             // 
-            kryptonNumericUpDown.AllowDecimals = true;
-            kryptonNumericUpDown.DecimalPlaces = 5;
-            kryptonNumericUpDown.Increment = new decimal(new int[] { 1, 0, 0, 0 });
-            kryptonNumericUpDown.Location = new Point(12, 43);
-            kryptonNumericUpDown.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            kryptonNumericUpDown.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
-            kryptonNumericUpDown.Name = "kryptonNumericUpDown";
-            kryptonNumericUpDown.Size = new Size(139, 22);
-            kryptonNumericUpDown.TabIndex = 0;
-            kryptonNumericUpDown.Value = new decimal(new int[] { 0, 0, 0, 0 });
+            kryptonNumericUpDownWorking.Increment = new decimal(new int[] { 1, 0, 0, 0 });
+            kryptonNumericUpDownWorking.Location = new Point(12, 43);
+            kryptonNumericUpDownWorking.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+            kryptonNumericUpDownWorking.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
+            kryptonNumericUpDownWorking.Name = "kryptonNumericUpDownWorking";
+            kryptonNumericUpDownWorking.Size = new Size(139, 22);
+            kryptonNumericUpDownWorking.TabIndex = 0;
+            kryptonNumericUpDownWorking.Value = new decimal(new int[] { 0, 0, 0, 0 });
             // 
             // kryptonLabelName
             // 
@@ -106,35 +104,33 @@
             kryptonLabelDefaultValue.TabIndex = 12;
             kryptonLabelDefaultValue.Values.Text = "Default Value";
             // 
-            // kryptonNumericUpDownDefaultValue
+            // kryptonNumericUpDownDefault
             // 
-            kryptonNumericUpDownDefaultValue.AllowDecimals = true;
-            kryptonNumericUpDownDefaultValue.DecimalPlaces = 5;
-            kryptonNumericUpDownDefaultValue.Increment = new decimal(new int[] { 1, 0, 0, 0 });
-            kryptonNumericUpDownDefaultValue.Location = new Point(12, 102);
-            kryptonNumericUpDownDefaultValue.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            kryptonNumericUpDownDefaultValue.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
-            kryptonNumericUpDownDefaultValue.Name = "kryptonNumericUpDownDefaultValue";
-            kryptonNumericUpDownDefaultValue.ReadOnly = true;
-            kryptonNumericUpDownDefaultValue.Size = new Size(139, 22);
-            kryptonNumericUpDownDefaultValue.TabIndex = 11;
-            kryptonNumericUpDownDefaultValue.Value = new decimal(new int[] { 0, 0, 0, 0 });
+            kryptonNumericUpDownDefault.Increment = new decimal(new int[] { 1, 0, 0, 0 });
+            kryptonNumericUpDownDefault.Location = new Point(12, 102);
+            kryptonNumericUpDownDefault.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+            kryptonNumericUpDownDefault.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
+            kryptonNumericUpDownDefault.Name = "kryptonNumericUpDownDefault";
+            kryptonNumericUpDownDefault.ReadOnly = true;
+            kryptonNumericUpDownDefault.Size = new Size(139, 22);
+            kryptonNumericUpDownDefault.TabIndex = 11;
+            kryptonNumericUpDownDefault.Value = new decimal(new int[] { 0, 0, 0, 0 });
             // 
-            // FormPropertyDecimal
+            // FormPropertyInteger
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(368, 295);
             Controls.Add(kryptonLabelDefaultValue);
-            Controls.Add(kryptonNumericUpDownDefaultValue);
+            Controls.Add(kryptonNumericUpDownDefault);
             Controls.Add(kryptonLabelDescription);
             Controls.Add(kryptonTextBoxDescription);
             Controls.Add(kryptonButtonCancel);
             Controls.Add(kryptonButtonSave);
             Controls.Add(kryptonLabelName);
-            Controls.Add(kryptonNumericUpDown);
+            Controls.Add(kryptonNumericUpDownWorking);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "FormPropertyDecimal";
+            Name = "FormPropertyInteger";
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
@@ -144,13 +140,13 @@
 
         #endregion
 
-        private Krypton.Toolkit.KryptonNumericUpDown kryptonNumericUpDown;
+        private Krypton.Toolkit.KryptonNumericUpDown kryptonNumericUpDownWorking;
         private Krypton.Toolkit.KryptonLabel kryptonLabelName;
         private Krypton.Toolkit.KryptonButton kryptonButtonCancel;
         private Krypton.Toolkit.KryptonButton kryptonButtonSave;
         private Krypton.Toolkit.KryptonTextBox kryptonTextBoxDescription;
         private Krypton.Toolkit.KryptonLabel kryptonLabelDescription;
         private Krypton.Toolkit.KryptonLabel kryptonLabelDefaultValue;
-        private Krypton.Toolkit.KryptonNumericUpDown kryptonNumericUpDownDefaultValue;
+        private Krypton.Toolkit.KryptonNumericUpDown kryptonNumericUpDownDefault;
     }
 }

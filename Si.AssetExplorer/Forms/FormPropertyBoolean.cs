@@ -2,23 +2,28 @@
 
 namespace Si.AssetExplorer.Forms
 {
-    public partial class FormPropertyDecimal
+    public partial class FormPropertyBoolean
         : KryptonForm
     {
-        public decimal Value => kryptonNumericUpDown.Value;
+        //DONE!
 
-        public FormPropertyDecimal()
+        public bool Value => kryptonCheckBoxWorking.Checked;
+
+        public FormPropertyBoolean()
         {
             InitializeComponent();
         }
 
-        public FormPropertyDecimal(PropertyItem propertyItem)
+        public FormPropertyBoolean(PropertyItem propertyItem)
         {
             InitializeComponent();
-            kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            kryptonCheckBoxWorking.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-            kryptonNumericUpDown.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
-            kryptonNumericUpDownDefaultValue.Value = Convert.ToDecimal(propertyItem.DefaultValue);
+            kryptonCheckBoxWorking.Checked = Convert.ToBoolean(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
+            kryptonCheckBoxDefault.Checked = Convert.ToBoolean(propertyItem.DefaultValue);
+
+            AcceptButton = kryptonButtonSave;
+            CancelButton = kryptonButtonCancel;
         }
 
         private void KryptonButtonSave_Click(object sender, EventArgs e)

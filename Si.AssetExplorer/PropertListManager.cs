@@ -4,6 +4,7 @@ using Si.Engine;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
+using Si.Library;
 
 namespace Si.AssetExplorer
 {
@@ -39,15 +40,101 @@ namespace Si.AssetExplorer
 
         private void UnderlyingListView__MouseDoubleClick(object? sender, MouseEventArgs e)
         {
-            if(_listView.HitTest(e.Location.X, e.Location.Y)?.Item is not PropertyItem selectedItem)
+            if (_listView.HitTest(e.Location.X, e.Location.Y)?.Item is not PropertyItem selectedItem)
             {
                 return;
             }
 
-            if (selectedItem.Attributes?.EditorType == Library.SiConstants.PropertyEditorType.Decimal)
+            object? newValue = null;
+
+            switch (selectedItem.Attributes?.EditorType)
             {
-                using var form = new FormPropertyDecimal(selectedItem);
-                form.ShowDialog();
+                case SiConstants.PropertyEditorType.Readonly:
+                    return;
+                case SiConstants.PropertyEditorType.String:
+                    {
+                        using var form = new FormPropertyString(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.Text:
+                    {
+                        using var form = new FormPropertyText(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.Integer:
+                    {
+                        using var form = new FormPropertyInteger(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.Float:
+                    {
+                        using var form = new FormPropertyFloat(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.Boolean:
+                    {
+                        using var form = new FormPropertyBoolean(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.RangeInt:
+                    {
+                        using var form = new FormPropertyRangeInt(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.RangeFloat:
+                    {
+                        using var form = new FormPropertyRangeFloat(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.Vector:
+                    {
+                        using var form = new FormPropertyVector(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.Enum:
+                    {
+                        using var form = new FormPropertyEnum(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.Picker:
+                    {
+                        using var form = new FormPropertyPicker(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.MultipleSpritePicker:
+                    {
+                        using var form = new FormPropertyMultipleSpritePicker(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
+                case SiConstants.PropertyEditorType.SingleSpritePicker:
+                    {
+                        using var form = new FormPropertySingleSpritePicker(selectedItem);
+                        if (form.ShowDialog() != DialogResult.OK) return;
+                        newValue = form.Value;
+                        break;
+                    }
             }
         }
 

@@ -32,6 +32,39 @@
     <Compile Update="Forms\FormInterrogationSpriteWatch.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\FormPropertyBoolean.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyEnum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyRangeInt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertySingleSpritePicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyMultipleSpritePicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyRangeFloat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyVector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyString.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\FormPropertyInteger.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

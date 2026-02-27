@@ -1,5 +1,4 @@
 ﻿using NTDLS.Helpers;
-using Si.Library.Mathematics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.CompilerServices;

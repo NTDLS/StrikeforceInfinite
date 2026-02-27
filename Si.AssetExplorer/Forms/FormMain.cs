@@ -4,12 +4,8 @@ using Si.AssetExplorer.Controls;
 using Si.AssetExplorer.Forms;
 using Si.Engine;
 using Si.Engine.Sprite;
-using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Library;
 using Si.Library.ExtensionMethods;
-using Si.Library.Mathematics;
-using System.Globalization;
 using static Si.Library.SiConstants;
 
 namespace Si.AssetExplorer

@@ -13,13 +13,26 @@
             String,
             Text,
             Integer,
-            Decimal,
+            Float,
             Boolean,
-            Range,
+            RangeInt,
+            RangeFloat,
             Vector,
-            Enum, //Can this be combined with Picker
-            Picker, //Can this be combined with Enum
+            /// <summary>
+            /// Values from an enum type will be displayed as options.
+            /// </summary>
+            Enum,
+            /// <summary>
+            /// Values from a pre-defined list will be displayed as options.
+            /// </summary>
+            Picker,
+            /// <summary>
+            /// Can select multiple sprites.
+            /// </summary>
             MultipleSpritePicker,
+            /// <summary>
+            /// Can select a single sprite.
+            /// </summary>
             SingleSpritePicker
         }
 
