@@ -7,7 +7,7 @@ namespace Si.Engine.Sprite
 {
     public class Metadata
     {
-        [MetaData("Sound Volume", "Volumne of the sound expressed in percentages.", PropertyEditorType.MultipleSpritePicker, minValue: 0, maxValue: 1)]
+        [MetaData("Sound Volume", "Volumne of the sound expressed in percentages.", PropertyEditorType.Float, minValue: 0, maxValue: 1)]
         public float? SoundVolume { get; set; }
 
         [MetaData("Loop Sound", "Indicates whether the sound should loop when played.", PropertyEditorType.Boolean)]
