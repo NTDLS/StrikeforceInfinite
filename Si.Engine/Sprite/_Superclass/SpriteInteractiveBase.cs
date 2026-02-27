@@ -69,7 +69,7 @@ namespace Si.Engine.Sprite._Superclass
             _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
             _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
 
-            SetImage(bitmap);
+            SetBitmap(bitmap);
         }
 
         #region Artificial Intelligence.

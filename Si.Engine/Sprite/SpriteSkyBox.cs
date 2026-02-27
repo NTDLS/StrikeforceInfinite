@@ -1,38 +1,31 @@
 ﻿using Si.Engine.Sprite._Superclass._Root;
-using Si.Library;
 using Si.Library.Mathematics;
 using System;
-using System.IO;
 
 namespace Si.Engine.Sprite
 {
     public class SpriteSkyBox
         : SpriteBase
     {
-        private const string _assetPath = @"Sprites\SkyBox\";
-        private readonly int _imageCount = 5;
-        private readonly int selectedImageIndex = 0;
-
         public SpriteSkyBox(EngineCore engine, string spritePath)
             : base(engine, spritePath)
         {
-            selectedImageIndex = SiRandom.Between(0, _imageCount - 1);
-            SetImage(Path.Combine(_assetPath, $"{selectedImageIndex}.png"));
+            //selectedImageIndex = SiRandom.Between(0, _imageCount - 1);
 
-            X = SiRandom.Between(0, engine.Display.TotalCanvasSize.Width);
-            Y = SiRandom.Between(0, engine.Display.TotalCanvasSize.Height);
-            Z = int.MinValue;
+            //X = SiRandom.Between(0, engine.Display.TotalCanvasSize.Width);
+            //Y = SiRandom.Between(0, engine.Display.TotalCanvasSize.Height);
+            //Z = int.MinValue;
 
-            Speed = 0.10f;
+            //Speed = 0.10f;
 
-            if (selectedImageIndex >= 0 && selectedImageIndex <= 0)
-            {
-                Throttle = SiRandom.Between(8, 10) / 10.0f;
-            }
-            else
-            {
-                Throttle = SiRandom.Between(4, 8) / 10.0f;
-            }
+            //if (selectedImageIndex >= 0 && selectedImageIndex <= 0)
+            //{
+            //    Throttle = SiRandom.Between(8, 10) / 10.0f;
+            //}
+            //else
+            //{
+            //    Throttle = SiRandom.Between(4, 8) / 10.0f;
+            //}
         }
 
         private SiVector _currentOffset = new();

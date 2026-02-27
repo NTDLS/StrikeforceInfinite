@@ -1,11 +1,12 @@
 ﻿using NTDLS.Helpers;
 using Si.Engine.Sprite.Enemy._Superclass;
+using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using Si.Library.Sprite;
 using System;
 using System.Drawing;
-using static Si.Library.SiConstants;
+using System.IO;
 
 namespace Si.Engine.Sprite._Superclass._Root
 {
@@ -46,7 +47,13 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             _metadata = _engine.Assets.GetMetadata(spritePath);
 
-            SetImage(spritePath);
+            var extension = Path.GetExtension(spritePath);
+
+            if (SiConstants.ImageTypes.Contains(extension, StringComparer.OrdinalIgnoreCase))
+            {
+                SpriteBitmap = _engine.Assets.GetBitmap(spritePath);
+                _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
+            }
 
             // Set standard variables here:
             Speed = Metadata.Speed ?? 0;
@@ -72,8 +79,8 @@ namespace Si.Engine.Sprite._Superclass._Root
 
             if (this is SpriteAttachment attach)
             {
-                attach.OrientationType = Metadata.OrientationType ?? AttachmentOrientationType.Independent;
-                attach.PositionType = Metadata.PositionType ?? AttachmentPositionType.Independent;
+                attach.OrientationType = Metadata.OrientationType ?? SiConstants.AttachmentOrientationType.Independent;
+                attach.PositionType = Metadata.PositionType ?? SiConstants.AttachmentPositionType.Independent;
             }
 
             if (this is SpritePlayer player)
@@ -127,15 +134,9 @@ namespace Si.Engine.Sprite._Superclass._Root
         public virtual void AddShieldHealth(int pointsToAdd)
             => ShieldHealth = (ShieldHealth + pointsToAdd).Clamp(0, _engine.Settings.MaxShieldHealth);
 
-        public void SetImage(SharpDX.Direct2D1.Bitmap bitmap)
+        public void SetBitmap(SharpDX.Direct2D1.Bitmap bitmap)
         {
             SpriteBitmap = bitmap;
-            _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
-        }
-
-        public void SetImage(string spritePath)
-        {
-            SpriteBitmap = _engine.Assets.GetBitmap(spritePath);
             _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
         }
 

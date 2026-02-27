@@ -7,6 +7,8 @@
         public const string MultiplayServerAddress = "127.0.0.1";
         public const int MultiplayServerTCPPort = 6785;
 
+        public static readonly string[] ImageTypes = [".png", ".jpg", ".jpeg", ".bmp", ".gif"];
+
         public enum PropertyEditorType
         {
             Readonly,

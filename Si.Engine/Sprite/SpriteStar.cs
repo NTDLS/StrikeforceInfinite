@@ -10,8 +10,6 @@ namespace Si.Engine.Sprite
         public SpriteStar(EngineCore engine, string spritePath)
             : base(engine, spritePath)
         {
-            SetImage(spritePath);
-
             X = SiRandom.Between(0, engine.Display.TotalCanvasSize.Width);
             Y = SiRandom.Between(0, engine.Display.TotalCanvasSize.Height);
 

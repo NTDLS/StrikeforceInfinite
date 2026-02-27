@@ -204,7 +204,7 @@ namespace Si.Engine.Sprite
         public float? MaxLockDistance { get; set; }
 
         [MetaData("Explodes On Impact", "Indicates whether the munition explodes on impact.", PropertyEditorType.Boolean)]
-        public bool ExplodesOnImpact { get; set; } = false;
+        public bool? ExplodesOnImpact { get; set; }
 
         /// <summary>
         /// The viewing angle that the munition will use for seeking/locking.

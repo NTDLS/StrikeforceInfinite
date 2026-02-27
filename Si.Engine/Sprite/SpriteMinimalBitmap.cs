@@ -38,7 +38,7 @@ namespace Si.Engine.Sprite
         public SpriteMinimalBitmap(EngineCore engine, SharpDX.Direct2D1.Bitmap bitmap)
             : base(engine, null)
         {
-            SetImage(bitmap);
+            SetBitmap(bitmap);
         }
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)
