@@ -29,7 +29,22 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
             }
         }
 
-        public new SpriteEnemyBase Add(string spritePath)
-            => _engine.Sprites.Add<SpriteEnemyBase>(spritePath);
+        /*
+        #region Tightly-typed Pass through factory methods to SpriteManager.
+
+        public SpriteEnemyBase Create(string spritePath, Action<SpriteEnemyBase>? initilizationProc = null)
+            => SpriteManager.Create<SpriteEnemyBase>(spritePath, initilizationProc = null);
+
+        public SpriteEnemyBase Add(string spritePath, Action<SpriteEnemyBase>? initilizationProc = null)
+            => SpriteManager.Add<SpriteEnemyBase>(spritePath, initilizationProc);
+
+        public void Insert(SpriteEnemyBase sprite)
+             => SpriteManager.Insert(sprite);
+
+        public SpriteEnemyBase Add(SharpDX.Direct2D1.Bitmap bitmap, Action<SpriteEnemyBase>? initilizationProc = null)
+            => SpriteManager.Add<SpriteEnemyBase>(bitmap, initilizationProc);
+
+        #endregion
+        */
     }
 }

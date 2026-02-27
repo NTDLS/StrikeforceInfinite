@@ -56,7 +56,7 @@ namespace Si.Library.Mathematics
 
         public static SiVector Parse(string text)
         {
-            if (TryParse(text, out SiVector vector))
+            if (TryParse(text, out SiVector? vector))
             {
                 return vector;
             }

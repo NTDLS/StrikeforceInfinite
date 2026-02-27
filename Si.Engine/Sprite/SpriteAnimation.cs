@@ -28,22 +28,22 @@ namespace Si.Engine.Sprite
         public SiAnimationPlayMode PlayMode { get; set; }
         public float FramesPerSecond { get; private set; } = 1;
 
-        public SpriteAnimation(EngineCore engine, string spriteSheetFileName)
-            : base(engine)
+        public SpriteAnimation(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
 #if DEBUG
-            _debug_imageName = spriteSheetFileName;
+            _debug_imageName = spritePath;
 #endif
 
             Location = new SiVector();
 
-            var metadata = _engine.Assets.GetMetadata(spriteSheetFileName);
+            var metadata = _engine.Assets.GetMetadata(spritePath);
 
             Speed = metadata.Speed;
             Throttle = metadata.Throttle;
             MaxThrottle = metadata.MaxThrottle;
 
-            SetImage(spriteSheetFileName);
+            SetImage(spritePath);
             FramesPerSecond = metadata.FramesPerSecond;
             SetSize(new Size(metadata.FrameWidth, metadata.FrameHeight));
 

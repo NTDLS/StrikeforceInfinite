@@ -36,143 +36,21 @@ namespace Si.Engine.TickController._Superclass
         public void QueueAllForDeletion()
             => SpriteManager.QueueAllForDeletionOfType<T>();
 
-        public void Add(T obj)
-            => SpriteManager.Insert(obj);
+        #region Tightly-typed Pass through factory methods to SpriteManager.
 
-        public T Add(string spritePath)
-            => Engine.Sprites.Add<T>(spritePath);
+        public T Create(string spritePath, Action<T>? initilizationProc = null)
+            => SpriteManager.Create<T>(spritePath, initilizationProc = null);
 
-        //TODO: This shold be moved to Engine.Sprites...
-        public T Add(SharpDX.Direct2D1.Bitmap bitmap)
-        {
-            T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmap).EnsureNotNull();
-            SpriteManager.Insert(obj);
-            return obj;
-        }
+        public T Add(string spritePath, Action<T>? initilizationProc = null)
+            => SpriteManager.Add<T>(spritePath, initilizationProc);
 
-        //TODO: This shold be moved to Engine.Sprites...
-        public T AddAt(SharpDX.Direct2D1.Bitmap bitmap, SpriteBase locationOf)
-        {
-            T obj = Add(bitmap);
-            obj.Location = locationOf.Location.Clone();
-            return obj;
-        }
+        public void Insert(T sprite)
+             => SpriteManager.Insert(sprite);
 
-        //public T Add(string bitmapPath, SiVector location)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
-        //    obj.Location = location.Clone();
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
+        public T Add(SharpDX.Direct2D1.Bitmap bitmap, Action<T>? initilizationProc = null)
+            => SpriteManager.Add<T>(bitmap, initilizationProc);
 
-        //public T Add(string bitmapPath, float x, float y)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
-        //    obj.X = x;
-        //    obj.Y = y;
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T AddAtCenterScreen()
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();
-        //    obj.Location = Engine.Display.CenterOfCurrentScreen;
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T AddAtCenterScreen(string bitmapPath)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
-        //    obj.Location = Engine.Display.CenterOfCurrentScreen;
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T AddAtCenterUniverse()
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();
-        //    obj.X = Engine.Display.TotalCanvasSize.Width / 2;
-        //    obj.Y = Engine.Display.TotalCanvasSize.Height / 2;
-
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T AddAtCenterUniverse(string bitmapPath)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
-        //    obj.X = Engine.Display.TotalCanvasSize.Width / 2;
-        //    obj.Y = Engine.Display.TotalCanvasSize.Height / 2;
-
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T Add(float x, float y)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();
-        //    obj.X = x;
-        //    obj.Y = y;
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T Add(SiVector location)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();
-        //    obj.Location = location.Clone();
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T AddAt(SpriteBase locationOf)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();
-        //    obj.Location = locationOf.Location.Clone();
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T AddAt(SiVector location)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();
-        //    obj.Location = location.Clone();
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T AddAt(SharpDX.Direct2D1.Bitmap bitmap, SpriteBase locationOf)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmap).EnsureNotNull();
-        //    obj.Location = locationOf.Location.Clone();
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T Add()
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T Add(string bitmapPath)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
-        //public T Add(SharpDX.Direct2D1.Bitmap bitmap)
-        //{
-        //    T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmap).EnsureNotNull();
-        //    SpriteManager.Add(obj);
-        //    return obj;
-        //}
-
+        #endregion
         public T Create()
         {
             return (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();

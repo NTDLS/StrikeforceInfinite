@@ -42,11 +42,6 @@ namespace Si.Engine.Sprite
             SetImage(bitmap);
         }
 
-        public SpriteMinimalBitmap(EngineCore engine)
-            : base(engine, null)
-        {
-        }
-
         private void SetImageAndLoadMetadata(string spritePath)
         {
             var metadata = _engine.Assets.GetMetadata(spritePath);

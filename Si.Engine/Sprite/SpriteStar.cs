@@ -7,9 +7,6 @@ namespace Si.Engine.Sprite
     public class SpriteStar
         : SpriteBase
     {
-        private readonly int _imageCount = 5;
-        private readonly int selectedImageIndex = 0;
-
         public SpriteStar(EngineCore engine, string spritePath)
             : base(engine, spritePath)
         {
@@ -20,16 +17,14 @@ namespace Si.Engine.Sprite
 
             Z = int.MinValue + 1000;
 
-            Speed = 10;
-
-            if (selectedImageIndex >= 0 && selectedImageIndex <= 0)
-            {
-                Throttle = SiRandom.Between(8, 10) / 10.0f;
-            }
-            else
-            {
-                Throttle = SiRandom.Between(4, 8) / 10.0f;
-            }
+            //if (selectedImageIndex >= 0 && selectedImageIndex <= 0)
+            //{
+            //Throttle = SiRandom.Between(8, 10) / 10.0f;
+            //}
+            //else
+            //{
+            Throttle = SiRandom.Between(4, 8) / 10.0f;
+            //}
         }
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)

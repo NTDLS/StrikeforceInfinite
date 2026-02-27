@@ -20,19 +20,21 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
 
             OnVisibilityChanged += EnemyBase_OnVisibilityChanged;
 
-            ThrusterAnimation = new SpriteAnimation(_engine, @"Sprites\Animation\ThrustStandard32x32.png")
+            ThrusterAnimation = _engine.Sprites.Animations.Add(@"Sprites\Animation\ThrustStandard32x32.png", (o) =>
             {
-                IsVisible = false,
-                OwnerUID = UID
-            };
-            _engine.Sprites.Animations.Insert(ThrusterAnimation, this);
+                o.Location = Location.Clone();
+                o.Orientation = Orientation.Clone();
+                o.IsVisible = true;
+                o.OwnerUID = UID;
+            });
 
-            BoosterAnimation = new SpriteAnimation(_engine, @"Sprites\Animation\ThrustBoost32x32.png")
+            BoosterAnimation = _engine.Sprites.Animations.Add(@"Sprites\Animation\ThrustBoost32x32.png", (o) =>
             {
-                IsVisible = false,
-                OwnerUID = UID
-            };
-            _engine.Sprites.Animations.Insert(BoosterAnimation, this);
+                o.Location = Location.Clone();
+                o.Orientation = Orientation.Clone();
+                o.IsVisible = true;
+                o.OwnerUID = UID;
+            });
 
             UpdateThrustAnimationPositions();
         }

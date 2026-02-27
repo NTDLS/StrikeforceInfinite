@@ -24,11 +24,10 @@ namespace Si.Engine.Sprite._Superclass._Root
         private Metadata? _metadata = null;
         public Metadata Metadata => _metadata ?? throw new NullReferenceException();
 
-        public SpriteBase(EngineCore engine, string? spritePath, string spriteTag = "")
+        public SpriteBase(EngineCore engine, string? spritePath)
         {
             _engine = engine;
 
-            SpriteTag = spriteTag;
             IsHighlighted = _engine.Settings.HighlightAllSprites;
             Orientation = SiVector.One();
 

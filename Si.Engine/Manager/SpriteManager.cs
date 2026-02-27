@@ -138,6 +138,14 @@ namespace Si.Engine.Manager
             return sprite;
         }
 
+        public T Add<T>(SharpDX.Direct2D1.Bitmap bitmap, Action<T>? initilizationProc = null) where T : SpriteBase
+        {
+            T sprite = (T)Activator.CreateInstance(typeof(T), _engine, bitmap).EnsureNotNull();
+            initilizationProc?.Invoke(sprite);
+            Insert(sprite);
+            return sprite;
+        }
+
         public void Insert(SpriteBase sprite)
         {
             if (_engine.IsInitializing == true)
@@ -415,15 +423,18 @@ namespace Si.Engine.Manager
 
             foreach (var fragmentImage in fragmentImages)
             {
-                var fragment = _engine.Sprites.GenericBitmaps.AddAt(fragmentImage, sprite);
-                fragment.CleanupMode = ParticleCleanupMode.DistanceOffScreen;
-                fragment.FadeToBlackReductionAmount = SiRandom.Between(0.001f, 0.01f); //TODO: Can we implement this?
-                fragment.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(45f, 180f).ToRadians());
-                fragment.VectorType = ParticleVectorType.Default;
+                var fragment = _engine.Sprites.GenericBitmaps.Add(fragmentImage, (o) =>
+                {
+                    o.Location = sprite.Location.Clone();
+                    o.CleanupMode = ParticleCleanupMode.DistanceOffScreen;
+                    o.FadeToBlackReductionAmount = SiRandom.Between(0.001f, 0.01f); //TODO: Can we implement this?
+                    o.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(45f, 180f).ToRadians());
+                    o.VectorType = ParticleVectorType.Default;
 
-                fragment.Orientation.Degrees = SiRandom.Between(0.0f, 359.0f);
-                fragment.Speed = SiRandom.Between(100, 350f);
-                fragment.Throttle = 1;
+                    o.Orientation.Degrees = SiRandom.Between(0.0f, 359.0f);
+                    o.Speed = SiRandom.Between(100, 350f);
+                    o.Throttle = 1;
+                });
             }
         }
 
