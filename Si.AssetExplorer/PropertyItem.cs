@@ -6,7 +6,8 @@ using System.Reflection;
 
 namespace Si.AssetExplorer
 {
-    public class PropertyItem : ListViewItem
+    public class PropertyItem
+        : ListViewItem
     {
         private readonly static Metadata _defaults = new();
 

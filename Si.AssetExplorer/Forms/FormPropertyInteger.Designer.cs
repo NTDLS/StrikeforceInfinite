@@ -84,6 +84,7 @@
             kryptonTextBoxDescription.Multiline = true;
             kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
             kryptonTextBoxDescription.ReadOnly = true;
+            kryptonTextBoxDescription.ScrollBars = ScrollBars.Vertical;
             kryptonTextBoxDescription.Size = new Size(343, 79);
             kryptonTextBoxDescription.TabIndex = 8;
             kryptonTextBoxDescription.Text = "Description";

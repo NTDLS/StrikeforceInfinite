@@ -36,12 +36,12 @@ namespace Si.Engine.Sprite
 
         #region InteractiveSpriteMetadata
 
-        [MetaData("Orientation Type", "Determines how the sprite's orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.", PropertyEditorType.Enum)]
+        [MetaData("Orientation Type", "Determines how the sprite's orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.", PropertyEditorType.Enum, enumType: typeof(AttachmentOrientationType))]
         public AttachmentOrientationType OrientationType { get; set; } = AttachmentOrientationType.FixedToOwner;
-        [MetaData("Position Type", "Determines how the sprite's position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.", PropertyEditorType.Enum)]
+        [MetaData("Position Type", "Determines how the sprite's position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.", PropertyEditorType.Enum, enumType: typeof(AttachmentPositionType))]
         public AttachmentPositionType PositionType { get; set; } = AttachmentPositionType.FixedToOwner;
 
-        [MetaData("Explosion Type", "Determines the type of explosion effect for the sprite.", PropertyEditorType.Enum)]
+        [MetaData("Explosion Type", "Determines the type of explosion effect for the sprite.", PropertyEditorType.Enum, enumType: typeof(ExplosionType))]
         public ExplosionType ExplosionType { get; set; } = ExplosionType.MediumFire;
         [MetaData("Particle Blast On Explode Amount", "Specifies the amount of particles generated when the sprite explodes.", PropertyEditorType.RangeInt)]
         public SiRange<int> ParticleBlastOnExplodeAmount { get; set; } = new SiRange<int>(1, 5000);
@@ -136,7 +136,7 @@ namespace Si.Engine.Sprite
         public int FrameHeight { get; set; }
         [MetaData("Frames Per Second", "The number of frames displayed per second in the sprite animation.", PropertyEditorType.Float)]
         public float FramesPerSecond { get; set; }
-        [MetaData("Play Mode", "The play mode of the sprite animation.", PropertyEditorType.Enum)]
+        [MetaData("Play Mode", "The play mode of the sprite animation.", PropertyEditorType.Enum, enumType: typeof(SiAnimationPlayMode))]
         public SiAnimationPlayMode PlayMode { get; set; }
 
         #endregion

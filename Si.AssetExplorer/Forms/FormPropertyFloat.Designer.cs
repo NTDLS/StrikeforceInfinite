@@ -86,6 +86,7 @@
             kryptonTextBoxDescription.Multiline = true;
             kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
             kryptonTextBoxDescription.ReadOnly = true;
+            kryptonTextBoxDescription.ScrollBars = ScrollBars.Vertical;
             kryptonTextBoxDescription.Size = new Size(343, 79);
             kryptonTextBoxDescription.TabIndex = 8;
             kryptonTextBoxDescription.Text = "Description";
@@ -120,7 +121,7 @@
             kryptonNumericUpDownDefault.TabIndex = 11;
             kryptonNumericUpDownDefault.Value = new decimal(new int[] { 0, 0, 0, 0 });
             // 
-            // FormPropertyDecimal
+            // FormPropertyFloat
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -134,7 +135,7 @@
             Controls.Add(kryptonLabelName);
             Controls.Add(kryptonNumericUpDownWorking);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "FormPropertyDecimal";
+            Name = "FormPropertyFloat";
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";

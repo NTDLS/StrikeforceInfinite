@@ -1,11 +1,12 @@
 ﻿using Krypton.Toolkit;
+using static Si.Library.SiConstants;
 
 namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertyEnum
         : KryptonForm
     {
-        public decimal Value => kryptonNumericUpDown.Value;
+        public decimal Value => 0;// kryptonDropButtonWorking.Value;
 
         public FormPropertyEnum()
         {
@@ -17,8 +18,32 @@ namespace Si.AssetExplorer.Forms
             InitializeComponent();
             kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-            kryptonNumericUpDown.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
-            kryptonNumericUpDownDefaultValue.Value = Convert.ToDecimal(propertyItem.DefaultValue);
+
+            if (propertyItem.Attributes?.EnumType == null)
+                throw new Exception("EnumType must be specified for enum properties.");
+
+            var values = Enum.GetValues(propertyItem.Attributes.EnumType);
+
+            object? selectedItem = null;
+
+            foreach (var value in values)
+            {
+                var text = value.ToString();
+                if (text != null && text != string.Empty)
+                {
+                    if (text == propertyItem.WorkingValue?.ToString())
+                    {
+                        selectedItem = value;
+                    }
+                        kryptonComboBoxWorking.Items.Add(text);
+                }
+            }
+            if (selectedItem != null)
+            {
+                kryptonComboBoxWorking.SelectedItem = selectedItem;
+            }
+
+            kryptonTextBoxDefault.Text = propertyItem.DefaultValue?.ToString();
 
             AcceptButton = kryptonButtonSave;
             CancelButton = kryptonButtonCancel;

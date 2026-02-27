@@ -57,10 +57,13 @@ namespace Si.Engine.Sprite
         {
             get
             {
-                if (OrientationType == AttachmentOrientationType.FixedToOwner)
+                if (_engine.ExecutionMode == SiEngineExecutionMode.Play)
                 {
-                    //Make sure the attachment faces forwards.
-                    return RootOwner.Orientation.Clone();
+                    if (OrientationType == AttachmentOrientationType.FixedToOwner)
+                    {
+                        //Make sure the attachment faces forwards.
+                        return RootOwner.Orientation.Clone();
+                    }
                 }
                 return Orientation;
             }

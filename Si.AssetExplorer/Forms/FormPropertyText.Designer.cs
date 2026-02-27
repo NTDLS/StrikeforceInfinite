@@ -73,6 +73,7 @@
             kryptonTextBoxDescription.Multiline = true;
             kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
             kryptonTextBoxDescription.ReadOnly = true;
+            kryptonTextBoxDescription.ScrollBars = ScrollBars.Vertical;
             kryptonTextBoxDescription.Size = new Size(346, 79);
             kryptonTextBoxDescription.TabIndex = 8;
             kryptonTextBoxDescription.Text = "Description";
@@ -98,6 +99,7 @@
             kryptonTextBoxWorking.Location = new Point(12, 42);
             kryptonTextBoxWorking.Multiline = true;
             kryptonTextBoxWorking.Name = "kryptonTextBoxWorking";
+            kryptonTextBoxWorking.ScrollBars = ScrollBars.Vertical;
             kryptonTextBoxWorking.Size = new Size(346, 79);
             kryptonTextBoxWorking.TabIndex = 14;
             // 
@@ -106,6 +108,7 @@
             kryptonTextBoxDefault.Location = new Point(12, 158);
             kryptonTextBoxDefault.Multiline = true;
             kryptonTextBoxDefault.Name = "kryptonTextBoxDefault";
+            kryptonTextBoxDefault.ScrollBars = ScrollBars.Vertical;
             kryptonTextBoxDefault.Size = new Size(346, 79);
             kryptonTextBoxDefault.TabIndex = 15;
             // 

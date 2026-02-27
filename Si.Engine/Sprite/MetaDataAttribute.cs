@@ -11,9 +11,12 @@ namespace Si.Engine.Sprite
         public PropertyEditorType EditorType { get; }
         public double? MaxValue { get; } = null;
         public double? MinValue { get; } = null;
-        public int? MinLength { get; } = null;
+        public int? MinLength { get; } = null; 
+        public Type? EnumType { get; } = null;
 
-        public MetaDataAttribute(string friendlyName, string description, PropertyEditorType editorType, double maxValue = 0, double minValue = 0, int minLength = 0)
+
+        public MetaDataAttribute(string friendlyName, string description, PropertyEditorType editorType,
+            double maxValue = 0, double minValue = 0, int minLength = 0, Type? enumType = null)
         {
             FriendlyName = friendlyName;
             Description = description;
@@ -21,6 +24,7 @@ namespace Si.Engine.Sprite
             MaxValue = maxValue > 0 && maxValue > minValue ? MaxValue : null;
             MinValue = minValue >= 0 && maxValue >= 0 && maxValue > minValue ? minValue : null;
             MinLength = minLength > 0 ? minLength : null;
+            EnumType = enumType;
         }
     }
 }

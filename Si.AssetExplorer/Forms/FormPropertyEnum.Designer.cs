@@ -29,28 +29,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertyEnum));
-            kryptonNumericUpDown = new Krypton.Toolkit.KryptonNumericUpDown();
             kryptonLabelName = new Krypton.Toolkit.KryptonLabel();
             kryptonButtonCancel = new Krypton.Toolkit.KryptonButton();
             kryptonButtonSave = new Krypton.Toolkit.KryptonButton();
             kryptonTextBoxDescription = new Krypton.Toolkit.KryptonTextBox();
             kryptonLabelDescription = new Krypton.Toolkit.KryptonLabel();
             kryptonLabelDefaultValue = new Krypton.Toolkit.KryptonLabel();
-            kryptonNumericUpDownDefaultValue = new Krypton.Toolkit.KryptonNumericUpDown();
+            kryptonTextBoxDefault = new Krypton.Toolkit.KryptonTextBox();
+            kryptonComboBoxWorking = new Krypton.Toolkit.KryptonComboBox();
+            ((System.ComponentModel.ISupportInitialize)kryptonComboBoxWorking).BeginInit();
             SuspendLayout();
-            // 
-            // kryptonNumericUpDown
-            // 
-            kryptonNumericUpDown.AllowDecimals = true;
-            kryptonNumericUpDown.DecimalPlaces = 5;
-            kryptonNumericUpDown.Increment = new decimal(new int[] { 1, 0, 0, 0 });
-            kryptonNumericUpDown.Location = new Point(12, 43);
-            kryptonNumericUpDown.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            kryptonNumericUpDown.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
-            kryptonNumericUpDown.Name = "kryptonNumericUpDown";
-            kryptonNumericUpDown.Size = new Size(139, 22);
-            kryptonNumericUpDown.TabIndex = 0;
-            kryptonNumericUpDown.Value = new decimal(new int[] { 0, 0, 0, 0 });
             // 
             // kryptonLabelName
             // 
@@ -86,6 +74,7 @@
             kryptonTextBoxDescription.Multiline = true;
             kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
             kryptonTextBoxDescription.ReadOnly = true;
+            kryptonTextBoxDescription.ScrollBars = ScrollBars.Vertical;
             kryptonTextBoxDescription.Size = new Size(343, 79);
             kryptonTextBoxDescription.TabIndex = 8;
             kryptonTextBoxDescription.Text = "Description";
@@ -106,51 +95,54 @@
             kryptonLabelDefaultValue.TabIndex = 12;
             kryptonLabelDefaultValue.Values.Text = "Default Value";
             // 
-            // kryptonNumericUpDownDefaultValue
+            // kryptonTextBoxDefault
             // 
-            kryptonNumericUpDownDefaultValue.AllowDecimals = true;
-            kryptonNumericUpDownDefaultValue.DecimalPlaces = 5;
-            kryptonNumericUpDownDefaultValue.Increment = new decimal(new int[] { 1, 0, 0, 0 });
-            kryptonNumericUpDownDefaultValue.Location = new Point(12, 102);
-            kryptonNumericUpDownDefaultValue.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            kryptonNumericUpDownDefaultValue.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
-            kryptonNumericUpDownDefaultValue.Name = "kryptonNumericUpDownDefaultValue";
-            kryptonNumericUpDownDefaultValue.ReadOnly = true;
-            kryptonNumericUpDownDefaultValue.Size = new Size(139, 22);
-            kryptonNumericUpDownDefaultValue.TabIndex = 11;
-            kryptonNumericUpDownDefaultValue.Value = new decimal(new int[] { 0, 0, 0, 0 });
+            kryptonTextBoxDefault.Location = new Point(12, 101);
+            kryptonTextBoxDefault.Name = "kryptonTextBoxDefault";
+            kryptonTextBoxDefault.Size = new Size(343, 23);
+            kryptonTextBoxDefault.TabIndex = 15;
+            // 
+            // kryptonComboBoxWorking
+            // 
+            kryptonComboBoxWorking.DropDownStyle = ComboBoxStyle.DropDownList;
+            kryptonComboBoxWorking.DropDownWidth = 343;
+            kryptonComboBoxWorking.Location = new Point(12, 43);
+            kryptonComboBoxWorking.Name = "kryptonComboBoxWorking";
+            kryptonComboBoxWorking.Size = new Size(343, 22);
+            kryptonComboBoxWorking.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
+            kryptonComboBoxWorking.TabIndex = 17;
             // 
             // FormPropertyEnum
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(368, 295);
+            Controls.Add(kryptonComboBoxWorking);
+            Controls.Add(kryptonTextBoxDefault);
             Controls.Add(kryptonLabelDefaultValue);
-            Controls.Add(kryptonNumericUpDownDefaultValue);
             Controls.Add(kryptonLabelDescription);
             Controls.Add(kryptonTextBoxDescription);
             Controls.Add(kryptonButtonCancel);
             Controls.Add(kryptonButtonSave);
             Controls.Add(kryptonLabelName);
-            Controls.Add(kryptonNumericUpDown);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormPropertyEnum";
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
+            ((System.ComponentModel.ISupportInitialize)kryptonComboBoxWorking).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Krypton.Toolkit.KryptonNumericUpDown kryptonNumericUpDown;
         private Krypton.Toolkit.KryptonLabel kryptonLabelName;
         private Krypton.Toolkit.KryptonButton kryptonButtonCancel;
         private Krypton.Toolkit.KryptonButton kryptonButtonSave;
         private Krypton.Toolkit.KryptonTextBox kryptonTextBoxDescription;
         private Krypton.Toolkit.KryptonLabel kryptonLabelDescription;
         private Krypton.Toolkit.KryptonLabel kryptonLabelDefaultValue;
-        private Krypton.Toolkit.KryptonNumericUpDown kryptonNumericUpDownDefaultValue;
+        private Krypton.Toolkit.KryptonTextBox kryptonTextBoxDefault;
+        private Krypton.Toolkit.KryptonComboBox kryptonComboBoxWorking;
     }
 }
