@@ -1,12 +1,12 @@
 ﻿using NTDLS.Helpers;
 using Si.Audio;
 using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
-using Si.Library.Sprite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,95 +18,27 @@ namespace Si.Engine.Sprite.Weapon._Superclass
     /// A weapon is a "device" that fires a "munition" (_MunitionBase). It must be owned by another sprite.
     /// </summary>
     public class WeaponBase
-        : ISprite
+        : SpriteBase
     {
-        public Guid UID { get; private set; } = Guid.NewGuid();
-        protected EngineCore _engine;
         protected SpriteInteractiveBase Owner { get; private set; }
         protected DateTime _lastFired = DateTime.Now.AddMinutes(-5);
         protected SiAudioClip? _fireSound;
 
-        public SiVector Location { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public SiVector Orientation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public Metadata? Metadata { get; private set; }
         public List<WeaponsLock> LockedTargets { get; set; } = new();
         public int RoundsFired { get; set; }
         public int RoundQuantity { get; set; }
 
         public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
+            : base(engine, spritePath)
         {
             Owner = owner;
             _engine = engine;
 
-            LoadMetadata(spritePath);
-        }
-
-        /// <summary>
-        /// Sets the sprites images and loads other weapon related metadata.
-        /// </summary>
-        /// <param name="spritePath"></param>
-        public void LoadMetadata(string spritePath)
-        {
-            Metadata = _engine.Assets.GetMetadata(spritePath);
-
-            if (string.IsNullOrEmpty(Metadata?.SoundPath) == false)
+            if (!string.IsNullOrEmpty(Metadata.SoundPath))
             {
-                _fireSound = _engine.Assets.GetAudio(Metadata.SoundPath, Metadata.SoundVolume);
+                _fireSound = _engine.Assets.GetAudio(Metadata.SoundPath, Metadata.SoundVolume ?? 0);
             }
         }
-
-        public MunitionBase CreateMunition(SiVector? location = null, SpriteInteractiveBase? lockedTarget = null)
-        {
-            if (Owner == null)
-            {
-                throw new Exception("Weapon is not owned.");
-            }
-
-            string? spritePath = null;
-
-            int? spriteCount = Metadata.EnsureNotNull().SpritePaths.Length;
-            if (spriteCount > 0)
-            {
-                spritePath = Metadata.SpritePaths[SiRandom.Between(0, ((int)spriteCount) - 1)];
-            }
-
-            switch (Metadata.MunitionType)
-            {
-                case MunitionType.Projectile:
-                    {
-                        var munition = new ProjectileMunitionBase(_engine, this, Owner, spritePath, location ?? Owner.Location);
-                        return munition;
-                    }
-                case MunitionType.Energy:
-                    {
-                        var munition = new EnergyMunitionBase(_engine, this, Owner, spritePath, location ?? Owner.Location);
-                        return munition;
-                    }
-                case MunitionType.Seeking:
-                    {
-                        var munition = new SeekingMunitionBase(_engine, this, Owner, spritePath, location ?? Owner.Location)
-                        {
-                            SeekingRotationRateDegrees = Metadata.SeekingRotationRateDegrees,
-                            SeekingEscapeAngleDegrees = Metadata.SeekingEscapeAngleDegrees,
-                            SeekingEscapeDistance = Metadata.SeekingEscapeDistance
-                        };
-                        return munition;
-                    }
-                case MunitionType.Locking:
-                    {
-                        var munition = new LockingMunitionBase(_engine, this, Owner, spritePath, lockedTarget, location ?? Owner.Location)
-                        {
-                            GuidedRotationRateDegrees = Metadata.SeekingRotationRateDegrees,
-                            MaxGuidedObservationAngleDegrees = Metadata.SeekingEscapeAngleDegrees
-                        };
-                        return munition;
-                    }
-                default:
-                    throw new Exception($"The weapon type {Metadata.MunitionType} is not implemented.");
-            }
-        }
-
         public class WeaponsLock
         {
             public float Distance { get; set; }
@@ -118,6 +50,62 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 Sprite = sprite;
                 Distance = distance;
             }
+        }
+
+        public MunitionBase CreateMunition(SiVector? location = null, SpriteInteractiveBase? lockedTarget = null)
+        {
+            if (Owner == null)
+            {
+                throw new Exception("Weapon is not owned.");
+            }
+
+            string? munitionSpritePath = null;
+
+            int? spriteCount = Metadata.EnsureNotNull().MunitionSpritePaths?.Length;
+
+            if (Metadata.MunitionSpritePaths != null && spriteCount > 0)
+                munitionSpritePath = Metadata.MunitionSpritePaths[SiRandom.Between(0, spriteCount.Value - 1)];
+
+            if (munitionSpritePath == null)
+                throw new Exception($"Weapon {Metadata.Name} does not have a munition sprite path defined.");
+
+            var munitionSpriteMeta = _engine.Assets.GetMetadata(munitionSpritePath);
+
+            var munitionSpriteType = SiReflection.GetTypeByName(munitionSpriteMeta.Class
+                ?? throw new Exception($"The munition sprite {munitionSpritePath} does not have a type defined in its metadata."));
+
+            var munitionSprite = (MunitionBase)Activator.CreateInstance(munitionSpriteType,
+                [_engine, this, Owner, munitionSpritePath, lockedTarget, location ?? Owner.Location]).EnsureNotNull();
+
+            return munitionSprite;
+
+            /*
+            switch (munitionSpriteMeta.MunitionType)
+            {
+                case MunitionType.Projectile:
+                    {
+                        //TODO: dont instantiate here. Usee SpriteFactory or something.
+                        return new ProjectileMunitionBase(_engine, this, Owner, munitionSpritePath, location ?? Owner.Location);
+                    }
+                case MunitionType.Energy:
+                    {
+                        //TODO: dont instantiate here. Usee SpriteFactory or something.
+                        return new EnergyMunitionBase(_engine, this, Owner, munitionSpritePath, location ?? Owner.Location);
+                    }
+                case MunitionType.Seeking:
+                    {
+                        //TODO: dont instantiate here. Usee SpriteFactory or something.
+                        return new SeekingMunitionBase(_engine, this, Owner, munitionSpritePath, location ?? Owner.Location);
+                    }
+                case MunitionType.Locking:
+                    {
+                        //TODO: dont instantiate here. Usee SpriteFactory or something.
+                        return new LockingMunitionBase(_engine, this, Owner, munitionSpritePath, lockedTarget, location ?? Owner.Location);
+                    }
+                default:
+                    throw new Exception($"The weapon type {Metadata.MunitionType} is not implemented.");
+            }
+            */
         }
 
         public virtual void ApplyIntelligence(float epoch)
@@ -134,10 +122,10 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
                 foreach (var potentialTarget in potentialTargets)
                 {
-                    if (Metadata.MunitionType == MunitionType.Locking && Owner.IsPointingAt(potentialTarget, Metadata.MaxLockOnAngle))
+                    if (Metadata.MaxLockDistance > 0 && Owner.IsPointingAt(potentialTarget, Metadata.MaxLockOnAngle ?? 0))
                     {
                         var distance = Owner.DistanceTo(potentialTarget);
-                        if (distance.IsBetween(Metadata.MinLockDistance, Metadata.MaxLockDistance))
+                        if (distance.IsBetween(Metadata.MinLockDistance ?? 0, Metadata.MaxLockDistance.Value))
                         {
                             LockedTargets.Add(new WeaponsLock(potentialTarget, Owner.DistanceTo(potentialTarget)));
                         }
@@ -146,14 +134,14 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
                 LockedTargets = LockedTargets.OrderBy(o => o.Distance).ToList();
 
-                foreach (var hardLock in LockedTargets.Take(Metadata.MaxLocks))
+                foreach (var hardLock in LockedTargets.Take(Metadata.MaxLocks ?? 0))
                 {
                     hardLock.LockType = SiWeaponsLockType.Hard;
                     hardLock.Sprite.IsLockedOnHard = true;
                     hardLock.Sprite.IsLockedOnSoft = false;
                 }
 
-                foreach (var softLock in LockedTargets.Skip(Metadata.MaxLocks))
+                foreach (var softLock in LockedTargets.Skip(Metadata.MaxLocks ?? 0))
                 {
                     softLock.LockType = SiWeaponsLockType.Soft;
                     softLock.Sprite.IsLockedOnHard = false;
@@ -173,10 +161,10 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 _engine.Player.Sprite.IsLockedOnSoft = false;
                 _engine.Player.Sprite.IsLockedOnHard = false;
 
-                if (Metadata.MunitionType == MunitionType.Locking && Owner.IsPointingAt(_engine.Player.Sprite, Metadata.MaxLockOnAngle))
+                if (Metadata.MaxLockDistance > 0 && Owner.IsPointingAt(_engine.Player.Sprite, Metadata.MaxLockOnAngle ?? 0))
                 {
                     var distance = Owner.DistanceTo(_engine.Player.Sprite);
-                    if (distance.IsBetween(Metadata.MinLockDistance, Metadata.MaxLockDistance))
+                    if (distance.IsBetween(Metadata.MinLockDistance ?? 0, Metadata.MaxLockDistance.Value))
                     {
                         _engine.Player.Sprite.IsLockedOnHard = true;
                         _engine.Player.Sprite.IsLockedOnSoft = false;
@@ -241,8 +229,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 bool result = false;
                 if (RoundQuantity > 0)
                 {
-                    Metadata.EnsureNotNull();
-                    result = (DateTime.Now - _lastFired).TotalMilliseconds > Metadata.FireDelayMilliseconds;
+                    result = (DateTime.Now - _lastFired).TotalMilliseconds > (Metadata.FireDelayMilliseconds ?? 0);
                     if (result)
                     {
                         _lastFired = DateTime.Now;

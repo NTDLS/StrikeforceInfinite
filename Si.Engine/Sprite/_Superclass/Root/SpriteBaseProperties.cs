@@ -105,7 +105,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             }
         }
 
-        public SharpDX.Direct2D1.Bitmap? GetImage() => _image;
+        public SharpDX.Direct2D1.Bitmap? GetImage() => SpriteBitmap;
         public string? SpriteTag { get; set; }
         public uint UID { get; private set; } = SiSequenceGenerator.Next();
         public uint OwnerUID { get; set; }

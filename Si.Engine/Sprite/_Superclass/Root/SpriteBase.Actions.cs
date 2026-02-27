@@ -75,7 +75,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             if (munition.Weapon?.Metadata != null)
             {
-                Hit(munition.Weapon.Metadata.Damage);
+                Hit(munition.Weapon.Metadata.Damage ?? 0);
             }
         }
 

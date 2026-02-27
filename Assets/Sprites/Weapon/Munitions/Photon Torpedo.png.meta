@@ -1,0 +1,9 @@
+{
+  "Class": "EnergyMunitionBase",
+  "Name": "Photon Torpedo",
+  "Description": "",
+  "Damage": 500,
+  "Speed": 1600,
+  "AngleVarianceDegrees": 0.00,
+  "SpeedVariancePercent": 0.00
+}

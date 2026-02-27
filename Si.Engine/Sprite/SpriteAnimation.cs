@@ -12,10 +12,6 @@ namespace Si.Engine.Sprite
     public class SpriteAnimation
         : SpriteMinimalBitmap
     {
-#if DEBUG
-        private string? _debug_imageName;
-#endif
-        private SharpDX.Direct2D1.Bitmap? _sheetImage;
         private bool _isComplete = false;
         private int _frameCount;
         private int _currentFrame = 0;
@@ -31,48 +27,24 @@ namespace Si.Engine.Sprite
         public SpriteAnimation(EngineCore engine, string spritePath)
             : base(engine, spritePath)
         {
-#if DEBUG
-            _debug_imageName = spritePath;
-#endif
+            Location = SiVector.Zero();
 
-            Location = new SiVector();
+            FramesPerSecond = Metadata.FramesPerSecond.EnsureNotNull();
+            SetSize(new Size(Metadata.FrameWidth.EnsureNotNull(), Metadata.FrameHeight.EnsureNotNull()));
 
-            var metadata = _engine.Assets.GetMetadata(spritePath);
-
-            Speed = metadata.Speed;
-            Throttle = metadata.Throttle;
-            MaxThrottle = metadata.MaxThrottle;
-
-            SetImage(spritePath);
-            FramesPerSecond = metadata.FramesPerSecond;
-            SetSize(new Size(metadata.FrameWidth, metadata.FrameHeight));
-
-            PlayMode = metadata.PlayMode;
+            PlayMode = Metadata.PlayMode.EnsureNotNull();
 
             AdvanceImage(0);
-        }
-
-        /// <summary>
-        /// We want to get the entire animation sheet and reserve the base.image for the individual slices set by AdvanceImage().
-        /// </summary>
-        /// <param name="spritePath"></param>
-        public new void SetImage(string spritePath)
-        {
-#if DEBUG
-            _debug_imageName = spritePath;
-#endif
-
-            _sheetImage = _engine.Assets.GetBitmap(spritePath);
         }
 
         public new void SetSize(Size frameSize)
         {
             base.SetSize(frameSize);
 
-            _sheetImage.EnsureNotNull();
+            SpriteBitmap.EnsureNotNull();
 
-            _rows = (int)(_sheetImage.Size.Height / frameSize.Height);
-            _columns = (int)(_sheetImage.Size.Width / frameSize.Width);
+            _rows = (int)(SpriteBitmap.Size.Height / frameSize.Height);
+            _columns = (int)(SpriteBitmap.Size.Width / frameSize.Width);
             _frameCount = _rows * _columns;
         }
 
@@ -96,7 +68,7 @@ namespace Si.Engine.Sprite
 
             _engine.Rendering.DrawBitmap(
                 renderTarget,
-                _sheetImage ?? throw new NullReferenceException(),
+                SpriteBitmap ?? throw new NullReferenceException(),
                 RenderLocation.X - Size.Width / 2.0f,
                 RenderLocation.Y - Size.Height / 2.0f,
                 Orientation.RadiansSigned,

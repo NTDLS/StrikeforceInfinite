@@ -57,8 +57,8 @@ namespace Si.Engine.Sprite._Superclass
         {
             _engine = engine;
 
-            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked On.png");
-            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked Soft.png");
+            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
+            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
         }
 
         public SpriteInteractiveBase(EngineCore engine, Bitmap bitmap)
@@ -66,8 +66,8 @@ namespace Si.Engine.Sprite._Superclass
         {
             _engine = engine;
 
-            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked On.png");
-            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked Soft.png");
+            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
+            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
 
             SetImage(bitmap);
         }
@@ -102,7 +102,7 @@ namespace Si.Engine.Sprite._Superclass
         /// <param name="mass"></param>
         /// <returns></returns>
         public float TotalMomentum()
-            => TotalVelocity * Metadata.Mass;
+            => TotalVelocity * Metadata.Mass ?? 0;
 
         /// <summary>
         /// Number that defines how much motion a sprite is in.
@@ -120,9 +120,9 @@ namespace Si.Engine.Sprite._Superclass
             var totalRelativeVelocity = TotalVelocity;
             if (totalRelativeVelocity == 0)
             {
-                return Metadata.Mass;
+                return Metadata.Mass ?? 0;
             }
-            return TotalVelocity * Metadata.Mass;
+            return TotalVelocity * Metadata.Mass ?? 0;
         }
 
         #region Weapons selection and evaluation.
@@ -252,13 +252,13 @@ namespace Si.Engine.Sprite._Superclass
                         break;
                 }
 
-                if (Metadata.ParticleBlastOnExplodeAmount.IsValid())
+                if (Metadata.ParticleBlastOnExplodeAmount?.IsValid() == true)
                     _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(Metadata.ParticleBlastOnExplodeAmount.Min, Metadata.ParticleBlastOnExplodeAmount.Max));
 
-                if (Metadata.FragmentOnExplode)
+                if (Metadata.FragmentOnExplode == true)
                     _engine.Sprites.CreateFragmentsOf(this);
 
-                if (Metadata.ScreenShakeOnExplodeAmount.IsValid())
+                if (Metadata.ScreenShakeOnExplodeAmount?.IsValid() == true)
                     _engine.Rendering.AddScreenShake(Metadata.ScreenShakeOnExplodeAmount.Min, Metadata.ScreenShakeOnExplodeAmount.Max);
 
                 _engine.Audio.PlayRandomExplosion();
@@ -285,7 +285,7 @@ namespace Si.Engine.Sprite._Superclass
         /// </summary>
         public virtual void PerformCollisionDetection(float epoch)
         {
-            if (!Metadata.CollisionDetection || IsDeadOrExploded || !IsVisible)
+            if (Metadata.CollisionDetection != true || IsDeadOrExploded || !IsVisible)
             {
                 return;
             }
@@ -342,8 +342,8 @@ namespace Si.Engine.Sprite._Superclass
             var A = collisionPair.Body1.Sprite;
             var B = collisionPair.Body2.Sprite;
 
-            float mA = A.Metadata.Mass;
-            float mB = B.Metadata.Mass;
+            float mA = A.Metadata.Mass ?? 0;
+            float mB = B.Metadata.Mass ?? 0;
 
             // normal from A -> B (pick one direction and stick to it).
             var n = (B.Location - A.Location).Normalize();

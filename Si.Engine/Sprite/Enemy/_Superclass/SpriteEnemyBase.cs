@@ -30,7 +30,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
 
         public override void Explode()
         {
-            _engine.Player.Stats.Bounty += Metadata.Bounty;
+            _engine.Player.Stats.Bounty += Metadata.Bounty ?? 0;
 
             /*
             if (SiRandom.PercentChance(10))

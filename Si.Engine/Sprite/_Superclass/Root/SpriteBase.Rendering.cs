@@ -14,9 +14,9 @@ namespace Si.Engine.Sprite._Superclass._Root
     {
         public virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
-            if (_isVisible && _image != null)
+            if (_isVisible && SpriteBitmap != null)
             {
-                DrawImage(renderTarget, _image);
+                DrawImage(renderTarget, SpriteBitmap);
 
                 if (IsHighlighted)
                 {
@@ -48,7 +48,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public void RenderRadar(SharpDX.Direct2D1.RenderTarget renderTarget, int x, int y)
         {
-            if (_isVisible && _image != null)
+            if (_isVisible && SpriteBitmap != null)
             {
                 if (this is SpriteEnemyBase)
                 {

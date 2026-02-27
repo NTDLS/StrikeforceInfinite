@@ -1,5 +1,4 @@
-﻿using NTDLS.Helpers;
-using Si.Engine.Sprite._Superclass;
+﻿using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.Sprite.Weapon._Superclass;
@@ -33,44 +32,32 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         /// <param name="firedFrom">The sprite that is firing the weapon.</param>
         /// <param name="spritePath">The image for the munition.</param>
         /// <param name="location">The optional location for the munition to originate from (if not specified, we'll use the location of the firedFrom sprite).</param>
-        /// <param name="angle">>The optional angle for the munition to travel on (if not specified, we'll use the angle of the firedFrom sprite).</param>
-        public MunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string? spritePath, SiVector? location = null, float? angle = null)
-            : base(engine, null)
+        /// <param name="angleDegrees">>The optional angle for the munition to travel on (if not specified, we'll use the angle of the firedFrom sprite).</param>
+        public MunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string spritePath, SiVector location, float? angleDegrees = null)
+            : base(engine, spritePath)
         {
-            if (spritePath != null)
-            {
-                SetImage(spritePath);
-            }
-            else
-            {
-                //The image is likely being set in the derived class.
-            }
-
-            weapon.Metadata.EnsureNotNull();
-
             Weapon = weapon;
             RadarDotSize = new SiVector(1, 1);
             SceneDistanceLimit = _engine.Settings.MunitionSceneDistanceLimit;
 
-            float headingRadians = angle == null ? firedFrom.Orientation.RadiansSigned : (float)angle;
-            if (weapon.Metadata.AngleVarianceDegrees > 0)
+            float headingRadians = angleDegrees == null ? firedFrom.Orientation.RadiansSigned : SiMath.DegToRad(angleDegrees.Value);
+            if (Metadata.AngleVarianceDegrees > 0)
             {
-                var randomNumber = SiMath.DegToRad(SiRandom.Between(0, weapon.Metadata.AngleVarianceDegrees * 100.0f) / 100.0f);
-                headingRadians += (SiRandom.FlipCoin() ? 1 : -1) * randomNumber;
+                var variance = SiMath.DegToRad(SiRandom.Between(0, Metadata.AngleVarianceDegrees.Value));
+                headingRadians += (SiRandom.FlipCoin() ? 1 : -1) * variance;
             }
 
-            float initialSpeed = weapon.Metadata.Speed;
-            if (weapon.Metadata.SpeedVariancePercent > 0)
+            float speed = Metadata.Speed ?? 0;
+            if (Metadata.SpeedVariancePercent > 0)
             {
-                var randomNumber = SiRandom.Between(0, weapon.Metadata.SpeedVariancePercent * 100.0f) / 100.0f;
-                var variance = randomNumber * weapon.Metadata.Speed;
-                initialSpeed += (SiRandom.FlipCoin() ? 1 : -1) * variance;
+                var variance = SiRandom.Between(0, Metadata.SpeedVariancePercent.Value) * speed;
+                speed += (SiRandom.FlipCoin() ? 1 : -1) * variance;
             }
 
-            Location = location ?? firedFrom.Location;
+            Location = location;
             Orientation = new SiVector(headingRadians);
-            Speed = initialSpeed;
-            MovementVector = Orientation * initialSpeed;
+            Speed = speed;
+            RecalculateMovementVectorFromOrientation();
 
             if (firedFrom is SpriteAttachment attachment)
             {
@@ -114,7 +101,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
 
         public override void Explode()
         {
-            if (Weapon != null && Weapon.Metadata?.ExplodesOnImpact == true)
+            if (Weapon != null && Metadata.ExplodesOnImpact == true)
             {
                 HitExplosion();
             }

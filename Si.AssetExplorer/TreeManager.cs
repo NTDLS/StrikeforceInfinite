@@ -82,7 +82,7 @@ namespace Si.AssetExplorer
                 WriteOutput("Populating assets.", LoggingLevel.Verbose);
 
                 WriteOutput("Accessing archive.", LoggingLevel.Verbose);
-                var archive = ArchiveFactory.Open(_engineCore.Assets.AssetPackagePath, new SharpCompress.Readers.ReaderOptions()
+                var archive = ArchiveFactory.OpenArchive(_engineCore.Assets.AssetPackagePath, new SharpCompress.Readers.ReaderOptions()
                 {
                     ArchiveEncoding = new ArchiveEncoding()
                     {

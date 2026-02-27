@@ -3,18 +3,7 @@
   "Name": "Thunderstrike Missile",
   "Description": "",
   "SoundPath": "Sounds\\Weapons\\Thunderstrike Missile.wav",
-  "SpritePaths": ["Sprites\\Weapon\\Thunderstrike Missile.png"],
+  "MunitionSpritePaths": ["Sprites\\Weapon\\Munitions\\Thunderstrike Missile.png"],
   "SoundVolumne": 0.4,
-  
-  "MunitionType": "Seeking",
-  
-  "Damage": 20,
-  "FireDelayMilliseconds": 250,
-  "Speed": 950,
-  "SpeedVariancePercent": 0.10,
-  "ExplodesOnImpact": true,
-  
-  "SeekingEscapeAngleDegrees": 20,
-  "SeekingEscapeDistance": 1000,
-  "SeekingRotationRateDegrees": 45
+  "FireDelayMilliseconds": 250   
 }
