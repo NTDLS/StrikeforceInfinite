@@ -133,7 +133,10 @@
             Controls.Add(kryptonLabelName);
             Controls.Add(kryptonNumericUpDownWorkingX);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormPropertyVector";
+            Opacity = 0.95D;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";

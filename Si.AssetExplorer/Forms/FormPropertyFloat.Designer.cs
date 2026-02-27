@@ -103,7 +103,10 @@
             Controls.Add(kryptonLabelName);
             Controls.Add(kryptonNumericUpDownWorking);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormPropertyFloat";
+            Opacity = 0.95D;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";

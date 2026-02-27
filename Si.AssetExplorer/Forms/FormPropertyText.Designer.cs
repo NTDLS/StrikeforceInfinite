@@ -103,7 +103,10 @@
             Controls.Add(kryptonButtonSave);
             Controls.Add(kryptonLabelName);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormPropertyText";
+            Opacity = 0.95D;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
