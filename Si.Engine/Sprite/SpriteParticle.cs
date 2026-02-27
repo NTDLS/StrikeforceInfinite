@@ -11,7 +11,8 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite
 {
-    public class SpriteParticle : SpriteParticleBase
+    public class SpriteParticle
+        : SpriteParticleBase
     {
         /// <summary>
         /// The max travel distance from the creation x,y before the sprite is automatically deleted.

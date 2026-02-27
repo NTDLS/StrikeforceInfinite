@@ -15,9 +15,9 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         public float GuidedRotationRateDegrees { get; set; } = 3;
         public SpriteInteractiveBase? LockedTarget { get; private set; }
 
-        public LockingMunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string? imagePath,
+        public LockingMunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string? spritePath,
              SpriteInteractiveBase? lockedTarget = null, SiVector? location = null)
-            : base(engine, weapon, firedFrom, imagePath, location)
+            : base(engine, weapon, firedFrom, spritePath, location)
         {
             LockedTarget = lockedTarget;
         }

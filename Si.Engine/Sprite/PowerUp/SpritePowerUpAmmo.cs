@@ -4,12 +4,13 @@ using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.PowerUp
 {
-    internal class SpritePowerupAmmo : SpritePowerupBase
+    internal class SpritePowerupAmmo
+        : SpritePowerupBase
     {
         private readonly int imageCount = 3;
 
-        public SpritePowerupAmmo(EngineCore engine)
-            : base(engine)
+        public SpritePowerupAmmo(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             PowerupAmount = 100;
 

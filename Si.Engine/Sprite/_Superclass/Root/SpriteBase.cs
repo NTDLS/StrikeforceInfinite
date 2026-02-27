@@ -1,7 +1,9 @@
-﻿using Si.Engine.Sprite.Enemy._Superclass;
+﻿using NTDLS.Helpers;
+using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using Si.Library.Sprite;
+using System;
 using System.Drawing;
 
 namespace Si.Engine.Sprite._Superclass._Root
@@ -19,14 +21,70 @@ namespace Si.Engine.Sprite._Superclass._Root
         private SiVector _location = new();
         private Size _size;
 
-        public SpriteBase(EngineCore engine, string spriteTag = "")
+        private Metadata? _metadata = null;
+        public Metadata Metadata => _metadata ?? throw new NullReferenceException();
+
+        public SpriteBase(EngineCore engine, string? spritePath, string spriteTag = "")
         {
             _engine = engine;
 
             SpriteTag = spriteTag;
             IsHighlighted = _engine.Settings.HighlightAllSprites;
             Orientation = SiVector.One();
+
+            if (!string.IsNullOrEmpty(spritePath))
+            {
+                SetImageAndLoadMetadata(spritePath);
+            }
         }
+
+        /// <summary>
+        /// Sets the sprites image, sets speed, shields, adds attachments and weapons
+        /// from a .json file in the same path with the same name as the sprite image.
+        /// </summary>
+        private void SetImageAndLoadMetadata(string spritePath)
+        {
+            _metadata = _engine.Assets.GetMetadata(spritePath);
+
+            SetImage(spritePath);
+
+            // Set standard variables here:
+            Speed = Metadata.Speed;
+            Throttle = Metadata.Throttle;
+            MaxThrottle = Metadata.MaxThrottle;
+
+            SetHullHealth(Metadata.Hull);
+            SetShieldHealth(Metadata.Shields);
+
+            if (this is SpriteInteractiveBase interactive)
+            {
+                Metadata.Weapons?.ForEach(weapon =>
+                {
+                    interactive.AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount);
+                });
+
+                Metadata.Attachments?.ForEach(attachment =>
+                {
+                    interactive.AttachOfType(attachment.Type, attachment.LocationRelativeToOwner);
+                });
+            }
+
+            if (this is SpriteAttachment attach)
+            {
+                attach.OrientationType = Metadata.OrientationType;
+                attach.PositionType = Metadata.PositionType;
+            }
+
+            if (this is SpritePlayer player)
+            {
+                if (Metadata?.PrimaryWeapon?.Type != null)
+                {
+                    player.SetPrimaryWeapon(Metadata.PrimaryWeapon.Type, Metadata.PrimaryWeapon.MunitionCount);
+                    player.SelectFirstAvailableUsableSecondaryWeapon();
+                }
+            }
+        }
+
 
         public void QueueForDelete()
         {
@@ -74,9 +132,9 @@ namespace Si.Engine.Sprite._Superclass._Root
             _size = new Size((int)_image.Size.Width, (int)_image.Size.Height);
         }
 
-        public void SetImage(string imagePath)
+        public void SetImage(string spritePath)
         {
-            _image = _engine.Assets.GetBitmap(imagePath);
+            _image = _engine.Assets.GetBitmap(spritePath);
             _size = new Size((int)_image.Size.Width, (int)_image.Size.Height);
         }
 

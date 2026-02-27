@@ -45,7 +45,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         /// <summary>
         /// Sets the sprites images and loads other weapon related metadata.
         /// </summary>
-        /// <param name="spriteImagePath"></param>
+        /// <param name="spritePath"></param>
         public void LoadMetadata(string spritePath)
         {
             Metadata = _engine.Assets.GetMetadata(spritePath);

@@ -44,31 +44,25 @@ namespace Si.Engine.Sprite._Superclass
         #endregion
 
         public SiRenewableResources RenewableResources { get; set; } = new();
-        private Metadata? _metadata = null;
-        public Metadata Metadata => _metadata ?? throw new NullReferenceException();
+
         public List<WeaponBase> Weapons { get; private set; } = new();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="engine"></param>
-        /// <param name="imagePath"></param>
-        public SpriteInteractiveBase(EngineCore engine, string? imagePath)
-            : base(engine)
+        /// <param name="spritePath"></param>
+        public SpriteInteractiveBase(EngineCore engine, string? spritePath)
+            : base(engine, spritePath)
         {
             _engine = engine;
 
             _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked On.png");
             _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locked Soft.png");
-
-            if (imagePath != null)
-            {
-                SetImageAndLoadMetadata(imagePath);
-            }
         }
 
         public SpriteInteractiveBase(EngineCore engine, Bitmap bitmap)
-            : base(engine)
+            : base(engine, null)
         {
             _engine = engine;
 
@@ -101,51 +95,6 @@ namespace Si.Engine.Sprite._Superclass
         }
 
         #endregion
-
-        /// <summary>
-        /// Sets the sprites image, sets speed, shields, adds attachments and weapons
-        /// from a .json file in the same path with the same name as the sprite image.
-        /// </summary>
-        /// <param name="spriteImagePath"></param>
-        private void SetImageAndLoadMetadata(string spriteImagePath)
-        {
-            _metadata = _engine.Assets.GetMetadata(spriteImagePath);
-
-            SetImage(spriteImagePath);
-
-            // Set standard variables here:
-            Speed = Metadata.Speed;
-            Throttle = Metadata.Throttle;
-            MaxThrottle = Metadata.MaxThrottle;
-
-            SetHullHealth(Metadata.Hull);
-            SetShieldHealth(Metadata.Shields);
-
-            Metadata.Weapons?.ForEach(weapon =>
-            {
-                AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount);
-            });
-
-            Metadata.Attachments?.ForEach(attachment =>
-            {
-                AttachOfType(attachment.Type, attachment.LocationRelativeToOwner);
-            });
-
-            if (this is SpriteAttachment attach)
-            {
-                attach.OrientationType = Metadata.OrientationType;
-                attach.PositionType = Metadata.PositionType;
-            }
-
-            if (this is SpritePlayer player)
-            {
-                if (Metadata?.PrimaryWeapon?.Type != null)
-                {
-                    player.SetPrimaryWeapon(Metadata.PrimaryWeapon.Type, Metadata.PrimaryWeapon.MunitionCount);
-                    player.SelectFirstAvailableUsableSecondaryWeapon();
-                }
-            }
-        }
 
         /// <summary>
         /// The total velocity multiplied by the given mass.

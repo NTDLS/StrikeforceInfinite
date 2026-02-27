@@ -1,6 +1,5 @@
 ﻿using Krypton.Toolkit;
 using Si.Library;
-using Si.Library.Mathematics;
 
 namespace Si.AssetExplorer.Forms
 {

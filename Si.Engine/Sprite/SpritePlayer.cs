@@ -40,8 +40,8 @@ namespace Si.Engine.Sprite
         public WeaponBase? PrimaryWeapon { get; private set; }
         public WeaponBase? SelectedSecondaryWeapon { get; private set; }
 
-        public SpritePlayer(EngineCore engine, string imagePath)
-            : base(engine, imagePath)
+        public SpritePlayer(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             OnHit += SpritePlayer_OnHit;
 

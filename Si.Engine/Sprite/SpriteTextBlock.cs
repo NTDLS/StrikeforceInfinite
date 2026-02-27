@@ -8,7 +8,8 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite
 {
-    public class SpriteTextBlock : SpriteBase
+    public class SpriteTextBlock
+        : SpriteBase
     {
         private Size _size = Size.Empty;
         private string _text = string.Empty;
@@ -40,7 +41,7 @@ namespace Si.Engine.Sprite
         #endregion
 
         public SpriteTextBlock(EngineCore engine, TextFormat format, SolidColorBrush color, SiVector location, bool isFixedPosition)
-            : base(engine)
+            : base(engine, null)
         {
             RenderScaleOrder = SiRenderScaleOrder.PostScale;
             IsFixedPosition = isFixedPosition;

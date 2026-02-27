@@ -11,7 +11,7 @@ namespace Si.Engine.Sprite
         private readonly int selectedImageIndex = 0;
 
         public SpriteStar(EngineCore engine, string spritePath)
-            : base(engine)
+            : base(engine, spritePath)
         {
             SetImage(spritePath);
 

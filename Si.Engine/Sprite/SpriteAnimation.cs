@@ -55,14 +55,14 @@ namespace Si.Engine.Sprite
         /// <summary>
         /// We want to get the entire animation sheet and reserve the base.image for the individual slices set by AdvanceImage().
         /// </summary>
-        /// <param name="imagePath"></param>
-        public new void SetImage(string imagePath)
+        /// <param name="spritePath"></param>
+        public new void SetImage(string spritePath)
         {
 #if DEBUG
-            _debug_imageName = imagePath;
+            _debug_imageName = spritePath;
 #endif
 
-            _sheetImage = _engine.Assets.GetBitmap(imagePath);
+            _sheetImage = _engine.Assets.GetBitmap(spritePath);
         }
 
         public new void SetSize(Size frameSize)

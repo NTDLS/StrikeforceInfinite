@@ -8,8 +8,8 @@ namespace Si.Engine.Sprite.PowerUp
     {
         private readonly int imageCount = 3;
 
-        public SpritePowerupRepair(EngineCore engine)
-            : base(engine)
+        public SpritePowerupRepair(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             PowerupAmount = 100;
 

@@ -15,7 +15,8 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
     /// <summary>
     /// The munition base is the base for all bullets/projectiles/etc.
     /// </summary>
-    public class MunitionBase : SpriteBase
+    public class MunitionBase
+        : SpriteBase
     {
         public SiFiredFromType FiredFromType { get; private set; }
         public WeaponBase Weapon { get; private set; }
@@ -30,15 +31,15 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         /// <param name="engine">Reference to the engine.</param>
         /// <param name="weapon">The weapon to create a munition for.</param>
         /// <param name="firedFrom">The sprite that is firing the weapon.</param>
-        /// <param name="imagePath">The image for the munition.</param>
+        /// <param name="spritePath">The image for the munition.</param>
         /// <param name="location">The optional location for the munition to originate from (if not specified, we'll use the location of the firedFrom sprite).</param>
         /// <param name="angle">>The optional angle for the munition to travel on (if not specified, we'll use the angle of the firedFrom sprite).</param>
-        public MunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string? imagePath, SiVector? location = null, float? angle = null)
-            : base(engine)
+        public MunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string? spritePath, SiVector? location = null, float? angle = null)
+            : base(engine, null)
         {
-            if (imagePath != null)
+            if (spritePath != null)
             {
-                SetImage(imagePath);
+                SetImage(spritePath);
             }
             else
             {

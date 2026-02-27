@@ -2,7 +2,8 @@
 
 namespace Si.Engine.Sprite._Superclass
 {
-    public class SpriteParticleBase : SpriteBase
+    public class SpriteParticleBase
+        : SpriteBase
     {
         /// <summary>
         /// Used to represent a particle sprite. Note that these are not "fractions" of a larger sprite, they are their

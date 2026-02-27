@@ -27,8 +27,8 @@ namespace Si.Engine.Sprite.PowerUp._Superclass
             }
         }
 
-        public SpritePowerupBase(EngineCore engine)
-            : base(engine)
+        public SpritePowerupBase(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             RadarDotSize = new SiVector(4, 4);
         }

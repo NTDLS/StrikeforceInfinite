@@ -10,7 +10,8 @@ namespace Si.Engine.Sprite
     /// <summary>
     /// These are generic collidable, interactive bitmap sprites. They can take damage and even shoot back.
     /// </summary>
-    public class SpriteInteractiveBitmap : SpriteInteractiveBase
+    public class SpriteInteractiveBitmap
+        : SpriteInteractiveBase
     {
         /// <summary>
         /// The max travel distance from the creation x,y before the sprite is automatically deleted.
@@ -29,8 +30,8 @@ namespace Si.Engine.Sprite
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteInteractiveBitmap(EngineCore engine, string imagePath)
-            : base(engine, imagePath)
+        public SpriteInteractiveBitmap(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
         }
 

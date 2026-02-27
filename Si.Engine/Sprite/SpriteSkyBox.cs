@@ -6,14 +6,15 @@ using System.IO;
 
 namespace Si.Engine.Sprite
 {
-    public class SpriteSkyBox : SpriteBase
+    public class SpriteSkyBox
+        : SpriteBase
     {
         private const string _assetPath = @"Sprites\SkyBox\";
         private readonly int _imageCount = 5;
         private readonly int selectedImageIndex = 0;
 
-        public SpriteSkyBox(EngineCore engine)
-            : base(engine)
+        public SpriteSkyBox(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
             selectedImageIndex = SiRandom.Between(0, _imageCount - 1);
             SetImage(Path.Combine(_assetPath, $"{selectedImageIndex}.png"));

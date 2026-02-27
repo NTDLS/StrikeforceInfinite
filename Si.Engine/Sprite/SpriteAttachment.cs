@@ -22,8 +22,8 @@ namespace Si.Engine.Sprite
         /// </summary>
         public AttachmentPositionType PositionType { get; set; } = AttachmentPositionType.FixedToOwner;
 
-        public SpriteAttachment(EngineCore engine, string? imagePath)
-            : base(engine, imagePath)
+        public SpriteAttachment(EngineCore engine, string? spritePath)
+            : base(engine, spritePath)
         {
         }
 

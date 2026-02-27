@@ -30,32 +30,32 @@ namespace Si.Engine.Sprite
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteMinimalBitmap(EngineCore engine, string imagePath)
-            : base(engine)
+        public SpriteMinimalBitmap(EngineCore engine, string spritePath)
+            : base(engine, spritePath)
         {
-            SetImageAndLoadMetadata(imagePath);
+            SetImageAndLoadMetadata(spritePath);
         }
 
         public SpriteMinimalBitmap(EngineCore engine, SharpDX.Direct2D1.Bitmap bitmap)
-            : base(engine)
+            : base(engine, null)
         {
             SetImage(bitmap);
         }
 
         public SpriteMinimalBitmap(EngineCore engine)
-            : base(engine)
+            : base(engine, null)
         {
         }
 
-        private void SetImageAndLoadMetadata(string spriteImagePath)
+        private void SetImageAndLoadMetadata(string spritePath)
         {
-            var metadata = _engine.Assets.GetMetadata(spriteImagePath);
+            var metadata = _engine.Assets.GetMetadata(spritePath);
 
             Speed = metadata.Speed;
             Throttle = metadata.Throttle;
             MaxThrottle = metadata.MaxThrottle;
 
-            SetImage(spriteImagePath);
+            SetImage(spritePath);
         }
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)

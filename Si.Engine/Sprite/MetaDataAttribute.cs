@@ -11,7 +11,7 @@ namespace Si.Engine.Sprite
         public PropertyEditorType EditorType { get; }
         public double? MaxValue { get; } = null;
         public double? MinValue { get; } = null;
-        public int? MinLength { get; } = null; 
+        public int? MinLength { get; } = null;
         public Type? EnumType { get; } = null;
 
 

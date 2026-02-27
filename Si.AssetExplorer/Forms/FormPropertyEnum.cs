@@ -1,11 +1,12 @@
 ﻿using Krypton.Toolkit;
-using static Si.Library.SiConstants;
 
 namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertyEnum
         : KryptonForm
     {
+        //DONE!
+
         public decimal Value => 0;// kryptonDropButtonWorking.Value;
 
         public FormPropertyEnum()
@@ -35,7 +36,7 @@ namespace Si.AssetExplorer.Forms
                     {
                         selectedItem = value;
                     }
-                        kryptonComboBoxWorking.Items.Add(text);
+                    kryptonComboBoxWorking.Items.Add(text);
                 }
             }
             if (selectedItem != null)

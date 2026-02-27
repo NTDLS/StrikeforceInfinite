@@ -1,7 +1,4 @@
 ﻿using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.PowerUp;
-using Si.Engine.Sprite.PowerUp._Superclass;
-using Si.Library;
 using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Enemy._Superclass
@@ -12,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy._Superclass
     public class SpriteEnemyBase
         : SpriteInteractiveShipBase
     {
-        public SpriteEnemyBase(EngineCore engine, string imagePath)
-                : base(engine, imagePath)
+        public SpriteEnemyBase(EngineCore engine, string spritePath)
+                : base(engine, spritePath)
         {
             RecalculateMovementVectorFromOrientation();
 
@@ -35,6 +32,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
         {
             _engine.Player.Stats.Bounty += Metadata.Bounty;
 
+            /*
             if (SiRandom.PercentChance(10))
             {
                 var powerup = SiRandom.Between(0, 4) switch
@@ -53,6 +51,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
                     _engine.Sprites.Powerups.Add(powerup);
                 }
             }
+            */
             base.Explode();
         }
 
