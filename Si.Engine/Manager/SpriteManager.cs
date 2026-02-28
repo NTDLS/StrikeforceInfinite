@@ -159,16 +159,16 @@ namespace Si.Engine.Manager
                         constructorParams.Add(spritePath);
                         break;
                     case "firedFrom":
-                        constructorParams.Add(new SpriteEnemyBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        constructorParams.Add(new SpriteEnemyBase(_engine, "Sprites/_Internal/Ghost"));
                         break;
                     case "owner":
-                        constructorParams.Add(new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        constructorParams.Add(new SpriteInteractiveBase(_engine, "Sprites/_Internal/Ghost"));
                         break;
                     case "weapon":
-                        constructorParams.Add(new WeaponBase(_engine, new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"), @"Sprites\_Internal\Ghost.png"));
+                        constructorParams.Add(new WeaponBase(_engine, new SpriteInteractiveBase(_engine, "Sprites/_Internal/Ghost"), "Sprites/_Internal/Ghost"));
                         break;
                     case "lockedTarget":
-                        constructorParams.Add(new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        constructorParams.Add(new SpriteInteractiveBase(_engine, "Sprites/_Internal/Ghost"));
                         break;
                     case "location":
                         constructorParams.Add(SiVector.Zero());
@@ -386,7 +386,7 @@ namespace Si.Engine.Manager
 
             if (RenderRadar)
             {
-                var radarBgImage = _engine.Assets.GetBitmap(@"Sprites\RadarTransparent.png");
+                var radarBgImage = _engine.Assets.GetBitmap("Sprites/RadarTransparent");
 
                 _engine.Rendering.DrawBitmap(renderTarget, radarBgImage,
                     _engine.Display.NaturalScreenSize.Width - radarBgImage.Size.Width,
@@ -495,55 +495,6 @@ namespace Si.Engine.Manager
                     o.Throttle = 1;
                 });
             }
-        }
-
-        public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
-        {
-            float statusIndex = 0;
-            loadingHeader?.SetTextAndCenterX("Loading sprites...");
-
-            var assembly = Assembly.GetExecutingAssembly();
-            var baseType = typeof(SpriteBase);
-            var derivedTypes = new List<Type>();
-
-            var allTypes = assembly.GetTypes();
-
-            foreach (var type in allTypes)
-            {
-                loadingDetail?.SetTextAndCenterX($"{statusIndex++ / allTypes.Length * 100.0:n0}%");
-
-                if (baseType.IsAssignableFrom(type) && type != baseType)
-                {
-                    // Check if the constructor parameter is of type EngineCore
-                    var constructor = type.GetConstructor([typeof(EngineCore)]);
-                    if (constructor != null)
-                    {
-                        derivedTypes.Add(type);
-                    }
-                }
-            }
-
-            statusIndex = 0;
-            loadingHeader?.SetTextAndCenterX("Creating instance types...");
-
-            // Create instances of derived types
-            foreach (var type in derivedTypes)
-            {
-                //Creating the instance of the sprite loads and caches the metadata and images.
-                dynamic instance = Activator.CreateInstance(type, _engine).EnsureNotNull();
-
-                loadingDetail?.SetTextAndCenterX($"{statusIndex++ / derivedTypes.Count * 100.0:n0}%");
-                instance.QueueForDelete();
-            }
-
-            loadingHeader?.SetTextAndCenterX("Loading animations...");
-            //Pre-cache animations:
-            //Animations do not have their own classes, so we need to look for them in the assets and load them.
-            var animations = _engine.Assets.Entries.Select(o => o.Value.Key.EnsureNotNull())
-                .Where(o => o != null && o.StartsWith(@"sprites/animation/", StringComparison.CurrentCultureIgnoreCase)
-                && o.EndsWith(@".png", StringComparison.CurrentCultureIgnoreCase)).ToList();
-
-            animations.ForEach(o => Animations.Add(o).QueueForDelete());
         }
     }
 }

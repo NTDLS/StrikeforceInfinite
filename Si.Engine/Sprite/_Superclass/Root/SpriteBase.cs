@@ -23,8 +23,8 @@ namespace Si.Engine.Sprite._Superclass._Root
         private SiVector _location = new();
         private Size _size;
 
-        private Metadata? _metadata = null;
-        public Metadata Metadata => _metadata ?? throw new NullReferenceException();
+        private SpriteMetadata? _metadata = null;
+        public SpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
 
         public SpriteBase(EngineCore engine, string? spritePath)
         {
@@ -33,18 +33,21 @@ namespace Si.Engine.Sprite._Superclass._Root
             IsHighlighted = _engine.Settings.HighlightAllSprites;
             Orientation = SiVector.One();
 
-            if (!string.IsNullOrEmpty(spritePath))
-            {
-                SetImageAndLoadMetadata(spritePath);
-            }
+            SetImageAndLoadMetadata(spritePath);
         }
 
         /// <summary>
         /// Sets the sprites image, sets speed, shields, adds attachments and weapons
         /// from a .json file in the same path with the same name as the sprite image.
         /// </summary>
-        private void SetImageAndLoadMetadata(string spritePath)
+        private void SetImageAndLoadMetadata(string? spritePath)
         {
+            if (string.IsNullOrEmpty(spritePath))
+            {
+                _metadata = new SpriteMetadata();
+                return;
+            }
+
             _metadata = _engine.Assets.GetMetadata(spritePath);
 
             var extension = Path.GetExtension(spritePath);

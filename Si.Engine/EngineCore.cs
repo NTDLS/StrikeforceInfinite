@@ -303,6 +303,10 @@ namespace Si.Engine
                     {
                         o.IntermediateRenderTarget.BeginDraw();
 
+
+                        o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Red);
+
+                        /*
                         if (ExecutionMode == SiEngineExecutionMode.Play)
                         {
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Black);
@@ -351,7 +355,7 @@ namespace Si.Engine
                             }
                         }
                         #endregion
-
+                        */
                         o.IntermediateRenderTarget.EndDraw();
 
                         o.ScreenRenderTarget.BeginDraw();
@@ -368,8 +372,9 @@ namespace Si.Engine
                         {
                             Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, (float)Display.BaseDrawScale);
                         }
-
+                        /*
                         Sprites.RenderPostScaling(o.ScreenRenderTarget, epoch);
+                        */
 
                         o.ScreenRenderTarget.EndDraw();
                     }
@@ -435,7 +440,7 @@ namespace Si.Engine
 
                 if (Settings.PlayMusic)
                 {
-                    Audio.BackgroundMusicSound.Play();
+                    Audio.BackgroundMusicSound?.Play();
                 }
 
                 //TODO: Get the random skybox sprite.
@@ -480,19 +485,22 @@ namespace Si.Engine
 
         private void HydrateCache(SpriteTextBlock? loadingHeader = null, SpriteTextBlock? loadingDetail = null)
         {
-            loadingHeader?.SetTextAndCenterX("Loading assets...");
-            loadingHeader?.SetTextAndCenterX("Loading reflection cache...");
+            //loadingHeader?.SetTextAndCenterX("Loading assets...");
+            //loadingHeader?.SetTextAndCenterX("Loading reflection cache...");
 
             SiReflection.BuildReflectionCacheOfType<SpriteBase>();
             SiReflection.BuildReflectionCacheOfType<AIStateMachine>();
 
-            if (Settings.PreCacheAllAssets)
-            {
-                Assets.HydrateCache(loadingHeader, loadingDetail);
+            //Assets.HydrateCache(loadingHeader, loadingDetail);
 
-                //I dont think we need to do this any more now that sprites are tied to the assets.
-                //Sprites.HydrateCache(loadingHeader, loadingDetail);
+            for (int i = 0; i < 30; i++)
+            {
+                loadingHeader?.SetTextAndCenterX($"{i}");
+                Thread.Sleep(1000);
+
             }
+
+            Thread.Sleep(1000 * 30);
         }
 
         public void ShutdownEngine()
@@ -509,7 +517,6 @@ namespace Si.Engine
                 _worldClock?.Dispose();
                 Sprites.Dispose();
                 Rendering.Dispose();
-                Assets.Dispose();
             }
         }
 

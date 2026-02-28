@@ -6,13 +6,13 @@ namespace Si.Engine.Sprite
     public class SpriteDebug : SpriteInteractiveShipBase
     {
         public SpriteDebug(EngineCore engine)
-            : base(engine, @"Sprites\Debug.png")
+            : base(engine, "Sprites/Debug") //TODO: Why is the debug sprite not passed in here?!
         {
             Initialize();
         }
 
         public SpriteDebug(EngineCore engine, float x, float y)
-            : base(engine, @"Sprites\Debug.png")
+            : base(engine, "Sprites/Debug") //TODO: Why is the debug sprite not passed in here?!
         {
             Initialize();
             X = x;

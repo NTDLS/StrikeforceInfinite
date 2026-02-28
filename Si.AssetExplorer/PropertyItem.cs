@@ -14,16 +14,16 @@ namespace Si.AssetExplorer
         /// </summary>
         /// <remarks>This property allows for the specification of additional metadata that can influence
         /// the behavior of the object. It can be null if no attributes are assigned.</remarks>
-        public MetaDataAttribute? Attributes { get; set; }
+        public SpriteMetadataAttribute? Attributes { get; set; }
 
         /// <summary>
         /// Actual value of this meta data attribute.
         /// </summary>
         public object? WorkingValue { get; set; }
-        public Metadata MetaData { get; set; }
+        public SpriteMetadata MetaData { get; set; }
         public string PropertyName { get; set; }
 
-        public PropertyItem(Metadata metaData, string propertyName, ListViewGroup? group)
+        public PropertyItem(SpriteMetadata metaData, string propertyName, ListViewGroup? group)
         {
             Group = group;
             MetaData = metaData;
@@ -37,7 +37,7 @@ namespace Si.AssetExplorer
                 .Select(p => new
                 {
                     Prop = p,
-                    Attr = p.GetCustomAttribute<MetaDataAttribute>()
+                    Attr = p.GetCustomAttribute<SpriteMetadataAttribute>()
                 })
                 .Where(x => x.Attr != null)
                 .FirstOrDefault()?.Attr;

@@ -44,6 +44,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{69BB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Si.AssetExplorer", "Si.AssetExplorer\Si.AssetExplorer.csproj", "{8B344903-5AEE-CB42-3201-1149B03083DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Si.AssetPacker", "Si.AssetPacker\Si.AssetPacker.csproj", "{52EE688B-D61F-454B-ADE3-487A9E5288D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{8B344903-5AEE-CB42-3201-1149B03083DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B344903-5AEE-CB42-3201-1149B03083DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B344903-5AEE-CB42-3201-1149B03083DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52EE688B-D61F-454B-ADE3-487A9E5288D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52EE688B-D61F-454B-ADE3-487A9E5288D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52EE688B-D61F-454B-ADE3-487A9E5288D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52EE688B-D61F-454B-ADE3-487A9E5288D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +108,7 @@ Global
 		{184F7BDE-FE49-6447-0843-67404F8F68A1} = {4F4F1428-3130-462A-A440-6C99FC3C0051}
 		{8102C13C-5B08-4633-9422-AF8504AAB472} = {4F4F1428-3130-462A-A440-6C99FC3C0051}
 		{8B344903-5AEE-CB42-3201-1149B03083DA} = {69BB3CBA-7AFE-45AA-B539-FF46E9E1028A}
+		{52EE688B-D61F-454B-ADE3-487A9E5288D8} = {69BB3CBA-7AFE-45AA-B539-FF46E9E1028A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99D468A4-85E5-41AA-912F-A2435A154952}

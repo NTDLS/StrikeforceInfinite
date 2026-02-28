@@ -23,8 +23,8 @@ namespace Si.Engine.Sprite._Superclass
         #region Locking Indicator.
 
         public bool IsLockedOnSoft { get; set; } //This is just graphics candy, the object would be subject of a foreign weapons lock, but the other foreign weapon owner has too many locks.
-        protected Bitmap _lockedOnImage;
-        protected Bitmap _lockedOnSoftImage;
+        protected Bitmap? _lockedOnImage;
+        protected Bitmap? _lockedOnSoftImage;
         private bool _isLockedOn = false;
 
         public bool IsLockedOnHard //The object is the subject of a foreign weapons lock.
@@ -35,7 +35,7 @@ namespace Si.Engine.Sprite._Superclass
                 if (_isLockedOn == false && value == true)
                 {
                     //TODO: This should not play every loop.
-                    _engine.Audio.LockedOnBlip.Play();
+                    _engine.Audio.LockedOnBlip?.Play();
                 }
                 _isLockedOn = value;
             }
@@ -60,8 +60,11 @@ namespace Si.Engine.Sprite._Superclass
 
             Mass = SiRandom.Between(Metadata.Mass, 0);
 
-            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
-            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
+            if (_engine.Assets.IsLoaded)
+            {
+                _lockedOnImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On");
+                _lockedOnSoftImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft");
+            }
         }
 
         public SpriteInteractiveBase(EngineCore engine, Bitmap bitmap)
@@ -69,8 +72,11 @@ namespace Si.Engine.Sprite._Superclass
         {
             _engine = engine;
 
-            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
-            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
+            if (_engine.Assets.IsLoaded)
+            {
+                _lockedOnImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On.png");
+                _lockedOnSoftImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft.png");
+            }
 
             SetBitmap(bitmap);
         }
@@ -211,7 +217,7 @@ namespace Si.Engine.Sprite._Superclass
                 {
                     DrawImage(renderTarget, _lockedOnImage, 0);
                 }
-                else if (_lockedOnImage != null && IsLockedOnSoft)
+                else if (_lockedOnSoftImage != null && IsLockedOnSoft)
                 {
                     DrawImage(renderTarget, _lockedOnSoftImage, 0);
                 }

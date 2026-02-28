@@ -60,7 +60,7 @@ namespace Si.Engine.Level
                     AddEnemies();
                 }
 
-                _engine.Audio.RadarBlipsSound.Play();
+                _engine.Audio.RadarBlipsSound?.Play();
 
                 CurrentWave++;
             }
@@ -234,7 +234,7 @@ namespace Si.Engine.Level
             {
                 for (int col = 0; col < colCount; col++)
                 {
-                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 23)}.png");
+                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{SiRandom.Between(0, 23)}");
 
                     var asteroidSize = asteroid.Size.Width + asteroid.Size.Height;
 

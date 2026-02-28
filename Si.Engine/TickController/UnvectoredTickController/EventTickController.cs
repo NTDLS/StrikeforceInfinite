@@ -45,7 +45,7 @@ namespace Si.Engine.TickController.UnvectoredTickController
         {
             Add(4, (sender, parameter) =>
             {
-                Engine.Audio.DoorIsAjarSound.Play();
+                Engine.Audio.DoorIsAjarSound?.Play();
                 Engine.Menus.Show(new MenuStartNewGame(Engine));
             });
         }

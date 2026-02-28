@@ -20,7 +20,7 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
 
             OnVisibilityChanged += EnemyBase_OnVisibilityChanged;
 
-            ThrusterAnimation = _engine.Sprites.Animations.Add(@"Sprites\Animation\ThrustStandard32x32.png", (o) =>
+            ThrusterAnimation = _engine.Sprites.Animations.Add("Sprites/Animation/ThrustStandard32x32", (o) =>
             {
                 o.Location = Location.Clone();
                 o.Orientation = Orientation.Clone();
@@ -28,7 +28,7 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
                 o.OwnerUID = UID;
             });
 
-            BoosterAnimation = _engine.Sprites.Animations.Add(@"Sprites\Animation\ThrustBoost32x32.png", (o) =>
+            BoosterAnimation = _engine.Sprites.Animations.Add("Sprites/Animation/ThrustBoost32x32", (o) =>
             {
                 o.Location = Location.Clone();
                 o.Orientation = Orientation.Clone();

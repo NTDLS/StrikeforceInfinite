@@ -161,8 +161,6 @@ namespace Si.AssetExplorer
             _listView.Items.Clear();
             _listView.Groups.Clear();
 
-            var defaults = new Metadata();
-
             // --- Create groups
             var groupBase = new ListViewGroup("Base", HorizontalAlignment.Left);
             var groupAttachment = new ListViewGroup("Attachment", HorizontalAlignment.Left);

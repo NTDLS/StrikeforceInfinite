@@ -40,7 +40,7 @@ namespace Si.Engine.Sprite.PowerUp._Superclass
 
         public override void Explode()
         {
-            _engine.Assets.GetAudio(@"Sounds\Powerup\PowerUp1.wav").Play();
+            _engine.Assets.GetAudio("Sounds/Powerup/PowerUp1").Play();
             QueueForDelete();
         }
 

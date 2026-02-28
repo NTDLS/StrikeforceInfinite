@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NTDLS.DelegateThreadPooling;
-using NTDLS.Helpers;
 using NTDLS.Semaphore;
-using SharpCompress.Archives;
-using SharpCompress.Common;
+using NTDLS.SqliteDapperWrapper;
 using Si.Audio;
 using Si.Engine.Sprite;
 using Si.Library;
@@ -11,122 +9,67 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace Si.Engine.Manager
 {
-    public class AssetManager : IDisposable
+    public class AssetManager
     {
 #if DEBUG
-        private const string _assetPackagePath = "../../../../Installer/Si.Assets.rez";
+        private const string _assetPackagePath = "../../../../Installer/Si.Assets.db";
 #else
-        private const string _assetPackagePath = "Si.Assets.rez";
+        private const string _assetPackagePath = "Si.Assets.db";
 #endif
-
-        public enum BaseAssetType
-        {
-            Meta,
-            Asset
-        }
-
-        public class MetadataContainer
-        {
-            public AssetContainer Asset { get; set; }
-            public Metadata Metadata { get; set; }
-
-            public MetadataContainer(AssetContainer container, Metadata metadata)
-            {
-                Asset = container;
-                Metadata = metadata;
-            }
-        }
 
         public class AssetContainer
         {
-            public BaseAssetType BaseAssetType { get; set; }
-            public string? Directory { get; set; }
-            public string SpritePath { get; set; }
+            public string Key { get; set; }
+            public SpriteMetadata Metadata { get; set; }
             public object Object { get; set; }
 
-            public AssetContainer(BaseAssetType baseAssetType, string spritePath, object obj)
+            public AssetContainer(string key, SpriteMetadata metadata, object obj)
             {
-                BaseAssetType = baseAssetType;
-                Directory = Path.GetDirectoryName(spritePath)?.ToLower();
-                SpritePath = spritePath;
+                Key = key;
+                Metadata = metadata;
                 Object = obj;
             }
         }
 
+        public bool IsLoaded { get; private set; }
         public string AssetPackagePath => _assetPackagePath;
         private readonly EngineCore _engine;
         private readonly OptimisticCriticalResource<Dictionary<string, AssetContainer>> _collection = new();
-        private readonly IArchive? _archive = null;
-        private readonly Dictionary<string, IArchiveEntry> _entryHashes;
-
-        public Dictionary<string, IArchiveEntry> Entries => _entryHashes;
+        private readonly SqliteManagedFactory _assetsDatabase = new($"Data Source={_assetPackagePath}");
 
         public AssetManager(EngineCore engine)
         {
             _engine = engine;
-
-            _archive = ArchiveFactory.OpenArchive(_assetPackagePath, new SharpCompress.Readers.ReaderOptions()
-            {
-                ArchiveEncoding = new ArchiveEncoding()
-                {
-                    Default = System.Text.Encoding.Default
-                }
-            });
-
-            _entryHashes = _archive.Entries.ToDictionary(item => item.Key.EnsureNotNull().ToLower(), item => item);
         }
-
-        public void Dispose()
-        {
-            _archive?.Dispose();
-        }
-
-        public static bool IsDirectoryFromAttrib(IEntry entry) =>
-            entry.Attrib.HasValue && ((FileAttributes)entry.Attrib.Value & FileAttributes.Directory) != 0;
 
         /// <summary>
         /// Gets the metadata for all assets in a directory.
         /// This REQUIRES that the assets already be cached.
         /// </summary>
-        public List<MetadataContainer> GetMetadataInDirectory(string directory, bool avoidCache = false)
+        public List<AssetContainer> GetAssetsInPath(string directory, bool avoidCache = false)
         {
-            var assetMetadatas = _collection.Read(o =>
-                o.Where(kv => kv.Value.BaseAssetType == BaseAssetType.Meta
-                && string.Equals(kv.Value.Directory, directory, StringComparison.OrdinalIgnoreCase))
-                .Select(kv => new MetadataContainer(kv.Value, (Metadata)kv.Value.Object))).ToList();
+            var assets = _collection.Read(o =>
+                o.Where(kv => kv.Key.StartsWith(directory, StringComparison.OrdinalIgnoreCase))
+                .Select(kv => kv.Value).ToList()
+            );
 
-            return assetMetadatas ?? [];
+            return assets;
         }
 
-        public Metadata GetMetadata(string spritePath, bool avoidCache = false)
+        public SpriteMetadata GetMetadata(string spritePath, bool avoidCache = false)
         {
-            string metadataFile = $"{spritePath}.meta".Replace('\\', '/');
-
-            if (avoidCache)
+            var assetContainer = _collection.Read(o =>
             {
-                return JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)) ?? new Metadata();
-            }
+                o.TryGetValue(spritePath, out AssetContainer? value);
+                return value;
+            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
 
-            string key = $"meta:{metadataFile.ToLower()}";
-
-            var cached = _collection.Read(o =>
-            {
-                o.TryGetValue(key, out var value);
-                return value?.Object;
-            });
-
-            if (cached != null)
-            {
-                return (Metadata)cached;
-            }
-
-            var metadata = JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)) ?? new Metadata();
-            _collection.Write(o => o[key] = new AssetContainer(BaseAssetType.Meta, spritePath, metadata.EnsureNotNull()));
-            return metadata;
+            return assetContainer.Metadata;
         }
 
         /// <summary>
@@ -171,127 +114,113 @@ namespace Si.Engine.Manager
             File.WriteAllText(assetAbsolutePath, value);
         }
 
-        public string GetText(string path, string defaultText = "")
+        public string GetText(string spritePath, string defaultText = "")
         {
-            path = path.ToLower().Replace('\\', '/');
+            var assetContainer = _collection.Read(o =>
+            {
+                o.TryGetValue(spritePath, out AssetContainer? value);
+                return value;
+            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
 
-            var cached = _collection.Read(o =>
-            {
-                o.TryGetValue(path, out var value);
-                return value?.Object as string;
-            });
-            if (cached != null)
-            {
-                return cached;
-            }
-
-            try
-            {
-                var text = GetCompressedText(path);
-                _collection.Write(o => o.TryAdd(path, new AssetContainer(BaseAssetType.Asset, path, text)));
-                return text;
-            }
-            catch
-            {
-                return defaultText;
-            }
+            return assetContainer.Object as string ?? defaultText;
         }
 
-        public SiAudioClip GetAudio(string path, float? volume = null)
+        public SiAudioClip GetAudio(string spritePath, float? volume = null)
         {
-            var metadata = GetMetadata(path);
-
-            path = path.ToLower().Replace('\\', '/');
-
-            var cacheKey = $"{path}:{volume ?? metadata.SoundVolume ?? 1}:{metadata.LoopSound ?? false}";
-            var cached = _collection.Read(o =>
+            var assetContainer = _collection.Read(o =>
             {
-                if (o.TryGetValue(cacheKey, out var value))
-                {
-                    var audioClip = value.Object as SiAudioClip;
-                    audioClip?.SetInitialVolume(volume ?? metadata.SoundVolume ?? 1);
-                    audioClip?.SetLoopForever(metadata.LoopSound ?? false);
-                    return audioClip;
-                }
-                return null;
-            });
+                o.TryGetValue(spritePath, out AssetContainer? value);
+                return value;
+            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
 
-            if (cached != null)
-            {
-                return cached;
-            }
 
-            using var stream = GetCompressedStream(path);
-            var result = new SiAudioClip(stream, volume ?? metadata.SoundVolume ?? 1, metadata.LoopSound ?? false);
-            _collection.Write(o => o.TryAdd(cacheKey, new AssetContainer(BaseAssetType.Asset, path, result)));
-            stream.Close();
-            return result;
+            var audioClip = assetContainer.Object as SiAudioClip;
+            audioClip?.SetInitialVolume(volume ?? assetContainer.Metadata.SoundVolume ?? 1);
+            audioClip?.SetLoopForever(assetContainer.Metadata.LoopSound ?? false);
+            return audioClip ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
         }
 
-        public SharpDX.Direct2D1.Bitmap GetBitmap(string path)
+        public SharpDX.Direct2D1.Bitmap GetBitmap(string spritePath)
         {
-            path = path.ToLower().Replace('\\', '/');
-
-            var cached = _collection.Read(o =>
+            var assetContainer = _collection.Read(o =>
             {
-                o.TryGetValue(path, out var value);
-                return value?.Object as SharpDX.Direct2D1.Bitmap;
-            });
+                o.TryGetValue(spritePath, out AssetContainer? value);
+                return value;
+            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
 
-            if (cached != null)
-            {
-                return cached;
-            }
-
-            using var stream = GetCompressedStream(path);
-            var bitmap = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
-            _collection.Write(o => o.TryAdd(path, new AssetContainer(BaseAssetType.Asset, path, bitmap)));
-            return bitmap;
+            var stream = new MemoryStream(assetContainer.Object as byte[] ?? throw new FileNotFoundException($"Asset not found: {spritePath}"));
+            return _engine.Rendering.BitmapStreamToD2DBitmap(stream);
         }
 
         public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
         {
             loadingHeader?.SetTextAndCenterX("Loading packed assets...");
 
-            using var archive = ArchiveFactory.OpenArchive(_assetPackagePath);
             using var dtp = new DelegateThreadPool(new DelegateThreadPoolConfiguration()
             {
                 InitialThreadCount = Environment.ProcessorCount
             });
             var threadPoolTracker = dtp.CreateChildPool();
 
+
+            var assets = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM assets");
+
             int statusIndex = 0;
-            float statusEntryCount = archive.Entries.Count();
+            float statusEntryCount = assets.Count();
 
-            foreach (var entry in archive.Entries)
+            foreach (var asset in assets)
             {
-                /// Skip entries with '@' in the name as they are likely to be used for internal purposes and not actual assets.
-                if (entry.Key?.Contains('@') == true) continue;
-
-                switch (Path.GetExtension(entry.Key.EnsureNotNull()).ToLower())
+                _collection.Write(collection =>
                 {
-                    case ".meta":
-                    case ".json":
-                    case ".txt":
-                        threadPoolTracker.Enqueue(() => GetText(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    case ".png":
-                    case ".jpg":
-                    case ".bmp":
-                        threadPoolTracker.Enqueue(() => GetBitmap(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    case ".wav":
-                        threadPoolTracker.Enqueue(() => GetAudio(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    default:
-                        Interlocked.Increment(ref statusIndex);
-                        break;
-                }
 
-                if (!IsDirectoryFromAttrib(entry) && !entry.Key.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
-                {
-                    GetMetadata(entry.Key);
-                }
+                    switch (asset.BaseType)
+                    {
+                        case "json":
+                        case "txt":
+                            threadPoolTracker.Enqueue(() =>
+                            {
+                                var metaData = JsonConvert.DeserializeObject<SpriteMetadata>(asset.Metadata)
+                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {asset.Key}");
+                                var bytes = asset.IsCompressed ? CompressionHelper.Decompress(asset.Bytes) : asset.Bytes;
+                                var obj = Encoding.UTF8.GetString(bytes);
+
+                                collection.Add(asset.Key, new AssetContainer(asset.Key, metaData, obj));
+                                Interlocked.Increment(ref statusIndex);
+                            });
+                            break;
+                        case "png":
+                        case "jpg":
+                        case "bmp":
+                            threadPoolTracker.Enqueue(() =>
+                            {
+                                var metaData = JsonConvert.DeserializeObject<SpriteMetadata>(asset.Metadata)
+                                          ?? throw new Exception($"Failed to deserialize metadata for asset: {asset.Key}");
+                                var bytes = asset.IsCompressed ? CompressionHelper.Decompress(asset.Bytes) : asset.Bytes;
+                                using var stream = new MemoryStream(bytes);
+                                var obj = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
+
+                                collection.Add(asset.Key, new AssetContainer(asset.Key, metaData, obj));
+                                Interlocked.Increment(ref statusIndex);
+                            });
+                            break;
+                        case "wav":
+                            threadPoolTracker.Enqueue(() =>
+                            {
+                                var metaData = JsonConvert.DeserializeObject<SpriteMetadata>(asset.Metadata)
+                                          ?? throw new Exception($"Failed to deserialize metadata for asset: {asset.Key}");
+                                var bytes = asset.IsCompressed ? CompressionHelper.Decompress(asset.Bytes) : asset.Bytes;
+                                using var stream = new MemoryStream(bytes);
+                                var obj = new SiAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
+
+                                collection.Add(asset.Key, new AssetContainer(asset.Key, metaData, obj));
+                                Interlocked.Increment(ref statusIndex);
+                            });
+                            break;
+                        default:
+                            Interlocked.Increment(ref statusIndex);
+                            break;
+                    }
+                });
             }
 
             threadPoolTracker.WaitForCompletion(TimeSpan.FromMilliseconds(100), () =>
@@ -301,38 +230,15 @@ namespace Si.Engine.Manager
             });
 
             loadingDetail?.SetTextAndCenterX($"100%");
-        }
 
-        private string GetCompressedText(string path)
-        {
-            using var stream = GetCompressedStream(path);
-            return System.Text.Encoding.UTF8.GetString(stream.ToArray());
-        }
-
-        private MemoryStream GetCompressedStream(string path)
-        {
-            path = path.Trim().Replace("\\", "/");
-
-            if (_entryHashes.TryGetValue(path, out var entry))
-            {
-                lock (_entryHashes)
-                {
-                    using var stream = entry.OpenEntryStream();
-                    var memoryStream = new MemoryStream();
-                    stream.CopyTo(memoryStream);
-                    memoryStream.Position = 0;
-                    return memoryStream;
-                }
-            }
-
-            throw new FileNotFoundException(path);
+            IsLoaded = true;
         }
 
         #region Explicit helpers for common assets to avoid typos and ease refactoring.
 
         public string GetRandomGamerTag()
         {
-            var gamerTagsText = GetText($@"Text\GamerTags.txt");
+            var gamerTagsText = GetText("Text/GamerTags");
             var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
 
             var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
@@ -341,7 +247,7 @@ namespace Si.Engine.Manager
 
         public string GetRandomLobbyName()
         {
-            var gamerTagsText = GetText($@"Text\LobbyNames.txt");
+            var gamerTagsText = GetText("Text/LobbyNames");
             var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
 
             var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
