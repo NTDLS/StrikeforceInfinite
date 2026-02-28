@@ -19,6 +19,13 @@ namespace Si.Library
             Validate();
         }
 
+        public SiRange(T value)
+        {
+            Min = value;
+            Max = value;
+            Validate();
+        }
+
         public bool IsValid()
             => Min.CompareTo(Max) <= 0
                && Comparer<T>.Default.Compare(Max, default) > 0;

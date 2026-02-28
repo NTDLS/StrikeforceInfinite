@@ -1,8 +1,8 @@
 {
   "Class": "SpriteInteractiveBitmap",
-  "Speed": 250,
+  "Speed": {"Min":200,"Max":300},
   "Hull": 100,
-  "Mass": 10000,
+  "Mass": {"Min":800,"Max":1200},
   "Bounty": 0,
   "MunitionDetection": true,
   "CollisionDetection": true

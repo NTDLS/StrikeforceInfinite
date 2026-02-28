@@ -2,6 +2,7 @@
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
+using Si.Library;
 using Si.Library.Mathematics;
 using System;
 using System.Drawing;
@@ -29,7 +30,7 @@ namespace Si.Engine.Sprite
         {
             Location = SiVector.Zero();
 
-            FramesPerSecond = Metadata.FramesPerSecond.EnsureNotNull();
+            FramesPerSecond = SiRandom.Between(Metadata.FramesPerSecond, 0);
             SetSize(new Size(Metadata.FrameWidth.EnsureNotNull(), Metadata.FrameHeight.EnsureNotNull()));
 
             PlayMode = Metadata.PlayMode.EnsureNotNull();

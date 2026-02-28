@@ -36,7 +36,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
             if (!string.IsNullOrEmpty(Metadata.SoundPath))
             {
-                _fireSound = _engine.Assets.GetAudio(Metadata.SoundPath, Metadata.SoundVolume);
+                _fireSound = _engine.Assets.GetAudio(Metadata.SoundPath, Metadata.SoundVolume ?? 0);
             }
         }
         public class WeaponsLock

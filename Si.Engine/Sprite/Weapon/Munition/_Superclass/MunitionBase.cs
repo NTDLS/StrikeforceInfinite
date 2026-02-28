@@ -47,16 +47,9 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
                 headingRadians += (SiRandom.FlipCoin() ? 1 : -1) * variance;
             }
 
-            float speed = Metadata.Speed ?? 0;
-            if (Metadata.SpeedVariancePercent > 0)
-            {
-                var variance = SiRandom.Between(0, Metadata.SpeedVariancePercent.Value) * speed;
-                speed += (SiRandom.FlipCoin() ? 1 : -1) * variance;
-            }
-
             Location = location;
             Orientation = new SiVector(headingRadians);
-            Speed = speed;
+            Speed = SiRandom.Between(Metadata.Speed, 0);
             RecalculateMovementVectorFromOrientation();
 
             if (firedFrom is SpriteAttachment attachment)

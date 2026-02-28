@@ -247,7 +247,7 @@ namespace Si.Engine.Level
                     asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
                     asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
-                    asteroid.Metadata.Mass = Mass.Large;
+                    asteroid.Metadata.Mass = new SiRange<float>(Mass.Large);
 
                     asteroid.RecalculateMovementVectorFromAngle(SiRandom.Between(1f, 360f).ToRadians());
                     asteroid.VectorType = ParticleVectorType.Default;

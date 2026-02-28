@@ -2,7 +2,7 @@
   "Class": "SpriteAnimation",
   "FrameHeight": 22,
   "FrameWidth": 22,
-  "FramesPerSecond": 50,
+  "FramesPerSecond": {"Min":30,"Max":50},
   "DeleteAfterPlay": "true",
   "PlayMode": "DeleteAfterPlay"
 }

@@ -1,7 +1,7 @@
 {
   "Class": "SpriteEnemySerf",
   "Description": "",
-  "Speed": 300,
+  "Speed": {"Min":200,"Max":300},
   "MaxThrottle": 1.5,
   "Hull": 20,
   "Shields": 10,

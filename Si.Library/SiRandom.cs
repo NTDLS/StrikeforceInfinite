@@ -77,6 +77,18 @@ namespace Si.Library
         public static int Between(int minValue, int maxValue)
             => Generator.Next(minValue, maxValue + 1);
 
+        public static float Between(SiRange<float> range)
+            => range.Min + (range.Max - range.Min) * (float)Generator.NextDouble();
+
+        public static int Between(SiRange<int> range)
+            => Generator.Next(range.Min, range.Max + 1);
+
+        public static float Between(SiRange<float>? range, float defaultValue)
+            => range == null ? defaultValue : range.Min + (range.Max - range.Min) * (float)Generator.NextDouble();
+
+        public static int Between(SiRange<int>? range, int defaultValue)
+            => range == null ? defaultValue : Generator.Next(range.Min, range.Max + 1);
+
         public static SiVector RandomOrientationVector()
             => SiVector.FromUnsignedDegrees(Between(0, 359));
     }

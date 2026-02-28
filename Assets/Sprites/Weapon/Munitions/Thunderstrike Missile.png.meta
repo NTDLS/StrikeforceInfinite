@@ -3,8 +3,8 @@
   "Name": "Thunderstrike Missile",
   "Description": "",
     
-  "Damage": 20,
-  "Speed": 950,
+  "Damage": {"Min":18,"Max":22},
+  "Speed": {"Min":940,"Max":960},
   "ExplodesOnImpact": true,
   
   "SeekingEscapeAngleDegrees": 20,

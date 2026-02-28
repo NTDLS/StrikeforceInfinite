@@ -1,4 +1,5 @@
 ﻿using Si.Engine.Sprite.Weapon.Munition._Superclass;
+using Si.Library;
 using Si.Library.Mathematics;
 using System.Linq;
 using static Si.Library.SiConstants;
@@ -75,7 +76,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             if (munition.Weapon?.Metadata != null)
             {
-                Hit(munition.Weapon.Metadata.Damage ?? 0);
+                Hit(SiRandom.Between(munition.Weapon.Metadata.Damage, 0));
             }
         }
 

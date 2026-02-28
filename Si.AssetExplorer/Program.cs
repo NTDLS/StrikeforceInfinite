@@ -1,3 +1,5 @@
+using Si.Library;
+
 namespace Si.AssetExplorer
 {
     internal static class Program

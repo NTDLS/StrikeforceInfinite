@@ -53,8 +53,8 @@ namespace Si.Engine.Sprite
         [MetaData("Screen Shake On Explode Amount", "Specifies the intensity of screen shake when the sprite explodes.", PropertyEditorType.RangeInt)]
         public SiRange<int>? ScreenShakeOnExplodeAmount { get; set; }
 
-        [MetaData("Speed", "The speed of the sprite.", PropertyEditorType.Float)]
-        public float? Speed { get; set; }
+        [MetaData("Speed", "The speed of the sprite.", PropertyEditorType.RangeFloat)]
+        public SiRange<float>? Speed { get; set; }
 
         [MetaData("Max Throttle", "The maximum throttle of the sprite.", PropertyEditorType.Float)]
         public float? MaxThrottle { get; set; }
@@ -69,8 +69,8 @@ namespace Si.Engine.Sprite
         /// 
         /// Mass == 0 is infinite mass, it cannot be moved by ineterial forces.
         /// </summary>
-        [MetaData("Mass", "The mass of the sprite, which affects its resistance to acceleration and deceleration in physics calculations when munition detection is enabled. A higher mass makes the sprite more resistant to external forces, while a lower mass makes it more agile but also more susceptible to being moved by such forces. A mass of 0 is considered infinite mass, meaning the sprite cannot be moved by inertial forces.", PropertyEditorType.Float)]
-        public float? Mass { get; set; }
+        [MetaData("Mass", "The mass of the sprite, which affects its resistance to acceleration and deceleration in physics calculations when munition detection is enabled. A higher mass makes the sprite more resistant to external forces, while a lower mass makes it more agile but also more susceptible to being moved by such forces. A mass of 0 is considered infinite mass, meaning the sprite cannot be moved by inertial forces.", PropertyEditorType.RangeFloat)]
+        public SiRange<float>? Mass { get; set; }
 
         /// <summary>
         /// How many hit points does the sprite have? When this reaches 0, the sprite is destroyed.
@@ -143,8 +143,8 @@ namespace Si.Engine.Sprite
         [MetaData("Frame Height", "The height of each frame in the sprite animation.", PropertyEditorType.Integer)]
         public int? FrameHeight { get; set; }
 
-        [MetaData("Frames Per Second", "The number of frames displayed per second in the sprite animation.", PropertyEditorType.Float)]
-        public float? FramesPerSecond { get; set; }
+        [MetaData("Frames Per Second", "The number of frames displayed per second in the sprite animation.", PropertyEditorType.RangeFloat)]
+        public SiRange<float>? FramesPerSecond { get; set; }
 
         [MetaData("Play Mode", "The play mode of the sprite animation.", PropertyEditorType.Enum, enumType: typeof(SiAnimationPlayMode))]
         public SiAnimationPlayMode? PlayMode { get; set; }
@@ -168,17 +168,12 @@ namespace Si.Engine.Sprite
         [MetaData("Angle Variance", "The variance in degrees that the loaded munition will use for an initial heading angle.", PropertyEditorType.Float)]
         public float? AngleVarianceDegrees { get; set; }
 
-        /// <summary>
-        /// The variance expressed in decimal percentage that determines the loaded munitions initial velocity.
-        /// </summary>
-        [MetaData("Speed Variance", "The variance expressed in decimal percentage that determines the loaded munitions initial velocity.", PropertyEditorType.Float)]
-        public float? SpeedVariancePercent { get; set; }
 
         [MetaData("Fire Delay", "The delay in milliseconds between each shot fired by the weapon.", PropertyEditorType.Integer)]
         public int? FireDelayMilliseconds { get; set; }
 
-        [MetaData("Damage", "The amount of damage dealt by the weapon.", PropertyEditorType.Integer)]
-        public int? Damage { get; set; }
+        [MetaData("Damage", "The amount of damage dealt by the weapon.", PropertyEditorType.RangeInt)]
+        public SiRange<int>? Damage { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum angle, in degrees, within which a target can be locked on.

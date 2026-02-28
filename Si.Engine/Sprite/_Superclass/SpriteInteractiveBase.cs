@@ -43,8 +43,9 @@ namespace Si.Engine.Sprite._Superclass
 
         #endregion
 
-        public SiRenewableResources RenewableResources { get; set; } = new();
+        public float Mass { get; set; }
 
+        public SiRenewableResources RenewableResources { get; set; } = new();
         public List<WeaponBase> Weapons { get; private set; } = new();
 
         /// <summary>
@@ -56,6 +57,8 @@ namespace Si.Engine.Sprite._Superclass
             : base(engine, spritePath)
         {
             _engine = engine;
+
+            Mass = SiRandom.Between(Metadata.Mass, 0);
 
             _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
             _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
@@ -102,7 +105,7 @@ namespace Si.Engine.Sprite._Superclass
         /// <param name="mass"></param>
         /// <returns></returns>
         public float TotalMomentum()
-            => TotalVelocity * Metadata.Mass ?? 0;
+            => TotalVelocity * Mass;
 
         /// <summary>
         /// Number that defines how much motion a sprite is in.
@@ -120,9 +123,9 @@ namespace Si.Engine.Sprite._Superclass
             var totalRelativeVelocity = TotalVelocity;
             if (totalRelativeVelocity == 0)
             {
-                return Metadata.Mass ?? 0;
+                return Mass;
             }
-            return TotalVelocity * Metadata.Mass ?? 0;
+            return TotalVelocity * Mass;
         }
 
         #region Weapons selection and evaluation.
@@ -342,8 +345,8 @@ namespace Si.Engine.Sprite._Superclass
             var A = collisionPair.Body1.Sprite;
             var B = collisionPair.Body2.Sprite;
 
-            float mA = A.Metadata.Mass ?? 0;
-            float mB = B.Metadata.Mass ?? 0;
+            float mA = A.Mass;
+            float mB = B.Mass;
 
             // normal from A -> B (pick one direction and stick to it).
             var n = (B.Location - A.Location).Normalize();

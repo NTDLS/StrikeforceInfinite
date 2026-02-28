@@ -1,7 +1,7 @@
 {
   "Class": "SpriteEnemyDebugStatic",
   "Description": "",
-  "Speed": 0.0,
+  "Speed": {"Min":0,"Max":0},
   "MaxThrottle": 0.0,
   "Hull": 100000,
   "MunitionDetection": true,

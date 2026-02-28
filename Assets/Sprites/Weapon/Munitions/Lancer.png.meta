@@ -2,8 +2,8 @@
   "Class": "EnergyMunitionBase",
   "Name": "Lancer",
   "Description": "",
-  "Speed": 2200,
-  "Damage": 15,
+  "Speed": {"Min":2180,"Max":2200},
+  "Damage": {"Min":12,"Max":16},
   "FireDelayMilliseconds": 100,
   "AngleVarianceDegrees": 2.0
 }

@@ -3,11 +3,9 @@
   "Name": "Frag Missile",
   "Description": "",
 
-  "Damage": 10,
-  "Speed": 700,
+  "Damage": {"Min":9,"Max":11},
+  "Speed": {"Min":680,"Max":720},
   "ExplodesOnImpact": true,
-  "AngleVarianceDegrees": 0,
-  "SpeedVariancePercent": 0.10,
   
   "SeekingEscapeAngleDegrees": 20,
   "SeekingEscapeDistance": 1000,

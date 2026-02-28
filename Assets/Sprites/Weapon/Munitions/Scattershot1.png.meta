@@ -2,8 +2,7 @@
   "Class": "ProjectileMunitionBase",
   "Name": "Scattershot",
   "Description": "",
-  "Damage": 1,
-  "Speed": 950,
-  "AngleVarianceDegrees": 8,
-  "SpeedVariancePercent": 0.10
+  "Damage": {"Min":1,"Max":1},
+  "Speed": {"Min":940,"Max":960},
+  "AngleVarianceDegrees": 8
 }

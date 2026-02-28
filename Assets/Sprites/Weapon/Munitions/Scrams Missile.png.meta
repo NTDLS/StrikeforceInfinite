@@ -3,9 +3,8 @@
   "Name": "Scrams Missile",
   "Description": "",
   
-  "Damage": 5,
-  "Speed": 700,
-  "SpeedVariancePercent": 0.10,
+  "Damage": {"Min":3,"Max":5},
+  "Speed": {"Min":650,"Max":710},
 
   "ExplodesOnImpact": true,
   

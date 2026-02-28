@@ -2,8 +2,7 @@
   "Class": "ProjectileMunitionBase",
   "Name": "Vulcan Cannon",
   "Description": "",
-  "Damage": 2,
-  "Speed": 1250,
-  "AngleVarianceDegrees": 1.5,
-  "SpeedVariancePercent": 0.05
+  "Damage": {"Min":2,"Max":5},
+  "Speed": {"Min":1240,"Max":1260},
+  "AngleVarianceDegrees": 1.5
 }

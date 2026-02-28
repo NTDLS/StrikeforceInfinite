@@ -3,9 +3,8 @@
   "Name": "Precision Frag Missile",
   "Description": "",
     
-  "Damage": 8,
-  "Speed": 800,
-  "SpeedVariancePercent": 0.10,
+  "Damage": {"Min":5,"Max":10},
+  "Speed": {"Min":780,"Max":820},
 
   "ExplodesOnImpact": true,
   

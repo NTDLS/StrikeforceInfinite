@@ -1,7 +1,7 @@
 {
   "Class": "SpriteEnemyDebugPoly",
   "Description": "",
-  "Speed": 250,
+  "Speed": {"Min":200,"Max":300},
   "MaxThrottle": 1.5,
   "Hull": 100000,
   "MunitionDetection": true,
