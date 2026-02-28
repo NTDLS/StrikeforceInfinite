@@ -303,10 +303,8 @@ namespace Si.Engine
                     {
                         o.IntermediateRenderTarget.BeginDraw();
 
-
                         o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Red);
 
-                        /*
                         if (ExecutionMode == SiEngineExecutionMode.Play)
                         {
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Black);
@@ -355,7 +353,7 @@ namespace Si.Engine
                             }
                         }
                         #endregion
-                        */
+
                         o.IntermediateRenderTarget.EndDraw();
 
                         o.ScreenRenderTarget.BeginDraw();
@@ -372,9 +370,9 @@ namespace Si.Engine
                         {
                             Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, (float)Display.BaseDrawScale);
                         }
-                        /*
+
                         Sprites.RenderPostScaling(o.ScreenRenderTarget, epoch);
-                        */
+
 
                         o.ScreenRenderTarget.EndDraw();
                     }
@@ -485,22 +483,13 @@ namespace Si.Engine
 
         private void HydrateCache(SpriteTextBlock? loadingHeader = null, SpriteTextBlock? loadingDetail = null)
         {
-            //loadingHeader?.SetTextAndCenterX("Loading assets...");
-            //loadingHeader?.SetTextAndCenterX("Loading reflection cache...");
+            loadingHeader?.SetTextAndCenterX("Loading assets...");
+            loadingHeader?.SetTextAndCenterX("Loading reflection cache...");
 
             SiReflection.BuildReflectionCacheOfType<SpriteBase>();
             SiReflection.BuildReflectionCacheOfType<AIStateMachine>();
 
-            //Assets.HydrateCache(loadingHeader, loadingDetail);
-
-            for (int i = 0; i < 30; i++)
-            {
-                loadingHeader?.SetTextAndCenterX($"{i}");
-                Thread.Sleep(1000);
-
-            }
-
-            Thread.Sleep(1000 * 30);
+            Assets.HydrateCache(loadingHeader, loadingDetail);
         }
 
         public void ShutdownEngine()

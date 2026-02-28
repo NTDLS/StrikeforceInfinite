@@ -45,7 +45,7 @@ namespace Si.Engine.Manager
                  + (_engine.Player.Sprite.Throttle <= 1 ? 1 : _engine.Player.Sprite.Throttle / _engine.Player.Sprite.MaxThrottle) * 0.2f //20% of the zoom will be the "boost".
                 ).Clamp(0, 1);
 
-            return BaseDrawScale + ((1 - BaseDrawScale) * weightedThrottlePercent);
+            return 1; //BaseDrawScale + ((1 - BaseDrawScale) * weightedThrottlePercent);
         }
 
         public float BaseDrawScale => 100.0f / _engine.Settings.OverdrawScale / 100.0f;

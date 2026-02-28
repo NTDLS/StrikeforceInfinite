@@ -2,8 +2,8 @@
   "Class": "WeaponThunderstrikeMissile",
   "Name": "Thunderstrike Missile",
   "Description": "",
-  "SoundPath": "Sounds\\Weapons\\Thunderstrike Missile.wav",
-  "MunitionSpritePaths": ["Sprites\\Weapon\\Munitions\\Thunderstrike Missile.png"],
+  "SoundPath": "Sounds/Weapons/Thunderstrike Missile",
+  "MunitionSpritePaths": ["Sprites/Weapon/Munitions/Thunderstrike Missile"],
   "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 250   
 }

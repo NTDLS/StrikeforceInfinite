@@ -13,39 +13,39 @@
   "Weapons": [],
   "Attachments": [
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 563, "Y": 151 }
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 563, "Y": 372 }
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 567, "Y": 668 }
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 563, "Y": 964 }
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 563, "Y": 1186 }
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 58, "Y": 368 }
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 55, "Y": 969 }
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 1067, "Y": 365 }
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret.png",
+      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 1070, "Y": 971 }
     }
   ]  
