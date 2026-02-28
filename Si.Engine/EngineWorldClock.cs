@@ -202,7 +202,6 @@ namespace Si.Engine
             //  which is why we do that after the threads have completed.
 
             _engine.Collisions.SnapshotCollidables(epoch);
-
             _engine.Menus.ExecuteWorldClockTick();
             _engine.Situations.ExecuteWorldClockTick();
             _engine.Events.ExecuteWorldClockTick();

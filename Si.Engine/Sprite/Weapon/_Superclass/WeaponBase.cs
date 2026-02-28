@@ -28,7 +28,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         public int RoundsFired { get; set; }
         public int RoundQuantity { get; set; }
 
-        public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
+        public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string? spritePath)
             : base(engine, spritePath)
         {
             Owner = owner;
@@ -39,6 +39,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 _fireSound = _engine.Assets.GetAudio(Metadata.SoundPath, Metadata.SoundVolume ?? 0);
             }
         }
+
         public class WeaponsLock
         {
             public float Distance { get; set; }

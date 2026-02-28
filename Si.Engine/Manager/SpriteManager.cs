@@ -7,6 +7,7 @@ using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.Sprite.KinematicBody;
 using Si.Engine.Sprite.PowerUp._Superclass;
+using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Engine.TickController.VectoredTickController.Collidable;
@@ -120,10 +121,68 @@ namespace Si.Engine.Manager
 
             string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
 
-            var metadataBaseType = SiReflection.GetTypeByName(className);
+            var classType = SiReflection.GetTypeByName(className);
 
-            var sprite = (T)Activator.CreateInstance(metadataBaseType, _engine, spritePath).EnsureNotNull();
+            var sprite = (T)Activator.CreateInstance(classType, _engine, spritePath).EnsureNotNull();
             initilizationProc?.Invoke(sprite);
+            return sprite;
+        }
+
+        public SpriteBase EditorAdd(string spritePath, Action<SpriteBase>? initilizationProc = null)
+        {
+            if(_engine.ExecutionMode != SiConstants.SiEngineExecutionMode.Edit)
+            {
+                throw new Exception("EditorAdd can only be used in Editor mode.");
+            }
+
+            var metadata = _engine.Assets.GetMetadata(spritePath)
+                 ?? throw new Exception($"No metadata found for sprite path: {spritePath}");
+
+            string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
+
+            var classType = SiReflection.GetTypeByName(className);
+
+            var firstConstructor = classType.GetConstructors().First();
+
+            List<dynamic?> constructorParams = new();
+
+            var parameters = firstConstructor.GetParameters();
+
+            foreach (var parameter in parameters)
+            {
+                switch (parameter.Name)
+                {
+                    case "engine":
+                        constructorParams.Add(_engine);
+                        break;
+                    case "spritePath":
+                        constructorParams.Add(spritePath);
+                        break;
+                    case "firedFrom":
+                        constructorParams.Add(new SpriteEnemyBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        break;
+                    case "owner":
+                        constructorParams.Add(new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        break;
+                    case "weapon":
+                        constructorParams.Add(new WeaponBase(_engine, new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"), @"Sprites\_Internal\Ghost.png"));
+                        break;
+                    case "lockedTarget":
+                        constructorParams.Add(new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        break;
+                    case "location":
+                        constructorParams.Add(SiVector.Zero());
+                        break;
+                    default:
+                        throw new Exception($"Constructor parameter {parameter.Name} for {classType.Name} is not handled.");
+                }
+            }
+
+            var sprite = (SpriteBase)Activator.CreateInstance(classType, constructorParams.ToArray()).EnsureNotNull();
+            initilizationProc?.Invoke(sprite);
+
+            initilizationProc?.Invoke(sprite);
+            Insert(sprite);
             return sprite;
         }
 

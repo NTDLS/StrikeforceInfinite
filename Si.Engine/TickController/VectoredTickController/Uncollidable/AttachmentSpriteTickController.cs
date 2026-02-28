@@ -2,6 +2,7 @@
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.TickController._Superclass;
+using Si.Library;
 using Si.Library.Mathematics;
 using System.Linq;
 
@@ -16,6 +17,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
         public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
         {
+            if (Engine.ExecutionMode == SiConstants.SiEngineExecutionMode.Edit)
+            {
+                return;
+            }
+
             foreach (var sprite in Visible().Where(o => o.IsDeadOrExploded == false))
             {
                 sprite.ApplyMotion(epoch, displacementVector);
