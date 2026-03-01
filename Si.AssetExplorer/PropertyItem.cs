@@ -35,6 +35,9 @@ namespace Si.AssetExplorer
                 .Where(x => x.MetadataAttribute != null)
                 .FirstOrDefault() ?? throw new ArgumentException($"Property '{propertyName}' not found in {metaData.GetType().Name} or does not have AssetMetadataAttribute.");
 
+            if (propertyInfo.MetadataAttribute == null)
+                throw new ArgumentException($"Property '{propertyName}' does not have AssetMetadataAttribute.");
+
             Group = group;
             MetaData = metaData;
             PropertyName = propertyName;

@@ -16,7 +16,7 @@ namespace Si.AssetExplorer
         private readonly EngineCore _engine;
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
-        private readonly PropertListManager _propertListManager;
+        private readonly PropertyListManager _propertListManager;
 
         public FormMain()
         {
@@ -33,7 +33,7 @@ namespace Si.AssetExplorer
             _engine.Display.ZoomOverride = 0.1f; // Start zoomed out to show the whole sprite.
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
             _treeManager = new TreeManager(treeViewAssets, _engine, WriteOutput, LoadSelectedTreeNode);
-            _propertListManager = new PropertListManager(listViewProperties, _engine, WriteOutput, PropertiesEdited);
+            _propertListManager = new PropertyListManager(listViewProperties, _engine, WriteOutput, PropertiesEdited);
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
             Shown += FormMain_Shown;

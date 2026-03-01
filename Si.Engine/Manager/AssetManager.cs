@@ -214,8 +214,8 @@ namespace Si.Engine.Manager
         }
 
         /// <summary>
-        /// Writes an asset to the database. This is really only intended for use in the editor, but it can be used at runtime if needed.
-        /// It will overwrite any existing asset with the same key.
+        /// Writes an asset to the database. This is really only intended for use in the editor.
+        /// It will overwrite any existing asset with the same key and refreshes the asset in the collection.
         /// </summary>
         public void WriteAsset(string assetKey, string filePath, AssetMetadata metadata)
         {
@@ -242,6 +242,78 @@ namespace Si.Engine.Manager
                     Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions),
                     BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
                 });
+
+            RefreshAssetIntoCollection(assetKey);
+        }
+
+        /// <summary>
+        /// Writes an assets metadata to the database and refreshes the asset in the collection.
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <param name="metadata"></param>
+        public void WriteAssetMetadata(string assetKey, AssetMetadata metadata)
+        {
+            _cache.Clear();
+
+            _assetsDatabase.Execute("UPDATE Assets Metadata = @Metadata WHERE Key = @Key)",
+                new
+                {
+                    Key = assetKey,
+                    Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions)
+                });
+
+            RefreshAssetIntoCollection(assetKey);
+        }
+
+        /// <summary>
+        /// Writes an assets bytes (such as an image, wav file, text, etc.) to the database and refreshes the asset in the collection.
+        /// This is really only intended for use in the editor.
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <param name="filePath"></param>
+        public void WriteAssetBytes(string assetKey, string filePath)
+        {
+            _cache.Clear();
+            long originalSize = new FileInfo(filePath).Length;
+
+            var originalFileBytes = File.ReadAllBytes(filePath);
+            var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+            long compressedSize = compressedBytes.Length;
+
+            double ratio = originalSize == 0
+                ? 0
+                : 100.0 * (originalSize - compressedSize) / originalSize;
+
+            _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
+
+            _assetsDatabase.Execute("UPDATE Assets SET BaseType = @BaseType, Bytes = @Bytes, IsCompressed = @IsCompressed) WHERE Key = @Key",
+                new
+                {
+                    Key = assetKey,
+                    Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
+                    IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
+                    BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
+                });
+
+            RefreshAssetIntoCollection(assetKey);
+        }
+
+        /// <summary>
+        ///  Refreshes an asset in the collection from the database.
+        /// </summary>
+        /// <param name="assetKey"></param>
+        public void RefreshAssetIntoCollection(string assetKey)
+        {
+            var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM Assets WHERE Key = @Key",
+                new { Key = assetKey });
+
+            var asset = DeserializeAssetContainer(model);
+            lock (_collection)
+            {
+                _collection[model.Key] = asset;
+            }
+
+            _cache.Clear();
         }
     }
 }

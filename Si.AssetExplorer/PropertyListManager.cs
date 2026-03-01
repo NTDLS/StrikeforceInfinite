@@ -7,7 +7,7 @@ using static Si.Library.SiConstants;
 
 namespace Si.AssetExplorer
 {
-    internal class PropertListManager
+    internal class PropertyListManager
     {
         private readonly EngineCore _engineCore;
         private readonly ListView _listView;
@@ -15,7 +15,7 @@ namespace Si.AssetExplorer
         private readonly Action<SpriteBase, PropertyItem> _propertiesEdited;
         private SpriteBase? _lastSprite;
 
-        public PropertListManager(ListView listView, EngineCore engineCore,
+        public PropertyListManager(ListView listView, EngineCore engineCore,
             Action<string, LoggingLevel?> writeOutput,
             Action<SpriteBase, PropertyItem> propertiesEdited)
         {
