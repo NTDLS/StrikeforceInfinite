@@ -22,8 +22,8 @@ namespace Si.Engine.Sprite._Superclass._Root
         private SiVector _location = new();
         private Size _size;
 
-        private SpriteMetadata? _metadata = null;
-        public SpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
+        private AssetMetadata? _metadata = null;
+        public AssetMetadata Metadata => _metadata ?? throw new NullReferenceException();
 
         public SpriteBase(EngineCore engine, string? assetKey)
         {
@@ -43,7 +43,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             if (string.IsNullOrEmpty(assetKey))
             {
-                _metadata = new SpriteMetadata();
+                _metadata = new AssetMetadata();
                 return;
             }
 

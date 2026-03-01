@@ -3,7 +3,7 @@
 namespace Si.Library
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class SpriteMetadataAttribute : Attribute
+    public class AssetMetadataAttribute : Attribute
     {
         public string FriendlyName { get; }
         public string Description { get; }
@@ -14,7 +14,7 @@ namespace Si.Library
         public Type? EnumType { get; } = null;
 
 
-        public SpriteMetadataAttribute(string friendlyName, string description, PropertyEditorType editorType,
+        public AssetMetadataAttribute(string friendlyName, string description, PropertyEditorType editorType,
             double maxValue = 0, double minValue = 0, int minLength = 0, Type? enumType = null)
         {
             FriendlyName = friendlyName;

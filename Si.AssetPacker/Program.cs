@@ -49,7 +49,7 @@ namespace Si.AssetPacker
 
                 var metadataJson = File.ReadAllText($"{fullAssetPath}.meta");
 
-                var metadata = JsonSerializer.Deserialize<SpriteMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, SiConstants.JsonSerializerOptions);
+                var metadata = JsonSerializer.Deserialize<AssetMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, SiConstants.JsonSerializerOptions);
 
                 sqliteDb.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 

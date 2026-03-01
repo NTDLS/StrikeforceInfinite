@@ -22,7 +22,6 @@ namespace Si.Engine.Menu
             {
                 Sprite = sprite;
                 AssetKey = assetKey;
-
             }
         }
 

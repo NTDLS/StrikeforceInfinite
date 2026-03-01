@@ -146,7 +146,7 @@ namespace Si.Engine.Sprite._Superclass
             var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
             if (weapon == null)
             {
-                var type = SiReflection.GetTypeByName(metadata.Class);
+                var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
                 weapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, assetKey]).EnsureNotNull();
                 weapon.RoundQuantity += munitionCount;
                 Weapons.Add(weapon);

@@ -57,7 +57,7 @@ namespace Si.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public SpriteMetadata GetMetadata(string assetKey)
+        public AssetMetadata GetMetadata(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
@@ -168,7 +168,7 @@ namespace Si.Engine.Manager
                 case "json":
                 case "txt":
                     {
-                        var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
                            ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         var obj = Encoding.UTF8.GetString(bytes);
@@ -179,7 +179,7 @@ namespace Si.Engine.Manager
                 case "jpg":
                 case "bmp":
                     {
-                        var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         using var stream = new MemoryStream(bytes);
@@ -189,7 +189,7 @@ namespace Si.Engine.Manager
                     }
                 case "wav":
                     {
-                        var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         using var stream = new MemoryStream(bytes);
@@ -206,7 +206,7 @@ namespace Si.Engine.Manager
         /// Writes an asset to the database. This is really only intended for use in the editor, but it can be used at runtime if needed.
         /// It will overwrite any existing asset with the same key.
         /// </summary>
-        public void WriteAsset(string assetKey, string filePath, SpriteMetadata metadata)
+        public void WriteAsset(string assetKey, string filePath, AssetMetadata metadata)
         {
             long originalSize = new FileInfo(filePath).Length;
 

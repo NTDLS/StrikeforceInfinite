@@ -243,7 +243,7 @@ namespace Si.Engine.Sprite
             var metadata = _engine.Assets.GetMetadata(assetKey)
                 ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
-            var type = SiReflection.GetTypeByName(metadata.Class);
+            var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
             PrimaryWeapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, assetKey]).EnsureNotNull();
             PrimaryWeapon.RoundQuantity = munitionCount;
         }
