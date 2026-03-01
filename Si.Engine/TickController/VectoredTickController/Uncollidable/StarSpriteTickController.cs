@@ -8,7 +8,6 @@ using Si.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using static Si.Engine.Manager.AssetManager;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {

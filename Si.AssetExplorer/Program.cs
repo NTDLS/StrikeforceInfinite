@@ -31,11 +31,10 @@ namespace Si.AssetExplorer
             if (!Directory.Exists(rootDirectory))
                 throw new DirectoryNotFoundException(rootDirectory);
 
-            foreach (var file in Directory.EnumerateFiles(rootDirectory, "*.*", SearchOption.AllDirectories))
+            foreach (var file in Directory.EnumerateFiles(rootDirectory, "*", SearchOption.AllDirectories))
             {
                 try
                 {
-                    // Skip files that are already meta files
                     if (file.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
                         continue;
 
@@ -43,7 +42,6 @@ namespace Si.AssetExplorer
 
                     if (!File.Exists(metaPath))
                     {
-                        // Create empty JSON file
                         using (File.Create(metaPath)) { }
                     }
                 }

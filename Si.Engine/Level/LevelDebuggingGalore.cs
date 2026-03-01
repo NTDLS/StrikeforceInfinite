@@ -68,6 +68,18 @@ namespace Si.Engine.Level
 
         private void AddEnemies()
         {
+            _engine.Sprites.Enemies.Add("Sprites/Enemy/Boss/Devastator/Hull", (sprite) =>
+            {
+                sprite.Location = _engine.Display.RandomOnScreenLocation();
+            });
+
+            /*
+            _engine.Sprites.Enemies.Add("Sprites/Enemy/Starbase/Garrison/Hull", (sprite)=>
+            {
+                sprite.Location = _engine.Display.RandomOffScreenLocation();
+            });
+            */
+
             /*
             var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
 

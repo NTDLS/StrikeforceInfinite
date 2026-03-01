@@ -198,9 +198,10 @@ namespace Si.Engine.Sprite._Superclass
         /// sprites children for automatic cleanup when parent is destroyed. 
         /// </summary>
         /// <returns></returns>
-        public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner)
+        public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner, Action<SpriteAttachment>? initilizationProc = null)
         {
             var attachment = _engine.Sprites.Attachments.AddAttachment(assetKey, this, locationRelativeToOwner);
+            initilizationProc?.Invoke(attachment);
             Attachments.Add(attachment);
             return attachment;
         }

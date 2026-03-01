@@ -49,7 +49,16 @@ namespace Si.Engine.Menu
             _shipBlurb.X = offsetX + 250;
             _shipBlurb.Y = offsetY - _shipBlurb.Size.Height;
 
-            var playerShipContainers = engine.Assets.GetAssetsInPath(@"Sprites/Player/Ships");
+            var playerShipContainers = engine.Assets.GetAssetsInPath(@"Sprites/Player/Ships")
+                .OrderBy(o => o.Metadata.Name).ToList();
+
+
+            var debugShip = playerShipContainers.Where(p => p.Metadata.Name == "Debug").FirstOrDefault();
+            if (debugShip != null)
+            {
+                playerShipContainers.Remove(debugShip);
+                playerShipContainers.Insert(0, debugShip);
+            }
 
             List<SpritePlayer> playerSprites = new();
 

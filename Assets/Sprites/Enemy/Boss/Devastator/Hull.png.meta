@@ -13,31 +13,52 @@
   "Attachments": [
     {
       "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Left",
-      "AttachmentPosition": {"X": 65,"Y": 8}
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": {"X": 65,"Y": 8},
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
       "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Right",
-      "AttachmentPosition": { "X": 65, "Y": 75 }
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": 65, "Y": 75 },
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
       "Type": "Sprites/Enemy/Boss/Devastator/Gun.Left",
-      "AttachmentPosition": { "X": 90, "Y": 20 }
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": 90, "Y": 20 },
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
       "Type": "Sprites/Enemy/Boss/Devastator/Gun.Right",
-      "AttachmentPosition": { "X": 90, "Y": 63 }
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": 90, "Y": 63 },
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
       "Type": "Sprites/Enemy/Boss/Devastator/Turret",
-      "AttachmentPosition": { "X": 35, "Y": 40 }
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": 35, "Y": 40 },
+      "AttachmentOrientationType": "Independent",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
       "Type": "Sprites/Enemy/Boss/Devastator/Jet.Left",
-      "AttachmentPosition": { "X": -40, "Y": 24 }
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": -40, "Y": 24 },
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
 	{
       "Type": "Sprites/Enemy/Boss/Devastator/Jet.Right",
-      "AttachmentPosition": {"X": -40, "Y": 57}
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": {"X": -40, "Y": 57},
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     }
   ]  
 }

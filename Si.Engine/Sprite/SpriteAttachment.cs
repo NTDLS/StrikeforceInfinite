@@ -13,14 +13,14 @@ namespace Si.Engine.Sprite
         public SiVector? LocationRelativeToOwner { get; set; }
 
         /// <summary>
-        /// Determines the behavior of a attachment sprite's orientation. By default, it is fixed to owner.
+        /// Determines the behavior of a attachment sprite's orientation.
         /// </summary>
-        public AttachmentOrientationType OrientationType { get; set; } = AttachmentOrientationType.FixedToOwner;
+        public AttachmentOrientationType AttachmentOrientationType { get; set; }
 
         /// <summary>
-        /// Determines the behavior of a attachment sprite's position. By default, it is fixed to owner.
+        /// Determines the behavior of a attachment sprite's position.
         /// </summary>
-        public AttachmentPositionType PositionType { get; set; } = AttachmentPositionType.FixedToOwner;
+        public AttachmentPositionType AttachmentPositionType { get; set; }
 
         public SpriteAttachment(EngineCore engine, string? assetKey)
             : base(engine, assetKey)
@@ -35,7 +35,7 @@ namespace Si.Engine.Sprite
         {
             get
             {
-                if (PositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
+                if (AttachmentPositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
                 {
                     // Since the attachment BaseLocation is relative to the top-left corner of the base sprite, we need
                     // to get the position relative to the center of the base sprite image so that we can rotate around that.
@@ -57,7 +57,7 @@ namespace Si.Engine.Sprite
         {
             get
             {
-                if (OrientationType == AttachmentOrientationType.FixedToOwner)
+                if (AttachmentOrientationType == AttachmentOrientationType.FixedToOwner)
                 {
                     //Make sure the attachment faces forwards.
                     return RootOwner.Orientation.Clone();
@@ -68,12 +68,12 @@ namespace Si.Engine.Sprite
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)
         {
-            if (PositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
+            if (AttachmentPositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
             {
                 Location = CalculatedLocation;
             }
 
-            if (OrientationType == AttachmentOrientationType.FixedToOwner)
+            if (AttachmentOrientationType == AttachmentOrientationType.FixedToOwner)
             {
                 Orientation = CalculatedOrientation;
             }

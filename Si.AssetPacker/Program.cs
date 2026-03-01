@@ -3,7 +3,6 @@ using NTDLS.SqliteDapperWrapper;
 using Si.Library;
 using System.IO.Compression;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Si.AssetPacker
 {

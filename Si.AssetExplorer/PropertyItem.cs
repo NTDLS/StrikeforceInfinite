@@ -1,5 +1,4 @@
-﻿using Si.Engine.Sprite;
-using Si.Library;
+﻿using Si.Library;
 using Si.Library.Mathematics;
 using System.Globalization;
 using System.Reflection;

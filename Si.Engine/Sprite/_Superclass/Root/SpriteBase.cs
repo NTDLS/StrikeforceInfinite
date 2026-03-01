@@ -74,15 +74,16 @@ namespace Si.Engine.Sprite._Superclass._Root
 
                 Metadata.Attachments?.ForEach(attachment =>
                 {
+                    if (attachment.Type == null) throw new InvalidOperationException("Attachment type cannot be null");
                     var locationRelativeToOwner = new SiVector(attachment.AttachmentPosition?.X ?? 0, attachment.AttachmentPosition?.Y ?? 0);
-                    interactive.AttachOfType(attachment.Type.EnsureNotNull(), locationRelativeToOwner);
+                    interactive.AttachOfType(attachment.Type, locationRelativeToOwner, (sprite) =>
+                    {
+                        //We take the orientation and position type of the attachment from the attachment section in the parent metadata if it is specified,
+                        //   otherwise we use the default values set in the SpriteAttachment class.
+                        sprite.AttachmentOrientationType = attachment.AttachmentOrientationType ?? SiConstants.AttachmentOrientationType.Independent;
+                        sprite.AttachmentPositionType = attachment.AttachmentPositionType ?? SiConstants.AttachmentPositionType.Independent;
+                    });
                 });
-            }
-
-            if (this is SpriteAttachment attach)
-            {
-                attach.OrientationType = Metadata.OrientationType ?? SiConstants.AttachmentOrientationType.Independent;
-                attach.PositionType = Metadata.PositionType ?? SiConstants.AttachmentPositionType.Independent;
             }
 
             if (this is SpritePlayer player)

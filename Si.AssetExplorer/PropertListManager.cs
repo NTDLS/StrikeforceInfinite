@@ -1,6 +1,5 @@
 ﻿using Si.AssetExplorer.Forms;
 using Si.Engine;
-using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 

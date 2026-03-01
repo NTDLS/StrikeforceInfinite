@@ -1,12 +1,7 @@
 {
   "Class": "SpriteEnemyStarbaseGarrisonTurret",
-  "Description": "",
   "MunitionDetection": true,
   "Hull": 200,
-  "Shields": 0,
-  "Bounty": 50,
-  "OrientationType": "Independent",
-  "PositionType": "FixedToOwner",
   "Weapons": [
 	{
 	  "Type": "Sprites/Weapon/Dual Vulcan Cannon",

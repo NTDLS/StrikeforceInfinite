@@ -29,11 +29,11 @@ namespace Si.Library
 
         #region InteractiveSpriteMetadata
 
-        [SpriteMetadata("Orientation Type", "Determines how the sprite's orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.", PropertyEditorType.Enum, enumType: typeof(AttachmentOrientationType))]
-        public AttachmentOrientationType? OrientationType { get; set; }
+        [SpriteMetadata("Orientation Type", "Determines how the attached sprite orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.", PropertyEditorType.Enum, enumType: typeof(AttachmentOrientationType))]
+        public AttachmentOrientationType? AttachmentOrientationType { get; set; }
 
-        [SpriteMetadata("Position Type", "Determines how the sprite's position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.", PropertyEditorType.Enum, enumType: typeof(AttachmentPositionType))]
-        public AttachmentPositionType? PositionType { get; set; }
+        [SpriteMetadata("Position Type", "Determines how the attached sprite position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.", PropertyEditorType.Enum, enumType: typeof(AttachmentPositionType))]
+        public AttachmentPositionType? AttachmentPositionType { get; set; }
 
         [SpriteMetadata("Explosion Type", "Determines the type of explosion effect for the sprite.", PropertyEditorType.Enum, enumType: typeof(ExplosionType))]
         public ExplosionType? ExplosionType { get; set; }
