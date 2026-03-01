@@ -5,8 +5,8 @@ namespace Si.Engine.Sprite.Weapon
 {
     internal class WeaponVulcanCannon : WeaponBase
     {
-        public WeaponVulcanCannon(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
-             : base(engine, owner, spritePath)
+        public WeaponVulcanCannon(EngineCore engine, SpriteInteractiveBase owner, string assetKey)
+             : base(engine, owner, assetKey)
         {
         }
     }

@@ -1,297 +1,131 @@
-﻿using Newtonsoft.Json;
+﻿
 using NTDLS.DelegateThreadPooling;
-using NTDLS.Helpers;
-using NTDLS.Semaphore;
-using SharpCompress.Archives;
-using SharpCompress.Common;
+using NTDLS.SqliteDapperWrapper;
 using Si.Audio;
 using Si.Engine.Sprite;
 using Si.Library;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Threading;
 
 namespace Si.Engine.Manager
 {
-    public class AssetManager : IDisposable
+    public class AssetManager
     {
+        //public static string AssetPackagePath => _assetPackagePath;
 #if DEBUG
-        private const string _assetPackagePath = "../../../../Installer/Si.Assets.rez";
+        public const string AssetPackagePath = "../../../../Installer/Si.Assets.db";
 #else
-        private const string _assetPackagePath = "Si.Assets.rez";
+        public const string AssetPackagePath = "Si.Assets.db";
 #endif
 
-        public enum BaseAssetType
-        {
-            Meta,
-            Asset
-        }
-
-        public class MetadataContainer
-        {
-            public AssetContainer Asset { get; set; }
-            public Metadata Metadata { get; set; }
-
-            public MetadataContainer(AssetContainer container, Metadata metadata)
-            {
-                Asset = container;
-                Metadata = metadata;
-            }
-        }
-
-        public class AssetContainer
-        {
-            public BaseAssetType BaseAssetType { get; set; }
-            public string? Directory { get; set; }
-            public string SpritePath { get; set; }
-            public object Object { get; set; }
-
-            public AssetContainer(BaseAssetType baseAssetType, string spritePath, object obj)
-            {
-                BaseAssetType = baseAssetType;
-                Directory = Path.GetDirectoryName(spritePath)?.ToLower();
-                SpritePath = spritePath;
-                Object = obj;
-            }
-        }
-
-        public string AssetPackagePath => _assetPackagePath;
+        public bool IsLoaded { get; private set; }
         private readonly EngineCore _engine;
-        private readonly OptimisticCriticalResource<Dictionary<string, AssetContainer>> _collection = new();
-        private readonly IArchive? _archive = null;
-        private readonly Dictionary<string, IArchiveEntry> _entryHashes;
-
-        public Dictionary<string, IArchiveEntry> Entries => _entryHashes;
+        private readonly Dictionary<string, AssetContainer> _collection = new();
+        private readonly SqliteManagedFactory _assetsDatabase = new($"Data Source={AssetPackagePath}");
 
         public AssetManager(EngineCore engine)
         {
             _engine = engine;
-
-            _archive = ArchiveFactory.OpenArchive(_assetPackagePath, new SharpCompress.Readers.ReaderOptions()
-            {
-                ArchiveEncoding = new ArchiveEncoding()
-                {
-                    Default = System.Text.Encoding.Default
-                }
-            });
-
-            _entryHashes = _archive.Entries.ToDictionary(item => item.Key.EnsureNotNull().ToLower(), item => item);
         }
-
-        public void Dispose()
-        {
-            _archive?.Dispose();
-        }
-
-        public static bool IsDirectoryFromAttrib(IEntry entry) =>
-            entry.Attrib.HasValue && ((FileAttributes)entry.Attrib.Value & FileAttributes.Directory) != 0;
 
         /// <summary>
         /// Gets the metadata for all assets in a directory.
         /// This REQUIRES that the assets already be cached.
         /// </summary>
-        public List<MetadataContainer> GetMetadataInDirectory(string directory, bool avoidCache = false)
-        {
-            var assetMetadatas = _collection.Read(o =>
-                o.Where(kv => kv.Value.BaseAssetType == BaseAssetType.Meta
-                && string.Equals(kv.Value.Directory, directory, StringComparison.OrdinalIgnoreCase))
-                .Select(kv => new MetadataContainer(kv.Value, (Metadata)kv.Value.Object))).ToList();
-
-            return assetMetadatas ?? [];
-        }
-
-        public Metadata GetMetadata(string spritePath, bool avoidCache = false)
-        {
-            string metadataFile = $"{spritePath}.meta".Replace('\\', '/');
-
-            if (avoidCache)
-            {
-                return JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)) ?? new Metadata();
-            }
-
-            string key = $"meta:{metadataFile.ToLower()}";
-
-            var cached = _collection.Read(o =>
-            {
-                o.TryGetValue(key, out var value);
-                return value?.Object;
-            });
-
-            if (cached != null)
-            {
-                return (Metadata)cached;
-            }
-
-            var metadata = JsonConvert.DeserializeObject<Metadata>(GetText(metadataFile)) ?? new Metadata();
-            _collection.Write(o => o[key] = new AssetContainer(BaseAssetType.Meta, spritePath, metadata.EnsureNotNull()));
-            return metadata;
-        }
+        public List<AssetContainer> GetAssetsInPath(string directory)
+            => _collection.Where(kv => kv.Key.StartsWith(directory, StringComparison.OrdinalIgnoreCase)).Select(kv => kv.Value).ToList();
 
         /// <summary>
-        /// Gets and caches a text files content from the asset path.
+        /// Gets the metadata for all assets.
+        /// This REQUIRES that the assets already be cached.
         /// </summary>
-        /// <param name="assetRelativePath"></param>
-        /// <param name="defaultText"></param>
-        /// <returns></returns>
-        public static string GetUserText(string assetRelativePath, string defaultText = "")
+        public List<AssetContainer> GetAssets()
+            => _collection.Values.ToList();
+
+        public AssetContainer GetAsset(string assetKey)
         {
-            assetRelativePath = assetRelativePath.ToLower();
-
-            var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Strikeforce Infinite");
-            if (Directory.Exists(userDataPath) == false)
+            if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
-                Directory.CreateDirectory(userDataPath);
+                return assetContainer;
             }
-            string assetAbsolutePath = Path.Combine(userDataPath, assetRelativePath).Trim().Replace("\\", "/");
-            if (File.Exists(assetAbsolutePath) == false)
-            {
-                return defaultText;
-            }
-
-            return File.ReadAllText(assetAbsolutePath);
+            throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        /// <summary>
-        /// Saves and caches a text file into the asset path.
-        /// </summary>
-        /// <param name="assetRelativePath"></param>
-        /// <param name="value"></param>
-        public static void PutUserText(string assetRelativePath, string value)
+        public AssetMetadata GetMetadata(string assetKey)
         {
-            assetRelativePath = assetRelativePath.ToLower();
-
-            var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Strikeforce Infinite");
-            if (Directory.Exists(userDataPath) == false)
+            if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
-                Directory.CreateDirectory(userDataPath);
+                return assetContainer.Metadata;
             }
-            string assetAbsolutePath = Path.Combine(userDataPath, assetRelativePath).Trim().Replace("\\", "/");
-            File.WriteAllText(assetAbsolutePath, value);
+            throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public string GetText(string path, string defaultText = "")
+        public string GetText(string assetKey, string defaultText = "")
         {
-            path = path.ToLower().Replace('\\', '/');
-
-            var cached = _collection.Read(o =>
+            if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
-                o.TryGetValue(path, out var value);
-                return value?.Object as string;
-            });
-            if (cached != null)
-            {
-                return cached;
+                return assetContainer.Object as string
+                    ?? throw new FileNotFoundException($"Asset could not be converted to text: {assetKey}");
             }
-
-            try
-            {
-                var text = GetCompressedText(path);
-                _collection.Write(o => o.TryAdd(path, new AssetContainer(BaseAssetType.Asset, path, text)));
-                return text;
-            }
-            catch
-            {
-                return defaultText;
-            }
+            throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public SiAudioClip GetAudio(string path, float? volume = null)
+        public SiAudioClip GetAudio(string assetKey, float? volume = null)
         {
-            var metadata = GetMetadata(path);
-
-            path = path.ToLower().Replace('\\', '/');
-
-            var cacheKey = $"{path}:{volume ?? metadata.SoundVolume ?? 1}:{metadata.LoopSound ?? false}";
-            var cached = _collection.Read(o =>
+            if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
-                if (o.TryGetValue(cacheKey, out var value))
-                {
-                    var audioClip = value.Object as SiAudioClip;
-                    audioClip?.SetInitialVolume(volume ?? metadata.SoundVolume ?? 1);
-                    audioClip?.SetLoopForever(metadata.LoopSound ?? false);
-                    return audioClip;
-                }
-                return null;
-            });
-
-            if (cached != null)
-            {
-                return cached;
+                var audioClip = assetContainer.Object as SiAudioClip
+                    ?? throw new FileNotFoundException($"Asset could not be converted to audio: {assetKey}");
+                audioClip.SetInitialVolume(volume ?? assetContainer.Metadata.SoundVolume ?? 1);
+                audioClip.SetLoopForever(assetContainer.Metadata.LoopSound ?? false);
+                return audioClip;
             }
-
-            using var stream = GetCompressedStream(path);
-            var result = new SiAudioClip(stream, volume ?? metadata.SoundVolume ?? 1, metadata.LoopSound ?? false);
-            _collection.Write(o => o.TryAdd(cacheKey, new AssetContainer(BaseAssetType.Asset, path, result)));
-            stream.Close();
-            return result;
+            throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public SharpDX.Direct2D1.Bitmap GetBitmap(string path)
+        public SharpDX.Direct2D1.Bitmap GetBitmap(string assetKey)
         {
-            path = path.ToLower().Replace('\\', '/');
-
-            var cached = _collection.Read(o =>
+            if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
-                o.TryGetValue(path, out var value);
-                return value?.Object as SharpDX.Direct2D1.Bitmap;
-            });
-
-            if (cached != null)
-            {
-                return cached;
+                return assetContainer.Object as SharpDX.Direct2D1.Bitmap
+                    ?? throw new FileNotFoundException($"Asset could not be converted to bitmap: {assetKey}");
             }
-
-            using var stream = GetCompressedStream(path);
-            var bitmap = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
-            _collection.Write(o => o.TryAdd(path, new AssetContainer(BaseAssetType.Asset, path, bitmap)));
-            return bitmap;
+            throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
+        public void LoadAllAssets(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
         {
             loadingHeader?.SetTextAndCenterX("Loading packed assets...");
 
-            using var archive = ArchiveFactory.OpenArchive(_assetPackagePath);
             using var dtp = new DelegateThreadPool(new DelegateThreadPoolConfiguration()
             {
-                InitialThreadCount = Environment.ProcessorCount
+                InitialThreadCount = Environment.ProcessorCount * 4,
+                MaximumThreadCount = Environment.ProcessorCount * 4,
             });
             var threadPoolTracker = dtp.CreateChildPool();
 
+            var models = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM Assets");
+
             int statusIndex = 0;
-            float statusEntryCount = archive.Entries.Count();
+            float statusEntryCount = models.Count();
 
-            foreach (var entry in archive.Entries)
+            foreach (var model in models)
             {
-                /// Skip entries with '@' in the name as they are likely to be used for internal purposes and not actual assets.
-                if (entry.Key?.Contains('@') == true) continue;
-
-                switch (Path.GetExtension(entry.Key.EnsureNotNull()).ToLower())
+                threadPoolTracker.Enqueue(() =>
                 {
-                    case ".meta":
-                    case ".json":
-                    case ".txt":
-                        threadPoolTracker.Enqueue(() => GetText(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    case ".png":
-                    case ".jpg":
-                    case ".bmp":
-                        threadPoolTracker.Enqueue(() => GetBitmap(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    case ".wav":
-                        threadPoolTracker.Enqueue(() => GetAudio(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                        break;
-                    default:
-                        Interlocked.Increment(ref statusIndex);
-                        break;
-                }
-
-                if (!IsDirectoryFromAttrib(entry) && !entry.Key.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
-                {
-                    GetMetadata(entry.Key);
-                }
+                    var asset = DeserializeAssetContainer(model);
+                    lock (_collection)
+                    {
+                        _collection.Add(model.Key, asset);
+                    }
+                    Interlocked.Increment(ref statusIndex);
+                });
             }
 
             threadPoolTracker.WaitForCompletion(TimeSpan.FromMilliseconds(100), () =>
@@ -301,38 +135,15 @@ namespace Si.Engine.Manager
             });
 
             loadingDetail?.SetTextAndCenterX($"100%");
-        }
 
-        private string GetCompressedText(string path)
-        {
-            using var stream = GetCompressedStream(path);
-            return System.Text.Encoding.UTF8.GetString(stream.ToArray());
-        }
-
-        private MemoryStream GetCompressedStream(string path)
-        {
-            path = path.Trim().Replace("\\", "/");
-
-            if (_entryHashes.TryGetValue(path, out var entry))
-            {
-                lock (_entryHashes)
-                {
-                    using var stream = entry.OpenEntryStream();
-                    var memoryStream = new MemoryStream();
-                    stream.CopyTo(memoryStream);
-                    memoryStream.Position = 0;
-                    return memoryStream;
-                }
-            }
-
-            throw new FileNotFoundException(path);
+            IsLoaded = true;
         }
 
         #region Explicit helpers for common assets to avoid typos and ease refactoring.
 
         public string GetRandomGamerTag()
         {
-            var gamerTagsText = GetText($@"Text\GamerTags.txt");
+            var gamerTagsText = GetText("Text/GamerTags");
             var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
 
             var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
@@ -341,7 +152,7 @@ namespace Si.Engine.Manager
 
         public string GetRandomLobbyName()
         {
-            var gamerTagsText = GetText($@"Text\LobbyNames.txt");
+            var gamerTagsText = GetText("Text/LobbyNames");
             var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
 
             var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
@@ -349,5 +160,76 @@ namespace Si.Engine.Manager
         }
 
         #endregion
+
+        public AssetContainer DeserializeAssetContainer(AssetDatabaseModel model)
+        {
+            switch (model.BaseType)
+            {
+                case "json":
+                case "txt":
+                    {
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                           ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
+                        var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+                        var obj = Encoding.UTF8.GetString(bytes);
+
+                        return new AssetContainer(model.Key, model.BaseType, metaData, obj);
+                    }
+                case "png":
+                case "jpg":
+                case "bmp":
+                    {
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                                  ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
+                        var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+                        using var stream = new MemoryStream(bytes);
+                        var obj = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
+
+                        return new AssetContainer(model.Key, model.BaseType, metaData, obj);
+                    }
+                case "wav":
+                    {
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                                  ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
+                        var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+                        using var stream = new MemoryStream(bytes);
+                        var obj = new SiAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
+
+                        return new AssetContainer(model.Key, model.BaseType, metaData, obj);
+                    }
+                default:
+                    throw new Exception($"Deserialization of the type {model.BaseType} for {model.Key} is not implemented.");
+            }
+        }
+
+        /// <summary>
+        /// Writes an asset to the database. This is really only intended for use in the editor, but it can be used at runtime if needed.
+        /// It will overwrite any existing asset with the same key.
+        /// </summary>
+        public void WriteAsset(string assetKey, string filePath, AssetMetadata metadata)
+        {
+            long originalSize = new FileInfo(filePath).Length;
+
+            var originalFileBytes = File.ReadAllBytes(filePath);
+            var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+            long compressedSize = compressedBytes.Length;
+
+            double ratio = originalSize == 0
+                ? 0
+                : 100.0 * (originalSize - compressedSize) / originalSize;
+
+            _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
+
+            _assetsDatabase.Execute("INSERT INTO Assets (Key, BaseType, Bytes, IsCompressed, Metadata)"
+                + "VALUES (@Key, @BaseType, @Bytes, @IsCompressed, @Metadata)",
+                new
+                {
+                    Key = assetKey,
+                    Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
+                    IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
+                    Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions),
+                    BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
+                });
+        }
     }
 }

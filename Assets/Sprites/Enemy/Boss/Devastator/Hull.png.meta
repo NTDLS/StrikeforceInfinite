@@ -12,32 +12,53 @@
   "Weapons": [],
   "Attachments": [
     {
-      "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Left.png",
-      "AttachmentPosition": {"X": 65,"Y": 8}
+      "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Left",
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": {"X": 65,"Y": 8},
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Right.png",
-      "AttachmentPosition": { "X": 65, "Y": 75 }
+      "Type": "Sprites/Enemy/Boss/Devastator/Cannon.Right",
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": 65, "Y": 75 },
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Boss/Devastator/Gun.Left.png",
-      "AttachmentPosition": { "X": 90, "Y": 20 }
+      "Type": "Sprites/Enemy/Boss/Devastator/Gun.Left",
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": 90, "Y": 20 },
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Boss/Devastator/Gun.Right.png",
-      "AttachmentPosition": { "X": 90, "Y": 63 }
+      "Type": "Sprites/Enemy/Boss/Devastator/Gun.Right",
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": 90, "Y": 63 },
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Boss/Devastator/Turret.png",
-      "AttachmentPosition": { "X": 35, "Y": 40 }
+      "Type": "Sprites/Enemy/Boss/Devastator/Turret",
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": 35, "Y": 40 },
+      "AttachmentOrientationType": "Independent",
+      "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Boss/Devastator/Jet.Left.png",
-      "AttachmentPosition": { "X": -40, "Y": 24 }
+      "Type": "Sprites/Enemy/Boss/Devastator/Jet.Left",
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": { "X": -40, "Y": 24 },
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     },
 	{
-      "Type": "Sprites/Enemy/Boss/Devastator/Jet.Right.png",
-      "AttachmentPosition": {"X": -40, "Y": 57}
+      "Type": "Sprites/Enemy/Boss/Devastator/Jet.Right",
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPosition": {"X": -40, "Y": 57},
+      "AttachmentOrientationType": "FixedToOwner",
+      "AttachmentPositionType": "FixedToOwner"
     }
   ]  
 }

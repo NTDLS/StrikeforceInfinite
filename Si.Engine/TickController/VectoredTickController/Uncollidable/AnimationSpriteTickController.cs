@@ -4,7 +4,6 @@ using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
-using System.IO;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
@@ -52,11 +51,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         /// </summary>
         public void AddRandomMicroFireExplosionAt(SpriteBase positionOf)
         {
-            const string assetPath = @"Sprites\Animation\Explode\Micro Fire Explosions";
+            const string assetPath = "Sprites/Animation/Explode/Micro Fire Explosions";
             int assetCount = 4;
             int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
 
-            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            var animation = Add($"{assetPath}/{selectedAssetIndex}");
             animation.Location = positionOf.Location.Clone();
         }
 
@@ -65,11 +64,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         /// </summary>
         public void AddRandomSmallFireExplosionAt(SpriteBase positionOf)
         {
-            const string assetPath = @"Sprites\Animation\Explode\Small Fire Explosions";
+            const string assetPath = "Sprites/Animation/Explode/Small Fire Explosions";
             int assetCount = 2;
             int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
 
-            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            var animation = Add($"{assetPath}/{selectedAssetIndex}");
             animation.Location = positionOf.Location.Clone();
         }
 
@@ -79,11 +78,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         /// <param name="PositionOf"></param>
         public void AddRandomMediumFireExplosionAt(SpriteBase PositionOf)
         {
-            const string assetPath = @"Sprites\Animation\Explode\Medium Fire Explosions\";
+            const string assetPath = "Sprites/Animation/Explode/Medium Fire Explosions";
             int assetCount = 7;
             int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
 
-            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            var animation = Add($"{assetPath}/{selectedAssetIndex}");
             animation.Location = PositionOf.Location.Clone();
         }
 
@@ -93,11 +92,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         /// <param name="PositionOf"></param>
         public void AddRandomLargeFireExplosionAt(SpriteBase PositionOf)
         {
-            const string assetPath = @"Sprites\Animation\Explode\Large Fire Explosions\";
+            const string assetPath = "Sprites/Animation/Explode/Large Fire Explosions";
             int assetCount = 7;
             int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
 
-            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            var animation = Add($"{assetPath}/{selectedAssetIndex}");
             animation.Location = PositionOf.Location.Clone();
         }
 
@@ -106,11 +105,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         /// </summary>
         public void AddRandomEnergyExplosionAt(SpriteBase PositionOf)
         {
-            const string assetPath = @"Sprites\Animation\Explode\Energy Explosions\";
+            const string assetPath = "Sprites/Animation/Explode/Energy Explosions";
             int assetCount = 8;
             int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
 
-            var animation = Add(Path.Combine(assetPath, $"{selectedAssetIndex}.png"));
+            var animation = Add($"{assetPath}/{selectedAssetIndex}");
             animation.Location = PositionOf.Location.Clone();
         }
     }

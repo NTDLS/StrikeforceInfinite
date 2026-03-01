@@ -23,8 +23,8 @@ namespace Si.Engine.Sprite._Superclass
         #region Locking Indicator.
 
         public bool IsLockedOnSoft { get; set; } //This is just graphics candy, the object would be subject of a foreign weapons lock, but the other foreign weapon owner has too many locks.
-        protected Bitmap _lockedOnImage;
-        protected Bitmap _lockedOnSoftImage;
+        protected Bitmap? _lockedOnImage;
+        protected Bitmap? _lockedOnSoftImage;
         private bool _isLockedOn = false;
 
         public bool IsLockedOnHard //The object is the subject of a foreign weapons lock.
@@ -35,7 +35,7 @@ namespace Si.Engine.Sprite._Superclass
                 if (_isLockedOn == false && value == true)
                 {
                     //TODO: This should not play every loop.
-                    _engine.Audio.LockedOnBlip.Play();
+                    _engine.Audio.LockedOnBlip?.Play();
                 }
                 _isLockedOn = value;
             }
@@ -52,16 +52,19 @@ namespace Si.Engine.Sprite._Superclass
         /// 
         /// </summary>
         /// <param name="engine"></param>
-        /// <param name="spritePath"></param>
-        public SpriteInteractiveBase(EngineCore engine, string? spritePath)
-            : base(engine, spritePath)
+        /// <param name="assetKey"></param>
+        public SpriteInteractiveBase(EngineCore engine, string? assetKey)
+            : base(engine, assetKey)
         {
             _engine = engine;
 
             Mass = SiRandom.Between(Metadata.Mass, 0);
 
-            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
-            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
+            if (_engine.Assets.IsLoaded)
+            {
+                _lockedOnImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On");
+                _lockedOnSoftImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft");
+            }
         }
 
         public SpriteInteractiveBase(EngineCore engine, Bitmap bitmap)
@@ -69,8 +72,11 @@ namespace Si.Engine.Sprite._Superclass
         {
             _engine = engine;
 
-            _lockedOnImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked On.png");
-            _lockedOnSoftImage = _engine.Assets.GetBitmap(@"Sprites\Weapon\Locking\Locked Soft.png");
+            if (_engine.Assets.IsLoaded)
+            {
+                _lockedOnImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On.png");
+                _lockedOnSoftImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft.png");
+            }
 
             SetBitmap(bitmap);
         }
@@ -132,16 +138,16 @@ namespace Si.Engine.Sprite._Superclass
 
         public void ClearWeapons() => Weapons.Clear();
 
-        public void AddWeapon(string spritePath, int munitionCount)
+        public void AddWeapon(string assetKey, int munitionCount)
         {
-            var metadata = _engine.Assets.GetMetadata(spritePath)
-                ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
+            var metadata = _engine.Assets.GetMetadata(assetKey)
+                ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
             var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
             if (weapon == null)
             {
-                var type = SiReflection.GetTypeByName(metadata.Class);
-                weapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, spritePath]).EnsureNotNull();
+                var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
+                weapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, assetKey]).EnsureNotNull();
                 weapon.RoundQuantity += munitionCount;
                 Weapons.Add(weapon);
             }
@@ -192,9 +198,10 @@ namespace Si.Engine.Sprite._Superclass
         /// sprites children for automatic cleanup when parent is destroyed. 
         /// </summary>
         /// <returns></returns>
-        public SpriteAttachment AttachOfType(string spritePath, SiVector locationRelativeToOwner)
+        public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner, Action<SpriteAttachment>? initilizationProc = null)
         {
-            var attachment = _engine.Sprites.Attachments.AddAttachment(spritePath, this, locationRelativeToOwner);
+            var attachment = _engine.Sprites.Attachments.AddAttachment(assetKey, this, locationRelativeToOwner);
+            initilizationProc?.Invoke(attachment);
             Attachments.Add(attachment);
             return attachment;
         }
@@ -211,7 +218,7 @@ namespace Si.Engine.Sprite._Superclass
                 {
                     DrawImage(renderTarget, _lockedOnImage, 0);
                 }
-                else if (_lockedOnImage != null && IsLockedOnSoft)
+                else if (_lockedOnSoftImage != null && IsLockedOnSoft)
                 {
                     DrawImage(renderTarget, _lockedOnSoftImage, 0);
                 }

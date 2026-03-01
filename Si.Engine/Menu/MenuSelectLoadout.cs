@@ -13,9 +13,21 @@ namespace Si.Engine.Menu
     /// </summary>
     internal class MenuSelectLoadout : MenuBase
     {
+        class SelectedSprite
+        {
+            public SpritePlayer Sprite { get; set; }
+            public string AssetKey { get; set; }
+
+            public SelectedSprite(string assetKey, SpritePlayer sprite)
+            {
+                Sprite = sprite;
+                AssetKey = assetKey;
+            }
+        }
+
         private readonly SpriteMenuItem _shipBlurb;
         private Timer _animationTimer;
-        private SpritePlayer? _selectedSprite;
+        private SelectedSprite? _selectedSprite;
 
         public MenuSelectLoadout(EngineCore engine)
             : base(engine)
@@ -36,7 +48,16 @@ namespace Si.Engine.Menu
             _shipBlurb.X = offsetX + 250;
             _shipBlurb.Y = offsetY - _shipBlurb.Size.Height;
 
-            var playerShipContainers = engine.Assets.GetMetadataInDirectory(@"Sprites\Player\Ships");
+            var playerShipContainers = engine.Assets.GetAssetsInPath(@"Sprites/Player/Ships")
+                .OrderBy(o => o.Metadata.Name).ToList();
+
+
+            var debugShip = playerShipContainers.Where(p => p.Metadata.Name == "Debug").FirstOrDefault();
+            if (debugShip != null)
+            {
+                playerShipContainers.Remove(debugShip);
+                playerShipContainers.Insert(0, debugShip);
+            }
 
             List<SpritePlayer> playerSprites = new();
 
@@ -44,7 +65,7 @@ namespace Si.Engine.Menu
 
             foreach (var playerShipContainer in playerShipContainers)
             {
-                var playerSprite = engine.Sprites.Add<SpritePlayer>(playerShipContainer.Asset.SpritePath);
+                var playerSprite = engine.Sprites.Add<SpritePlayer>(playerShipContainer.Key);
 
                 playerSprite.SpriteTag = "MENU_SHIP_SELECT";
                 playerSprite.Orientation.Degrees = 45;
@@ -55,7 +76,7 @@ namespace Si.Engine.Menu
                 var menuItem = AddSelectableItem(new SiVector(offsetX + 75, offsetY), playerSprite.Metadata.Name ?? "Unknown Ship", playerSprite.Metadata.Name ?? "Unknown Ship");
                 menuItem.Y -= menuItem.Size.Height / 2;
 
-                menuItem.UserData = playerShipContainer.Asset.SpritePath;
+                menuItem.UserData = new SelectedSprite(playerShipContainer.Key, playerSprite);
 
                 playerSprite.X = offsetX;
                 playerSprite.Y = offsetY;
@@ -65,7 +86,7 @@ namespace Si.Engine.Menu
 
             playerSprites.ForEach(sprite =>
             {
-                sprite.ThrusterAnimation.IsVisible = true;
+                sprite.ThrusterAnimation?.IsVisible = true;
             });
 
             OnSelectionChanged += PlayerLoadoutMenu_OnSelectionChanged;
@@ -94,9 +115,9 @@ namespace Si.Engine.Menu
             _animationTimer.Change(Timeout.Infinite, Timeout.Infinite);
             _animationTimer.Dispose();
 
-            if (item.UserData is string selectedSpritePath)
+            if (item.UserData is SelectedSprite selectedSprite)
             {
-                _engine.Player.InstantiatePlayerClass(selectedSpritePath);
+                _engine.Player.InstantiatePlayerClass(selectedSprite.AssetKey);
                 _engine.StartGame();
             }
 
@@ -105,16 +126,16 @@ namespace Si.Engine.Menu
 
         private void PlayerLoadoutMenu_OnSelectionChanged(SpriteMenuItem item)
         {
-            if (item.UserData is SpritePlayer selectedSprite)
+            if (item.UserData is SelectedSprite selectedSprite)
             {
-                _shipBlurb.Text = selectedSprite.GetLoadoutHelpText();
+                _shipBlurb.Text = selectedSprite.Sprite.GetLoadoutHelpText();
                 _selectedSprite = selectedSprite;
             }
         }
 
         private void PlayerLoadoutMenu_Tick(object? sender)
         {
-            _selectedSprite?.RotateOrientation(1, 1);
+            _selectedSprite?.Sprite.RotateOrientation(1, 1);
         }
     }
 }

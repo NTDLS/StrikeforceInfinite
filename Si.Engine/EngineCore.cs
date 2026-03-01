@@ -1,5 +1,4 @@
-using Newtonsoft.Json;
-using NTDLS.Helpers;
+using NTDLS.Persistence;
 using NTDLS.Semaphore;
 using Si.Engine.AI._Superclass;
 using Si.Engine.EngineLibrary;
@@ -249,11 +248,11 @@ namespace Si.Engine
 
         public static SiEngineSettings LoadSettings()
         {
-            var engineSettingsText = AssetManager.GetUserText("Engine.Settings.json");
+            var settings = LocalUserApplicationData.LoadFromDisk<SiEngineSettings>(SiConstants.FriendlyName);
 
-            if (string.IsNullOrEmpty(engineSettingsText))
+            if (settings == null)
             {
-                var defaultSettings = new SiEngineSettings();
+                settings = new SiEngineSettings();
 
                 int x = 1024;
                 int y = 768;
@@ -266,18 +265,17 @@ namespace Si.Engine
                     if (y % 2 != 0) y++;
                 }
 
-                defaultSettings.Resolution = new Size(x, y);
+                settings.Resolution = new Size(x, y);
 
-                engineSettingsText = JsonConvert.SerializeObject(defaultSettings, Formatting.Indented);
-                AssetManager.PutUserText("Engine.Settings.json", engineSettingsText);
+                LocalUserApplicationData.SaveToDisk(SiConstants.FriendlyName, settings);
             }
 
-            return JsonConvert.DeserializeObject<SiEngineSettings>(engineSettingsText).EnsureNotNull();
+            return settings;
         }
 
         public static void SaveSettings(SiEngineSettings settings)
         {
-            AssetManager.PutUserText("Engine.Settings.json", JsonConvert.SerializeObject(settings, Formatting.Indented));
+            LocalUserApplicationData.SaveToDisk(SiConstants.FriendlyName, settings);
         }
 
         public void ResetGame()
@@ -302,6 +300,8 @@ namespace Si.Engine
                     if (o.ScreenRenderTarget != null && o.IntermediateRenderTarget != null)
                     {
                         o.IntermediateRenderTarget.BeginDraw();
+
+                        o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Red);
 
                         if (ExecutionMode == SiEngineExecutionMode.Play)
                         {
@@ -371,6 +371,7 @@ namespace Si.Engine
 
                         Sprites.RenderPostScaling(o.ScreenRenderTarget, epoch);
 
+
                         o.ScreenRenderTarget.EndDraw();
                     }
                 }));
@@ -435,7 +436,7 @@ namespace Si.Engine
 
                 if (Settings.PlayMusic)
                 {
-                    Audio.BackgroundMusicSound.Play();
+                    Audio.BackgroundMusicSound?.Play();
                 }
 
                 //TODO: Get the random skybox sprite.
@@ -486,13 +487,7 @@ namespace Si.Engine
             SiReflection.BuildReflectionCacheOfType<SpriteBase>();
             SiReflection.BuildReflectionCacheOfType<AIStateMachine>();
 
-            if (Settings.PreCacheAllAssets)
-            {
-                Assets.HydrateCache(loadingHeader, loadingDetail);
-
-                //I dont think we need to do this any more now that sprites are tied to the assets.
-                //Sprites.HydrateCache(loadingHeader, loadingDetail);
-            }
+            Assets.LoadAllAssets(loadingHeader, loadingDetail);
         }
 
         public void ShutdownEngine()
@@ -509,7 +504,6 @@ namespace Si.Engine
                 _worldClock?.Dispose();
                 Sprites.Dispose();
                 Rendering.Dispose();
-                Assets.Dispose();
             }
         }
 

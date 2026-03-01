@@ -5,8 +5,8 @@ namespace Si.Engine.Sprite
     public class SpriteRadarPositionIndicator
         : SpriteBase
     {
-        public SpriteRadarPositionIndicator(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteRadarPositionIndicator(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             X = 0;
             Y = 0;

@@ -30,11 +30,11 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         /// <param name="engine">Reference to the engine.</param>
         /// <param name="weapon">The weapon to create a munition for.</param>
         /// <param name="firedFrom">The sprite that is firing the weapon.</param>
-        /// <param name="spritePath">The image for the munition.</param>
+        /// <param name="assetKey">The image for the munition.</param>
         /// <param name="location">The optional location for the munition to originate from (if not specified, we'll use the location of the firedFrom sprite).</param>
         /// <param name="angleDegrees">>The optional angle for the munition to travel on (if not specified, we'll use the angle of the firedFrom sprite).</param>
-        public MunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string spritePath, SiVector location, float? angleDegrees = null)
-            : base(engine, spritePath)
+        public MunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string assetKey, SiVector location, float? angleDegrees = null)
+            : base(engine, assetKey)
         {
             Weapon = weapon;
             RadarDotSize = new SiVector(1, 1);

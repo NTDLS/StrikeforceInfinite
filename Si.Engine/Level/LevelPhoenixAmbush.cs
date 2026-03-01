@@ -52,7 +52,7 @@ namespace Si.Engine.Level
                     AddSingleFireEvent(SiRandom.Between(0, 800), AddEnemyCallback);
                 }
 
-                _engine.Audio.RadarBlipsSound.Play();
+                _engine.Audio.RadarBlipsSound?.Play();
 
                 CurrentWave++;
             }

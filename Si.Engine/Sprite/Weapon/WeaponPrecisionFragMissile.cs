@@ -10,8 +10,8 @@ namespace Si.Engine.Sprite.Weapon
     {
         private bool _toggle = false;
 
-        public WeaponPrecisionFragMissile(EngineCore engine, SpriteInteractiveBase owner, string spritePath)
-            : base(engine, owner, spritePath)
+        public WeaponPrecisionFragMissile(EngineCore engine, SpriteInteractiveBase owner, string assetKey)
+            : base(engine, owner, assetKey)
         {
         }
 

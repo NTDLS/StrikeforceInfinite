@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
     {
         public bool FireToggler { get; set; }
 
-        public SpriteEnemyBossDevastatorTurret(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyBossDevastatorTurret(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
         }
 

@@ -2,8 +2,8 @@
 
 namespace Si.Engine.Sprite.Enemy.Starbase.Garrison
 {
-    internal class SpriteEnemyStarbaseGarrison(EngineCore engine, string spritePath)
-        : SpriteEnemyStarbase(engine, spritePath)
+    internal class SpriteEnemyStarbaseGarrison(EngineCore engine, string assetKey)
+        : SpriteEnemyStarbase(engine, assetKey)
     {
     }
 }

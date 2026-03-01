@@ -20,45 +20,50 @@ namespace Si.Engine.Sprite
     {
         public readonly string BoostResourceName = "SpritePlayerBase:Boost";
 
-        public SiAudioClip AmmoLowSound { get; private set; }
-        public SiAudioClip AmmoEmptySound { get; private set; }
-        public SiAudioClip ShipEngineRoarSound { get; private set; }
-        public SiAudioClip ShipEngineIdleSound { get; private set; }
-        public SiAudioClip AllSystemsGoSound { get; private set; }
-        public SiAudioClip ShieldFailSound { get; private set; }
-        public SiAudioClip ShieldDownSound { get; private set; }
-        public SiAudioClip ShieldMaxSound { get; private set; }
-        public SiAudioClip ShieldNominalSound { get; private set; }
-        public SiAudioClip SystemsFailingSound { get; private set; }
-        public SiAudioClip HullBreachedSound { get; private set; }
-        public SiAudioClip IntegrityLowSound { get; private set; }
-        public SiAudioClip ShipEngineBoostSound { get; private set; }
+        public SiAudioClip? AmmoLowSound { get; private set; }
+        public SiAudioClip? AmmoEmptySound { get; private set; }
+        public SiAudioClip? ShipEngineRoarSound { get; private set; }
+        public SiAudioClip? ShipEngineIdleSound { get; private set; }
+        public SiAudioClip? AllSystemsGoSound { get; private set; }
+        public SiAudioClip? ShieldFailSound { get; private set; }
+        public SiAudioClip? ShieldDownSound { get; private set; }
+        public SiAudioClip? ShieldMaxSound { get; private set; }
+        public SiAudioClip? ShieldNominalSound { get; private set; }
+        public SiAudioClip? SystemsFailingSound { get; private set; }
+        public SiAudioClip? HullBreachedSound { get; private set; }
+        public SiAudioClip? IntegrityLowSound { get; private set; }
+        public SiAudioClip? ShipEngineBoostSound { get; private set; }
         public int MaxHullHealth { get; set; }
         public int MaxShieldPoints { get; set; }
-        public SpriteAnimation ThrusterAnimation { get; private set; }
-        public SpriteAnimation BoosterAnimation { get; private set; }
+        public SpriteAnimation? ThrusterAnimation { get; private set; }
+        public SpriteAnimation? BoosterAnimation { get; private set; }
         public WeaponBase? PrimaryWeapon { get; private set; }
         public WeaponBase? SelectedSecondaryWeapon { get; private set; }
 
-        public SpritePlayer(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpritePlayer(EngineCore engine)
+            : base(engine, (string?)null)
+        {
+        }
+
+        public SpritePlayer(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             OnHit += SpritePlayer_OnHit;
 
-            AmmoLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Low.wav");
-            SystemsFailingSound = _engine.Assets.GetAudio(@"Sounds\Ship\Systems Failing.wav");
-            HullBreachedSound = _engine.Assets.GetAudio(@"Sounds\Ship\Hull Breached.wav");
-            IntegrityLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Integrity Low.wav");
-            ShieldFailSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Fail.wav");
-            ShieldDownSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Down.wav");
-            ShieldMaxSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Max.wav");
-            ShieldNominalSound = _engine.Assets.GetAudio(@"Sounds\Ship\Shield Nominal.wav");
-            AllSystemsGoSound = _engine.Assets.GetAudio(@"Sounds\Ship\All Systems Go.wav");
-            AmmoLowSound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Low.wav");
-            AmmoEmptySound = _engine.Assets.GetAudio(@"Sounds\Ship\Ammo Empty.wav");
-            ShipEngineRoarSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Roar.wav");
-            ShipEngineIdleSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Idle.wav");
-            ShipEngineBoostSound = _engine.Assets.GetAudio(@"Sounds\Ship\Engine Boost.wav");
+            AmmoLowSound = _engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
+            SystemsFailingSound = _engine.Assets.GetAudio("Sounds/Ship/Systems Failing");
+            HullBreachedSound = _engine.Assets.GetAudio("Sounds/Ship/Hull Breached");
+            IntegrityLowSound = _engine.Assets.GetAudio("Sounds/Ship/Integrity Low");
+            ShieldFailSound = _engine.Assets.GetAudio("Sounds/Ship/Shield Fail");
+            ShieldDownSound = _engine.Assets.GetAudio("Sounds/Ship/Shield Down");
+            ShieldMaxSound = _engine.Assets.GetAudio("Sounds/Ship/Shield Max");
+            ShieldNominalSound = _engine.Assets.GetAudio("Sounds/Ship/Shield Nominal");
+            AllSystemsGoSound = _engine.Assets.GetAudio("Sounds/Ship/All Systems Go");
+            AmmoLowSound = _engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
+            AmmoEmptySound = _engine.Assets.GetAudio("Sounds/Ship/Ammo Empty");
+            ShipEngineRoarSound = _engine.Assets.GetAudio("Sounds/Ship/Engine Roar");
+            ShipEngineIdleSound = _engine.Assets.GetAudio("Sounds/Ship/Engine Idle");
+            ShipEngineBoostSound = _engine.Assets.GetAudio("Sounds/Ship/Engine Boost");
 
             Orientation = SiVector.One();
             Throttle = 0;
@@ -68,7 +73,7 @@ namespace Si.Engine.Sprite
 
             if (ThrusterAnimation == null || ThrusterAnimation.IsQueuedForDeletion == true)
             {
-                ThrusterAnimation = _engine.Sprites.Animations.Add(@"Sprites\Animation\ThrustStandard32x32.png", (o) =>
+                ThrusterAnimation = _engine.Sprites.Animations.Add("Sprites/Animation/ThrustStandard32x32", (o) =>
                 {
                     o.SpriteTag = "PlayerForwardThrust";
                     o.IsVisible = false;
@@ -79,7 +84,7 @@ namespace Si.Engine.Sprite
 
             if (BoosterAnimation == null || BoosterAnimation.IsQueuedForDeletion == true)
             {
-                BoosterAnimation = _engine.Sprites.Animations.Add(@"Sprites\Animation\ThrustBoost32x32.png", (o) =>
+                BoosterAnimation = _engine.Sprites.Animations.Add("Sprites/Animation/ThrustBoost32x32", (o) =>
                 {
                     o.SpriteTag = "PlayerForwardThrust";
                     o.IsVisible = false;
@@ -103,8 +108,8 @@ namespace Si.Engine.Sprite
             UpdateThrustAnimationPositions();
             if (IsVisible == false)
             {
-                if (ThrusterAnimation != null) ThrusterAnimation.IsVisible = false;
-                if (BoosterAnimation != null) BoosterAnimation.IsVisible = false;
+                ThrusterAnimation?.IsVisible = false;
+                BoosterAnimation?.IsVisible = false;
                 ShipEngineIdleSound?.Stop();
                 ShipEngineRoarSound?.Stop();
             }
@@ -159,7 +164,7 @@ namespace Si.Engine.Sprite
         {
             if (ShieldHealth < _engine.Settings.MaxShieldHealth && ShieldHealth + pointsToAdd >= _engine.Settings.MaxShieldHealth)
             {
-                ShieldMaxSound.Play(); //If we didn't have full shields but now we do, tell the player.
+                ShieldMaxSound?.Play(); //If we didn't have full shields but now we do, tell the player.
             }
 
             base.AddShieldHealth(pointsToAdd);
@@ -212,34 +217,34 @@ namespace Si.Engine.Sprite
             {
                 if (ShieldHealth == 0)
                 {
-                    ShieldDownSound.Play();
+                    ShieldDownSound?.Play();
                 }
             }
 
             //This is the hit that took us under the threshold.
             if (HullHealth < 100 && HullHealth + damageAmount > 100)
             {
-                IntegrityLowSound.Play();
+                IntegrityLowSound?.Play();
             }
             else if (HullHealth < 50 && HullHealth + damageAmount > 50)
             {
-                SystemsFailingSound.Play();
+                SystemsFailingSound?.Play();
             }
             else if (HullHealth < 20 && HullHealth + damageAmount > 20)
             {
-                HullBreachedSound.Play();
+                HullBreachedSound?.Play();
             }
         }
 
         #region Weapons selection and evaluation.
 
-        public void SetPrimaryWeapon(string spritePath, int munitionCount)
+        public void SetPrimaryWeapon(string assetKey, int munitionCount)
         {
-            var metadata = _engine.Assets.GetMetadata(spritePath)
-                ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
+            var metadata = _engine.Assets.GetMetadata(assetKey)
+                ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
-            var type = SiReflection.GetTypeByName(metadata.Class);
-            PrimaryWeapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, spritePath]).EnsureNotNull();
+            var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
+            PrimaryWeapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, assetKey]).EnsureNotNull();
             PrimaryWeapon.RoundQuantity = munitionCount;
         }
 

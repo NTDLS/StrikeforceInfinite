@@ -56,7 +56,7 @@ namespace Si.Engine.Level
                     AddEnemies();
                 }
 
-                _engine.Audio.RadarBlipsSound.Play();
+                _engine.Audio.RadarBlipsSound?.Play();
 
                 CurrentWave++;
             }

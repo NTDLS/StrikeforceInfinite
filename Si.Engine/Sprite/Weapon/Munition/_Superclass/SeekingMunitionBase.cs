@@ -1,5 +1,4 @@
-﻿using NTDLS.Helpers;
-using Si.Engine.Sprite._Superclass;
+﻿using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -13,11 +12,10 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
     /// </summary>
     internal class SeekingMunitionBase : MunitionBase
     {
-        public SeekingMunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string spritePath,
+        public SeekingMunitionBase(EngineCore engine, WeaponBase weapon, SpriteInteractiveBase firedFrom, string assetKey,
              SpriteInteractiveBase? lockedTarget, SiVector location)
-            : base(engine, weapon, firedFrom, spritePath, location)
+            : base(engine, weapon, firedFrom, assetKey, location)
         {
-            lockedTarget.EnsureNotNull();
         }
 
         public override void ApplyIntelligence(float epoch, SiVector displacementVector)

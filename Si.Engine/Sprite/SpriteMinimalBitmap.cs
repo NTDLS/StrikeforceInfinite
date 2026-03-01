@@ -30,8 +30,8 @@ namespace Si.Engine.Sprite
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteMinimalBitmap(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteMinimalBitmap(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
         }
 

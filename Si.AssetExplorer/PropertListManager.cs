@@ -1,6 +1,5 @@
 ﻿using Si.AssetExplorer.Forms;
 using Si.Engine;
-using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 
@@ -160,8 +159,6 @@ namespace Si.AssetExplorer
 
             _listView.Items.Clear();
             _listView.Groups.Clear();
-
-            var defaults = new Metadata();
 
             // --- Create groups
             var groupBase = new ListViewGroup("Base", HorizontalAlignment.Left);

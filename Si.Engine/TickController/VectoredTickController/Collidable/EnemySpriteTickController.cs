@@ -32,11 +32,11 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
         /*
         #region Tightly-typed Pass through factory methods to SpriteManager.
 
-        public SpriteEnemyBase Create(string spritePath, Action<SpriteEnemyBase>? initilizationProc = null)
-            => SpriteManager.Create<SpriteEnemyBase>(spritePath, initilizationProc = null);
+        public SpriteEnemyBase Create(string assetKey, Action<SpriteEnemyBase>? initilizationProc = null)
+            => SpriteManager.Create<SpriteEnemyBase>(assetKey, initilizationProc = null);
 
-        public SpriteEnemyBase Add(string spritePath, Action<SpriteEnemyBase>? initilizationProc = null)
-            => SpriteManager.Add<SpriteEnemyBase>(spritePath, initilizationProc);
+        public SpriteEnemyBase Add(string assetKey, Action<SpriteEnemyBase>? initilizationProc = null)
+            => SpriteManager.Add<SpriteEnemyBase>(assetKey, initilizationProc);
 
         public void Insert(SpriteEnemyBase sprite)
              => SpriteManager.Insert(sprite);

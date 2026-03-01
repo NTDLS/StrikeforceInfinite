@@ -40,10 +40,15 @@ namespace Si.Engine.Manager
 
         public float SpeedOrientedFrameScalingFactor()
         {
+            if (_engine.IsInitializing)
+            {
+                return 1;
+            }
+
             float weightedThrottlePercent = (
-                (_engine.Player.Sprite.MovementVector.Magnitude() / _engine.Player.Sprite.Speed) * 0.8f //80% of zoom is standard velocity
-                 + (_engine.Player.Sprite.Throttle <= 1 ? 1 : _engine.Player.Sprite.Throttle / _engine.Player.Sprite.MaxThrottle) * 0.2f //20% of the zoom will be the "boost".
-                ).Clamp(0, 1);
+            (_engine.Player.Sprite.MovementVector.Magnitude() / _engine.Player.Sprite.Speed) * 0.8f //80% of zoom is standard velocity
+             + (_engine.Player.Sprite.Throttle <= 1 ? 1 : _engine.Player.Sprite.Throttle / _engine.Player.Sprite.MaxThrottle) * 0.2f //20% of the zoom will be the "boost".
+            ).Clamp(0, 1);
 
             return BaseDrawScale + ((1 - BaseDrawScale) * weightedThrottlePercent);
         }

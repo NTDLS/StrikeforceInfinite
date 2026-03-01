@@ -2,8 +2,8 @@
   "Class": "WeaponVulcanCannon",
   "Name": "Vulcan Cannon",
   "Description": "",
-  "SoundPath": "Sounds\\Weapons\\Vulcan Cannon.wav",
-  "MunitionSpritePaths": ["Sprites\\Weapon\\Munitions\\Vulcan Cannon.png"],
+  "SoundAssetKey": "Sounds/Weapons/Vulcan Cannon",
+  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Vulcan Cannon"],
   "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 25
 }

@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy._Superclass
     public class SpriteEnemyBase
         : SpriteInteractiveShipBase
     {
-        public SpriteEnemyBase(EngineCore engine, string spritePath)
-                : base(engine, spritePath)
+        public SpriteEnemyBase(EngineCore engine, string assetKey)
+                : base(engine, assetKey)
         {
             RecalculateMovementVectorFromOrientation();
 

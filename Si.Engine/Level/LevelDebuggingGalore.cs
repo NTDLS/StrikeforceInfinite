@@ -60,7 +60,7 @@ namespace Si.Engine.Level
                     AddEnemies();
                 }
 
-                _engine.Audio.RadarBlipsSound.Play();
+                _engine.Audio.RadarBlipsSound?.Play();
 
                 CurrentWave++;
             }
@@ -68,6 +68,18 @@ namespace Si.Engine.Level
 
         private void AddEnemies()
         {
+            _engine.Sprites.Enemies.Add("Sprites/Enemy/Boss/Devastator/Hull", (sprite) =>
+            {
+                sprite.Location = _engine.Display.RandomOnScreenLocation();
+            });
+
+            /*
+            _engine.Sprites.Enemies.Add("Sprites/Enemy/Starbase/Garrison/Hull", (sprite)=>
+            {
+                sprite.Location = _engine.Display.RandomOffScreenLocation();
+            });
+            */
+
             /*
             var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
 
@@ -234,7 +246,7 @@ namespace Si.Engine.Level
             {
                 for (int col = 0; col < colCount; col++)
                 {
-                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 23)}.png");
+                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{SiRandom.Between(0, 23)}");
 
                     var asteroidSize = asteroid.Size.Width + asteroid.Size.Height;
 

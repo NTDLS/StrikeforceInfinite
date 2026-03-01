@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.Enemy.Starbase.Garrison
     {
         public bool FireToggler { get; set; }
 
-        public SpriteEnemyStarbaseGarrisonTurret(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyStarbaseGarrisonTurret(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
         }
 

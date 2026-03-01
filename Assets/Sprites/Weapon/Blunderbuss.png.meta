@@ -2,8 +2,8 @@
   "Class": "WeaponBlunderbuss",
   "Name": "Blunderbuss",
   "Description": "",
-  "SoundPath": "Sounds\\Weapons\\Blunderbuss.wav",
-  "MunitionSpritePaths": ["Sprites\\Weapon\\Munitions\\Blunderbuss.png"],
+  "SoundAssetKey": "Sounds/Weapons/Blunderbuss",
+  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Blunderbuss"],
   "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 250
 }

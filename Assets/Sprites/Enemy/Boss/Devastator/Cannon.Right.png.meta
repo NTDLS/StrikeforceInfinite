@@ -1,12 +1,10 @@
 {
   "Class": "SpriteEnemyBossDevastatorRightCannon",
-  "Description": "",
   "MunitionDetection": true,
   "Hull": 50,
-  "Shields": 0,
   "Weapons": [
 	{
-	  "Type": "Sprites/Weapon/Vulcan Cannon.png",
+	  "Type": "Sprites/Weapon/Vulcan Cannon",
 	  "MunitionCount": 2147483647
 	}
   ]

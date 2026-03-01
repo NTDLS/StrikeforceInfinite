@@ -7,8 +7,8 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// </summary>
     internal class SpriteEnemyDebugStatic : SpriteEnemyPeonBase
     {
-        public SpriteEnemyDebugStatic(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyDebugStatic(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
         }
     }

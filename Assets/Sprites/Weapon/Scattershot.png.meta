@@ -2,12 +2,12 @@
   "Class": "WeaponScattershot",
   "Name": "Scattershot",
   "Description": "",
-  "SoundPath": "Sounds\\Weapons\\Scattershot.wav",
-  "MunitionSpritePaths": [
-	"Sprites\\Weapon\\Munitions\\Scattershot0.png",
-	"Sprites\\Weapon\\Munitions\\Scattershot1.png",
-	"Sprites\\Weapon\\Munitions\\Scattershot2.png",
-	"Sprites\\Weapon\\Munitions\\Scattershot3.png"
+  "SoundAssetKey": "Sounds/Weapons/Scattershot",
+  "MunitionAssetKeys": [
+	"Sprites/Weapon/Munitions/Scattershot0",
+	"Sprites/Weapon/Munitions/Scattershot1",
+	"Sprites/Weapon/Munitions/Scattershot2",
+	"Sprites/Weapon/Munitions/Scattershot3"
   ],
   "SoundVolumne": 0.2,
   "FireDelayMilliseconds": 25

@@ -8,11 +8,11 @@
   "Bounty": 10,
   "Weapons": [
 	{
-	  "Type": "Sprites/Weapon/Vulcan Cannon.png",
+	  "Type": "Sprites/Weapon/Vulcan Cannon",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "Sprites/Weapon/Dual Vulcan Cannon.png",
+	  "Type": "Sprites/Weapon/Dual Vulcan Cannon",
 	  "MunitionCount": 2147483647
 	}
 	],

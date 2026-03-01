@@ -7,8 +7,8 @@ namespace Si.Engine.Sprite.Enemy.Boss._Superclass
     /// </summary>
     internal class SpriteEnemyBossBase : SpriteEnemyBase
     {
-        public SpriteEnemyBossBase(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyBossBase(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             RecalculateMovementVectorFromOrientation();
         }

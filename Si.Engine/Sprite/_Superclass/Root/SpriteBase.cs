@@ -6,7 +6,6 @@ using Si.Library.Mathematics;
 using Si.Library.Sprite;
 using System;
 using System.Drawing;
-using System.IO;
 
 namespace Si.Engine.Sprite._Superclass._Root
 {
@@ -23,35 +22,38 @@ namespace Si.Engine.Sprite._Superclass._Root
         private SiVector _location = new();
         private Size _size;
 
-        private Metadata? _metadata = null;
-        public Metadata Metadata => _metadata ?? throw new NullReferenceException();
+        private AssetMetadata? _metadata = null;
+        public AssetMetadata Metadata => _metadata ?? throw new NullReferenceException();
 
-        public SpriteBase(EngineCore engine, string? spritePath)
+        public SpriteBase(EngineCore engine, string? assetKey)
         {
             _engine = engine;
 
             IsHighlighted = _engine.Settings.HighlightAllSprites;
             Orientation = SiVector.One();
 
-            if (!string.IsNullOrEmpty(spritePath))
-            {
-                SetImageAndLoadMetadata(spritePath);
-            }
+            SetImageAndLoadMetadata(assetKey);
         }
 
         /// <summary>
         /// Sets the sprites image, sets speed, shields, adds attachments and weapons
         /// from a .json file in the same path with the same name as the sprite image.
         /// </summary>
-        private void SetImageAndLoadMetadata(string spritePath)
+        private void SetImageAndLoadMetadata(string? assetKey)
         {
-            _metadata = _engine.Assets.GetMetadata(spritePath);
-
-            var extension = Path.GetExtension(spritePath);
-
-            if (SiConstants.ImageTypes.Contains(extension, StringComparer.OrdinalIgnoreCase))
+            if (string.IsNullOrEmpty(assetKey))
             {
-                SpriteBitmap = _engine.Assets.GetBitmap(spritePath);
+                _metadata = new AssetMetadata();
+                return;
+            }
+
+            var asset = _engine.Assets.GetAsset(assetKey);
+
+            _metadata = asset.Metadata;
+
+            if (SiConstants.ImageTypes.Contains(asset.BaseType, StringComparer.OrdinalIgnoreCase))
+            {
+                SpriteBitmap = _engine.Assets.GetBitmap(assetKey);
                 _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
             }
 
@@ -72,15 +74,16 @@ namespace Si.Engine.Sprite._Superclass._Root
 
                 Metadata.Attachments?.ForEach(attachment =>
                 {
+                    if (attachment.Type == null) throw new InvalidOperationException("Attachment type cannot be null");
                     var locationRelativeToOwner = new SiVector(attachment.AttachmentPosition?.X ?? 0, attachment.AttachmentPosition?.Y ?? 0);
-                    interactive.AttachOfType(attachment.Type.EnsureNotNull(), locationRelativeToOwner);
+                    interactive.AttachOfType(attachment.Type, locationRelativeToOwner, (sprite) =>
+                    {
+                        //We take the orientation and position type of the attachment from the attachment section in the parent metadata if it is specified,
+                        //   otherwise we use the default values set in the SpriteAttachment class.
+                        sprite.AttachmentOrientationType = attachment.AttachmentOrientationType ?? SiConstants.AttachmentOrientationType.Independent;
+                        sprite.AttachmentPositionType = attachment.AttachmentPositionType ?? SiConstants.AttachmentPositionType.Independent;
+                    });
                 });
-            }
-
-            if (this is SpriteAttachment attach)
-            {
-                attach.OrientationType = Metadata.OrientationType ?? SiConstants.AttachmentOrientationType.Independent;
-                attach.PositionType = Metadata.PositionType ?? SiConstants.AttachmentPositionType.Independent;
             }
 
             if (this is SpritePlayer player)

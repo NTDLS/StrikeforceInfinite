@@ -2,8 +2,8 @@
   "Class": "WeaponDualVulcanCannon",
   "Name": "Dual Vulcan Cannon",
   "Description": "",
-  "SoundPath": "Sounds\\Weapons\\Dual Vulcan Cannon.wav",
-  "MunitionSpritePaths": ["Sprites\\Weapon\\Munitions\\Dual Vulcan Cannon.png"],
+  "SoundAssetKey": "Sounds/Weapons/Dual Vulcan Cannon",
+  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Dual Vulcan Cannon"],
   "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 25
 }  

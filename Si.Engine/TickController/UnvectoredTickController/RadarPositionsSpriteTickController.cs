@@ -75,7 +75,7 @@ namespace Si.Engine.TickController.UnvectoredTickController
 
         public SpriteRadarPositionIndicator Add()
         {
-            var obj = new SpriteRadarPositionIndicator(Engine, @"Sprites\Radar Indicator\16x16.png");
+            var obj = new SpriteRadarPositionIndicator(Engine, "Sprites/Radar Indicator/16x16");
             _manager.Insert(obj);
             return obj;
         }

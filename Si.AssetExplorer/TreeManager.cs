@@ -1,9 +1,6 @@
-﻿using NTDLS.Helpers;
-using SharpCompress.Archives;
-using SharpCompress.Common;
-using Si.AssetExplorer.Controls;
+﻿using Si.AssetExplorer.Controls;
 using Si.Engine;
-using Si.Engine.Manager;
+using Si.Library;
 using Talkster.Client.Controls;
 
 namespace Si.AssetExplorer
@@ -11,7 +8,7 @@ namespace Si.AssetExplorer
     internal class TreeManager
     {
         public readonly DoubleBufferedTreeView _treeView;
-        private readonly EngineCore _engineCore;
+        private readonly EngineCore _engine;
         public readonly Action<string, LoggingLevel?> _writeOutput;
         public readonly Action<SiTreeNode> _loadSelectedTreeNode;
 
@@ -19,7 +16,7 @@ namespace Si.AssetExplorer
             Action<string, LoggingLevel?> writeOutput,
             Action<SiTreeNode> loadSelectedTreeNode)
         {
-            _engineCore = engineCore;
+            _engine = engineCore;
             _treeView = treeView;
             _writeOutput = writeOutput;
             _loadSelectedTreeNode = loadSelectedTreeNode;
@@ -46,78 +43,21 @@ namespace Si.AssetExplorer
         private void WriteOutput(string text, LoggingLevel? color = null)
             => _writeOutput(text, color);
 
-        public static void CreateMetaFiles(string rootDirectory)
-        {
-            if (!Directory.Exists(rootDirectory))
-                throw new DirectoryNotFoundException(rootDirectory);
-
-            foreach (var file in Directory.EnumerateFiles(rootDirectory, "*", SearchOption.AllDirectories))
-            {
-                try
-                {
-                    // Skip files that are already meta files
-                    if (file.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
-                        continue;
-
-                    string metaPath = file + ".meta";
-
-                    if (!File.Exists(metaPath))
-                    {
-                        // Create empty JSON file
-                        using (File.Create(metaPath)) { }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Optional: log and continue
-                    Console.WriteLine($"Failed: {file} - {ex.Message}");
-                }
-            }
-        }
-
         public void Repopulate()
         {
             try
             {
                 WriteOutput("Populating assets.", LoggingLevel.Verbose);
 
-                WriteOutput("Accessing archive.", LoggingLevel.Verbose);
-                var archive = ArchiveFactory.OpenArchive(_engineCore.Assets.AssetPackagePath, new SharpCompress.Readers.ReaderOptions()
+                //Files and paths that contain "#" are for internal purposes and should not be shown in the editor.
+                var assets = _engine.Assets.GetAssets()
+                    .Where(o => o.Key.Contains('#') == false).ToList();
+
+                WriteOutput($"Enumerating {assets.Count:n0} assets.", LoggingLevel.Verbose);
+
+                foreach (var asset in assets)
                 {
-                    ArchiveEncoding = new ArchiveEncoding()
-                    {
-                        Default = System.Text.Encoding.Default
-                    }
-                });
-
-                WriteOutput($"Enumerating {archive.Entries.Count():n0} assets.", LoggingLevel.Verbose);
-
-                foreach (var entry in archive.Entries)
-                {
-                    if (entry.Key == null) continue;
-                    if (Path.GetExtension(entry.Key).Equals(".meta", StringComparison.OrdinalIgnoreCase)) continue;
-
-                    UpsertTreeNodesPath(entry);
-
-                    switch (Path.GetExtension(entry.Key).ToLower())
-                    {
-                        case ".meta":
-                        case ".json":
-                        case ".txt":
-                            //threadPoolTracker.Enqueue(() => GetText(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                            break;
-                        case ".png":
-                        case ".jpg":
-                        case ".bmp":
-                            //threadPoolTracker.Enqueue(() => GetBitmap(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                            break;
-                        case ".wav":
-                            //threadPoolTracker.Enqueue(() => GetAudio(entry.Key), (QueueItemState<object> o) => Interlocked.Increment(ref statusIndex));
-                            break;
-                        default:
-                            //Interlocked.Increment(ref statusIndex);
-                            break;
-                    }
+                    UpsertTreeNodesPath(asset);
                 }
 
                 WriteOutput($"Assets enumeration complete.", LoggingLevel.Verbose);
@@ -151,29 +91,24 @@ namespace Si.AssetExplorer
             }
         }
 
-        private void UpsertTreeNodesPath(IArchiveEntry entry)
+        private void UpsertTreeNodesPath(AssetContainer asset)
         {
             try
             {
                 if (_treeView.InvokeRequired)
                 {
-                    _treeView.Invoke(new Action<IArchiveEntry>(UpsertTreeNodesPath), entry);
+                    _treeView.Invoke(new Action<AssetContainer>(UpsertTreeNodesPath), asset);
                     return;
                 }
 
-                var path = entry.Key.EnsureNotNull().TrimStart(['\\', '/', '.']).TrimStart(['\\', '/', '.']);
-                var parts = path.Split(['\\', '/'], StringSplitOptions.RemoveEmptyEntries);
+                var parts = asset.Key.Split(['\\', '/'], StringSplitOptions.RemoveEmptyEntries);
 
                 TreeNodeCollection workingLevel = _treeView.Nodes;
 
+                int depthCounter = 0;
+
                 foreach (var part in parts)
                 {
-                    if (part.StartsWith("@"))
-                    {
-                        //We use the "@" prefix to denote special nodes that should be ignored in the tree structure.
-                        return;
-                    }
-
                     var foundNode = workingLevel.Find(part, false);
                     if (foundNode.Length == 1)
                     {
@@ -181,7 +116,7 @@ namespace Si.AssetExplorer
                     }
                     else
                     {
-                        var nodeType = AssetManager.IsDirectoryFromAttrib(entry) ? SiTreeNodeType.Folder : SiTreeNodeType.Asset;
+                        var nodeType = depthCounter == parts.Length - 1 ? SiTreeNodeType.Asset : SiTreeNodeType.Folder;
 
                         var displayName = part;
 
@@ -190,10 +125,12 @@ namespace Si.AssetExplorer
                             displayName = Path.GetFileNameWithoutExtension(part);
                         }
 
-                        var newNode = new SiTreeNode(part, displayName, entry.Key, nodeType);
+                        var newNode = new SiTreeNode(part, displayName, asset.Key, nodeType);
                         workingLevel.Add(newNode);
                         workingLevel = newNode.Nodes;
                     }
+
+                    depthCounter++;
                 }
             }
             catch (Exception ex)

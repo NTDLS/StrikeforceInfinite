@@ -1,23 +1,18 @@
 {
   "Class": "SpriteEnemyStarbaseGarrisonTurret",
-  "Description": "",
   "MunitionDetection": true,
   "Hull": 200,
-  "Shields": 0,
-  "Bounty": 50,
-  "OrientationType": "Independent",
-  "PositionType": "FixedToOwner",
   "Weapons": [
 	{
-	  "Type": "Sprites/Weapon/Dual Vulcan Cannon.png",
+	  "Type": "Sprites/Weapon/Dual Vulcan Cannon",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "Sprites/Weapon/Lancer.png",
+	  "Type": "Sprites/Weapon/Lancer",
 	  "MunitionCount": 2147483647
 	},
 	{
-	  "Type": "Sprites/Weapon/Thunderstrike Missile.png",
+	  "Type": "Sprites/Weapon/Thunderstrike Missile",
 	  "MunitionCount": 2147483647
 	}
   ]

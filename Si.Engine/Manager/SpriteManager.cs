@@ -18,7 +18,6 @@ using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.Manager
@@ -111,32 +110,32 @@ namespace Si.Engine.Manager
         {
         }
 
-        public SpriteBase Create(string spritePath, Action<SpriteBase>? initilizationProc = null)
-            => Create<SpriteBase>(spritePath, initilizationProc);
+        public SpriteBase Create(string assetKey, Action<SpriteBase>? initilizationProc = null)
+            => Create<SpriteBase>(assetKey, initilizationProc);
 
-        public T Create<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
+        public T Create<T>(string assetKey, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            var metadata = _engine.Assets.GetMetadata(spritePath)
-                ?? throw new Exception($"No metadata found for sprite path: {spritePath}");
+            var metadata = _engine.Assets.GetMetadata(assetKey)
+                ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
 
             string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
 
             var classType = SiReflection.GetTypeByName(className);
 
-            var sprite = (T)Activator.CreateInstance(classType, _engine, spritePath).EnsureNotNull();
+            var sprite = (T)Activator.CreateInstance(classType, _engine, assetKey).EnsureNotNull();
             initilizationProc?.Invoke(sprite);
             return sprite;
         }
 
-        public SpriteBase EditorAdd(string spritePath, Action<SpriteBase>? initilizationProc = null)
+        public SpriteBase EditorAdd(string assetKey, Action<SpriteBase>? initilizationProc = null)
         {
-            if(_engine.ExecutionMode != SiConstants.SiEngineExecutionMode.Edit)
+            if (_engine.ExecutionMode != SiConstants.SiEngineExecutionMode.Edit)
             {
                 throw new Exception("EditorAdd can only be used in Editor mode.");
             }
 
-            var metadata = _engine.Assets.GetMetadata(spritePath)
-                 ?? throw new Exception($"No metadata found for sprite path: {spritePath}");
+            var metadata = _engine.Assets.GetMetadata(assetKey)
+                 ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
 
             string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
 
@@ -155,20 +154,20 @@ namespace Si.Engine.Manager
                     case "engine":
                         constructorParams.Add(_engine);
                         break;
-                    case "spritePath":
-                        constructorParams.Add(spritePath);
+                    case "assetKey":
+                        constructorParams.Add(assetKey);
                         break;
                     case "firedFrom":
-                        constructorParams.Add(new SpriteEnemyBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        constructorParams.Add(new SpriteEnemyBase(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "owner":
-                        constructorParams.Add(new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        constructorParams.Add(new SpriteInteractiveBase(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "weapon":
-                        constructorParams.Add(new WeaponBase(_engine, new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"), @"Sprites\_Internal\Ghost.png"));
+                        constructorParams.Add(new WeaponBase(_engine, new SpriteInteractiveBase(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
                         break;
                     case "lockedTarget":
-                        constructorParams.Add(new SpriteInteractiveBase(_engine, @"Sprites\_Internal\Ghost.png"));
+                        constructorParams.Add(new SpriteInteractiveBase(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "location":
                         constructorParams.Add(SiVector.Zero());
@@ -186,12 +185,12 @@ namespace Si.Engine.Manager
             return sprite;
         }
 
-        public SpriteBase Add(string spritePath, Action<SpriteBase>? initilizationProc = null)
-            => Add<SpriteBase>(spritePath, initilizationProc);
+        public SpriteBase Add(string assetKey, Action<SpriteBase>? initilizationProc = null)
+            => Add<SpriteBase>(assetKey, initilizationProc);
 
-        public T Add<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
+        public T Add<T>(string assetKey, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            var sprite = Create<T>(spritePath);
+            var sprite = Create<T>(assetKey);
             initilizationProc?.Invoke(sprite);
             Insert(sprite);
             return sprite;
@@ -386,7 +385,7 @@ namespace Si.Engine.Manager
 
             if (RenderRadar)
             {
-                var radarBgImage = _engine.Assets.GetBitmap(@"Sprites\RadarTransparent.png");
+                var radarBgImage = _engine.Assets.GetBitmap("Sprites/RadarTransparent");
 
                 _engine.Rendering.DrawBitmap(renderTarget, radarBgImage,
                     _engine.Display.NaturalScreenSize.Width - radarBgImage.Size.Width,
@@ -495,55 +494,6 @@ namespace Si.Engine.Manager
                     o.Throttle = 1;
                 });
             }
-        }
-
-        public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
-        {
-            float statusIndex = 0;
-            loadingHeader?.SetTextAndCenterX("Loading sprites...");
-
-            var assembly = Assembly.GetExecutingAssembly();
-            var baseType = typeof(SpriteBase);
-            var derivedTypes = new List<Type>();
-
-            var allTypes = assembly.GetTypes();
-
-            foreach (var type in allTypes)
-            {
-                loadingDetail?.SetTextAndCenterX($"{statusIndex++ / allTypes.Length * 100.0:n0}%");
-
-                if (baseType.IsAssignableFrom(type) && type != baseType)
-                {
-                    // Check if the constructor parameter is of type EngineCore
-                    var constructor = type.GetConstructor([typeof(EngineCore)]);
-                    if (constructor != null)
-                    {
-                        derivedTypes.Add(type);
-                    }
-                }
-            }
-
-            statusIndex = 0;
-            loadingHeader?.SetTextAndCenterX("Creating instance types...");
-
-            // Create instances of derived types
-            foreach (var type in derivedTypes)
-            {
-                //Creating the instance of the sprite loads and caches the metadata and images.
-                dynamic instance = Activator.CreateInstance(type, _engine).EnsureNotNull();
-
-                loadingDetail?.SetTextAndCenterX($"{statusIndex++ / derivedTypes.Count * 100.0:n0}%");
-                instance.QueueForDelete();
-            }
-
-            loadingHeader?.SetTextAndCenterX("Loading animations...");
-            //Pre-cache animations:
-            //Animations do not have their own classes, so we need to look for them in the assets and load them.
-            var animations = _engine.Assets.Entries.Select(o => o.Value.Key.EnsureNotNull())
-                .Where(o => o != null && o.StartsWith(@"sprites/animation/", StringComparison.CurrentCultureIgnoreCase)
-                && o.EndsWith(@".png", StringComparison.CurrentCultureIgnoreCase)).ToList();
-
-            animations.ForEach(o => Animations.Add(o).QueueForDelete());
         }
     }
 }

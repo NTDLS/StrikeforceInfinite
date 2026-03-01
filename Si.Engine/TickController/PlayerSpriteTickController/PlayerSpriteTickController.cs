@@ -23,33 +23,38 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
         public PlayerSpriteTickController(EngineCore engine)
             : base(engine)
         {
-            //This is where the player is created.
-            if (engine.ExecutionMode == SiEngineExecutionMode.Play)
+            Sprite = new SpritePlayer(engine); //We want to make sure this is never null.
+
+            engine.OnInitializationComplete += (EngineCore engine) =>
             {
-                Sprite = engine.Sprites.Add<SpritePlayer>(@"Sprites\Player\Ships\Debug.png", (o) =>
+                //This is where the player is created.
+                if (engine.ExecutionMode == SiEngineExecutionMode.Play)
                 {
-                    o.IsVisible = false;
-                });
-            }
-            else
-            {
-                // In edit mode, the player is just a placeholder and is not added to the collecton.
-                Sprite = engine.Sprites.Create<SpritePlayer>(@"Sprites\Player\Ships\Debug.png", (o) =>
+                    Sprite = engine.Sprites.Add<SpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
+                    {
+                        o.IsVisible = false;
+                    });
+                }
+                else
                 {
-                    o.IsVisible = true;
-                });
-            }
+                    // In edit mode, the player is just a placeholder and is not added to the collecton.
+                    Sprite = engine.Sprites.Create<SpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
+                    {
+                        o.IsVisible = true;
+                    });
+                }
+            };
 
             _engine = engine;
             _inputDelay.Restart();
         }
 
-        public void InstantiatePlayerClass(string spritePath)
+        public void InstantiatePlayerClass(string assetKey)
         {
             //Remove the player from the sprite collection.
             Sprite.QueueForDelete();
             Sprite.Cleanup();
-            Sprite = Engine.Sprites.Add<SpritePlayer>(spritePath, (o) =>
+            Sprite = Engine.Sprites.Add<SpritePlayer>(assetKey, (o) =>
             {
                 o.IsVisible = false;
             });
@@ -105,11 +110,11 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
                     {
                         if (Sprite.PrimaryWeapon?.RoundQuantity == 25)
                         {
-                            Sprite.AmmoLowSound.Play();
+                            Sprite.AmmoLowSound?.Play();
                         }
                         if (Sprite.PrimaryWeapon?.RoundQuantity == 0)
                         {
-                            Sprite.AmmoEmptySound.Play();
+                            Sprite.AmmoEmptySound?.Play();
                         }
                     }
                 }
@@ -120,11 +125,11 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
                     {
                         if (Sprite.SelectedSecondaryWeapon?.RoundQuantity == 25)
                         {
-                            Sprite.AmmoLowSound.Play();
+                            Sprite.AmmoLowSound?.Play();
                         }
                         if (Sprite.SelectedSecondaryWeapon?.RoundQuantity == 0)
                         {
-                            Sprite.AmmoEmptySound.Play();
+                            Sprite.AmmoEmptySound?.Play();
                             Sprite.SelectFirstAvailableUsableSecondaryWeapon();
                         }
                     }
@@ -254,12 +259,12 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
                 #region Sounds and Animation.
 
                 if (_boostForwardVelocity > 0)
-                    Sprite.ShipEngineBoostSound.Play();
-                else Sprite.ShipEngineBoostSound.Fade();
+                    Sprite.ShipEngineBoostSound?.Play();
+                else Sprite.ShipEngineBoostSound?.Fade();
 
                 if (_forwardVelocity >= throttleFloor)
-                    Sprite.ShipEngineRoarSound.Play();
-                else Sprite.ShipEngineRoarSound.Fade();
+                    Sprite.ShipEngineRoarSound?.Play();
+                else Sprite.ShipEngineRoarSound?.Fade();
 
                 if (Sprite.ThrusterAnimation != null)
                 {
@@ -305,8 +310,8 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
             Engine.Sprites.RenderRadar = true;
             Sprite.IsVisible = true;
-            Sprite.ShipEngineIdleSound.Play();
-            Sprite.AllSystemsGoSound.Play();
+            Sprite.ShipEngineIdleSound?.Play();
+            Sprite.AllSystemsGoSound?.Play();
         }
 
         public void Show()
@@ -314,8 +319,8 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
             Engine.Sprites.RenderRadar = true;
             Sprite.IsVisible = true;
-            Sprite.ShipEngineIdleSound.Play();
-            Sprite.AllSystemsGoSound.Play();
+            Sprite.ShipEngineIdleSound?.Play();
+            Sprite.AllSystemsGoSound?.Play();
         }
 
         public void Hide()
@@ -323,8 +328,8 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = false;
             Engine.Sprites.RenderRadar = false;
             Sprite.IsVisible = false;
-            Sprite.ShipEngineIdleSound.Stop();
-            Sprite.ShipEngineRoarSound.Stop();
+            Sprite.ShipEngineIdleSound?.Stop();
+            Sprite.ShipEngineRoarSound?.Stop();
         }
     }
 }
