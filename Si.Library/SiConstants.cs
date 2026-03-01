@@ -1,13 +1,39 @@
-﻿namespace Si.Library
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Si.Library
 {
     public static class SiConstants
     {
-        public static string FriendlyName = "Strikeforce Infinite";
-
+        public static Lock SharedLock { get; private set; } = new Lock();
+        public const string FriendlyName = "Strikeforce Infinite";
         public const string MultiplayServerAddress = "127.0.0.1";
         public const int MultiplayServerTCPPort = 6785;
+        public const int MinimumCompressionRatio = 1;
 
-        public static readonly string[] ImageTypes = ["png", "jpg", "jpeg", "bmp"];
+        private static JsonSerializerOptions? _JsonSerializationOptions;
+        public static JsonSerializerOptions JsonSerializerOptions
+        {
+            get
+            {
+                if (_JsonSerializationOptions == null)
+                {
+                    lock (SharedLock)
+                    {
+                        if (_JsonSerializationOptions == null)
+                        {
+                            _JsonSerializationOptions = new()
+                            {
+                                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                                WriteIndented = true,
+                            };
+                            _JsonSerializationOptions.Converters.Add(new JsonStringEnumConverter());
+                        }
+                    }
+                }
+                return _JsonSerializationOptions;
+            }
+        }
 
         public enum PropertyEditorType
         {

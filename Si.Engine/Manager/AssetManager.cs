@@ -1,15 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿
 using NTDLS.DelegateThreadPooling;
+using NTDLS.Helpers;
 using NTDLS.Semaphore;
 using NTDLS.SqliteDapperWrapper;
 using Si.Audio;
 using Si.Engine.Sprite;
 using Si.Library;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 
 namespace Si.Engine.Manager
@@ -174,7 +178,6 @@ namespace Si.Engine.Manager
             });
             var threadPoolTracker = dtp.CreateChildPool();
 
-
             var assets = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM assets");
 
             int statusIndex = 0;
@@ -182,55 +185,10 @@ namespace Si.Engine.Manager
 
             foreach (var asset in assets)
             {
-                _collection.Write(collection =>
+                threadPoolTracker.Enqueue(() =>
                 {
-                    switch (asset.BaseType)
-                    {
-                        case "json":
-                        case "txt":
-                            threadPoolTracker.Enqueue(() =>
-                            {
-                                var metaData = JsonConvert.DeserializeObject<SpriteMetadata>(asset.Metadata)
-                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {asset.Key}");
-                                var bytes = asset.IsCompressed ? CompressionHelper.Decompress(asset.Bytes) : asset.Bytes;
-                                var obj = Encoding.UTF8.GetString(bytes);
-
-                                collection.Add(asset.Key, new AssetContainer(asset.Key, asset.BaseType, metaData, obj));
-                                Interlocked.Increment(ref statusIndex);
-                            });
-                            break;
-                        case "png":
-                        case "jpg":
-                        case "bmp":
-                            threadPoolTracker.Enqueue(() =>
-                            {
-                                var metaData = JsonConvert.DeserializeObject<SpriteMetadata>(asset.Metadata)
-                                          ?? throw new Exception($"Failed to deserialize metadata for asset: {asset.Key}");
-                                var bytes = asset.IsCompressed ? CompressionHelper.Decompress(asset.Bytes) : asset.Bytes;
-                                using var stream = new MemoryStream(bytes);
-                                var obj = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
-
-                                collection.Add(asset.Key, new AssetContainer(asset.Key, asset.BaseType, metaData, obj));
-                                Interlocked.Increment(ref statusIndex);
-                            });
-                            break;
-                        case "wav":
-                            threadPoolTracker.Enqueue(() =>
-                            {
-                                var metaData = JsonConvert.DeserializeObject<SpriteMetadata>(asset.Metadata)
-                                          ?? throw new Exception($"Failed to deserialize metadata for asset: {asset.Key}");
-                                var bytes = asset.IsCompressed ? CompressionHelper.Decompress(asset.Bytes) : asset.Bytes;
-                                using var stream = new MemoryStream(bytes);
-                                var obj = new SiAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
-
-                                collection.Add(asset.Key, new AssetContainer(asset.Key, asset.BaseType, metaData, obj));
-                                Interlocked.Increment(ref statusIndex);
-                            });
-                            break;
-                        default:
-                            Interlocked.Increment(ref statusIndex);
-                            break;
-                    }
+                    DeserializeAssetContainer(asset);
+                    Interlocked.Increment(ref statusIndex);
                 });
             }
 
@@ -266,5 +224,81 @@ namespace Si.Engine.Manager
         }
 
         #endregion
+
+        public AssetContainer DeserializeAssetContainer(AssetDatabaseModel model)
+        {
+            return _collection.Write(collection =>
+            {
+                switch (model.BaseType)
+                {
+                    case "json":
+                    case "txt":
+                        {
+                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata)
+                               ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
+                            var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+                            var obj = Encoding.UTF8.GetString(bytes);
+
+                            var asset = new AssetContainer(model.Key, model.BaseType, metaData, obj);
+                            collection.Add(model.Key, asset);
+                            return asset;
+                        }
+                    case "png":
+                    case "jpg":
+                    case "bmp":
+                        {
+                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata)
+                                      ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
+                            var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+                            using var stream = new MemoryStream(bytes);
+                            var obj = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
+
+                            var asset = new AssetContainer(model.Key, model.BaseType, metaData, obj);
+                            collection.Add(model.Key, asset);
+                            return asset;
+                        }
+                    case "wav":
+                        {
+                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata)
+                                      ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
+                            var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+                            using var stream = new MemoryStream(bytes);
+                            var obj = new SiAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
+
+                            var asset = new AssetContainer(model.Key, model.BaseType, metaData, obj);
+                            collection.Add(model.Key, asset);
+                            return asset;
+                        }
+                    default:
+                        throw new Exception($"Deserialization of the type {model.BaseType} for {model.Key} is not implemented.");
+                }
+            });
+        }
+
+        public void WriteAsset(string assetKey, string filePath, SpriteMetadata metadata)
+        {
+            long originalSize = new FileInfo(filePath).Length;
+
+            var originalFileBytes = File.ReadAllBytes(filePath);
+            var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+            long compressedSize = compressedBytes.Length;
+
+            double ratio = originalSize == 0
+                ? 0
+                : 100.0 * (originalSize - compressedSize) / originalSize;
+
+            _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
+
+            _assetsDatabase.Execute("INSERT INTO Assets (Key, BaseType, Bytes, IsCompressed, Metadata)"
+                + "VALUES (@Key, @BaseType, @Bytes, @IsCompressed, @Metadata)",
+                new
+                {
+                    Key = assetKey,
+                    Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
+                    IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
+                    Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions),
+                    BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
+                });
+        }
     }
 }

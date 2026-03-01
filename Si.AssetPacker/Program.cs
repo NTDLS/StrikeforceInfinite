@@ -7,21 +7,14 @@ using System.Text.Json.Serialization;
 
 namespace Si.AssetPacker
 {
+    /// <summary>
+    /// Used to pack a directory of assets into the database file. This really shouldn't be used anymore.
+    /// </summary>
     internal class Program
     {
-        const int _minCompressedRatio = 1;
-
-        private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
-        {
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
-            WriteIndented = true,
-        };
-
         static void Main(string[] args)
         {
             var sqliteDb = new SqliteManagedFactory("Data Source=../../../../Installer/Si.Assets.db");
-
-            _jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 
             //Files and paths that contain "@" are ignored because they effectively "Commented out" assets.
             //Files and paths that contain "#" are "internal" assets that we pack but do not show to the user in the editor.
@@ -57,7 +50,7 @@ namespace Si.AssetPacker
 
                 var metadataJson = File.ReadAllText($"{fullAssetPath}.meta");
 
-                var metadata = JsonSerializer.Deserialize<SpriteMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, _jsonSerializerOptions);
+                var metadata = JsonSerializer.Deserialize<SpriteMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, SiConstants.JsonSerializerOptions);
 
                 sqliteDb.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 
@@ -66,9 +59,9 @@ namespace Si.AssetPacker
                     new
                     {
                         Key = assetKey,
-                        Bytes = ratio >= _minCompressedRatio ? compressedBytes : originalFileBytes,
-                        IsCompressed = ratio >= _minCompressedRatio ? true : false,
-                        Metadata = JsonSerializer.Serialize(metadata, _jsonSerializerOptions),
+                        Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
+                        IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
+                        Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions),
                         BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower()
                     });
 
