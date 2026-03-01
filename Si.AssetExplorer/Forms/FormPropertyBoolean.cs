@@ -3,7 +3,7 @@
     public partial class FormPropertyBoolean
         : Form
     {
-        public bool Value => kryptonCheckBoxWorking.Checked;
+        public bool Value => checkBoxWorking.Checked;
 
         public FormPropertyBoolean()
         {
@@ -13,12 +13,12 @@
         public FormPropertyBoolean(PropertyItem propertyItem)
         {
             InitializeComponent();
-            kryptonCheckBoxWorking.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-            kryptonCheckBoxWorking.Checked = Convert.ToBoolean(propertyItem.WorkingValue ?? false);
+            checkBoxWorking.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            checkBoxWorking.Checked = Convert.ToBoolean(propertyItem.WorkingValue ?? false);
 
-            AcceptButton = kryptonButtonSave;
-            CancelButton = kryptonButtonCancel;
+            AcceptButton = buttonSave;
+            CancelButton = buttonCancel;
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)

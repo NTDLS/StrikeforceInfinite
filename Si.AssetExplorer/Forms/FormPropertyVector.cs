@@ -5,7 +5,7 @@ namespace Si.AssetExplorer.Forms
     public partial class FormPropertyVector
         : Form
     {
-        public SiVector Value => new((float)kryptonNumericUpDownWorkingX.Value, (float)kryptonNumericUpDownWorkingY.Value);
+        public SiVector Value => new((float)numericUpDownWorkingX.Value, (float)numericUpDownWorkingY.Value);
 
         public FormPropertyVector()
         {
@@ -15,19 +15,19 @@ namespace Si.AssetExplorer.Forms
         public FormPropertyVector(PropertyItem propertyItem)
         {
             InitializeComponent();
-            kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
 
-            kryptonNumericUpDownWorkingX.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
-            kryptonNumericUpDownWorkingX.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
-            kryptonNumericUpDownWorkingX.Value = (decimal?)(propertyItem.WorkingValue as SiVector)?.X ?? 0;
+            numericUpDownWorkingX.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
+            numericUpDownWorkingX.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
+            numericUpDownWorkingX.Value = (decimal?)(propertyItem.WorkingValue as SiVector)?.X ?? 0;
 
-            kryptonNumericUpDownWorkingY.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
-            kryptonNumericUpDownWorkingY.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
-            kryptonNumericUpDownWorkingY.Value = (decimal?)(propertyItem.WorkingValue as SiVector)?.Y ?? 0;
+            numericUpDownWorkingY.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
+            numericUpDownWorkingY.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
+            numericUpDownWorkingY.Value = (decimal?)(propertyItem.WorkingValue as SiVector)?.Y ?? 0;
 
-            AcceptButton = kryptonButtonSave;
-            CancelButton = kryptonButtonCancel;
+            AcceptButton = buttonSave;
+            CancelButton = buttonCancel;
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)

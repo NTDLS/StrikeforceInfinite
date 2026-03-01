@@ -3,7 +3,7 @@
     public partial class FormPropertyMultipleSpritePicker
         : Form
     {
-        public decimal Value => kryptonNumericUpDown.Value;
+        public decimal Value => numericUpDown.Value;
 
         public FormPropertyMultipleSpritePicker()
         {
@@ -14,12 +14,12 @@
         {
             InitializeComponent();
 
-            //kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            //kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-            //kryptonNumericUpDown.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? 0);
+            //labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            //textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            //numericUpDown.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? 0);
 
-            AcceptButton = kryptonButtonSave;
-            CancelButton = kryptonButtonCancel;
+            AcceptButton = buttonSave;
+            CancelButton = buttonCancel;
 
             throw new System.NotImplementedException();
         }

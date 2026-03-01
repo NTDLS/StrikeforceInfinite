@@ -6,7 +6,7 @@ namespace Si.AssetExplorer.Forms
     public partial class FormPropertyEnum
         : Form
     {
-        public int Value => ((ComboboxItem)kryptonComboBoxWorking.SelectedItem.EnsureNotNull()).Value;
+        public int Value => ((ComboboxItem)comboBoxWorking.SelectedItem.EnsureNotNull()).Value;
 
         public FormPropertyEnum()
         {
@@ -29,8 +29,10 @@ namespace Si.AssetExplorer.Forms
         public FormPropertyEnum(PropertyItem propertyItem)
         {
             InitializeComponent();
-            kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+
+
 
             if (propertyItem.Attributes?.EnumType == null)
                 throw new Exception("EnumType must be specified for enum properties.");
@@ -50,21 +52,21 @@ namespace Si.AssetExplorer.Forms
                     {
                         selectedItem = item;
                     }
-                    kryptonComboBoxWorking.Items.Add(item);
+                    comboBoxWorking.Items.Add(item);
                 }
             }
             if (selectedItem != null)
             {
-                kryptonComboBoxWorking.SelectedItem = selectedItem;
+                comboBoxWorking.SelectedItem = selectedItem;
             }
 
-            AcceptButton = kryptonButtonSave;
-            CancelButton = kryptonButtonCancel;
+            AcceptButton = buttonSave;
+            CancelButton = buttonCancel;
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
         {
-            if (kryptonComboBoxWorking.SelectedItem == null)
+            if (comboBoxWorking.SelectedItem == null)
             {
                 MessageBox.Show("Please select a value.", SiConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

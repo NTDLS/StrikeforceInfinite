@@ -29,68 +29,68 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertyBoolean));
-            kryptonButtonCancel = new Button();
-            kryptonButtonSave = new Button();
-            kryptonTextBoxDescription = new TextBox();
-            kryptonLabelDescription = new Label();
-            kryptonCheckBoxWorking = new CheckBox();
+            buttonCancel = new Button();
+            buttonSave = new Button();
+            textBoxDescription = new TextBox();
+            labelDescription = new Label();
+            checkBoxWorking = new CheckBox();
             SuspendLayout();
             // 
-            // kryptonButtonCancel
+            // buttonCancel
             // 
-            kryptonButtonCancel.Location = new Point(266, 159);
-            kryptonButtonCancel.Name = "kryptonButtonCancel";
-            kryptonButtonCancel.Size = new Size(90, 25);
-            kryptonButtonCancel.TabIndex = 4;
-            kryptonButtonCancel.Text = "Cancel";
-            kryptonButtonCancel.Click += ButtonCancel_Click;
+            buttonCancel.Location = new Point(266, 159);
+            buttonCancel.Name = "buttonCancel";
+            buttonCancel.Size = new Size(90, 25);
+            buttonCancel.TabIndex = 4;
+            buttonCancel.Text = "Cancel";
+            buttonCancel.Click += ButtonCancel_Click;
             // 
-            // kryptonButtonSave
+            // buttonSave
             // 
-            kryptonButtonSave.Location = new Point(170, 159);
-            kryptonButtonSave.Name = "kryptonButtonSave";
-            kryptonButtonSave.Size = new Size(90, 25);
-            kryptonButtonSave.TabIndex = 3;
-            kryptonButtonSave.Text = "Save";
-            kryptonButtonSave.Click += ButtonSave_Click;
+            buttonSave.Location = new Point(170, 159);
+            buttonSave.Name = "buttonSave";
+            buttonSave.Size = new Size(90, 25);
+            buttonSave.TabIndex = 3;
+            buttonSave.Text = "Save";
+            buttonSave.Click += ButtonSave_Click;
             // 
-            // kryptonTextBoxDescription
+            // textBoxDescription
             // 
-            kryptonTextBoxDescription.Location = new Point(13, 74);
-            kryptonTextBoxDescription.Multiline = true;
-            kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
-            kryptonTextBoxDescription.ReadOnly = true;
-            kryptonTextBoxDescription.ScrollBars = ScrollBars.Vertical;
-            kryptonTextBoxDescription.Size = new Size(343, 79);
-            kryptonTextBoxDescription.TabIndex = 2;
-            kryptonTextBoxDescription.Text = "Description";
+            textBoxDescription.Location = new Point(13, 74);
+            textBoxDescription.Multiline = true;
+            textBoxDescription.Name = "textBoxDescription";
+            textBoxDescription.ReadOnly = true;
+            textBoxDescription.ScrollBars = ScrollBars.Vertical;
+            textBoxDescription.Size = new Size(343, 79);
+            textBoxDescription.TabIndex = 2;
+            textBoxDescription.Text = "Description";
             // 
-            // kryptonLabelDescription
+            // labelDescription
             // 
-            kryptonLabelDescription.Location = new Point(13, 46);
-            kryptonLabelDescription.Name = "kryptonLabelDescription";
-            kryptonLabelDescription.Size = new Size(90, 25);
-            kryptonLabelDescription.TabIndex = 1;
-            kryptonLabelDescription.Text = "Description";
+            labelDescription.Location = new Point(13, 46);
+            labelDescription.Name = "labelDescription";
+            labelDescription.Size = new Size(90, 25);
+            labelDescription.TabIndex = 1;
+            labelDescription.Text = "Description";
             // 
-            // kryptonCheckBoxWorking
+            // checkBoxWorking
             // 
-            kryptonCheckBoxWorking.Location = new Point(12, 12);
-            kryptonCheckBoxWorking.Name = "kryptonCheckBoxWorking";
-            kryptonCheckBoxWorking.Size = new Size(344, 25);
-            kryptonCheckBoxWorking.TabIndex = 0;
-            kryptonCheckBoxWorking.Text = "Property Name";
+            checkBoxWorking.Location = new Point(12, 12);
+            checkBoxWorking.Name = "checkBoxWorking";
+            checkBoxWorking.Size = new Size(344, 25);
+            checkBoxWorking.TabIndex = 0;
+            checkBoxWorking.Text = "Property Name";
             // 
             // FormPropertyBoolean
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(368, 206);
-            Controls.Add(kryptonCheckBoxWorking);
-            Controls.Add(kryptonLabelDescription);
-            Controls.Add(kryptonTextBoxDescription);
-            Controls.Add(kryptonButtonCancel);
-            Controls.Add(kryptonButtonSave);
+            Controls.Add(checkBoxWorking);
+            Controls.Add(labelDescription);
+            Controls.Add(textBoxDescription);
+            Controls.Add(buttonCancel);
+            Controls.Add(buttonSave);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -105,10 +105,10 @@
         }
 
         #endregion
-        private Button kryptonButtonCancel;
-        private Button kryptonButtonSave;
-        private TextBox kryptonTextBoxDescription;
-        private Label kryptonLabelDescription;
-        private CheckBox kryptonCheckBoxWorking;
+        private Button buttonCancel;
+        private Button buttonSave;
+        private TextBox textBoxDescription;
+        private Label labelDescription;
+        private CheckBox checkBoxWorking;
     }
 }

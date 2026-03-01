@@ -42,18 +42,25 @@ namespace Si.AssetExplorer
 
         private void _listView_MouseClick(object? sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            try
             {
-                var menu = new ContextMenuStrip();
-
-                var hit = _listView.HitTest(e.Location);
-
-                if (hit.Item != null)
+                if (e.Button == MouseButtons.Right)
                 {
-                    menu.Items.Add("Clear Value", null, (s, e) => ClearMetadataValue(hit.Item as PropertyItem));
-                    hit.Item.Selected = true;
-                    menu.Show(_listView, _listView.PointToClient(Cursor.Position));
+                    var menu = new ContextMenuStrip();
+
+                    var hit = _listView.HitTest(e.Location);
+
+                    if (hit.Item != null)
+                    {
+                        menu.Items.Add("Clear Value", null, (s, e) => ClearMetadataValue(hit.Item as PropertyItem));
+                        hit.Item.Selected = true;
+                        menu.Show(_listView, _listView.PointToClient(Cursor.Position));
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
             }
         }
 

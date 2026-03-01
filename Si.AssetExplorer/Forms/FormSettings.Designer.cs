@@ -29,35 +29,35 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            kryptonButtonSave = new Button();
-            kryptonButtonCancel = new Button();
+            buttonSave = new Button();
+            buttonCancel = new Button();
             SuspendLayout();
             // 
-            // kryptonButtonSave
+            // buttonSave
             // 
-            kryptonButtonSave.Location = new Point(134, 132);
-            kryptonButtonSave.Name = "kryptonButtonSave";
-            kryptonButtonSave.Size = new Size(90, 25);
-            kryptonButtonSave.TabIndex = 3;
-            kryptonButtonSave.Text = "Save";
-            kryptonButtonSave.Click += kryptonButtonSave_Click;
+            buttonSave.Location = new Point(134, 132);
+            buttonSave.Name = "buttonSave";
+            buttonSave.Size = new Size(90, 25);
+            buttonSave.TabIndex = 3;
+            buttonSave.Text = "Save";
+            buttonSave.Click += buttonSave_Click;
             // 
-            // kryptonButtonCancel
+            // buttonCancel
             // 
-            kryptonButtonCancel.Location = new Point(230, 132);
-            kryptonButtonCancel.Name = "kryptonButtonCancel";
-            kryptonButtonCancel.Size = new Size(90, 25);
-            kryptonButtonCancel.TabIndex = 4;
-            kryptonButtonCancel.Text = "Cancel";
-            kryptonButtonCancel.Click += kryptonButtonCancel_Click;
+            buttonCancel.Location = new Point(230, 132);
+            buttonCancel.Name = "buttonCancel";
+            buttonCancel.Size = new Size(90, 25);
+            buttonCancel.TabIndex = 4;
+            buttonCancel.Text = "Cancel";
+            buttonCancel.Click += buttonCancel_Click;
             // 
             // FormSettings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(332, 169);
-            Controls.Add(kryptonButtonCancel);
-            Controls.Add(kryptonButtonSave);
+            Controls.Add(buttonCancel);
+            Controls.Add(buttonSave);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormSettings";
             StartPosition = FormStartPosition.CenterParent;
@@ -66,7 +66,7 @@
         }
 
         #endregion
-        private Button kryptonButtonSave;
-        private Button kryptonButtonCancel;
+        private Button buttonSave;
+        private Button buttonCancel;
     }
 }

@@ -5,7 +5,7 @@ namespace Si.AssetExplorer.Forms
     public partial class FormPropertyRangeInt
         : Form
     {
-        public SiRange<int> Value => new((int)kryptonNumericUpDownWorkingMin.Value, (int)kryptonNumericUpDownWorkingMax.Value);
+        public SiRange<int> Value => new((int)numericUpDownWorkingMin.Value, (int)numericUpDownWorkingMax.Value);
 
         public FormPropertyRangeInt()
         {
@@ -15,19 +15,19 @@ namespace Si.AssetExplorer.Forms
         public FormPropertyRangeInt(PropertyItem propertyItem)
         {
             InitializeComponent();
-            kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
 
-            kryptonNumericUpDownWorkingMin.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? int.MinValue;
-            kryptonNumericUpDownWorkingMin.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
-            kryptonNumericUpDownWorkingMin.Value = (decimal?)(propertyItem.WorkingValue as SiRange<int>)?.Min ?? 0;
+            numericUpDownWorkingMin.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? int.MinValue;
+            numericUpDownWorkingMin.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
+            numericUpDownWorkingMin.Value = (decimal?)(propertyItem.WorkingValue as SiRange<int>)?.Min ?? 0;
 
-            kryptonNumericUpDownWorkingMax.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? int.MinValue;
-            kryptonNumericUpDownWorkingMax.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
-            kryptonNumericUpDownWorkingMax.Value = (decimal?)(propertyItem.WorkingValue as SiRange<int>)?.Max ?? 0;
+            numericUpDownWorkingMax.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? int.MinValue;
+            numericUpDownWorkingMax.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
+            numericUpDownWorkingMax.Value = (decimal?)(propertyItem.WorkingValue as SiRange<int>)?.Max ?? 0;
 
-            AcceptButton = kryptonButtonSave;
-            CancelButton = kryptonButtonCancel;
+            AcceptButton = buttonSave;
+            CancelButton = buttonCancel;
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)

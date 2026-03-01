@@ -39,7 +39,7 @@ namespace Si.AssetExplorer
             listViewProperties = new ListView();
             splitContainerBottom = new SplitContainer();
             richTextBoxOutput = new RichTextBox();
-            kryptonToolStrip1 = new ToolStrip();
+            toolStrip1 = new ToolStrip();
             toolStripButtonSettings = new ToolStripButton();
             toolStripButtonDevelopmentConsole = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
@@ -56,7 +56,7 @@ namespace Si.AssetExplorer
             ((System.ComponentModel.ISupportInitialize)splitContainerBottom).BeginInit();
             splitContainerBottom.Panel1.SuspendLayout();
             splitContainerBottom.Panel2.SuspendLayout();
-            kryptonToolStrip1.SuspendLayout();
+            toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainerLeft
@@ -161,15 +161,15 @@ namespace Si.AssetExplorer
             richTextBoxOutput.TabIndex = 0;
             richTextBoxOutput.Text = "";
             // 
-            // kryptonToolStrip1
+            // toolStrip1
             // 
-            kryptonToolStrip1.Font = new Font("Segoe UI", 9F);
-            kryptonToolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDevelopmentConsole });
-            kryptonToolStrip1.Location = new Point(0, 0);
-            kryptonToolStrip1.Name = "kryptonToolStrip1";
-            kryptonToolStrip1.Size = new Size(800, 25);
-            kryptonToolStrip1.TabIndex = 3;
-            kryptonToolStrip1.Text = "kryptonToolStrip1";
+            toolStrip1.Font = new Font("Segoe UI", 9F);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDevelopmentConsole });
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(800, 25);
+            toolStrip1.TabIndex = 3;
+            toolStrip1.Text = "toolStrip1";
             // 
             // toolStripButtonSettings
             // 
@@ -199,7 +199,7 @@ namespace Si.AssetExplorer
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 625);
             Controls.Add(splitContainerBottom);
-            Controls.Add(kryptonToolStrip1);
+            Controls.Add(toolStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             Text = "Asset Manager";
@@ -216,8 +216,8 @@ namespace Si.AssetExplorer
             splitContainerBottom.Panel1.ResumeLayout(false);
             splitContainerBottom.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerBottom).EndInit();
-            kryptonToolStrip1.ResumeLayout(false);
-            kryptonToolStrip1.PerformLayout();
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -232,7 +232,7 @@ namespace Si.AssetExplorer
         private PictureBox pictureBoxPreview;
         private ListView listViewProperties;
         private RichTextBox richTextBoxOutput;
-        private ToolStrip kryptonToolStrip1;
+        private ToolStrip toolStrip1;
         private ToolStripButton toolStripButtonSettings;
         private ToolStripButton toolStripButtonDevelopmentConsole;
     }

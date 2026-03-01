@@ -10,19 +10,18 @@ namespace Si.AssetExplorer
             InitializeComponent();
         }
 
-        private void kryptonButtonCancel_Click(object sender, EventArgs e)
+        private void buttonCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void kryptonButtonSave_Click(object sender, EventArgs e)
+        private void buttonSave_Click(object sender, EventArgs e)
         {
             try
             {
                 var settings = LocalUserApplicationData.LoadFromDisk(Constants.AppName, new Settings());
 
-                //settings.Theme = (kryptonComboBoxTheme.SelectedItem as ThemeComboItem)?.Mode
-                //    ?? throw new ArgumentNullException("Theme must be selected.");
+                //settings.SomeSetting = comboBoxSomeSetting.SelectedItem?.ToString()
 
                 Settings.Instance = settings;
 

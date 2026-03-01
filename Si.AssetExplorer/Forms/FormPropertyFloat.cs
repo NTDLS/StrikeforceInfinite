@@ -3,7 +3,7 @@
     public partial class FormPropertyFloat
         : Form
     {
-        public float Value => Convert.ToSingle(kryptonNumericUpDownWorking.Value);
+        public float Value => Convert.ToSingle(numericUpDownWorking.Value);
 
         public FormPropertyFloat()
         {
@@ -13,15 +13,15 @@
         public FormPropertyFloat(PropertyItem propertyItem)
         {
             InitializeComponent();
-            kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
 
-            kryptonNumericUpDownWorking.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
-            kryptonNumericUpDownWorking.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
-            kryptonNumericUpDownWorking.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? 0f);
+            numericUpDownWorking.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
+            numericUpDownWorking.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
+            numericUpDownWorking.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? 0f);
 
-            AcceptButton = kryptonButtonSave;
-            CancelButton = kryptonButtonCancel;
+            AcceptButton = buttonSave;
+            CancelButton = buttonCancel;
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)

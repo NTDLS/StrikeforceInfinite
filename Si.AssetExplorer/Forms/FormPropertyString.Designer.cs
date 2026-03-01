@@ -29,77 +29,77 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertyString));
-            kryptonLabelName = new Label();
-            kryptonButtonCancel = new Button();
-            kryptonButtonSave = new Button();
-            kryptonTextBoxDescription = new TextBox();
-            kryptonLabelDescription = new Label();
-            kryptonTextBoxWorking = new TextBox();
+            labelName = new Label();
+            buttonCancel = new Button();
+            buttonSave = new Button();
+            textBoxDescription = new TextBox();
+            labelDescription = new Label();
+            textBoxWorking = new TextBox();
             SuspendLayout();
             // 
-            // kryptonLabelName
+            // labelName
             // 
-            kryptonLabelName.Location = new Point(12, 15);
-            kryptonLabelName.Name = "kryptonLabelName";
-            kryptonLabelName.Size = new Size(346, 25);
-            kryptonLabelName.TabIndex = 0;
-            kryptonLabelName.Text = "Property Name";
+            labelName.Location = new Point(12, 15);
+            labelName.Name = "labelName";
+            labelName.Size = new Size(346, 25);
+            labelName.TabIndex = 0;
+            labelName.Text = "Property Name";
             // 
-            // kryptonButtonCancel
+            // buttonCancel
             // 
-            kryptonButtonCancel.Location = new Point(265, 187);
-            kryptonButtonCancel.Name = "kryptonButtonCancel";
-            kryptonButtonCancel.Size = new Size(90, 25);
-            kryptonButtonCancel.TabIndex = 5;
-            kryptonButtonCancel.Text = "Cancel";
-            kryptonButtonCancel.Click += ButtonCancel_Click;
+            buttonCancel.Location = new Point(265, 187);
+            buttonCancel.Name = "buttonCancel";
+            buttonCancel.Size = new Size(90, 25);
+            buttonCancel.TabIndex = 5;
+            buttonCancel.Text = "Cancel";
+            buttonCancel.Click += ButtonCancel_Click;
             // 
-            // kryptonButtonSave
+            // buttonSave
             // 
-            kryptonButtonSave.Location = new Point(169, 187);
-            kryptonButtonSave.Name = "kryptonButtonSave";
-            kryptonButtonSave.Size = new Size(90, 25);
-            kryptonButtonSave.TabIndex = 4;
-            kryptonButtonSave.Text = "Save";
-            kryptonButtonSave.Click += ButtonSave_Click;
+            buttonSave.Location = new Point(169, 187);
+            buttonSave.Name = "buttonSave";
+            buttonSave.Size = new Size(90, 25);
+            buttonSave.TabIndex = 4;
+            buttonSave.Text = "Save";
+            buttonSave.Click += ButtonSave_Click;
             // 
-            // kryptonTextBoxDescription
+            // textBoxDescription
             // 
-            kryptonTextBoxDescription.Location = new Point(12, 102);
-            kryptonTextBoxDescription.Multiline = true;
-            kryptonTextBoxDescription.Name = "kryptonTextBoxDescription";
-            kryptonTextBoxDescription.ReadOnly = true;
-            kryptonTextBoxDescription.ScrollBars = ScrollBars.Vertical;
-            kryptonTextBoxDescription.Size = new Size(343, 79);
-            kryptonTextBoxDescription.TabIndex = 3;
-            kryptonTextBoxDescription.Text = "Description";
+            textBoxDescription.Location = new Point(12, 102);
+            textBoxDescription.Multiline = true;
+            textBoxDescription.Name = "textBoxDescription";
+            textBoxDescription.ReadOnly = true;
+            textBoxDescription.ScrollBars = ScrollBars.Vertical;
+            textBoxDescription.Size = new Size(343, 79);
+            textBoxDescription.TabIndex = 3;
+            textBoxDescription.Text = "Description";
             // 
-            // kryptonLabelDescription
+            // labelDescription
             // 
-            kryptonLabelDescription.Location = new Point(12, 74);
-            kryptonLabelDescription.Name = "kryptonLabelDescription";
-            kryptonLabelDescription.Size = new Size(90, 25);
-            kryptonLabelDescription.TabIndex = 2;
-            kryptonLabelDescription.Text = "Description";
+            labelDescription.Location = new Point(12, 74);
+            labelDescription.Name = "labelDescription";
+            labelDescription.Size = new Size(90, 25);
+            labelDescription.TabIndex = 2;
+            labelDescription.Text = "Description";
             // 
-            // kryptonTextBoxWorking
+            // textBoxWorking
             // 
-            kryptonTextBoxWorking.Location = new Point(12, 43);
-            kryptonTextBoxWorking.Name = "kryptonTextBoxWorking";
-            kryptonTextBoxWorking.Size = new Size(343, 23);
-            kryptonTextBoxWorking.TabIndex = 1;
+            textBoxWorking.Location = new Point(12, 43);
+            textBoxWorking.Name = "textBoxWorking";
+            textBoxWorking.Size = new Size(343, 23);
+            textBoxWorking.TabIndex = 1;
             // 
             // FormPropertyString
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(368, 224);
-            Controls.Add(kryptonTextBoxWorking);
-            Controls.Add(kryptonLabelDescription);
-            Controls.Add(kryptonTextBoxDescription);
-            Controls.Add(kryptonButtonCancel);
-            Controls.Add(kryptonButtonSave);
-            Controls.Add(kryptonLabelName);
+            Controls.Add(textBoxWorking);
+            Controls.Add(labelDescription);
+            Controls.Add(textBoxDescription);
+            Controls.Add(buttonCancel);
+            Controls.Add(buttonSave);
+            Controls.Add(labelName);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -114,11 +114,11 @@
         }
 
         #endregion
-        private Label kryptonLabelName;
-        private Button kryptonButtonCancel;
-        private Button kryptonButtonSave;
-        private TextBox kryptonTextBoxDescription;
-        private Label kryptonLabelDescription;
-        private TextBox kryptonTextBoxWorking;
+        private Label labelName;
+        private Button buttonCancel;
+        private Button buttonSave;
+        private TextBox textBoxDescription;
+        private Label labelDescription;
+        private TextBox textBoxWorking;
     }
 }

@@ -3,7 +3,7 @@
     public partial class FormPropertyPicker
         : Form
     {
-        public decimal Value => kryptonNumericUpDown.Value;
+        public decimal Value => numericUpDown.Value;
 
         public FormPropertyPicker()
         {
@@ -13,12 +13,12 @@
         public FormPropertyPicker(PropertyItem propertyItem)
         {
             InitializeComponent();
-            //kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            //kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-            //kryptonNumericUpDown.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
+            //labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            //textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            //numericUpDown.Value = Convert.ToDecimal(propertyItem.WorkingValue ?? propertyItem.DefaultValue);
 
-            AcceptButton = kryptonButtonSave;
-            CancelButton = kryptonButtonCancel;
+            AcceptButton = buttonSave;
+            CancelButton = buttonCancel;
 
             throw new System.NotImplementedException();
         }

@@ -3,7 +3,7 @@
     public partial class FormPropertyText
         : Form
     {
-        public string Value => kryptonTextBoxWorking.Text;
+        public string Value => textBoxWorking.Text;
 
         public FormPropertyText()
         {
@@ -13,14 +13,14 @@
         public FormPropertyText(PropertyItem propertyItem)
         {
             InitializeComponent();
-            kryptonLabelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
-            kryptonTextBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
+            labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
+            textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
 
-            kryptonTextBoxWorking.MaxLength = (int?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
-            kryptonTextBoxWorking.Text = propertyItem.WorkingValue?.ToString() ?? string.Empty;
+            textBoxWorking.MaxLength = (int?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
+            textBoxWorking.Text = propertyItem.WorkingValue?.ToString() ?? string.Empty;
 
-            AcceptButton = kryptonButtonSave;
-            CancelButton = kryptonButtonCancel;
+            AcceptButton = buttonSave;
+            CancelButton = buttonCancel;
         }
 
         private void ButtonSave_Click(object sender, EventArgs e)
