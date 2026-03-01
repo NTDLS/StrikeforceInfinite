@@ -25,25 +25,25 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
         {
             Sprite = new SpritePlayer(engine); //We want to make sure this is never null.
 
-            //This is where the player is created.
-            if (engine.ExecutionMode == SiEngineExecutionMode.Play)
+            engine.OnInitializationComplete += (EngineCore engine) =>
             {
-                engine.OnInitializationComplete += (EngineCore engine) =>
+                //This is where the player is created.
+                if (engine.ExecutionMode == SiEngineExecutionMode.Play)
                 {
                     Sprite = engine.Sprites.Add<SpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
                     {
                         o.IsVisible = false;
                     });
-                };
-            }
-            else
-            {
-                // In edit mode, the player is just a placeholder and is not added to the collecton.
-                Sprite = engine.Sprites.Create<SpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
+                }
+                else
                 {
-                    o.IsVisible = true;
-                });
-            }
+                    // In edit mode, the player is just a placeholder and is not added to the collecton.
+                    Sprite = engine.Sprites.Create<SpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
+                    {
+                        o.IsVisible = true;
+                    });
+                }
+            };
 
             _engine = engine;
             _inputDelay.Restart();

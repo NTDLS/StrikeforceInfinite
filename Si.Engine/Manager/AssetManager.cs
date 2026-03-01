@@ -1,13 +1,10 @@
 ﻿
 using NTDLS.DelegateThreadPooling;
-using NTDLS.Helpers;
-using NTDLS.Semaphore;
 using NTDLS.SqliteDapperWrapper;
 using Si.Audio;
 using Si.Engine.Sprite;
 using Si.Library;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -15,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
-using static Si.Engine.Manager.AssetManager;
 
 namespace Si.Engine.Manager
 {
@@ -27,22 +23,6 @@ namespace Si.Engine.Manager
 #else
         public const string AssetPackagePath = "Si.Assets.db";
 #endif
-
-        public class AssetContainer
-        {
-            public string Key { get; set; }
-            public SpriteMetadata Metadata { get; set; }
-            public object Object { get; set; }
-            public string BaseType { get; set; } = string.Empty;
-
-            public AssetContainer(string key, string baseType, SpriteMetadata metadata, object obj)
-            {
-                Key = key;
-                BaseType = baseType;
-                Metadata = metadata;
-                Object = obj;
-            }
-        }
 
         public bool IsLoaded { get; private set; }
         private readonly EngineCore _engine;
@@ -58,8 +38,15 @@ namespace Si.Engine.Manager
         /// Gets the metadata for all assets in a directory.
         /// This REQUIRES that the assets already be cached.
         /// </summary>
-        public List<AssetContainer> GetAssetsInPath(string directory, bool avoidCache = false)
+        public List<AssetContainer> GetAssetsInPath(string directory)
             => _collection.Where(kv => kv.Key.StartsWith(directory, StringComparison.OrdinalIgnoreCase)).Select(kv => kv.Value).ToList();
+
+        /// <summary>
+        /// Gets the metadata for all assets.
+        /// This REQUIRES that the assets already be cached.
+        /// </summary>
+        public List<AssetContainer> GetAssets()
+            => _collection.Values.ToList();
 
         public AssetContainer GetAsset(string assetKey)
         {
@@ -123,16 +110,20 @@ namespace Si.Engine.Manager
             });
             var threadPoolTracker = dtp.CreateChildPool();
 
-            var assets = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM Assets");
+            var models = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM Assets");
 
             int statusIndex = 0;
-            float statusEntryCount = assets.Count();
+            float statusEntryCount = models.Count();
 
-            foreach (var asset in assets)
+            foreach (var model in models)
             {
                 threadPoolTracker.Enqueue(() =>
                 {
-                    DeserializeAssetContainer(asset);
+                    var asset = DeserializeAssetContainer(model);
+                    lock (_collection)
+                    {
+                        _collection.Add(model.Key, asset);
+                    }
                     Interlocked.Increment(ref statusIndex);
                 });
             }
@@ -170,7 +161,7 @@ namespace Si.Engine.Manager
 
         #endregion
 
-        private AssetContainer DeserializeAssetContainer(AssetDatabaseModel model)
+        public AssetContainer DeserializeAssetContainer(AssetDatabaseModel model)
         {
             switch (model.BaseType)
             {
@@ -182,12 +173,7 @@ namespace Si.Engine.Manager
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         var obj = Encoding.UTF8.GetString(bytes);
 
-                        var asset = new AssetContainer(model.Key, model.BaseType, metaData, obj);
-                        lock (_collection)
-                        {
-                            _collection.Add(model.Key, asset);
-                        }
-                        return asset;
+                        return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }
                 case "png":
                 case "jpg":
@@ -199,12 +185,7 @@ namespace Si.Engine.Manager
                         using var stream = new MemoryStream(bytes);
                         var obj = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
 
-                        var asset = new AssetContainer(model.Key, model.BaseType, metaData, obj);
-                        lock (_collection)
-                        {
-                            _collection.Add(model.Key, asset);
-                        }
-                        return asset;
+                        return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }
                 case "wav":
                     {
@@ -214,12 +195,7 @@ namespace Si.Engine.Manager
                         using var stream = new MemoryStream(bytes);
                         var obj = new SiAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
 
-                        var asset = new AssetContainer(model.Key, model.BaseType, metaData, obj);
-                        lock (_collection)
-                        {
-                            _collection.Add(model.Key, asset);
-                        }
-                        return asset;
+                        return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }
                 default:
                     throw new Exception($"Deserialization of the type {model.BaseType} for {model.Key} is not implemented.");
