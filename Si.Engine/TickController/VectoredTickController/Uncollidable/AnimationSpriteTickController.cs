@@ -4,7 +4,6 @@ using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
-using System.IO;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {

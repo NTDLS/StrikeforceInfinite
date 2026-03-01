@@ -6,7 +6,6 @@ using Si.Library.Mathematics;
 using Si.Library.Sprite;
 using System;
 using System.Drawing;
-using System.IO;
 
 namespace Si.Engine.Sprite._Superclass._Root
 {
@@ -48,11 +47,11 @@ namespace Si.Engine.Sprite._Superclass._Root
                 return;
             }
 
-            _metadata = _engine.Assets.GetMetadata(spritePath);
+            var asset = _engine.Assets.GetAsset(spritePath);
 
-            var extension = Path.GetExtension(spritePath);
+            _metadata = asset.Metadata;
 
-            if (SiConstants.ImageTypes.Contains(extension, StringComparer.OrdinalIgnoreCase))
+            if (SiConstants.ImageTypes.Contains(asset.BaseType, StringComparer.OrdinalIgnoreCase))
             {
                 SpriteBitmap = _engine.Assets.GetBitmap(spritePath);
                 _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);

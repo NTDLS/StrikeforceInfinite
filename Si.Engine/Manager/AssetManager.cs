@@ -27,10 +27,12 @@ namespace Si.Engine.Manager
             public string Key { get; set; }
             public SpriteMetadata Metadata { get; set; }
             public object Object { get; set; }
+            public string BaseType { get; set; } = string.Empty;
 
-            public AssetContainer(string key, SpriteMetadata metadata, object obj)
+            public AssetContainer(string key, string baseType, SpriteMetadata metadata, object obj)
             {
                 Key = key;
+                BaseType = baseType;
                 Metadata = metadata;
                 Object = obj;
             }
@@ -59,6 +61,17 @@ namespace Si.Engine.Manager
             );
 
             return assets;
+        }
+
+        public AssetContainer GetAsset(string spritePath, bool avoidCache = false)
+        {
+            var assetContainer = _collection.Read(o =>
+            {
+                o.TryGetValue(spritePath, out AssetContainer? value);
+                return value;
+            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
+
+            return assetContainer;
         }
 
         public SpriteMetadata GetMetadata(string spritePath, bool avoidCache = false)
@@ -148,8 +161,7 @@ namespace Si.Engine.Manager
                 return value;
             }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
 
-            var stream = new MemoryStream(assetContainer.Object as byte[] ?? throw new FileNotFoundException($"Asset not found: {spritePath}"));
-            return _engine.Rendering.BitmapStreamToD2DBitmap(stream);
+            return assetContainer.Object as SharpDX.Direct2D1.Bitmap ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
         }
 
         public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
@@ -172,7 +184,6 @@ namespace Si.Engine.Manager
             {
                 _collection.Write(collection =>
                 {
-
                     switch (asset.BaseType)
                     {
                         case "json":
@@ -184,7 +195,7 @@ namespace Si.Engine.Manager
                                 var bytes = asset.IsCompressed ? CompressionHelper.Decompress(asset.Bytes) : asset.Bytes;
                                 var obj = Encoding.UTF8.GetString(bytes);
 
-                                collection.Add(asset.Key, new AssetContainer(asset.Key, metaData, obj));
+                                collection.Add(asset.Key, new AssetContainer(asset.Key, asset.BaseType, metaData, obj));
                                 Interlocked.Increment(ref statusIndex);
                             });
                             break;
@@ -199,7 +210,7 @@ namespace Si.Engine.Manager
                                 using var stream = new MemoryStream(bytes);
                                 var obj = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
 
-                                collection.Add(asset.Key, new AssetContainer(asset.Key, metaData, obj));
+                                collection.Add(asset.Key, new AssetContainer(asset.Key, asset.BaseType, metaData, obj));
                                 Interlocked.Increment(ref statusIndex);
                             });
                             break;
@@ -212,7 +223,7 @@ namespace Si.Engine.Manager
                                 using var stream = new MemoryStream(bytes);
                                 var obj = new SiAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
 
-                                collection.Add(asset.Key, new AssetContainer(asset.Key, metaData, obj));
+                                collection.Add(asset.Key, new AssetContainer(asset.Key, asset.BaseType, metaData, obj));
                                 Interlocked.Increment(ref statusIndex);
                             });
                             break;

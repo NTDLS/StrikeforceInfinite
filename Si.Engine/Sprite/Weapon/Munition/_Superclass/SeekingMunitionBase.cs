@@ -1,5 +1,4 @@
-﻿using NTDLS.Helpers;
-using Si.Engine.Sprite._Superclass;
+﻿using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -17,7 +16,6 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
              SpriteInteractiveBase? lockedTarget, SiVector location)
             : base(engine, weapon, firedFrom, spritePath, location)
         {
-            lockedTarget.EnsureNotNull();
         }
 
         public override void ApplyIntelligence(float epoch, SiVector displacementVector)

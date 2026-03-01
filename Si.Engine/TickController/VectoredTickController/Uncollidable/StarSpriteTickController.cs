@@ -28,7 +28,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
                     lock (_lock)
                     {
                         //We lazy load these because the assets arent cached untill initilization.
-                        _starAssets ??= Engine.Assets.GetAssetsInPath(@"Sprites\Star");
+                        _starAssets ??= Engine.Assets.GetAssetsInPath("Sprites/Star");
                     }
                 }
                 return _starAssets;

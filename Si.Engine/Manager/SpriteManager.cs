@@ -18,7 +18,6 @@ using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.Manager
@@ -130,7 +129,7 @@ namespace Si.Engine.Manager
 
         public SpriteBase EditorAdd(string spritePath, Action<SpriteBase>? initilizationProc = null)
         {
-            if(_engine.ExecutionMode != SiConstants.SiEngineExecutionMode.Edit)
+            if (_engine.ExecutionMode != SiConstants.SiEngineExecutionMode.Edit)
             {
                 throw new Exception("EditorAdd can only be used in Editor mode.");
             }
