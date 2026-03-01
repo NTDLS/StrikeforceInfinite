@@ -45,8 +45,8 @@ namespace Si.Engine.Sprite
         {
         }
 
-        public SpritePlayer(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpritePlayer(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             OnHit += SpritePlayer_OnHit;
 
@@ -238,13 +238,13 @@ namespace Si.Engine.Sprite
 
         #region Weapons selection and evaluation.
 
-        public void SetPrimaryWeapon(string spritePath, int munitionCount)
+        public void SetPrimaryWeapon(string assetKey, int munitionCount)
         {
-            var metadata = _engine.Assets.GetMetadata(spritePath)
-                ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
+            var metadata = _engine.Assets.GetMetadata(assetKey)
+                ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
             var type = SiReflection.GetTypeByName(metadata.Class);
-            PrimaryWeapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, spritePath]).EnsureNotNull();
+            PrimaryWeapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, assetKey]).EnsureNotNull();
             PrimaryWeapon.RoundQuantity = munitionCount;
         }
 

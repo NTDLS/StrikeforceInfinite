@@ -16,12 +16,12 @@ namespace Si.Engine.Menu
         class SelectedSprite
         {
             public SpritePlayer Sprite { get; set; }
-            public string SpritePath { get; set; }
+            public string AssetKey { get; set; }
 
-            public SelectedSprite(string spritePath, SpritePlayer sprite)
+            public SelectedSprite(string assetKey, SpritePlayer sprite)
             {
                 Sprite = sprite;
-                SpritePath = spritePath;
+                AssetKey = assetKey;
 
             }
         }
@@ -109,7 +109,7 @@ namespace Si.Engine.Menu
 
             if (item.UserData is SelectedSprite selectedSprite)
             {
-                _engine.Player.InstantiatePlayerClass(selectedSprite.SpritePath);
+                _engine.Player.InstantiatePlayerClass(selectedSprite.AssetKey);
                 _engine.StartGame();
             }
 

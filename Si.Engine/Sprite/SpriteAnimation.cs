@@ -25,8 +25,8 @@ namespace Si.Engine.Sprite
         public SiAnimationPlayMode PlayMode { get; set; }
         public float FramesPerSecond { get; private set; } = 1;
 
-        public SpriteAnimation(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteAnimation(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             Location = SiVector.Zero();
 

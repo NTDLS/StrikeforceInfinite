@@ -10,6 +10,7 @@ namespace Si.Library
         public const string MultiplayServerAddress = "127.0.0.1";
         public const int MultiplayServerTCPPort = 6785;
         public const int MinimumCompressionRatio = 1;
+        public static readonly string[] ImageTypes = ["png", "jpg", "jpeg", "bmp"];
 
         private static JsonSerializerOptions? _JsonSerializationOptions;
         public static JsonSerializerOptions JsonSerializerOptions

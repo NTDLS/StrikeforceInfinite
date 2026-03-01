@@ -38,7 +38,7 @@ namespace Si.Engine.Manager
 
             "Engine-Pause|state:Required:Boolean|Pauses and un-pauses the engine.",
 
-            "Sprite-Create|spritePath:Required:String,x:Required:Numeric,y:Required:Numeric|Creates a sprite at the given position.",
+            "Sprite-Create|assetKey:Required:String,x:Required:Numeric,y:Required:Numeric|Creates a sprite at the given position.",
             "Sprite-ListTypes||Lists all sprite types.",
 
             "Sprite-Watch|uid:Required:Numeric|Starts a watch form to monitor various sprite metrics.",
@@ -349,8 +349,8 @@ namespace Si.Engine.Manager
 
         public void CommandHandler_Sprite_Create(InterrogationCommand command)
         {
-            var spritePath = command.ParameterValue<string>("spritePath");
-            if (spritePath == null)
+            var assetKey = command.ParameterValue<string>("assetKey");
+            if (assetKey == null)
             {
                 return;
             }
@@ -359,7 +359,7 @@ namespace Si.Engine.Manager
             var y = command.ParameterValue<uint>("y");
 
 
-            var sprite = _engine.Sprites.Create(spritePath);
+            var sprite = _engine.Sprites.Create(assetKey);
             sprite.Location = new SiVector(x, y);
             sprite.IsVisible = true;
 

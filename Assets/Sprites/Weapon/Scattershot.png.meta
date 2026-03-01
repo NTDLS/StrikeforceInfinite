@@ -2,8 +2,8 @@
   "Class": "WeaponScattershot",
   "Name": "Scattershot",
   "Description": "",
-  "SoundPath": "Sounds/Weapons/Scattershot",
-  "MunitionSpritePaths": [
+  "SoundAssetKey": "Sounds/Weapons/Scattershot",
+  "MunitionAssetKeys": [
 	"Sprites/Weapon/Munitions/Scattershot0",
 	"Sprites/Weapon/Munitions/Scattershot1",
 	"Sprites/Weapon/Munitions/Scattershot2",

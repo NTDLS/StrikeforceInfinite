@@ -49,12 +49,12 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             _inputDelay.Restart();
         }
 
-        public void InstantiatePlayerClass(string spritePath)
+        public void InstantiatePlayerClass(string assetKey)
         {
             //Remove the player from the sprite collection.
             Sprite.QueueForDelete();
             Sprite.Cleanup();
-            Sprite = Engine.Sprites.Add<SpritePlayer>(spritePath, (o) =>
+            Sprite = Engine.Sprites.Add<SpritePlayer>(assetKey, (o) =>
             {
                 o.IsVisible = false;
             });

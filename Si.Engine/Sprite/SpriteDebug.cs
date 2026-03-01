@@ -19,8 +19,8 @@ namespace Si.Engine.Sprite
             Y = y;
         }
 
-        public SpriteDebug(EngineCore engine, float x, float y, string spritePath)
-            : base(engine, spritePath)
+        public SpriteDebug(EngineCore engine, float x, float y, string assetKey)
+            : base(engine, assetKey)
         {
             Initialize();
             X = x;

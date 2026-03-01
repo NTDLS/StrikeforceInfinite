@@ -2,8 +2,8 @@
   "Class": "WeaponFragMissile",
   "Name": "Frag Missile",
   "Description": "",
-  "SoundPath": "Sounds/Weapons/Frag Missile",
-  "MunitionSpritePaths": ["Sprites/Weapon/Munitions/Frag Missile"],
+  "SoundAssetKey": "Sounds/Weapons/Frag Missile",
+  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Frag Missile"],
   "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 250
 }

@@ -28,15 +28,15 @@ namespace Si.Engine.Sprite.Weapon._Superclass
         public int RoundsFired { get; set; }
         public int RoundQuantity { get; set; }
 
-        public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string? spritePath)
-            : base(engine, spritePath)
+        public WeaponBase(EngineCore engine, SpriteInteractiveBase owner, string? assetKey)
+            : base(engine, assetKey)
         {
             Owner = owner;
             _engine = engine;
 
-            if (!string.IsNullOrEmpty(Metadata.SoundPath))
+            if (!string.IsNullOrEmpty(Metadata.SoundAssetKey))
             {
-                _fireSound = _engine.Assets.GetAudio(Metadata.SoundPath, Metadata.SoundVolume ?? 0);
+                _fireSound = _engine.Assets.GetAudio(Metadata.SoundAssetKey, Metadata.SoundVolume ?? 0);
             }
         }
 
@@ -60,23 +60,23 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 throw new Exception("Weapon is not owned.");
             }
 
-            string? munitionSpritePath = null;
+            string? munitionAssetKey = null;
 
-            int? spriteCount = Metadata.EnsureNotNull().MunitionSpritePaths?.Length;
+            int? spriteCount = Metadata.EnsureNotNull().MunitionAssetKeys?.Length;
 
-            if (Metadata.MunitionSpritePaths != null && spriteCount > 0)
-                munitionSpritePath = Metadata.MunitionSpritePaths[SiRandom.Between(0, spriteCount.Value - 1)];
+            if (Metadata.MunitionAssetKeys != null && spriteCount > 0)
+                munitionAssetKey = Metadata.MunitionAssetKeys[SiRandom.Between(0, spriteCount.Value - 1)];
 
-            if (munitionSpritePath == null)
+            if (munitionAssetKey == null)
                 throw new Exception($"Weapon {Metadata.Name} does not have a munition sprite path defined.");
 
-            var munitionSpriteMeta = _engine.Assets.GetMetadata(munitionSpritePath);
+            var munitionSpriteMeta = _engine.Assets.GetMetadata(munitionAssetKey);
 
             var munitionSpriteType = SiReflection.GetTypeByName(munitionSpriteMeta.Class
-                ?? throw new Exception($"The munition sprite {munitionSpritePath} does not have a type defined in its metadata."));
+                ?? throw new Exception($"The munition sprite {munitionAssetKey} does not have a type defined in its metadata."));
 
             var munitionSprite = (MunitionBase)Activator.CreateInstance(munitionSpriteType,
-                [_engine, this, Owner, munitionSpritePath, lockedTarget, location ?? Owner.Location]).EnsureNotNull();
+                [_engine, this, Owner, munitionAssetKey, lockedTarget, location ?? Owner.Location]).EnsureNotNull();
 
             return munitionSprite;
 
@@ -86,22 +86,22 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 case MunitionType.Projectile:
                     {
                         //TODO: dont instantiate here. Usee SpriteFactory or something.
-                        return new ProjectileMunitionBase(_engine, this, Owner, munitionSpritePath, location ?? Owner.Location);
+                        return new ProjectileMunitionBase(_engine, this, Owner, munitionAssetKey, location ?? Owner.Location);
                     }
                 case MunitionType.Energy:
                     {
                         //TODO: dont instantiate here. Usee SpriteFactory or something.
-                        return new EnergyMunitionBase(_engine, this, Owner, munitionSpritePath, location ?? Owner.Location);
+                        return new EnergyMunitionBase(_engine, this, Owner, munitionAssetKey, location ?? Owner.Location);
                     }
                 case MunitionType.Seeking:
                     {
                         //TODO: dont instantiate here. Usee SpriteFactory or something.
-                        return new SeekingMunitionBase(_engine, this, Owner, munitionSpritePath, location ?? Owner.Location);
+                        return new SeekingMunitionBase(_engine, this, Owner, munitionAssetKey, location ?? Owner.Location);
                     }
                 case MunitionType.Locking:
                     {
                         //TODO: dont instantiate here. Usee SpriteFactory or something.
-                        return new LockingMunitionBase(_engine, this, Owner, munitionSpritePath, lockedTarget, location ?? Owner.Location);
+                        return new LockingMunitionBase(_engine, this, Owner, munitionAssetKey, lockedTarget, location ?? Owner.Location);
                     }
                 default:
                     throw new Exception($"The weapon type {Metadata.MunitionType} is not implemented.");

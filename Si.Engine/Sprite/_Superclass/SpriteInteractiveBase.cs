@@ -52,9 +52,9 @@ namespace Si.Engine.Sprite._Superclass
         /// 
         /// </summary>
         /// <param name="engine"></param>
-        /// <param name="spritePath"></param>
-        public SpriteInteractiveBase(EngineCore engine, string? spritePath)
-            : base(engine, spritePath)
+        /// <param name="assetKey"></param>
+        public SpriteInteractiveBase(EngineCore engine, string? assetKey)
+            : base(engine, assetKey)
         {
             _engine = engine;
 
@@ -138,16 +138,16 @@ namespace Si.Engine.Sprite._Superclass
 
         public void ClearWeapons() => Weapons.Clear();
 
-        public void AddWeapon(string spritePath, int munitionCount)
+        public void AddWeapon(string assetKey, int munitionCount)
         {
-            var metadata = _engine.Assets.GetMetadata(spritePath)
-                ?? throw new Exception($"The metadata for the weapon sprite '{spritePath}' does not exist.");
+            var metadata = _engine.Assets.GetMetadata(assetKey)
+                ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
             var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
             if (weapon == null)
             {
                 var type = SiReflection.GetTypeByName(metadata.Class);
-                weapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, spritePath]).EnsureNotNull();
+                weapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, assetKey]).EnsureNotNull();
                 weapon.RoundQuantity += munitionCount;
                 Weapons.Add(weapon);
             }
@@ -198,9 +198,9 @@ namespace Si.Engine.Sprite._Superclass
         /// sprites children for automatic cleanup when parent is destroyed. 
         /// </summary>
         /// <returns></returns>
-        public SpriteAttachment AttachOfType(string spritePath, SiVector locationRelativeToOwner)
+        public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner)
         {
-            var attachment = _engine.Sprites.Attachments.AddAttachment(spritePath, this, locationRelativeToOwner);
+            var attachment = _engine.Sprites.Attachments.AddAttachment(assetKey, this, locationRelativeToOwner);
             Attachments.Add(attachment);
             return attachment;
         }

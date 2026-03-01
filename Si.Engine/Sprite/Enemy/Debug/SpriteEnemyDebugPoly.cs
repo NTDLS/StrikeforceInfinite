@@ -8,8 +8,8 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// </summary>
     internal class SpriteEnemyDebugPoly : SpriteEnemyPeonBase
     {
-        public SpriteEnemyDebugPoly(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyDebugPoly(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
             SetCurrentAIController<AILogisticsHostileEngagement>();

@@ -9,8 +9,8 @@ namespace Si.Engine.Sprite.PowerUp
     {
         private readonly int imageCount = 3;
 
-        public SpritePowerupBounty(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpritePowerupBounty(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             PowerupAmount = 100;
 

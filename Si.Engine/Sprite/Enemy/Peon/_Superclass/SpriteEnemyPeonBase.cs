@@ -13,8 +13,8 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
         public SpriteAnimation ThrusterAnimation { get; internal set; }
         public SpriteAnimation BoosterAnimation { get; internal set; }
 
-        public SpriteEnemyPeonBase(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyPeonBase(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             RecalculateMovementVectorFromOrientation();
 

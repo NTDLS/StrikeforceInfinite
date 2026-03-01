@@ -67,24 +67,24 @@ namespace Si.Engine.Manager
             return assets;
         }
 
-        public AssetContainer GetAsset(string spritePath, bool avoidCache = false)
+        public AssetContainer GetAsset(string assetKey, bool avoidCache = false)
         {
             var assetContainer = _collection.Read(o =>
             {
-                o.TryGetValue(spritePath, out AssetContainer? value);
+                o.TryGetValue(assetKey, out AssetContainer? value);
                 return value;
-            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
+            }) ?? throw new FileNotFoundException($"Asset not found: {assetKey}");
 
             return assetContainer;
         }
 
-        public SpriteMetadata GetMetadata(string spritePath, bool avoidCache = false)
+        public SpriteMetadata GetMetadata(string assetKey, bool avoidCache = false)
         {
             var assetContainer = _collection.Read(o =>
             {
-                o.TryGetValue(spritePath, out AssetContainer? value);
+                o.TryGetValue(assetKey, out AssetContainer? value);
                 return value;
-            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
+            }) ?? throw new FileNotFoundException($"Asset not found: {assetKey}");
 
             return assetContainer.Metadata;
         }
@@ -131,41 +131,41 @@ namespace Si.Engine.Manager
             File.WriteAllText(assetAbsolutePath, value);
         }
 
-        public string GetText(string spritePath, string defaultText = "")
+        public string GetText(string assetKey, string defaultText = "")
         {
             var assetContainer = _collection.Read(o =>
             {
-                o.TryGetValue(spritePath, out AssetContainer? value);
+                o.TryGetValue(assetKey, out AssetContainer? value);
                 return value;
-            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
+            }) ?? throw new FileNotFoundException($"Asset not found: {assetKey}");
 
             return assetContainer.Object as string ?? defaultText;
         }
 
-        public SiAudioClip GetAudio(string spritePath, float? volume = null)
+        public SiAudioClip GetAudio(string assetKey, float? volume = null)
         {
             var assetContainer = _collection.Read(o =>
             {
-                o.TryGetValue(spritePath, out AssetContainer? value);
+                o.TryGetValue(assetKey, out AssetContainer? value);
                 return value;
-            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
+            }) ?? throw new FileNotFoundException($"Asset not found: {assetKey}");
 
 
             var audioClip = assetContainer.Object as SiAudioClip;
             audioClip?.SetInitialVolume(volume ?? assetContainer.Metadata.SoundVolume ?? 1);
             audioClip?.SetLoopForever(assetContainer.Metadata.LoopSound ?? false);
-            return audioClip ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
+            return audioClip ?? throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public SharpDX.Direct2D1.Bitmap GetBitmap(string spritePath)
+        public SharpDX.Direct2D1.Bitmap GetBitmap(string assetKey)
         {
             var assetContainer = _collection.Read(o =>
             {
-                o.TryGetValue(spritePath, out AssetContainer? value);
+                o.TryGetValue(assetKey, out AssetContainer? value);
                 return value;
-            }) ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
+            }) ?? throw new FileNotFoundException($"Asset not found: {assetKey}");
 
-            return assetContainer.Object as SharpDX.Direct2D1.Bitmap ?? throw new FileNotFoundException($"Asset not found: {spritePath}");
+            return assetContainer.Object as SharpDX.Direct2D1.Bitmap ?? throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
         public void HydrateCache(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
@@ -178,7 +178,7 @@ namespace Si.Engine.Manager
             });
             var threadPoolTracker = dtp.CreateChildPool();
 
-            var assets = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM assets");
+            var assets = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM Assets");
 
             int statusIndex = 0;
             float statusEntryCount = assets.Count();
@@ -225,7 +225,7 @@ namespace Si.Engine.Manager
 
         #endregion
 
-        public AssetContainer DeserializeAssetContainer(AssetDatabaseModel model)
+        private AssetContainer DeserializeAssetContainer(AssetDatabaseModel model)
         {
             return _collection.Write(collection =>
             {
@@ -234,7 +234,7 @@ namespace Si.Engine.Manager
                     case "json":
                     case "txt":
                         {
-                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata)
+                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
                                ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                             var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                             var obj = Encoding.UTF8.GetString(bytes);
@@ -247,7 +247,7 @@ namespace Si.Engine.Manager
                     case "jpg":
                     case "bmp":
                         {
-                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata)
+                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
                                       ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                             var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                             using var stream = new MemoryStream(bytes);
@@ -259,7 +259,7 @@ namespace Si.Engine.Manager
                         }
                     case "wav":
                         {
-                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata)
+                            var metaData = JsonSerializer.Deserialize<SpriteMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
                                       ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                             var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                             using var stream = new MemoryStream(bytes);
@@ -275,6 +275,10 @@ namespace Si.Engine.Manager
             });
         }
 
+        /// <summary>
+        /// Writes an asset to the database. This is really only intended for use in the editor, but it can be used at runtime if needed.
+        /// It will overwrite any existing asset with the same key.
+        /// </summary>
         public void WriteAsset(string assetKey, string filePath, SpriteMetadata metadata)
         {
             long originalSize = new FileInfo(filePath).Length;

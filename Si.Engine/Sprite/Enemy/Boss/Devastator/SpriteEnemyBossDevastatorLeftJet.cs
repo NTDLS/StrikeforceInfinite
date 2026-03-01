@@ -5,8 +5,8 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 {
     internal class SpriteEnemyBossDevastatorLeftJet : SpriteAttachment
     {
-        public SpriteEnemyBossDevastatorLeftJet(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyBossDevastatorLeftJet(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
         }
 

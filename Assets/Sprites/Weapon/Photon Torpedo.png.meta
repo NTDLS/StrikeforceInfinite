@@ -2,8 +2,8 @@
   "Class": "WeaponPhotonTorpedo",
   "Name": "Photon Torpedo",
   "Description": "",
-  "SoundPath": "Sounds/Weapons/Photon Torpedo",
-  "MunitionSpritePaths": ["Sprites/Weapon/Munitions/Photon Torpedo"],
+  "SoundAssetKey": "Sounds/Weapons/Photon Torpedo",
+  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Photon Torpedo"],
   "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 1000
 }

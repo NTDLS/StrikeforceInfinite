@@ -21,15 +21,11 @@ namespace Si.Library
         public string? Description { get; set; }
 
         //TODO: I think this can and should be eliminated.
-        [SpriteMetadata("Type", "THIS SHOULD BE ELIMINATED IN FAVOR OF A SPRITE PATH.", PropertyEditorType.String)]
+        [SpriteMetadata("Type", "THIS SHOULD BE ELIMINATED IN FAVOR OF A SPRITE KEY.", PropertyEditorType.String)]
         public string? Type { get; set; }
 
         [SpriteMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.", PropertyEditorType.Vector)]
         public SiVector? AttachmentPosition { get; set; }
-
-        #region InteractiveSpriteAttachmentMetadata
-
-        #endregion
 
         #region InteractiveSpriteMetadata
 
@@ -154,11 +150,11 @@ namespace Si.Library
         /// <summary>
         /// If the sprite has an image, these are the paths to the bitmaps (be default, they are used at random)..
         /// </summary>
-        [SpriteMetadata("Sprite Paths", "The paths to the munitions for the weapon.", PropertyEditorType.MultipleSpritePicker)]
-        public string[]? MunitionSpritePaths { get; set; }
+        [SpriteMetadata("Sprite Assets", "The munitions assets for the weapon.", PropertyEditorType.MultipleSpritePicker)]
+        public string[]? MunitionAssetKeys { get; set; }
 
-        [SpriteMetadata("Sound Path", "The path to the sound file for the sprite.", PropertyEditorType.String)]
-        public string? SoundPath { get; set; }
+        [SpriteMetadata("Sound Asset", "The sound asset file for the sprite.", PropertyEditorType.String)]
+        public string? SoundAssetKey { get; set; }
 
         /// <summary>
         /// The variance in degrees that the loaded munition will use for an initial heading angle.

@@ -52,10 +52,10 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
         public void AddRandomStarAt(SiVector position)
         {
-            var randomStarSpritePath = GetRandomStar()?.Key;
-            if (randomStarSpritePath != null)
+            var randomStarAssetKey = GetRandomStar()?.Key;
+            if (randomStarAssetKey != null)
             {
-                var starSprite = Engine.Sprites.Add<SpriteStar>(randomStarSpritePath, (o) =>
+                var starSprite = Engine.Sprites.Add<SpriteStar>(randomStarAssetKey, (o) =>
                 {
                     o.Location = position;
                 });

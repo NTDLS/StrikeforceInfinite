@@ -2,8 +2,8 @@
   "Class": "WeaponLancer",
   "Name": "Lancer",
   "Description": "",
-  "SoundPath": "Sounds/Weapons/Lancer",
-  "MunitionSpritePaths": ["Sprites/Weapon/Munitions/Lancer"],
+  "SoundAssetKey": "Sounds/Weapons/Lancer",
+  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Lancer"],
   "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 100
 }

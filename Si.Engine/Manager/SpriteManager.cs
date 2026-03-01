@@ -110,32 +110,32 @@ namespace Si.Engine.Manager
         {
         }
 
-        public SpriteBase Create(string spritePath, Action<SpriteBase>? initilizationProc = null)
-            => Create<SpriteBase>(spritePath, initilizationProc);
+        public SpriteBase Create(string assetKey, Action<SpriteBase>? initilizationProc = null)
+            => Create<SpriteBase>(assetKey, initilizationProc);
 
-        public T Create<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
+        public T Create<T>(string assetKey, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            var metadata = _engine.Assets.GetMetadata(spritePath)
-                ?? throw new Exception($"No metadata found for sprite path: {spritePath}");
+            var metadata = _engine.Assets.GetMetadata(assetKey)
+                ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
 
             string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
 
             var classType = SiReflection.GetTypeByName(className);
 
-            var sprite = (T)Activator.CreateInstance(classType, _engine, spritePath).EnsureNotNull();
+            var sprite = (T)Activator.CreateInstance(classType, _engine, assetKey).EnsureNotNull();
             initilizationProc?.Invoke(sprite);
             return sprite;
         }
 
-        public SpriteBase EditorAdd(string spritePath, Action<SpriteBase>? initilizationProc = null)
+        public SpriteBase EditorAdd(string assetKey, Action<SpriteBase>? initilizationProc = null)
         {
             if (_engine.ExecutionMode != SiConstants.SiEngineExecutionMode.Edit)
             {
                 throw new Exception("EditorAdd can only be used in Editor mode.");
             }
 
-            var metadata = _engine.Assets.GetMetadata(spritePath)
-                 ?? throw new Exception($"No metadata found for sprite path: {spritePath}");
+            var metadata = _engine.Assets.GetMetadata(assetKey)
+                 ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
 
             string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
 
@@ -154,8 +154,8 @@ namespace Si.Engine.Manager
                     case "engine":
                         constructorParams.Add(_engine);
                         break;
-                    case "spritePath":
-                        constructorParams.Add(spritePath);
+                    case "assetKey":
+                        constructorParams.Add(assetKey);
                         break;
                     case "firedFrom":
                         constructorParams.Add(new SpriteEnemyBase(_engine, "Sprites/_Internal/Ghost"));
@@ -185,12 +185,12 @@ namespace Si.Engine.Manager
             return sprite;
         }
 
-        public SpriteBase Add(string spritePath, Action<SpriteBase>? initilizationProc = null)
-            => Add<SpriteBase>(spritePath, initilizationProc);
+        public SpriteBase Add(string assetKey, Action<SpriteBase>? initilizationProc = null)
+            => Add<SpriteBase>(assetKey, initilizationProc);
 
-        public T Add<T>(string spritePath, Action<T>? initilizationProc = null) where T : SpriteBase
+        public T Add<T>(string assetKey, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            var sprite = Create<T>(spritePath);
+            var sprite = Create<T>(assetKey);
             initilizationProc?.Invoke(sprite);
             Insert(sprite);
             return sprite;

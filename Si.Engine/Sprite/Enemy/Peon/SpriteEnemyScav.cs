@@ -5,8 +5,8 @@ namespace Si.Engine.Sprite.Enemy.Peon
     internal class SpriteEnemyScav
         : SpriteEnemyPeonBase
     {
-        public SpriteEnemyScav(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyScav(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
         }
     }

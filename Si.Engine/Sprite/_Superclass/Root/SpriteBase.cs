@@ -25,35 +25,35 @@ namespace Si.Engine.Sprite._Superclass._Root
         private SpriteMetadata? _metadata = null;
         public SpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
 
-        public SpriteBase(EngineCore engine, string? spritePath)
+        public SpriteBase(EngineCore engine, string? assetKey)
         {
             _engine = engine;
 
             IsHighlighted = _engine.Settings.HighlightAllSprites;
             Orientation = SiVector.One();
 
-            SetImageAndLoadMetadata(spritePath);
+            SetImageAndLoadMetadata(assetKey);
         }
 
         /// <summary>
         /// Sets the sprites image, sets speed, shields, adds attachments and weapons
         /// from a .json file in the same path with the same name as the sprite image.
         /// </summary>
-        private void SetImageAndLoadMetadata(string? spritePath)
+        private void SetImageAndLoadMetadata(string? assetKey)
         {
-            if (string.IsNullOrEmpty(spritePath))
+            if (string.IsNullOrEmpty(assetKey))
             {
                 _metadata = new SpriteMetadata();
                 return;
             }
 
-            var asset = _engine.Assets.GetAsset(spritePath);
+            var asset = _engine.Assets.GetAsset(assetKey);
 
             _metadata = asset.Metadata;
 
             if (SiConstants.ImageTypes.Contains(asset.BaseType, StringComparer.OrdinalIgnoreCase))
             {
-                SpriteBitmap = _engine.Assets.GetBitmap(spritePath);
+                SpriteBitmap = _engine.Assets.GetBitmap(assetKey);
                 _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
             }
 

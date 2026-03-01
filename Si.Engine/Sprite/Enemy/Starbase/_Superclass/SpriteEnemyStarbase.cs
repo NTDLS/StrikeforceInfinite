@@ -8,8 +8,8 @@ namespace Si.Engine.Sprite.Enemy.Starbase._Superclass
     internal class SpriteEnemyStarbase
         : SpriteEnemyBase
     {
-        public SpriteEnemyStarbase(EngineCore engine, string spritePath)
-            : base(engine, spritePath)
+        public SpriteEnemyStarbase(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             RecalculateMovementVectorFromOrientation();
         }
