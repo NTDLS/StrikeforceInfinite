@@ -2,6 +2,8 @@
 using Si.Engine;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
+using System.Reflection;
+using static Si.Library.SiConstants;
 
 namespace Si.AssetExplorer
 {
@@ -160,83 +162,41 @@ namespace Si.AssetExplorer
             _listView.Items.Clear();
             _listView.Groups.Clear();
 
-            // --- Create groups
-            var groupBase = new ListViewGroup("Base", HorizontalAlignment.Left);
-            var groupAttachment = new ListViewGroup("Attachment", HorizontalAlignment.Left);
-            var groupDestroy = new ListViewGroup("Destroy", HorizontalAlignment.Left);
-            var groupHealth = new ListViewGroup("Health", HorizontalAlignment.Left);
-            var groupMomentum = new ListViewGroup("Momentum", HorizontalAlignment.Left);
-            var groupAnimation = new ListViewGroup("Animation", HorizontalAlignment.Left);
-            var groupWeapons = new ListViewGroup("Weapons", HorizontalAlignment.Left);
-            var groupMunitions = new ListViewGroup("Munitions", HorizontalAlignment.Left);
-            var groupAudio = new ListViewGroup("Audio", HorizontalAlignment.Left);
+            var metadataAttribs = typeof(AssetMetadata)
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.CanRead)
+                .Select(p => new
+                {
+                    Property = p,
+                    MetadataAttribute = p.GetCustomAttribute<AssetMetadataAttribute>()
+                })
+                .Where(x => x.MetadataAttribute != null).ToList();
 
-            // --- Add ALL groups first (important)
-            _listView.Groups.AddRange(new[]
+
+            var groups = metadataAttribs.Select(o => o.MetadataAttribute?.EditorGroup).Distinct().ToList();
+
+            var groupMap = new Dictionary<PropertyEditorGroup, ListViewGroup>();
+
+            foreach (var group in groups)
             {
-                groupBase, groupAttachment, groupDestroy, groupHealth,
-                groupMomentum, groupAnimation, groupWeapons, groupMunitions
-            });
+                if (group != null)
+                {
+                    var listViewGroup = new ListViewGroup(group.ToString(), HorizontalAlignment.Left);
+                    _listView.Groups.Add(listViewGroup);
+                    groupMap.Add(group.Value, listViewGroup);
+                }
+            }
 
             try
             {
                 _listView.BeginUpdate();
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Class", groupBase));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Description", groupBase));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Name", groupBase));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Type", groupBase));
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "AttachmentPosition", groupAttachment));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "PositionType", groupAttachment));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "OrientationType", groupAttachment));
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "ExplosionType", groupDestroy));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "FragmentOnExplode", groupDestroy));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "ParticleBlastOnExplodeAmount", groupDestroy));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "ScreenShakeOnExplodeAmount", groupDestroy));
-
-                //TODO: Need to add:
-                //PrimaryWeapon
-                //Attachments
-                //Weapons
-                //MunitionSpritePaths
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Bounty", groupHealth));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Hull", groupHealth));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Shields", groupHealth));
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "CollisionDetection", groupMomentum));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "CollisionPolyAugmentation", groupMomentum));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Mass", groupMomentum));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "MaxThrottle", groupMomentum));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "MunitionDetection", groupMomentum));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Speed", groupMomentum));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Throttle", groupMomentum));
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "FrameHeight", groupAnimation));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "FramesPerSecond", groupAnimation));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "FrameWidth", groupAnimation));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "PlayMode", groupAnimation));
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "FireDelayMilliseconds", groupWeapons));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "MaxLockDistance", groupWeapons));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "MaxLockOnAngle", groupWeapons));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "MaxLocks", groupWeapons));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "MinLockDistance", groupWeapons));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "MunitionCount", groupWeapons));
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SoundVolume", groupAudio));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SoundPath", groupAudio));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "LoopSound", groupAudio));
-
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "AngleVarianceDegrees", groupMunitions));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "Damage", groupMunitions));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "ExplodesOnImpact", groupMunitions));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SeekingEscapeAngleDegrees", groupMunitions));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SeekingEscapeDistance", groupMunitions));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SeekingRotationRateDegrees", groupMunitions));
-                _listView.Items.Add(new PropertyItem(sprite.Metadata, "SpeedVariancePercent", groupMunitions));
+                foreach (var attrib in metadataAttribs)
+                {
+                    if (groupMap.TryGetValue(attrib.MetadataAttribute!.EditorGroup, out var listViewGroup))
+                    {
+                        _listView.Items.Add(new PropertyItem(sprite.Metadata, attrib.Property.Name, listViewGroup));
+                    }
+                }
             }
             finally
             {

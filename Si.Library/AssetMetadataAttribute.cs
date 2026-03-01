@@ -8,16 +8,17 @@ namespace Si.Library
         public string FriendlyName { get; }
         public string Description { get; }
         public PropertyEditorType EditorType { get; }
+        public PropertyEditorGroup EditorGroup { get; }
         public double? MaxValue { get; } = null;
         public double? MinValue { get; } = null;
         public int? MinLength { get; } = null;
         public Type? EnumType { get; } = null;
 
-
-        public AssetMetadataAttribute(string friendlyName, string description, PropertyEditorType editorType,
+        public AssetMetadataAttribute(string friendlyName, string description, PropertyEditorGroup editorGroup, PropertyEditorType editorType,
             double maxValue = 0, double minValue = 0, int minLength = 0, Type? enumType = null)
         {
             FriendlyName = friendlyName;
+            EditorGroup = editorGroup;
             Description = description;
             EditorType = editorType;
             MaxValue = maxValue > 0 && maxValue > minValue ? MaxValue : null;

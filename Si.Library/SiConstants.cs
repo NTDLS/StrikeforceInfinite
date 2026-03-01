@@ -36,6 +36,20 @@ namespace Si.Library
             }
         }
 
+        public enum PropertyEditorGroup
+        {
+            Base,
+            Attachment,
+            Destroy,
+            Health,
+            Collision,
+            Momentum,
+            Animation,
+            Weapons,
+            Munitions,
+            Audio
+        }
+
         public enum PropertyEditorType
         {
             Readonly,

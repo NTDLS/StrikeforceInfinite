@@ -67,7 +67,7 @@
             // 
             // kryptonLabelDescription
             // 
-            kryptonLabelDescription.Location = new Point(12, 43);
+            kryptonLabelDescription.Location = new Point(13, 46);
             kryptonLabelDescription.Name = "kryptonLabelDescription";
             kryptonLabelDescription.Size = new Size(90, 25);
             kryptonLabelDescription.TabIndex = 1;
@@ -77,7 +77,7 @@
             // 
             kryptonCheckBoxWorking.Location = new Point(12, 12);
             kryptonCheckBoxWorking.Name = "kryptonCheckBoxWorking";
-            kryptonCheckBoxWorking.Size = new Size(106, 25);
+            kryptonCheckBoxWorking.Size = new Size(344, 25);
             kryptonCheckBoxWorking.TabIndex = 0;
             kryptonCheckBoxWorking.Text = "Property Name";
             // 
@@ -91,6 +91,7 @@
             Controls.Add(kryptonTextBoxDescription);
             Controls.Add(kryptonButtonCancel);
             Controls.Add(kryptonButtonSave);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;

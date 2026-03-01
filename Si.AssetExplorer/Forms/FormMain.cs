@@ -1,9 +1,11 @@
 using NTDLS.Helpers;
+using NTDLS.WinFormsHelpers;
 using Si.AssetExplorer.Controls;
 using Si.AssetExplorer.Forms;
 using Si.Engine;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass._Root;
+using Si.Library;
 using Si.Library.ExtensionMethods;
 using static Si.Library.SiConstants;
 
@@ -81,19 +83,6 @@ namespace Si.AssetExplorer
                 _engine.Sprites.HardDeleteAllQueuedDeletions();
 
                 _treeManager.Repopulate();
-
-                //_engine.Events.Once(() =>
-                //{
-                //    _engine.Sprites.QueueAllForDeletion();
-                //    _engine.Sprites.HardDeleteAllQueuedDeletions();
-
-                //    var sprite = _engine.Sprites.Add<SpriteBase>(@"Sprites\Enemy\Debug\Hull.png", (o) =>
-                //    {
-                //        o.Location = _engine.Display.CenterCanvas;
-                //        o.Speed = 0;
-                //        o.Throttle = 0;
-                //    });
-                //});
             }
             catch (Exception ex)
             {
@@ -109,8 +98,13 @@ namespace Si.AssetExplorer
                 {
                     _firstShown = false;
 
-                    WriteOutput("Starting engine.", LoggingLevel.Verbose);
-                    _engine.StartEngine();
+                    using var progress = new ProgressForm(SiConstants.FriendlyName, "Initializing engine...");
+
+                    progress.Execute(() =>
+                    {
+                        WriteOutput("Initializing engine.", LoggingLevel.Verbose);
+                        _engine.StartEngine();
+                    });
                 }
             }
             catch (Exception ex)

@@ -39,7 +39,7 @@
             // 
             // kryptonLabelName
             // 
-            kryptonLabelName.Location = new Point(12, 12);
+            kryptonLabelName.Location = new Point(12, 15);
             kryptonLabelName.Name = "kryptonLabelName";
             kryptonLabelName.Size = new Size(346, 25);
             kryptonLabelName.TabIndex = 0;
@@ -76,7 +76,7 @@
             // 
             // kryptonLabelDescription
             // 
-            kryptonLabelDescription.Location = new Point(12, 71);
+            kryptonLabelDescription.Location = new Point(12, 74);
             kryptonLabelDescription.Name = "kryptonLabelDescription";
             kryptonLabelDescription.Size = new Size(90, 25);
             kryptonLabelDescription.TabIndex = 2;
@@ -100,6 +100,7 @@
             Controls.Add(kryptonButtonCancel);
             Controls.Add(kryptonButtonSave);
             Controls.Add(kryptonLabelName);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;

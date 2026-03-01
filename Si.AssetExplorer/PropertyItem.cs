@@ -24,24 +24,23 @@ namespace Si.AssetExplorer
 
         public PropertyItem(AssetMetadata metaData, string propertyName, ListViewGroup? group)
         {
-            Group = group;
-            MetaData = metaData;
-            PropertyName = propertyName;
-
-            WorkingValue = SiReflection.GetPropertyValue(metaData, propertyName);
-
-            Attributes = metaData.GetType()
+            var propertyInfo = metaData.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => p.CanRead && p.Name == propertyName)
                 .Select(p => new
                 {
-                    Prop = p,
-                    Attr = p.GetCustomAttribute<AssetMetadataAttribute>()
+                    Property = p,
+                    MetadataAttribute = p.GetCustomAttribute<AssetMetadataAttribute>()
                 })
-                .Where(x => x.Attr != null)
-                .FirstOrDefault()?.Attr;
+                .Where(x => x.MetadataAttribute != null)
+                .FirstOrDefault() ?? throw new ArgumentException($"Property '{propertyName}' not found in {metaData.GetType().Name} or does not have AssetMetadataAttribute.");
 
-            Text = NTDLS.Helpers.Text.SeparateCamelCase(Attributes?.FriendlyName ?? propertyName);
+            Group = group;
+            MetaData = metaData;
+            PropertyName = propertyName;
+            WorkingValue = SiReflection.GetPropertyValue(metaData, propertyName);
+            Attributes = propertyInfo.MetadataAttribute;
+            Text = propertyInfo.MetadataAttribute.FriendlyName;
             SubItems.Add(PropertyStringifier(WorkingValue));
         }
 
