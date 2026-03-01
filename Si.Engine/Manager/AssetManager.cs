@@ -23,11 +23,11 @@ namespace Si.Engine.Manager
 #else
         public const string AssetPackagePath = "Si.Assets.db";
 #endif
-
         public bool IsLoaded { get; private set; }
         private readonly EngineCore _engine;
         private readonly Dictionary<string, AssetContainer> _collection = new();
         private readonly SqliteManagedFactory _assetsDatabase = new($"Data Source={AssetPackagePath}");
+        private readonly SiCache _cache = new(SiCache.CacheExpirationScheme.Sliding, TimeSpan.FromSeconds(600));
 
         public AssetManager(EngineCore engine)
         {
@@ -38,8 +38,17 @@ namespace Si.Engine.Manager
         /// Gets the metadata for all assets in a directory.
         /// This REQUIRES that the assets already be cached.
         /// </summary>
-        public List<AssetContainer> GetAssetsInPath(string directory)
-            => _collection.Where(kv => kv.Key.StartsWith(directory, StringComparison.OrdinalIgnoreCase)).Select(kv => kv.Value).ToList();
+        public List<string> GetAssetKeysInPath(string path)
+            => _cache.AddOrGet($"GetAssetKeysInPath:{path}", () =>
+                _collection.Where(kv => kv.Key.StartsWith(path, StringComparison.OrdinalIgnoreCase)).Select(kv => kv.Key).ToList()) ?? [];
+
+        /// <summary>
+        /// Gets the metadata for all assets in a directory.
+        /// This REQUIRES that the assets already be cached.
+        /// </summary>
+        public List<AssetContainer> GetAssetsInPath(string path)
+            => _cache.AddOrGet($"GetAssetsInPath:{path}", () =>
+            _collection.Where(kv => kv.Key.StartsWith(path, StringComparison.OrdinalIgnoreCase)).Select(kv => kv.Value).ToList()) ?? [];
 
         /// <summary>
         /// Gets the metadata for all assets.
@@ -66,7 +75,7 @@ namespace Si.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public string GetText(string assetKey, string defaultText = "")
+        public string GetText(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
@@ -135,6 +144,8 @@ namespace Si.Engine.Manager
             });
 
             loadingDetail?.SetTextAndCenterX($"100%");
+
+            _cache.Clear();
 
             IsLoaded = true;
         }
@@ -208,6 +219,7 @@ namespace Si.Engine.Manager
         /// </summary>
         public void WriteAsset(string assetKey, string filePath, AssetMetadata metadata)
         {
+            _cache.Clear();
             long originalSize = new FileInfo(filePath).Length;
 
             var originalFileBytes = File.ReadAllBytes(filePath);

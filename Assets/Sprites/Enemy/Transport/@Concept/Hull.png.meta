@@ -6,6 +6,5 @@
   "Mass": {"Min":200,"Max":200},
   "Hull": 200,
   "Shields": 100,
-  "Bounty": 50,
-  "Weapons": [],
+  "Bounty": 50
 }

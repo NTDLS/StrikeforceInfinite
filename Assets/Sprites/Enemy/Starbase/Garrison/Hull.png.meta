@@ -10,58 +10,57 @@
   "Hull": 200,
   "Shields": 100,
   "Bounty": 50,
-  "Weapons": [],
   "Attachments": [
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 563, "Y": 151 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 563, "Y": 372 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 567, "Y": 668 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 563, "Y": 964 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 563, "Y": 1186 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 58, "Y": 368 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 55, "Y": 969 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 1067, "Y": 365 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
-      "Type": "Sprites/Enemy/Starbase/Garrison/Turret",
+      "AttachmentAssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
       "AttachmentPosition": { "X": 1070, "Y": 971 },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"

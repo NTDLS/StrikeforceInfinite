@@ -1,7 +1,6 @@
 {
   "Class": "SpriteStar",
-  "Speed": {"Min":200,"Max":300},
-  "Mass": {"Min":0,"Max":0},
+  "Speed": {"Min":10,"Max":30},
   "MunitionDetection": false,
   "CollisionDetection": false
 }

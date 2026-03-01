@@ -9,55 +9,18 @@
   "Shields": 10000,
   "MunitionDetection": true,
   "CollisionDetection": true,
-  "PrimaryWeapon":
-  {
-	"Type": "Sprites/Weapon/Blunderbuss",
-	"MunitionCount": 2147483647
-  },
-  "Weapons": [
-	{
-	  "Type": "Sprites/Weapon/Blunderbuss",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Dual Vulcan Cannon",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Frag Missile",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Lancer",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Photon Torpedo",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Precision Frag Missile",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Scattershot",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Scrams Missile",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Scuttle Missile",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Thunderstrike Missile",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Vulcan Cannon",
-	  "MunitionCount": 2147483647
-	}
+  "PrimaryWeaponAssetKey": "Sprites/Weapon/Blunderbuss",
+  "WeaponAssetKeys": [
+	  "Sprites/Weapon/Blunderbuss",
+	  "Sprites/Weapon/Dual Vulcan Cannon",
+	  "Sprites/Weapon/Frag Missile",
+	  "Sprites/Weapon/Lancer",
+	  "Sprites/Weapon/Photon Torpedo",
+	  "Sprites/Weapon/Precision Frag Missile",
+	  "Sprites/Weapon/Scattershot",
+	  "Sprites/Weapon/Scrams Missile",
+	  "Sprites/Weapon/Scuttle Missile",
+	  "Sprites/Weapon/Thunderstrike Missile",
+	  "Sprites/Weapon/Vulcan Cannon"
 	]
 }

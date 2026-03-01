@@ -2,18 +2,9 @@
   "Class": "SpriteEnemyStarbaseGarrisonTurret",
   "MunitionDetection": true,
   "Hull": 200,
-  "Weapons": [
-	{
-	  "Type": "Sprites/Weapon/Dual Vulcan Cannon",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Lancer",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Thunderstrike Missile",
-	  "MunitionCount": 2147483647
-	}
+  "WeaponAssetKeys": [
+	"Sprites/Weapon/Dual Vulcan Cannon",
+    "Sprites/Weapon/Lancer",
+    "Sprites/Weapon/Thunderstrike Missile"
   ]
 }

@@ -67,16 +67,17 @@ namespace Si.Engine.Sprite._Superclass._Root
 
             if (this is SpriteInteractiveBase interactive)
             {
-                Metadata.Weapons?.ForEach(weapon =>
+                Metadata.WeaponAssetKeys?.ForEach(weaponAssetKey =>
                 {
-                    interactive.AddWeapon(weapon.Type.EnsureNotNull(), weapon.MunitionCount ?? 0);
+                    var weaponMetadata = _engine.Assets.GetAsset(weaponAssetKey).Metadata;
+                    interactive.AddWeapon(weaponAssetKey, weaponMetadata.MunitionCount ?? 0);
                 });
 
                 Metadata.Attachments?.ForEach(attachment =>
                 {
-                    if (attachment.Type == null) throw new InvalidOperationException("Attachment type cannot be null");
+                    if (attachment.AttachmentAssetKey == null) throw new InvalidOperationException("Attachment type cannot be null");
                     var locationRelativeToOwner = new SiVector(attachment.AttachmentPosition?.X ?? 0, attachment.AttachmentPosition?.Y ?? 0);
-                    interactive.AttachOfType(attachment.Type, locationRelativeToOwner, (sprite) =>
+                    interactive.AttachOfType(attachment.AttachmentAssetKey, locationRelativeToOwner, (sprite) =>
                     {
                         //We take the orientation and position type of the attachment from the attachment section in the parent metadata if it is specified,
                         //   otherwise we use the default values set in the SpriteAttachment class.
@@ -88,9 +89,10 @@ namespace Si.Engine.Sprite._Superclass._Root
 
             if (this is SpritePlayer player)
             {
-                if (Metadata?.PrimaryWeapon?.Type != null)
+                if (!string.IsNullOrEmpty(Metadata?.PrimaryWeaponAssetKey))
                 {
-                    player.SetPrimaryWeapon(Metadata.PrimaryWeapon.Type, Metadata.PrimaryWeapon.MunitionCount ?? 0);
+                    var weaponMetadata = _engine.Assets.GetAsset(Metadata.PrimaryWeaponAssetKey).Metadata;
+                    player.SetPrimaryWeapon(Metadata.PrimaryWeaponAssetKey, weaponMetadata.MunitionCount ?? 0);
                     player.SelectFirstAvailableUsableSecondaryWeapon();
                 }
             }

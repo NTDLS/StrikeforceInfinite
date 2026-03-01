@@ -6,7 +6,6 @@ using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using Si.Rendering;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
@@ -17,48 +16,20 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         private const int _maxDistance = 1000;
         private readonly Lock _lock = new();
 
-        private List<AssetContainer>? _starAssets = null;
-        private List<AssetContainer> StarAssets
-        {
-            get
-            {
-                if (_starAssets == null)
-                {
-                    lock (_lock)
-                    {
-                        //We lazy load these because the assets arent cached untill initilization.
-                        _starAssets ??= Engine.Assets.GetAssetsInPath("Sprites/Star");
-                    }
-                }
-                return _starAssets;
-            }
-        }
 
         public StarSpriteTickController(EngineCore engine, SpriteManager manager)
             : base(engine, manager)
         {
         }
 
-        public AssetContainer? GetRandomStar()
-        {
-            if (StarAssets.Count == 0)
-            {
-                return null;
-            }
-            var index = SiRandom.Between(0, StarAssets.Count - 1);
-            return StarAssets[index];
-        }
-
         public void AddRandomStarAt(SiVector position)
         {
-            var randomStarAssetKey = GetRandomStar()?.Key;
-            if (randomStarAssetKey != null)
+            var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Star");
+
+            Engine.Sprites.Add<SpriteStar>(SiRandom.OneOf(assetKeys), (sprite) =>
             {
-                var starSprite = Engine.Sprites.Add<SpriteStar>(randomStarAssetKey, (o) =>
-                {
-                    o.Location = position;
-                });
-            }
+                sprite.Location = position;
+            });
         }
 
         public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)

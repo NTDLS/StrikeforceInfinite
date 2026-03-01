@@ -2,10 +2,7 @@
   "Class": "SpriteEnemyBossDevastatorRightCannon",
   "MunitionDetection": true,
   "Hull": 50,
-  "Weapons": [
-	{
-	  "Type": "Sprites/Weapon/Vulcan Cannon",
-	  "MunitionCount": 2147483647
-	}
+  "WeaponAssetKeys": [
+    "Sprites/Weapon/Vulcan Cannon"
   ]
 }

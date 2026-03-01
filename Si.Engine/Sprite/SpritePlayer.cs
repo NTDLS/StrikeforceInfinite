@@ -122,18 +122,20 @@ namespace Si.Engine.Sprite
 
         public string GetLoadoutHelpText()
         {
-            var primaryWeaponType = Metadata.PrimaryWeapon?.Type;
-            var primaryWeaponMetadata = _engine.Assets.GetMetadata(primaryWeaponType.EnsureNotNull());
-            string primaryWeapon = $"{primaryWeaponMetadata.Name} x{primaryWeaponMetadata.MunitionCount}";
+            string primaryWeapon = "None";
+
+            if (!string.IsNullOrEmpty(Metadata.PrimaryWeaponAssetKey))
+            {
+                var primaryWeaponMetadata = _engine.Assets.GetMetadata(Metadata.PrimaryWeaponAssetKey);
+                primaryWeapon = $"{primaryWeaponMetadata.Name} x{primaryWeaponMetadata.MunitionCount}";
+            }
 
             string secondaryWeapons = string.Empty;
-            if (Metadata.Weapons != null)
+            if (Metadata.WeaponAssetKeys != null)
             {
-                foreach (var weapon in Metadata.Weapons)
+                foreach (var weaponAssetKey in Metadata.WeaponAssetKeys)
                 {
-                    var secondaryWeaponType = weapon?.Type;
-                    var secondaryWeaponMetadata = _engine.Assets.GetMetadata(secondaryWeaponType.EnsureNotNull());
-
+                    var secondaryWeaponMetadata = _engine.Assets.GetMetadata(weaponAssetKey);
                     secondaryWeapons += $"{secondaryWeaponMetadata.Name} x{secondaryWeaponMetadata.MunitionCount}\n{new string(' ', 20)}";
                 }
             }

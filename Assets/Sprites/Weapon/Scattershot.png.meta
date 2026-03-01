@@ -10,5 +10,6 @@
 	"Sprites/Weapon/Munitions/Scattershot3"
   ],
   "SoundVolumne": 0.2,
+  "MunitionCount": 65535,
   "FireDelayMilliseconds": 25
 }

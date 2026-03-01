@@ -7,15 +7,8 @@
   "MunitionDetection": true,
   "Shields": 10,
   "Bounty": 10,
-  "Weapons": [
-	{
-	  "Type": "Sprites/Weapon/Vulcan Cannon",
-	  "MunitionCount": 2147483647
-	},
-	{
-	  "Type": "Sprites/Weapon/Dual Vulcan Cannon",
-	  "MunitionCount": 2147483647
-	}
-	],
-  "Attachments": []
+  "WeaponAssetKeys": [
+    "Sprites/Weapon/Vulcan Cannon",
+    "Sprites/Weapon/Dual Vulcan Cannon"
+    ]
 }

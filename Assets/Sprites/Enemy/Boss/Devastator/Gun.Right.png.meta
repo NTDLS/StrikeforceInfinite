@@ -2,10 +2,7 @@
   "Class": "SpriteEnemyBossDevastatorRightGun",
   "MunitionDetection": true,
   "Hull": 50,
-  "Weapons": [
-	{
-	  "Type": "Sprites/Weapon/Lancer",
-	  "MunitionCount": 2147483647
-	}
+  "WeaponAssetKeys": [
+    "Sprites/Weapon/Lancer"
   ]
 }

@@ -1,6 +1,5 @@
 ﻿using Si.Audio;
 using Si.Library;
-using System.IO;
 
 namespace Si.Engine.Manager
 {
@@ -33,24 +32,18 @@ namespace Si.Engine.Manager
 
         public void PlayRandomShieldHit()
         {
-            var audioClip = _engine.Assets.GetAudio("Sounds/Ship/Shield Hit");
-            audioClip?.Play();
+            _engine.Assets.GetAudio("Sounds/Ship/Shield Hit").Play();
         }
 
         public void PlayRandomHullHit()
         {
-            var audioClip = _engine.Assets.GetAudio("Sounds/Ship/Object Hit");
-            audioClip?.Play();
+            _engine.Assets.GetAudio("Sounds/Ship/Object Hit").Play();
         }
 
         public void PlayRandomExplosion()
         {
-            //TODO: need to enumerate these and maybe cache the result?
-            const string assetPath = "Sounds/Explode";
-            int assetCount = 4;
-            int selectedAssetIndex = SiRandom.Between(0, assetCount - 1);
-            var audioClip = _engine.Assets.GetAudio(Path.Combine(assetPath, $"{selectedAssetIndex}"));
-            audioClip?.Play();
+            var assetKeys = _engine.Assets.GetAssetKeysInPath("Sounds/Explode");
+            _engine.Assets.GetAudio(SiRandom.OneOf(assetKeys)).Play();
         }
     }
 }

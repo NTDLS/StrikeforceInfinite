@@ -9,5 +9,6 @@
   "MinLockDistance": 100,
   "MaxLockDistance": 600,
   "MaxLocks": 2,
-  "MaxLockOnAngle": 40
+  "MaxLockOnAngle": 40,
+  "MunitionCount": 65535
 }

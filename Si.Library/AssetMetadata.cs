@@ -20,9 +20,8 @@ namespace Si.Library
         [AssetMetadata("Description", "A brief description of the sprite.", PropertyEditorType.String)]
         public string? Description { get; set; }
 
-        //TODO: I think this can and should be eliminated.
-        [AssetMetadata("Type", "THIS SHOULD BE ELIMINATED IN FAVOR OF A SPRITE KEY.", PropertyEditorType.String)]
-        public string? Type { get; set; }
+        [AssetMetadata("Attachment Asset", "The asset key of the attachment sprite.", PropertyEditorType.String)]
+        public string? AttachmentAssetKey { get; set; }
 
         [AssetMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.", PropertyEditorType.Vector)]
         public SiVector? AttachmentPosition { get; set; }
@@ -112,13 +111,13 @@ namespace Si.Library
         /// Used for the players "primary weapon slot".
         /// </summary>
         [AssetMetadata("Primary Weapon", "The primary weapon assigned to the sprite.", PropertyEditorType.SingleSpritePicker)]
-        public AssetMetadata? PrimaryWeapon { get; set; }
+        public string? PrimaryWeaponAssetKey { get; set; }
 
         [AssetMetadata("Attachments", "The list of attachments for the sprite.", PropertyEditorType.MultipleSpritePicker)]
         public List<AssetMetadata>? Attachments { get; set; }
 
         [AssetMetadata("Weapons", "The list of weapons for the sprite.", PropertyEditorType.MultipleSpritePicker)]
-        public List<AssetMetadata>? Weapons { get; set; }
+        public List<string>? WeaponAssetKeys { get; set; }
 
         #endregion
 

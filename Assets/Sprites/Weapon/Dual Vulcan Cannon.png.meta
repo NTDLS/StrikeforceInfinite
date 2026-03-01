@@ -5,6 +5,7 @@
   "SoundAssetKey": "Sounds/Weapons/Dual Vulcan Cannon",
   "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Dual Vulcan Cannon"],
   "SoundVolumne": 0.4,
+  "MunitionCount": 65535,
   "FireDelayMilliseconds": 25
 }  
  

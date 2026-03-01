@@ -8,8 +8,6 @@ rd output /q /s
 md output
 md publish
 
-call PackAssets.bat
-
 dotnet publish ..\Si.Client -c Release -o publish --runtime win-x64 --self-contained false
 del publish\*.pdb /q
 

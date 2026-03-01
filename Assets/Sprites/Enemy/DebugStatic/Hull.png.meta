@@ -5,8 +5,5 @@
   "MaxThrottle": 0.0,
   "Hull": 100000,
   "MunitionDetection": true,
-  "Shields": 0,
-  "Weapons": [
-  ],
-  "Attachments": []
+  "Shields": 0
 }
