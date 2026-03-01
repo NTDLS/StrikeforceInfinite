@@ -66,7 +66,11 @@ namespace Si.AssetExplorer
 
         public void ClearMetadataValue(PropertyItem? item)
         {
-            if (item == null) return;
+            if (_lastSprite == null || _lastAssetKey == null || item == null)
+            {
+                return;
+            }
+
             try
             {
                 var result = MessageBox.Show($"Are you sure you want to clear the value of '{item.PropertyName}'?",
@@ -76,7 +80,8 @@ namespace Si.AssetExplorer
                 SiReflection.SetPropertyValue(item.MetaData, item.PropertyName, null);
                 _engine.Assets.WriteAssetMetadata(_lastAssetKey!, item.MetaData);
                 _propertiesEdited(_lastSprite!, item);
-                PopulateProperties(_lastAssetKey!, _lastSprite!);
+                PopulateProperties(_lastAssetKey, _lastSprite);
+                SelectRowByPropertyName(item.PropertyName);
             }
             catch (Exception ex)
             {
@@ -192,10 +197,26 @@ namespace Si.AssetExplorer
                 _propertiesEdited(_lastSprite, selectedItem);
 
                 PopulateProperties(_lastAssetKey, _lastSprite);
+
+                SelectRowByPropertyName(selectedItem.PropertyName);
             }
             catch (Exception ex)
             {
                 _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
+        }
+
+        private void SelectRowByPropertyName(string propertyName)
+        {
+            var selectedBrforeRepop = _listView.Items
+                .Cast<PropertyItem>()
+                .FirstOrDefault(i => i.PropertyName == propertyName);
+
+            if (selectedBrforeRepop != null)
+            {
+                selectedBrforeRepop.Selected = true;
+                selectedBrforeRepop.EnsureVisible();
+                selectedBrforeRepop.Focused = true;
             }
         }
 
@@ -224,7 +245,6 @@ namespace Si.AssetExplorer
                         MetadataAttribute = p.GetCustomAttribute<AssetMetadataAttribute>()
                     })
                     .Where(x => x.MetadataAttribute != null).ToList();
-
 
                 var groups = metadataAttribs.Select(o => o.MetadataAttribute?.EditorGroup).Distinct().ToList();
 

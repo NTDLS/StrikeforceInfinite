@@ -1,12 +1,24 @@
-﻿using NTDLS.Helpers;
-using Si.Library;
+﻿using Si.Library;
 
 namespace Si.AssetExplorer.Forms
 {
     public partial class FormPropertyEnum
         : Form
     {
-        public int Value => ((ComboboxItem)comboBoxWorking.SelectedItem.EnsureNotNull()).Value;
+        public object Value
+        {
+            get
+            {
+                if (comboBoxWorking.SelectedItem is ComboboxItem selectedItem)
+                {
+                    return Enum.ToObject(_propertyItem?.Attributes?.EnumType ?? throw new Exception("EnumType must be specified for enum properties."),
+                        selectedItem.Value);
+                }
+                throw new Exception("No value selected.");
+            }
+        }
+
+        private PropertyItem? _propertyItem;
 
         public FormPropertyEnum()
         {
@@ -29,10 +41,11 @@ namespace Si.AssetExplorer.Forms
         public FormPropertyEnum(PropertyItem propertyItem)
         {
             InitializeComponent();
+
+            _propertyItem = propertyItem;
+
             labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
-
-
 
             if (propertyItem.Attributes?.EnumType == null)
                 throw new Exception("EnumType must be specified for enum properties.");

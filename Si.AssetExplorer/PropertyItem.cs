@@ -72,7 +72,7 @@ namespace Si.AssetExplorer
             else if (value is SiRange<double> rd)
                 return rd.ToString();
 
-            return null;
+            return value?.ToString();
         }
     }
 }
