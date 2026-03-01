@@ -255,7 +255,7 @@ namespace Si.Engine.Manager
         {
             _cache.Clear();
 
-            _assetsDatabase.Execute("UPDATE Assets Metadata = @Metadata WHERE Key = @Key)",
+            _assetsDatabase.Execute("UPDATE Assets SET Metadata = @Metadata WHERE Key = @Key",
                 new
                 {
                     Key = assetKey,
@@ -286,7 +286,7 @@ namespace Si.Engine.Manager
 
             _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 
-            _assetsDatabase.Execute("UPDATE Assets SET BaseType = @BaseType, Bytes = @Bytes, IsCompressed = @IsCompressed) WHERE Key = @Key",
+            _assetsDatabase.Execute("UPDATE Assets SET BaseType = @BaseType, Bytes = @Bytes, IsCompressed = @IsCompressed WHERE Key = @Key",
                 new
                 {
                     Key = assetKey,

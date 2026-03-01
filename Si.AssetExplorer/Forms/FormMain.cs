@@ -142,7 +142,7 @@ namespace Si.AssetExplorer
                         o.Throttle = 0;
                     });
 
-                    _propertListManager.PopulateProperties(sprite);
+                    _propertListManager.PopulateProperties(node.AssetKey, sprite);
                 });
             }
             catch (Exception ex)

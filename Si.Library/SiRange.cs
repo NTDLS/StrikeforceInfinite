@@ -35,8 +35,7 @@ namespace Si.Library
             if (Min.CompareTo(Max) > 0)
                 throw new ArgumentException("Range invalid: Min must be <= Max.");
 
-            // Assumes default(T) represents 0 (true for numeric structs like int/float)
-            if (Comparer<T>.Default.Compare(Max, default) <= 0)
+            if (Comparer<T>.Default.Compare(Max, default) < 0)
                 throw new ArgumentException("Range invalid: Max must be > 0.");
         }
 
@@ -77,6 +76,5 @@ namespace Si.Library
 
             return true;
         }
-
     }
 }

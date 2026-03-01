@@ -22,6 +22,20 @@ namespace Si.Library
             return prop?.GetValue(obj);
         }
 
+        public static void SetPropertyValue(object instance, string propertyName, object? value)
+        {
+            var type = instance.GetType();
+
+            var prop = type.GetProperty(propertyName);
+            if (prop == null)
+                throw new InvalidOperationException($"Property '{propertyName}' not found on type {type.Name}.");
+
+            if (!prop.CanWrite)
+                throw new InvalidOperationException($"Property '{propertyName}' is read-only.");
+
+            prop.SetValue(instance, value);
+        }
+
         public static bool IsAssignableToGenericType(Type givenType, Type genericType)
         {
             return givenType.GetInterfaces()
