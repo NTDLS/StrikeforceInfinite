@@ -14,7 +14,6 @@ namespace Si.Library
         public TimeSpan DefaultCacheTime { get; set; }
         public CacheExpirationScheme DefaultCacheExpirationScheme { get; set; }
 
-
         public enum CacheExpirationScheme
         {
             Absolute,
@@ -23,14 +22,14 @@ namespace Si.Library
 
         public SiCache(CacheExpirationScheme defaultCacheExpirationScheme, TimeSpan defaultCacheTime)
         {
-            _memCache = new MemoryCache("SiCache");
+            _memCache = new MemoryCache(new MemoryCacheOptions());
             DefaultCacheExpirationScheme = defaultCacheExpirationScheme;
             DefaultCacheTime = defaultCacheTime;
         }
 
-        private CacheItemPolicy GetDefaultCacheItemPolicy()
+        private MemoryCacheEntryOptions GetDefaultCacheItemPolicy()
         {
-            var policy = new CacheItemPolicy();
+            var policy = new MemoryCacheEntryOptions();
             if (DefaultCacheExpirationScheme == CacheExpirationScheme.Absolute)
             {
                 policy.AbsoluteExpiration = DateTimeOffset.UtcNow.AddSeconds(DefaultCacheTime.TotalSeconds);
@@ -42,7 +41,7 @@ namespace Si.Library
             return policy;
         }
 
-        public T AddOrGet<T>(string cacheKey, Func<T> getValueDelegate, CacheItemPolicy? cacheItemPolicy = null)
+        public T AddOrGet<T>(string cacheKey, Func<T> getValueDelegate, MemoryCacheEntryOptions? cacheItemPolicy = null)
         {
             if (TryGet<T>(cacheKey, out var cached))
                 return cached;
@@ -50,12 +49,12 @@ namespace Si.Library
             var result = getValueDelegate()
                 ?? throw new InvalidOperationException("getValueDelegate returned null, which is not allowed for caching.");
 
-            _memCache.Add(cacheKey, result, cacheItemPolicy ?? GetDefaultCacheItemPolicy());
+            _memCache.Set(cacheKey, result, cacheItemPolicy ?? GetDefaultCacheItemPolicy());
 
             return result;
         }
 
-        public async Task<T> AddOrGetAsync<T>(string cacheKey, Func<Task<T>> getValueDelegate, CacheItemPolicy? cacheItemPolicy = null)
+        public async Task<T> AddOrGetAsync<T>(string cacheKey, Func<Task<T>> getValueDelegate, MemoryCacheEntryOptions? cacheItemPolicy = null)
         {
             if (TryGet<T>(cacheKey, out var cached))
                 return cached;
@@ -63,7 +62,7 @@ namespace Si.Library
             var result = await getValueDelegate().ConfigureAwait(false)
                 ?? throw new InvalidOperationException("getValueDelegate returned null, which is not allowed for caching.");
 
-            _memCache.Add(cacheKey, result, cacheItemPolicy ?? GetDefaultCacheItemPolicy());
+            _memCache.Set(cacheKey, result, cacheItemPolicy ?? GetDefaultCacheItemPolicy());
 
             return result;
         }
@@ -90,6 +89,6 @@ namespace Si.Library
             => _memCache.Remove(cacheKey);
 
         public void Clear()
-            => _memCache.Trim(100);
+            => _memCache.Clear();
     }
 }
