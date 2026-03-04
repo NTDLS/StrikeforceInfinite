@@ -324,5 +324,14 @@ namespace Si.Engine.Manager
 
             return  model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
         }
+
+        /// <summary>
+        /// Reads the asset bytes (such as an image, wav file, text, etc.) from the database and returns them.
+        /// </summary>
+        public void DeleteAsset(string assetKey)
+        {
+            var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("DELETE FROM Assets WHERE Key = @Key",
+                new { Key = assetKey });
+        }
     }
 }

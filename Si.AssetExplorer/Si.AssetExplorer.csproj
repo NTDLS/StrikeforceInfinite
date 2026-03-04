@@ -30,6 +30,9 @@
     <Compile Update="Forms\FormInterrogationSpriteWatch.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\FormCreateFolder.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\FormPropertyBoolean.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,6 +1,8 @@
 ﻿using Si.AssetExplorer.Controls;
+using Si.AssetExplorer.Forms;
 using Si.Engine;
 using Si.Library;
+using System.Text.Json;
 using Talkster.Client.Controls;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -35,8 +37,19 @@ namespace Si.AssetExplorer
                     _treeView.SelectedNode = node;
 
                     var menu = new ContextMenuStrip();
-                    menu.Items.Add("Replace Asset", null, (s, e) => ReplaceAsset(node));
-                    menu.Items.Add("Export Asset", null, (s, e) => ExportAsset(node));
+
+                    if (node.NodeType == SiTreeNodeType.Asset)
+                    {
+                        menu.Items.Add("Replace", null, (s, e) => ReplaceAsset(node));
+                        menu.Items.Add("Export", null, (s, e) => ExportAsset(node, false));
+                        menu.Items.Add("Export with Metadata", null, (s, e) => ExportAsset(node, true));
+                        menu.Items.Add("Delete", null, (s, e) => DeleteAsset(node));
+                    }
+                    else if (node.NodeType == SiTreeNodeType.Folder)
+                    {
+                        menu.Items.Add("Create Folder", null, (s, e) => CreateFolder(node));
+                    }
+
                     menu.Show(_treeView, e.Location);
                 }
             }
@@ -46,7 +59,36 @@ namespace Si.AssetExplorer
             }
         }
 
-        private void ExportAsset(SiTreeNode node)
+        private void CreateFolder(SiTreeNode node)
+        {
+            using var form = new FormCreateFolder();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                var newFolderName = form.FolderName;
+                if (string.IsNullOrWhiteSpace(newFolderName))
+                {
+                    WriteOutput("Folder name cannot be empty.", LoggingLevel.Warning);
+                    return;
+                }
+                var newAssetKey = $"{node.AssetKey}/{newFolderName}".Trim('/');
+
+                var newNode = new SiTreeNode(newFolderName, newFolderName, newAssetKey, SiTreeNodeType.Folder);
+                node.Nodes.Add(newNode);
+                node.Expand();
+                _treeView.SelectedNode = newNode;
+            }
+        }
+
+        private void DeleteAsset(SiTreeNode node)
+        {
+            if (MessageBox.Show("Are you sure you want to delete this asset?",
+                SiConstants.FriendlyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                _engine.Assets.DeleteAsset(node.AssetKey);
+            }
+        }
+
+        private void ExportAsset(SiTreeNode node, bool exportMetadata)
         {
             try
             {
@@ -68,6 +110,11 @@ namespace Si.AssetExplorer
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     File.WriteAllBytes(dialog.FileName, assetBytes);
+                    if (exportMetadata)
+                    {
+                        var metadataJson = JsonSerializer.Serialize(asset.Metadata, SiConstants.JsonSerializerOptions);
+                        File.WriteAllText($"{dialog.FileName}.meta", metadataJson);
+                    }
                 }
             }
             catch (Exception ex)
