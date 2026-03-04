@@ -23,10 +23,10 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
             // Apply the rotated offsets to get the new turret location relative to the base sprite center.
             Location = RootOwner.Location + turretOffset.RotatedBy(RootOwner.Orientation.DegreesSigned);
 
-            if (DistanceTo(_engine.Player.Sprite) < 1000)
+            if (DistanceTo(Engine.Player.Sprite) < 1000)
             {
                 //Rotate the turret toward the player.
-                var deltaAngleToPlayer = this.HeadingAngleToInSignedDegrees(_engine.Player.Sprite);
+                var deltaAngleToPlayer = this.HeadingAngleToInSignedDegrees(Engine.Player.Sprite);
                 if (deltaAngleToPlayer < 1)
                 {
                     Orientation.Degrees -= 45f * epoch;

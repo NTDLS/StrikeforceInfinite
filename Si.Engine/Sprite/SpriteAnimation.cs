@@ -67,7 +67,7 @@ namespace Si.Engine.Sprite
                 _currentColumn * Size.Width + Size.Width,
                 _currentRow * Size.Height + Size.Height);
 
-            _engine.Rendering.DrawBitmap(
+            Engine.Rendering.DrawBitmap(
                 renderTarget,
                 SpriteBitmap ?? throw new NullReferenceException(),
                 RenderLocation.X - Size.Width / 2.0f,

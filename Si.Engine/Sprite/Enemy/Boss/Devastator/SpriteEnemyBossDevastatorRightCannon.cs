@@ -12,7 +12,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 
         public override void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
-            if (this.IsPointingAt(_engine.Player.Sprite, 10, 1000))
+            if (this.IsPointingAt(Engine.Player.Sprite, 10, 1000))
             {
                 FireWeapon<WeaponVulcanCannon>();
             }

@@ -50,30 +50,30 @@ namespace Si.Engine.Sprite
         {
             OnHit += SpritePlayer_OnHit;
 
-            AmmoLowSound = _engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
-            SystemsFailingSound = _engine.Assets.GetAudio("Sounds/Ship/Systems Failing");
-            HullBreachedSound = _engine.Assets.GetAudio("Sounds/Ship/Hull Breached");
-            IntegrityLowSound = _engine.Assets.GetAudio("Sounds/Ship/Integrity Low");
-            ShieldFailSound = _engine.Assets.GetAudio("Sounds/Ship/Shield Fail");
-            ShieldDownSound = _engine.Assets.GetAudio("Sounds/Ship/Shield Down");
-            ShieldMaxSound = _engine.Assets.GetAudio("Sounds/Ship/Shield Max");
-            ShieldNominalSound = _engine.Assets.GetAudio("Sounds/Ship/Shield Nominal");
-            AllSystemsGoSound = _engine.Assets.GetAudio("Sounds/Ship/All Systems Go");
-            AmmoLowSound = _engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
-            AmmoEmptySound = _engine.Assets.GetAudio("Sounds/Ship/Ammo Empty");
-            ShipEngineRoarSound = _engine.Assets.GetAudio("Sounds/Ship/Engine Roar");
-            ShipEngineIdleSound = _engine.Assets.GetAudio("Sounds/Ship/Engine Idle");
-            ShipEngineBoostSound = _engine.Assets.GetAudio("Sounds/Ship/Engine Boost");
+            AmmoLowSound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
+            SystemsFailingSound = Engine.Assets.GetAudio("Sounds/Ship/Systems Failing");
+            HullBreachedSound = Engine.Assets.GetAudio("Sounds/Ship/Hull Breached");
+            IntegrityLowSound = Engine.Assets.GetAudio("Sounds/Ship/Integrity Low");
+            ShieldFailSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Fail");
+            ShieldDownSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Down");
+            ShieldMaxSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Max");
+            ShieldNominalSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Nominal");
+            AllSystemsGoSound = Engine.Assets.GetAudio("Sounds/Ship/All Systems Go");
+            AmmoLowSound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
+            AmmoEmptySound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Empty");
+            ShipEngineRoarSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Roar");
+            ShipEngineIdleSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Idle");
+            ShipEngineBoostSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Boost");
 
             Orientation = SiVector.One();
             Throttle = 0;
 
-            RenewableResources.Create(BoostResourceName, _engine.Settings.MaxPlayerBoostAmount,
-                _engine.Settings.MaxPlayerBoostAmount, 250f, _engine.Settings.MaxPlayerBoostAmount / 10);
+            RenewableResources.Create(BoostResourceName, Engine.Settings.MaxPlayerBoostAmount,
+                Engine.Settings.MaxPlayerBoostAmount, 250f, Engine.Settings.MaxPlayerBoostAmount / 10);
 
             if (ThrusterAnimation == null || ThrusterAnimation.IsQueuedForDeletion == true)
             {
-                ThrusterAnimation = _engine.Sprites.Animations.Add("Sprites/Animation/ThrustStandard32x32", (o) =>
+                ThrusterAnimation = Engine.Sprites.Animations.Add("Sprites/Animation/ThrustStandard32x32", (o) =>
                 {
                     o.SpriteTag = "PlayerForwardThrust";
                     o.IsVisible = false;
@@ -84,7 +84,7 @@ namespace Si.Engine.Sprite
 
             if (BoosterAnimation == null || BoosterAnimation.IsQueuedForDeletion == true)
             {
-                BoosterAnimation = _engine.Sprites.Animations.Add("Sprites/Animation/ThrustBoost32x32", (o) =>
+                BoosterAnimation = Engine.Sprites.Animations.Add("Sprites/Animation/ThrustBoost32x32", (o) =>
                 {
                     o.SpriteTag = "PlayerForwardThrust";
                     o.IsVisible = false;
@@ -126,7 +126,7 @@ namespace Si.Engine.Sprite
 
             if (!string.IsNullOrEmpty(Metadata.PrimaryWeaponAssetKey))
             {
-                var primaryWeaponMetadata = _engine.Assets.GetMetadata(Metadata.PrimaryWeaponAssetKey);
+                var primaryWeaponMetadata = Engine.Assets.GetMetadata(Metadata.PrimaryWeaponAssetKey);
                 primaryWeapon = $"{primaryWeaponMetadata.Name} x{primaryWeaponMetadata.MunitionCount}";
             }
 
@@ -135,7 +135,7 @@ namespace Si.Engine.Sprite
             {
                 foreach (var weaponAssetKey in Metadata.WeaponAssetKeys)
                 {
-                    var secondaryWeaponMetadata = _engine.Assets.GetMetadata(weaponAssetKey);
+                    var secondaryWeaponMetadata = Engine.Assets.GetMetadata(weaponAssetKey);
                     secondaryWeapons += $"{secondaryWeaponMetadata.Name} x{secondaryWeaponMetadata.MunitionCount}\n{new string(' ', 20)}";
                 }
             }
@@ -164,7 +164,7 @@ namespace Si.Engine.Sprite
 
         public override void AddShieldHealth(int pointsToAdd)
         {
-            if (ShieldHealth < _engine.Settings.MaxShieldHealth && ShieldHealth + pointsToAdd >= _engine.Settings.MaxShieldHealth)
+            if (ShieldHealth < Engine.Settings.MaxShieldHealth && ShieldHealth + pointsToAdd >= Engine.Settings.MaxShieldHealth)
             {
                 ShieldMaxSound?.Play(); //If we didn't have full shields but now we do, tell the player.
             }
@@ -242,11 +242,11 @@ namespace Si.Engine.Sprite
 
         public void SetPrimaryWeapon(string assetKey, int munitionCount)
         {
-            var metadata = _engine.Assets.GetMetadata(assetKey)
+            var metadata = Engine.Assets.GetMetadata(assetKey)
                 ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
             var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
-            PrimaryWeapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, assetKey]).EnsureNotNull();
+            PrimaryWeapon = (WeaponBase)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
             PrimaryWeapon.RoundQuantity = munitionCount;
         }
 

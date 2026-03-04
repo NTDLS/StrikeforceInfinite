@@ -19,9 +19,9 @@ namespace Si.Engine.Sprite.PowerUp
 
         public override void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
-            if (IntersectsAABB(_engine.Player.Sprite))
+            if (IntersectsAABB(Engine.Player.Sprite))
             {
-                _engine.Player.Sprite.AddShieldHealth(PowerupAmount);
+                Engine.Player.Sprite.AddShieldHealth(PowerupAmount);
                 Explode();
             }
             else if (AgeInMilliseconds > TimeToLive)

@@ -22,7 +22,7 @@ namespace Si.Engine.Sprite.Weapon
                 RoundQuantity--;
 
                 var offset = Owner.Orientation.RotatedBy(90.Invert(_toggle)) * new SiVector(10, 10);
-                _engine.Sprites.Munitions.Add(this, Owner.Location + offset);
+                Engine.Sprites.Munitions.Add(this, Owner.Location + offset);
 
                 _toggle = !_toggle;
 

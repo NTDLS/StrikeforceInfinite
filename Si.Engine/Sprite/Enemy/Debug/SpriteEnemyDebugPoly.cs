@@ -11,7 +11,7 @@ namespace Si.Engine.Sprite.Enemy.Debug
         public SpriteEnemyDebugPoly(EngineCore engine, string assetKey)
             : base(engine, assetKey)
         {
-            AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
+            AddAIController(new AILogisticsHostileEngagement(Engine, this, [Engine.Player.Sprite]));
             SetCurrentAIController<AILogisticsHostileEngagement>();
         }
     }

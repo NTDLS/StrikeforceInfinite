@@ -50,7 +50,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             if (ShieldHealth > 0)
             {
-                _engine.Audio.PlayRandomShieldHit();
+                Engine.Audio.PlayRandomShieldHit();
                 damage /= 2; //Weapons do less damage to Shields. They are designed to take hits.
                 damage = damage < 1 ? 1 : damage;
                 damage = damage > ShieldHealth ? ShieldHealth : damage; //No need to go negative with the damage.
@@ -60,7 +60,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             }
             else
             {
-                _engine.Audio.PlayRandomHullHit();
+                Engine.Audio.PlayRandomHullHit();
                 damage = damage > HullHealth ? HullHealth : damage; //No need to go negative with the damage.
                 HullHealth -= damage;
 
@@ -100,7 +100,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public virtual void HitExplosion()
         {
-            _engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
+            Engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
         }
     }
 }

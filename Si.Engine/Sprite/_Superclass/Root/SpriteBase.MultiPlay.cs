@@ -11,7 +11,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public virtual SiSpriteActionMotion? GetMultiPlayActionVector()
         {
-            if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
+            if (Engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
             {
                 if ((DateTime.UtcNow - _lastMultiplaySpriteVectorUpdate).TotalMilliseconds >= 5)
                 {
@@ -35,7 +35,7 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public virtual SiSpriteActionSpawn? GetMultiPlayActionSpawn()
         {
-            if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
+            if (Engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
             {
                 if ((DateTime.UtcNow - _lastMultiplaySpriteVectorUpdate).TotalMilliseconds >= 5)
                 {

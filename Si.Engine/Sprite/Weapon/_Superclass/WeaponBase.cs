@@ -32,11 +32,10 @@ namespace Si.Engine.Sprite.Weapon._Superclass
             : base(engine, assetKey)
         {
             Owner = owner;
-            _engine = engine;
 
             if (!string.IsNullOrEmpty(Metadata.SoundAssetKey))
             {
-                _fireSound = _engine.Assets.GetAudio(Metadata.SoundAssetKey, Metadata.SoundVolume ?? 0);
+                _fireSound = Engine.Assets.GetAudio(Metadata.SoundAssetKey, Metadata.SoundVolume ?? 0);
             }
         }
 
@@ -70,13 +69,13 @@ namespace Si.Engine.Sprite.Weapon._Superclass
             if (munitionAssetKey == null)
                 throw new Exception($"Weapon {Metadata.Name} does not have a munition sprite path defined.");
 
-            var munitionSpriteMeta = _engine.Assets.GetMetadata(munitionAssetKey);
+            var munitionSpriteMeta = Engine.Assets.GetMetadata(munitionAssetKey);
 
             var munitionSpriteType = SiReflection.GetTypeByName(munitionSpriteMeta.Class
                 ?? throw new Exception($"The munition sprite {munitionAssetKey} does not have a type defined in its metadata."));
 
             var munitionSprite = (MunitionBase)Activator.CreateInstance(munitionSpriteType,
-                [_engine, this, Owner, munitionAssetKey, lockedTarget, location ?? Owner.Location]).EnsureNotNull();
+                [Engine, this, Owner, munitionAssetKey, lockedTarget, location ?? Owner.Location]).EnsureNotNull();
 
             return munitionSprite;
 
@@ -119,7 +118,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
 
             if (Owner is SpritePlayer owner)
             {
-                var potentialTargets = _engine.Sprites.Enemies.Visible();
+                var potentialTargets = Engine.Sprites.Enemies.Visible();
 
                 foreach (var potentialTarget in potentialTargets)
                 {
@@ -159,18 +158,18 @@ namespace Si.Engine.Sprite.Weapon._Superclass
             }
             else if (Owner is SpriteEnemyBase enemy)
             {
-                _engine.Player.Sprite.IsLockedOnSoft = false;
-                _engine.Player.Sprite.IsLockedOnHard = false;
+                Engine.Player.Sprite.IsLockedOnSoft = false;
+                Engine.Player.Sprite.IsLockedOnHard = false;
 
-                if (Metadata.MaxLockDistance > 0 && Owner.IsPointingAt(_engine.Player.Sprite, Metadata.MaxLockOnAngle ?? 0))
+                if (Metadata.MaxLockDistance > 0 && Owner.IsPointingAt(Engine.Player.Sprite, Metadata.MaxLockOnAngle ?? 0))
                 {
-                    var distance = Owner.DistanceTo(_engine.Player.Sprite);
+                    var distance = Owner.DistanceTo(Engine.Player.Sprite);
                     if (distance.IsBetween(Metadata.MinLockDistance ?? 0, Metadata.MaxLockDistance.Value))
                     {
-                        _engine.Player.Sprite.IsLockedOnHard = true;
-                        _engine.Player.Sprite.IsLockedOnSoft = false;
+                        Engine.Player.Sprite.IsLockedOnHard = true;
+                        Engine.Player.Sprite.IsLockedOnSoft = false;
 
-                        LockedTargets.Add(new WeaponsLock(_engine.Player.Sprite, Owner.DistanceTo(_engine.Player.Sprite))
+                        LockedTargets.Add(new WeaponsLock(Engine.Player.Sprite, Owner.DistanceTo(Engine.Player.Sprite))
                         {
                             LockType = SiWeaponsLockType.Hard
                         });
@@ -191,7 +190,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 RoundsFired++;
                 RoundQuantity--;
                 _fireSound?.Play();
-                _engine.Sprites.Munitions.Add(this, location);
+                Engine.Sprites.Munitions.Add(this, location);
 
                 return true;
             }
@@ -211,7 +210,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                 RoundsFired++;
                 RoundQuantity--;
                 _fireSound?.Play();
-                _engine.Sprites.Munitions.Add(this);
+                Engine.Sprites.Munitions.Add(this);
 
                 return true;
             }

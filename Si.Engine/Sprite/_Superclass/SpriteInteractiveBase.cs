@@ -35,7 +35,7 @@ namespace Si.Engine.Sprite._Superclass
                 if (_isLockedOn == false && value == true)
                 {
                     //TODO: This should not play every loop.
-                    _engine.Audio.LockedOnBlip?.Play();
+                    Engine.Audio.LockedOnBlip?.Play();
                 }
                 _isLockedOn = value;
             }
@@ -56,26 +56,22 @@ namespace Si.Engine.Sprite._Superclass
         public SpriteInteractiveBase(EngineCore engine, string? assetKey)
             : base(engine, assetKey)
         {
-            _engine = engine;
-
             Mass = SiRandom.Between(Metadata.Mass, 0);
 
-            if (_engine.Assets.IsLoaded)
+            if (Engine.Assets.IsLoaded)
             {
-                _lockedOnImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On");
-                _lockedOnSoftImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft");
+                _lockedOnImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On");
+                _lockedOnSoftImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft");
             }
         }
 
         public SpriteInteractiveBase(EngineCore engine, Bitmap bitmap)
             : base(engine, null)
         {
-            _engine = engine;
-
-            if (_engine.Assets.IsLoaded)
+            if (Engine.Assets.IsLoaded)
             {
-                _lockedOnImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On.png");
-                _lockedOnSoftImage = _engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft.png");
+                _lockedOnImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On.png");
+                _lockedOnSoftImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft.png");
             }
 
             SetBitmap(bitmap);
@@ -140,14 +136,14 @@ namespace Si.Engine.Sprite._Superclass
 
         public void AddWeapon(string assetKey, int munitionCount)
         {
-            var metadata = _engine.Assets.GetMetadata(assetKey)
+            var metadata = Engine.Assets.GetMetadata(assetKey)
                 ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
             var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
             if (weapon == null)
             {
                 var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
-                weapon = (WeaponBase)Activator.CreateInstance(type, [_engine, this, assetKey]).EnsureNotNull();
+                weapon = (WeaponBase)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
                 weapon.RoundQuantity += munitionCount;
                 Weapons.Add(weapon);
             }
@@ -200,7 +196,7 @@ namespace Si.Engine.Sprite._Superclass
         /// <returns></returns>
         public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner, Action<SpriteAttachment>? initilizationProc = null)
         {
-            var attachment = _engine.Sprites.Attachments.AddAttachment(assetKey, this, locationRelativeToOwner);
+            var attachment = Engine.Sprites.Attachments.AddAttachment(assetKey, this, locationRelativeToOwner);
             initilizationProc?.Invoke(attachment);
             Attachments.Add(attachment);
             return attachment;
@@ -241,37 +237,37 @@ namespace Si.Engine.Sprite._Superclass
 
         public override void Explode()
         {
-            _engine.Events.Add(() =>
+            Engine.Events.Add(() =>
             {
                 switch (Metadata.ExplosionType)
                 {
                     case ExplosionType.MediumFire:
-                        _engine.Sprites.Animations.AddRandomMediumFireExplosionAt(this);
+                        Engine.Sprites.Animations.AddRandomMediumFireExplosionAt(this);
                         break;
                     case ExplosionType.LargeFire:
-                        _engine.Sprites.Animations.AddRandomLargeFireExplosionAt(this);
+                        Engine.Sprites.Animations.AddRandomLargeFireExplosionAt(this);
                         break;
                     case ExplosionType.SmallFire:
-                        _engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
+                        Engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
                         break;
                     case ExplosionType.MicroFire:
-                        _engine.Sprites.Animations.AddRandomMicroFireExplosionAt(this);
+                        Engine.Sprites.Animations.AddRandomMicroFireExplosionAt(this);
                         break;
                     case ExplosionType.Energy:
-                        _engine.Sprites.Animations.AddRandomEnergyExplosionAt(this);
+                        Engine.Sprites.Animations.AddRandomEnergyExplosionAt(this);
                         break;
                 }
 
                 if (Metadata.ParticleBlastOnExplodeAmount?.IsValid() == true)
-                    _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(Metadata.ParticleBlastOnExplodeAmount.Min, Metadata.ParticleBlastOnExplodeAmount.Max));
+                    Engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(Metadata.ParticleBlastOnExplodeAmount.Min, Metadata.ParticleBlastOnExplodeAmount.Max));
 
                 if (Metadata.FragmentOnExplode == true)
-                    _engine.Sprites.CreateFragmentsOf(this);
+                    Engine.Sprites.CreateFragmentsOf(this);
 
                 if (Metadata.ScreenShakeOnExplodeAmount?.IsValid() == true)
-                    _engine.Rendering.AddScreenShake(Metadata.ScreenShakeOnExplodeAmount.Min, Metadata.ScreenShakeOnExplodeAmount.Max);
+                    Engine.Rendering.AddScreenShake(Metadata.ScreenShakeOnExplodeAmount.Min, Metadata.ScreenShakeOnExplodeAmount.Max);
 
-                _engine.Audio.PlayRandomExplosion();
+                Engine.Audio.PlayRandomExplosion();
             });
 
             base.Explode();
@@ -319,14 +315,14 @@ namespace Si.Engine.Sprite._Superclass
 
             //IsHighlighted = true;
 
-            var thisCollidable = new PredictedKinematicBody(this, _engine.Display.CameraPosition, epoch);
+            var thisCollidable = new PredictedKinematicBody(this, Engine.Display.CameraPosition, epoch);
 
             /// It is important to remeber that need to verify the visibility of sprites that are colliding
             ///     because the collection of collidables is a snapshot from the start of the tick and the
             ///     visibility can change between that snapshot and this calculation.
-            foreach (var other in _engine.Collisions.Collidables.Where(o => o.Sprite.IsVisible))
+            foreach (var other in Engine.Collisions.Collidables.Where(o => o.Sprite.IsVisible))
             {
-                if (thisCollidable.Sprite == other.Sprite || _engine.Collisions.IsAlreadyHandled(thisCollidable.Sprite, other.Sprite))
+                if (thisCollidable.Sprite == other.Sprite || Engine.Collisions.IsAlreadyHandled(thisCollidable.Sprite, other.Sprite))
                 {
                     continue;
                 }
@@ -335,7 +331,7 @@ namespace Si.Engine.Sprite._Superclass
                 {
                     //The items recorded to this collection are rendered to the screen via
                     //  EngineCore.RenderEverything() when Engine.Settings.HighlightCollisions is true.
-                    var collisionPair = _engine.Collisions.CreateAndRecord(thisCollidable, other);
+                    var collisionPair = Engine.Collisions.CreateAndRecord(thisCollidable, other);
 
                     //Comment this out to see the collision overlaps.
                     RespondToCollisions(collisionPair);

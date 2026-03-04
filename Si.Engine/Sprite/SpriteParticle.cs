@@ -58,8 +58,6 @@ namespace Si.Engine.Sprite
             Speed = SiRandom.Between(100f, 400f);
             Orientation.Degrees = SiRandom.Between(0, 359);
             Throttle = 1;
-
-            _engine = engine;
         }
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)
@@ -100,7 +98,7 @@ namespace Si.Engine.Sprite
             }
             else if (CleanupMode == ParticleCleanupMode.DistanceOffScreen)
             {
-                if (_engine.Display.TotalCanvasBounds.Balloon(MaxDistance).IntersectsWith(RenderBounds) == false)
+                if (Engine.Display.TotalCanvasBounds.Balloon(MaxDistance).IntersectsWith(RenderBounds) == false)
                 {
                     QueueForDelete();
                 }
@@ -116,17 +114,17 @@ namespace Si.Engine.Sprite
                     case ParticleShape.FilledEllipse:
                         if (Pattern == ParticleColorType.Solid)
                         {
-                            _engine.Rendering.DrawSolidEllipse(renderTarget,
+                            Engine.Rendering.DrawSolidEllipse(renderTarget,
                                 RenderLocation.X, RenderLocation.Y, Size.Width, Size.Height, Color, (float)Orientation.Degrees);
                         }
                         else if (Pattern == ParticleColorType.Gradient)
                         {
-                            _engine.Rendering.DrawGradientEllipse(renderTarget, RenderLocation.X, RenderLocation.Y,
+                            Engine.Rendering.DrawGradientEllipse(renderTarget, RenderLocation.X, RenderLocation.Y,
                                 Size.Width, Size.Height, GradientStartColor, GradientEndColor, (float)Orientation.Degrees);
                         }
                         break;
                     case ParticleShape.HollowEllipse:
-                        _engine.Rendering.DrawEllipse(renderTarget,
+                        Engine.Rendering.DrawEllipse(renderTarget,
                             RenderLocation.X, RenderLocation.Y, Size.Width, Size.Height, Color, 1, (float)Orientation.Degrees);
                         break;
 
@@ -136,12 +134,12 @@ namespace Si.Engine.Sprite
 
                             if (Pattern == ParticleColorType.Solid)
                             {
-                                _engine.Rendering.DrawSolidRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
+                                Engine.Rendering.DrawSolidRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
                                     RenderLocation.Y - Size.Height / 2, rect, Color, 0, (float)Orientation.Degrees);
                             }
                             else if (Pattern == ParticleColorType.Gradient)
                             {
-                                _engine.Rendering.DrawGradientRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
+                                Engine.Rendering.DrawGradientRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
                                     RenderLocation.Y - Size.Height / 2, rect, GradientStartColor, GradientEndColor, 0, (float)Orientation.Degrees);
                             }
                         }
@@ -150,22 +148,22 @@ namespace Si.Engine.Sprite
                     case ParticleShape.HollowRectangle:
                         {
                             var rect = new RawRectangleF(0, 0, Size.Width, Size.Height);
-                            _engine.Rendering.DrawRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
+                            Engine.Rendering.DrawRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
                                 RenderLocation.Y - Size.Height / 2, rect, Color, 0, 1, (float)Orientation.Degrees);
 
                         }
                         break;
 
                     case ParticleShape.Triangle:
-                        _engine.Rendering.DrawTriangle(renderTarget,
+                        Engine.Rendering.DrawTriangle(renderTarget,
                             RenderLocation.X, RenderLocation.Y, Size.Width, Size.Height, Color, 1, (float)Orientation.Degrees);
                         break;
                 }
 
                 if (IsHighlighted)
                 {
-                    _engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
-                        _engine.Rendering.Materials.Colors.Red, 0, 1, Orientation.RadiansSigned);
+                    Engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
+                        Engine.Rendering.Materials.Colors.Red, 0, 1, Orientation.RadiansSigned);
                 }
             }
         }

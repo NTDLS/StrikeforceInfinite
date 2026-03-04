@@ -30,12 +30,12 @@ namespace Si.Engine.Sprite.Weapon
                 {
                     foreach (var weaponLock in LockedTargets.Where(o => o.LockType == Library.SiConstants.SiWeaponsLockType.Hard))
                     {
-                        _engine.Sprites.Munitions.AddLockedOnTo(this, weaponLock.Sprite, Owner.Location + offset);
+                        Engine.Sprites.Munitions.AddLockedOnTo(this, weaponLock.Sprite, Owner.Location + offset);
                     }
                 }
                 else
                 {
-                    _engine.Sprites.Munitions.Add(this, Owner.Location + offset);
+                    Engine.Sprites.Munitions.Add(this, Owner.Location + offset);
                 }
 
                 return true;

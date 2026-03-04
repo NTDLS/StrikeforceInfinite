@@ -20,13 +20,6 @@ namespace Si.Engine.Sprite._Superclass
         public SpriteInteractiveShipBase(EngineCore engine, string assetKey)
             : base(engine, assetKey)
         {
-            _engine = engine;
-        }
-
-        public SpriteInteractiveShipBase(EngineCore engine, SharpDX.Direct2D1.Bitmap bitmap)
-            : base(engine, bitmap)
-        {
-            _engine = engine;
         }
 
         /// <summary>
@@ -65,7 +58,7 @@ namespace Si.Engine.Sprite._Superclass
             }
 
             var weaponType = SiReflection.GetTypeByName(weaponTypeName);
-            weapon = SiReflection.CreateInstanceFromType<WeaponBase>(weaponType, new object[] { _engine, this });
+            weapon = SiReflection.CreateInstanceFromType<WeaponBase>(weaponType, new object[] { Engine, this });
 
             _droneWeaponsCache.Add(weaponTypeName, weapon);
 
@@ -76,22 +69,22 @@ namespace Si.Engine.Sprite._Superclass
         {
             if (RadarPositionIndicator != null && RadarPositionText != null)
             {
-                if (_engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds, -50) == false)
+                if (Engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds, -50) == false)
                 {
-                    RadarPositionText.DistanceValue = Math.Abs(DistanceTo(_engine.Player.Sprite));
+                    RadarPositionText.DistanceValue = Math.Abs(DistanceTo(Engine.Player.Sprite));
 
-                    RadarPositionText.IsVisible = _engine.Player.Sprite.IsVisible;
+                    RadarPositionText.IsVisible = Engine.Player.Sprite.IsVisible;
                     RadarPositionText.IsFixedPosition = true;
-                    RadarPositionIndicator.IsVisible = _engine.Player.Sprite.IsVisible;
+                    RadarPositionIndicator.IsVisible = Engine.Player.Sprite.IsVisible;
                     RadarPositionIndicator.IsFixedPosition = true;
 
-                    float requiredAngleRadians = _engine.Player.Sprite.AngleToInSignedRadians(this);
+                    float requiredAngleRadians = Engine.Player.Sprite.AngleToInSignedRadians(this);
 
-                    RadarPositionIndicator.Location = _engine.Display.CenterCanvas
+                    RadarPositionIndicator.Location = Engine.Display.CenterCanvas
                         + new SiVector(requiredAngleRadians) * new SiVector(200, 200);
                     RadarPositionIndicator.Orientation.RadiansSigned = requiredAngleRadians;
 
-                    RadarPositionText.Location = _engine.Display.CenterCanvas
+                    RadarPositionText.Location = Engine.Display.CenterCanvas
                         + new SiVector(requiredAngleRadians) * new SiVector(120, 120);
                     RadarPositionIndicator.Orientation.RadiansSigned = requiredAngleRadians;
                 }

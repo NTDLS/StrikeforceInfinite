@@ -18,7 +18,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
         {
             Orientation.Degrees = SiRandom.Between(0, 359);
 
-            AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
+            AddAIController(new AILogisticsHostileEngagement(Engine, this, [Engine.Player.Sprite]));
 
             SetCurrentAIController<AILogisticsHostileEngagement>();
 
@@ -53,16 +53,16 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 
             if (_thrusterLeft.IsDeadOrExploded)
             {
-                _engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+                Engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
             }
             if (_thrusterRight.IsDeadOrExploded)
             {
-                _engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+                Engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
             }
 
             if (HullHealth <= Metadata.Hull / 2)
             {
-                _engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(0, 1));
+                Engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(0, 1));
             }
 
             base.ApplyMotion(epoch, displacementVector);

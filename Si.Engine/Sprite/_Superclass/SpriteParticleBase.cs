@@ -13,7 +13,6 @@ namespace Si.Engine.Sprite._Superclass
         public SpriteParticleBase(EngineCore engine, string name = "")
             : base(engine, name)
         {
-            _engine = engine;
         }
     }
 }

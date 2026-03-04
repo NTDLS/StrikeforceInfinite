@@ -12,7 +12,7 @@ namespace Si.Engine.Sprite.Enemy.Peon
         public SpriteEnemyPhoenix(EngineCore engine, string assetKey)
             : base(engine, assetKey)
         {
-            AddAIController(new AILogisticsOffScreenReentry(_engine, this));
+            AddAIController(new AILogisticsOffScreenReentry(Engine, this));
             //AddAIController(new AILogisticsHostileEngagement(_engine, this, [_engine.Player.Sprite]));
             //AddAIController(new AILogisticsTaunt(_engine, this, [_engine.Player.Sprite]));
             //AddAIController(new AILogisticsMeander(_engine, this, [_engine.Player.Sprite]));
@@ -31,7 +31,7 @@ namespace Si.Engine.Sprite.Enemy.Peon
 
         private void ApplyWeaponsLogic()
         {
-            var playersIAmPointingAt = GetPointingAtOf(_engine.Sprites.AllVisiblePlayers, 2.0f);
+            var playersIAmPointingAt = GetPointingAtOf(Engine.Sprites.AllVisiblePlayers, 2.0f);
             if (playersIAmPointingAt.Any())
             {
                 var closestDistance = ClosestDistanceOf(playersIAmPointingAt);

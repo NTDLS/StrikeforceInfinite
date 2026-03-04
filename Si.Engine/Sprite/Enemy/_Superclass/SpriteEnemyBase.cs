@@ -14,10 +14,10 @@ namespace Si.Engine.Sprite.Enemy._Superclass
         {
             RecalculateMovementVectorFromOrientation();
 
-            RadarPositionIndicator = _engine.Sprites.RadarPositions.Add();
+            RadarPositionIndicator = Engine.Sprites.RadarPositions.Add();
             RadarPositionIndicator.IsVisible = false;
 
-            RadarPositionText = _engine.Sprites.TextBlocks.CreateRadarPosition(
+            RadarPositionText = Engine.Sprites.TextBlocks.CreateRadarPosition(
                 engine.Rendering.TextFormats.RadarPositionIndicator,
                 engine.Rendering.Materials.Brushes.Red, new SiVector());
         }
@@ -30,7 +30,7 @@ namespace Si.Engine.Sprite.Enemy._Superclass
 
         public override void Explode()
         {
-            _engine.Player.Stats.Bounty += Metadata.Bounty ?? 0;
+            Engine.Player.Stats.Bounty += Metadata.Bounty ?? 0;
 
             /*
             if (SiRandom.PercentChance(10))

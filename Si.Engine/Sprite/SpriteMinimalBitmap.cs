@@ -67,7 +67,7 @@ namespace Si.Engine.Sprite
             }
             else if (CleanupMode == ParticleCleanupMode.DistanceOffScreen)
             {
-                if (_engine.Display.TotalCanvasBounds.Balloon(MaxDistance).IntersectsWith(RenderBounds) == false)
+                if (Engine.Display.TotalCanvasBounds.Balloon(MaxDistance).IntersectsWith(RenderBounds) == false)
                 {
                     QueueForDelete();
                 }

@@ -17,7 +17,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <returns></returns>
         public List<SpriteBase> FindReverseCollisionsAlongMovementVector(float epoch)
-            => FindReverseCollisionsAlongMovementVector(_engine.Sprites.Visible(), epoch);
+            => FindReverseCollisionsAlongMovementVector(Engine.Sprites.Visible(), epoch);
 
         /// <summary>
         /// Returns a list of all collisions the sprite made on is current movement vector, in the order in which they would be encountered.
@@ -36,13 +36,13 @@ namespace Si.Engine.Sprite._Superclass._Root
             var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(hitTestPosition));
 
-            if (totalTravelDistance > _engine.Display.TotalCanvasDiagonal)
+            if (totalTravelDistance > Engine.Display.TotalCanvasDiagonal)
             {
                 //This is just a sanity check, if the epoch is super high then the engine is
                 //  lagging like mad and the last thing we want is to trace a giant vector path.
                 // Keep in mind that we are tracing the individual steps per "frame", so this IS NOT
                 //  going to greatly effect collision detection even if the lagging is really bad.
-                totalTravelDistance = _engine.Display.TotalCanvasDiagonal;
+                totalTravelDistance = Engine.Display.TotalCanvasDiagonal;
             }
 
             //Hit-test each position along the sprite path.
@@ -67,7 +67,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <returns></returns>
         public SpriteBase? FindFirstReverseCollisionAlongMovementVectorAabb(float epoch)
-            => FindFirstReverseCollisionAlongMovementVectorAabb(_engine.Sprites.Visible(), epoch);
+            => FindFirstReverseCollisionAlongMovementVectorAabb(Engine.Sprites.Visible(), epoch);
 
         /// <summary>
         /// Returns the first collision (if any) the sprite made on is current movement vector.
@@ -90,13 +90,13 @@ namespace Si.Engine.Sprite._Superclass._Root
 
             var totalTravelDistance = Math.Abs(Location.DistanceTo(hitTestPosition));
 
-            if (totalTravelDistance > _engine.Display.TotalCanvasDiagonal)
+            if (totalTravelDistance > Engine.Display.TotalCanvasDiagonal)
             {
                 //This is just a sanity check, if the epoch is super high then the engine is
                 //  lagging like mad and the last thing we want is to trace a giant vector path.
                 // Keep in mind that we are tracing the individual steps per "frame", so this IS NOT
                 //  going to greatly effect collision detection even if the lagging is really bad.
-                totalTravelDistance = _engine.Display.TotalCanvasDiagonal;
+                totalTravelDistance = Engine.Display.TotalCanvasDiagonal;
             }
 
             //Hit-test each position along the sprite path.
@@ -126,7 +126,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <returns></returns>
         public List<SpriteBase> FindForwardCollisionsAlongMovementVectorAabb(float epoch)
-            => FindForwardCollisionsAlongMovementVectorAabb(_engine.Sprites.Visible(), epoch);
+            => FindForwardCollisionsAlongMovementVectorAabb(Engine.Sprites.Visible(), epoch);
 
         /// <summary>
         /// Returns a list of all collisions the sprite will make on is current movement vector, in the order in which they would be encountered.
@@ -146,13 +146,13 @@ namespace Si.Engine.Sprite._Superclass._Root
             var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(destinationPoint));
 
-            if (totalTravelDistance > _engine.Display.TotalCanvasDiagonal)
+            if (totalTravelDistance > Engine.Display.TotalCanvasDiagonal)
             {
                 //This is just a sanity check, if the epoch is super high then the engine is
                 //  lagging like mad and the last thing we want is to trace a giant vector path.
                 // Keep in mind that we are tracing the individual steps per "frame", so this IS NOT
                 //  going to greatly effect collision detection even if the lagging is really bad.
-                totalTravelDistance = _engine.Display.TotalCanvasDiagonal;
+                totalTravelDistance = Engine.Display.TotalCanvasDiagonal;
             }
 
             //Hit-test each position along the sprite path.
@@ -176,7 +176,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <returns></returns>
         public SpriteBase? FindFirstForwardCollisionAlongMovementVectorAabb(float epoch)
-            => FindFirstForwardCollisionAlongMovementVectorAabb(_engine.Sprites.Visible(), epoch);
+            => FindFirstForwardCollisionAlongMovementVectorAabb(Engine.Sprites.Visible(), epoch);
 
         /// <summary>
         /// Returns the first collision (if any) the sprite will make on is current movement vector.
@@ -193,13 +193,13 @@ namespace Si.Engine.Sprite._Superclass._Root
             var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(destinationPoint));
 
-            if (totalTravelDistance > _engine.Display.TotalCanvasDiagonal)
+            if (totalTravelDistance > Engine.Display.TotalCanvasDiagonal)
             {
                 //This is just a sanity check, if the epoch is super high then the engine is
                 //  lagging like mad and the last thing we want is to trace a giant vector path.
                 // Keep in mind that we are tracing the individual steps per "frame", so this IS NOT
                 //  going to greatly effect collision detection even if the lagging is really bad.
-                totalTravelDistance = _engine.Display.TotalCanvasDiagonal;
+                totalTravelDistance = Engine.Display.TotalCanvasDiagonal;
             }
 
             //Hit-test each position along the sprite path.
@@ -229,7 +229,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
         /// <returns></returns>
         public List<SpriteBase> FindCollisionsAlongDistanceVectorAabb(float distance, SiVector? angle = null)
-            => FindCollisionsAlongDistanceVectorAabb(_engine.Sprites.Visible(), distance, angle);
+            => FindCollisionsAlongDistanceVectorAabb(Engine.Sprites.Visible(), distance, angle);
 
         /// <summary>
         ///  Returns a list of all collisions the sprite will make over a given distance and optional angle, in the order in which they would be encountered.
@@ -268,7 +268,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
         /// <returns></returns>
         public SpriteBase? FindFirstCollisionAlongDistanceVectorAabb(float distance, SiVector? angle = null)
-            => FindFirstCollisionAlongDistanceVectorAabb(_engine.Sprites.Visible(), distance, angle);
+            => FindFirstCollisionAlongDistanceVectorAabb(Engine.Sprites.Visible(), distance, angle);
 
         /// <summary>
         /// Returns a the first object the sprite will collide with over a given distance and optional angle.

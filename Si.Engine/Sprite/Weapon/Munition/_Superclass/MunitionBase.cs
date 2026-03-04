@@ -38,7 +38,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         {
             Weapon = weapon;
             RadarDotSize = new SiVector(1, 1);
-            SceneDistanceLimit = _engine.Settings.MunitionSceneDistanceLimit;
+            SceneDistanceLimit = Engine.Settings.MunitionSceneDistanceLimit;
 
             float headingRadians = angleDegrees == null ? firedFrom.Orientation.RadiansSigned : SiMath.DegToRad(angleDegrees.Value);
             if (Metadata.AngleVarianceDegrees > 0)
@@ -83,7 +83,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
 
         public override void ApplyMotion(float epoch, SiVector displacementVector)
         {
-            if (!_engine.Display.TotalCanvasBounds.Balloon(SceneDistanceLimit).IntersectsWith(RenderBounds))
+            if (!Engine.Display.TotalCanvasBounds.Balloon(SceneDistanceLimit).IntersectsWith(RenderBounds))
             {
                 QueueForDelete();
                 return;

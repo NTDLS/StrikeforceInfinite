@@ -111,7 +111,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         public uint OwnerUID { get; set; }
         public List<SpriteAttachment> Attachments { get; private set; } = new();
         public SiVector RadarDotSize { get; set; } = new SiVector(4, 4);
-        public bool IsWithinCurrentScaledScreenBounds => _engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds);
+        public bool IsWithinCurrentScaledScreenBounds => Engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds);
         public bool IsHighlighted { get; set; } = false;
         public bool HighlightSweptMotionRect { get; set; } = false;
         public int HullHealth { get; private set; } = 0; //Ship hit-points.
@@ -220,7 +220,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 }
                 else
                 {
-                    return _location - _engine.Display.CameraPosition;
+                    return _location - Engine.Display.CameraPosition;
                 }
             }
         }

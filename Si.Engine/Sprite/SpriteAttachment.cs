@@ -95,7 +95,7 @@ namespace Si.Engine.Sprite
 
                     do
                     {
-                        _rootOwner = _engine.Sprites.GetSpriteByOwner<SpriteInteractiveBase>(_rootOwner.OwnerUID);
+                        _rootOwner = Engine.Sprites.GetSpriteByOwner<SpriteInteractiveBase>(_rootOwner.OwnerUID);
                     } while (_rootOwner != null && _rootOwner.OwnerUID != 0);
                 }
                 return _rootOwner ?? throw new Exception("Attachment must have a root owner.");
@@ -110,7 +110,7 @@ namespace Si.Engine.Sprite
         {
             get
             {
-                _owner ??= _engine.Sprites.GetSpriteByOwner<SpriteInteractiveBase>(OwnerUID);
+                _owner ??= Engine.Sprites.GetSpriteByOwner<SpriteInteractiveBase>(OwnerUID);
                 return _owner ?? throw new Exception("Attachment must have a root owner.");
             }
         }

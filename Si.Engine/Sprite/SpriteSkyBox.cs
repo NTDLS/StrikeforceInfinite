@@ -42,7 +42,7 @@ namespace Si.Engine.Sprite
 
                 _currentOffset += offsetIncrement;
 
-                Location = _engine.Display.CenterOfCurrentScreen - _currentOffset;
+                Location = Engine.Display.CenterOfCurrentScreen - _currentOffset;
             }
         }
     }

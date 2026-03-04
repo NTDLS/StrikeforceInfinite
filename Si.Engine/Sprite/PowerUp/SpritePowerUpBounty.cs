@@ -20,7 +20,7 @@ namespace Si.Engine.Sprite.PowerUp
 
         public override void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
-            if (IntersectsAABB(_engine.Player.Sprite))
+            if (IntersectsAABB(Engine.Player.Sprite))
             {
                 Explode();
             }

@@ -14,7 +14,7 @@ namespace Si.Engine.Sprite._Superclass._Root
     public partial class SpriteBase
         : ISprite
     {
-        protected EngineCore _engine;
+        protected EngineCore Engine { get; private set; }
 
         public SharpDX.Direct2D1.Bitmap? SpriteBitmap { get; private set; }
         private bool _readyForDeletion;
@@ -26,9 +26,9 @@ namespace Si.Engine.Sprite._Superclass._Root
 
         public SpriteBase(EngineCore engine, string? assetKey)
         {
-            _engine = engine;
+            Engine = engine;
 
-            IsHighlighted = _engine.Settings.HighlightAllSprites;
+            IsHighlighted = Engine.Settings.HighlightAllSprites;
             Orientation = SiVector.One();
 
             SetImageAndLoadMetadata(assetKey);
@@ -46,13 +46,13 @@ namespace Si.Engine.Sprite._Superclass._Root
                 return;
             }
 
-            var asset = _engine.Assets.GetAsset(assetKey);
+            var asset = Engine.Assets.GetAsset(assetKey);
 
             _metadata = asset.Metadata;
 
             if (SiConstants.ImageTypes.Contains(asset.BaseType, StringComparer.OrdinalIgnoreCase))
             {
-                SpriteBitmap = _engine.Assets.GetBitmap(assetKey);
+                SpriteBitmap = Engine.Assets.GetBitmap(assetKey);
                 _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
             }
 
@@ -68,7 +68,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             {
                 Metadata.WeaponAssetKeys?.ForEach(weaponAssetKey =>
                 {
-                    var weaponMetadata = _engine.Assets.GetAsset(weaponAssetKey).Metadata;
+                    var weaponMetadata = Engine.Assets.GetAsset(weaponAssetKey).Metadata;
                     interactive.AddWeapon(weaponAssetKey, weaponMetadata.MunitionCount ?? 0);
                 });
 
@@ -90,7 +90,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             {
                 if (!string.IsNullOrEmpty(Metadata?.PrimaryWeaponAssetKey))
                 {
-                    var weaponMetadata = _engine.Assets.GetAsset(Metadata.PrimaryWeaponAssetKey).Metadata;
+                    var weaponMetadata = Engine.Assets.GetAsset(Metadata.PrimaryWeaponAssetKey).Metadata;
                     player.SetPrimaryWeapon(Metadata.PrimaryWeaponAssetKey, weaponMetadata.MunitionCount ?? 0);
                     player.SelectFirstAvailableUsableSecondaryWeapon();
                 }
@@ -116,8 +116,8 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         public void CenterInUniverse()
         {
-            X = _engine.Display.TotalCanvasSize.Width / 2 /*- Size.Width / 2*/;
-            Y = _engine.Display.TotalCanvasSize.Height / 2 /*- Size.Height / 2*/;
+            X = Engine.Display.TotalCanvasSize.Width / 2 /*- Size.Width / 2*/;
+            Y = Engine.Display.TotalCanvasSize.Height / 2 /*- Size.Height / 2*/;
         }
 
         public void SetHullHealth(int points)
@@ -127,7 +127,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         public virtual void AddHullHealth(int pointsToAdd)
-            => HullHealth = (HullHealth + pointsToAdd).Clamp(0, _engine.Settings.MaxHullHealth);
+            => HullHealth = (HullHealth + pointsToAdd).Clamp(0, Engine.Settings.MaxHullHealth);
 
         public virtual void SetShieldHealth(int points)
         {
@@ -136,7 +136,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         }
 
         public virtual void AddShieldHealth(int pointsToAdd)
-            => ShieldHealth = (ShieldHealth + pointsToAdd).Clamp(0, _engine.Settings.MaxShieldHealth);
+            => ShieldHealth = (ShieldHealth + pointsToAdd).Clamp(0, Engine.Settings.MaxShieldHealth);
 
         public void SetBitmap(SharpDX.Direct2D1.Bitmap bitmap)
         {
@@ -168,7 +168,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             IsVisible = false;
 
-            _engine.Sprites.QueueAllForDeletionByOwner(UID);
+            Engine.Sprites.QueueAllForDeletionByOwner(UID);
 
             foreach (var attachments in Attachments)
             {
@@ -202,7 +202,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 + $"\t                          {Orientation.DegreesSigned:n2}deg\r\n"
                 + $"\t                          {Orientation.RadiansSigned:n2}rad\r\n"
                 + extraInfo
-                + $"\t       Background Offset: {_engine.Display.CameraPosition}\r\n"
+                + $"\t       Background Offset: {Engine.Display.CameraPosition}\r\n"
                 + $"\t                  Thrust: {MovementVector * 100:n2}\r\n"
                 + $"\t                   Boost: {Throttle * 100:n2}\r\n"
                 + $"\t                    Hull: {HullHealth:n0}\r\n"

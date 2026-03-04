@@ -20,10 +20,10 @@ namespace Si.Engine.Sprite.Weapon
                 if (RoundQuantity > 0)
                 {
                     var offsetRight = Owner.Orientation.RotatedBy(90) * new SiVector(5, 5);
-                    _engine.Sprites.Munitions.Add(this, Owner.Location + offsetRight);
+                    Engine.Sprites.Munitions.Add(this, Owner.Location + offsetRight);
 
                     var offsetLeft = Owner.Orientation.RotatedBy(-90) * new SiVector(5, 5);
-                    _engine.Sprites.Munitions.Add(this, Owner.Location + offsetLeft);
+                    Engine.Sprites.Munitions.Add(this, Owner.Location + offsetLeft);
                 }
 
                 RoundQuantity--;

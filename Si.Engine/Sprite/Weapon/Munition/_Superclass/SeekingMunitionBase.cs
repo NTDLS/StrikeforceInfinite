@@ -22,9 +22,9 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         {
             if (FiredFromType == SiFiredFromType.Enemy)
             {
-                if (DistanceTo(_engine.Player.Sprite) < Metadata.SeekingEscapeDistance)
+                if (DistanceTo(Engine.Player.Sprite) < Metadata.SeekingEscapeDistance)
                 {
-                    var deltaAngle = this.HeadingAngleToInSignedDegrees(_engine.Player.Sprite);
+                    var deltaAngle = this.HeadingAngleToInSignedDegrees(Engine.Player.Sprite);
 
                     if (Math.Abs((float)deltaAngle) < Metadata.SeekingEscapeAngleDegrees && !deltaAngle.IsNearZero())
                     {
@@ -36,7 +36,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             {
                 float? smallestAngle = null;
 
-                foreach (var enemy in _engine.Sprites.Enemies.Visible())
+                foreach (var enemy in Engine.Sprites.Enemies.Visible())
                 {
                     if (DistanceTo(enemy) < Metadata.SeekingEscapeDistance)
                     {

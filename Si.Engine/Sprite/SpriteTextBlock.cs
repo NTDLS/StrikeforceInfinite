@@ -33,7 +33,7 @@ namespace Si.Engine.Sprite
             set
             {
                 _text = value;
-                var size = _engine.Rendering.GetTextSize(_text, Format);
+                var size = Engine.Rendering.GetTextSize(_text, Format);
                 _size = new Size((int)size.Width, (int)size.Height);
             }
         }
@@ -53,44 +53,44 @@ namespace Si.Engine.Sprite
 
         public void CenterXY()
         {
-            X = _engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
-            Y = _engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
+            X = Engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
+            Y = Engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
         }
 
         public void CenterY()
         {
-            Y = _engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
+            Y = Engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
         }
 
         public void CenterX()
         {
-            X = (_engine.Display.NaturalScreenSize.Width / 2) - (Size.Width / 2);
+            X = (Engine.Display.NaturalScreenSize.Width / 2) - (Size.Width / 2);
         }
 
         public void SetTextAndCenterXY(string text)
         {
             Text = text;
-            X = _engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
-            Y = _engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
+            X = Engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
+            Y = Engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
         }
 
         public void SetTextAndCenterY(string text)
         {
             Text = text;
-            Y = _engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
+            Y = Engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
         }
 
         public void SetTextAndCenterX(string text)
         {
             Text = text;
-            X = _engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
+            X = Engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
         }
 
         public override void Render(RenderTarget renderTarget, float epoch)
         {
             if (IsVisible)
             {
-                _engine.Rendering.DrawText(renderTarget,
+                Engine.Rendering.DrawText(renderTarget,
                     RenderLocation.X,
                     RenderLocation.Y,
                     0, _text ?? string.Empty, Format, Color);

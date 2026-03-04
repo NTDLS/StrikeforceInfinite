@@ -20,8 +20,8 @@ namespace Si.Engine.Sprite._Superclass._Root
 
                 if (IsHighlighted)
                 {
-                    _engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
-                        _engine.Rendering.Materials.Colors.Red, 0, 1, Orientation.RadiansSigned);
+                    Engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
+                        Engine.Rendering.Materials.Colors.Red, 0, 1, Orientation.RadiansSigned);
                 }
 
                 if (HighlightSweptMotionRect)
@@ -30,14 +30,14 @@ namespace Si.Engine.Sprite._Superclass._Root
                     var swept = SweptAabbForMotion(-epoch);
 
                     var sweptRect = new RawRectangleF(
-                        swept.min.X - _engine.Display.CameraPosition.X,
-                        swept.min.Y - _engine.Display.CameraPosition.Y,
-                        swept.max.X - _engine.Display.CameraPosition.X,
-                        swept.max.Y - _engine.Display.CameraPosition.Y
+                        swept.min.X - Engine.Display.CameraPosition.X,
+                        swept.min.Y - Engine.Display.CameraPosition.Y,
+                        swept.max.X - Engine.Display.CameraPosition.X,
+                        swept.max.Y - Engine.Display.CameraPosition.Y
                     );
 
-                    _engine.Rendering.DrawRectangle(renderTarget, sweptRect,
-                            _engine.Rendering.Materials.Colors.Red, 0, 1, 0);
+                    Engine.Rendering.DrawRectangle(renderTarget, sweptRect,
+                            Engine.Rendering.Materials.Colors.Red, 0, 1, 0);
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             {
                 if (this is SpriteEnemyBase)
                 {
-                    _engine.Rendering.DrawTriangle(renderTarget, x, y, 3, 3, _engine.Rendering.Materials.Colors.OrangeRed);
+                    Engine.Rendering.DrawTriangle(renderTarget, x, y, 3, 3, Engine.Rendering.Materials.Colors.OrangeRed);
                 }
                 else if (this is MunitionBase munition)
                 {
@@ -61,11 +61,11 @@ namespace Si.Engine.Sprite._Superclass._Root
 
                     if (munition.FiredFromType == SiFiredFromType.Enemy)
                     {
-                        color = _engine.Rendering.Materials.Colors.Red;
+                        color = Engine.Rendering.Materials.Colors.Red;
                     }
                     else
                     {
-                        color = _engine.Rendering.Materials.Colors.Green;
+                        color = Engine.Rendering.Materials.Colors.Green;
                     }
 
                     if (munition.Weapon.Metadata?.ExplodesOnImpact == true)
@@ -77,7 +77,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                         size = 1;
                     }
 
-                    _engine.Rendering.DrawSolidEllipse(renderTarget, x, y, size, size, color);
+                    Engine.Rendering.DrawSolidEllipse(renderTarget, x, y, size, size, color);
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             float angle = (float)(angleRadians == null ? Orientation.RadiansSigned : angleRadians);
 
-            _engine.Rendering.DrawBitmap(renderTarget, bitmap,
+            Engine.Rendering.DrawBitmap(renderTarget, bitmap,
                 RenderLocation.X - bitmap.Size.Width / 2.0f,
                 RenderLocation.Y - bitmap.Size.Height / 2.0f, angle);
         }

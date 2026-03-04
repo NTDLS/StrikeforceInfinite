@@ -16,10 +16,10 @@ namespace Si.Engine.Sprite.Enemy.Starbase.Garrison
 
         public override void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
-            if (DistanceTo(_engine.Player.Sprite) < 1000)
+            if (DistanceTo(Engine.Player.Sprite) < 1000)
             {
                 //Rotate the turret toward the player.
-                var deltaAngleToPlayer = this.HeadingAngleToInSignedDegrees(_engine.Player.Sprite);
+                var deltaAngleToPlayer = this.HeadingAngleToInSignedDegrees(Engine.Player.Sprite);
                 if (deltaAngleToPlayer < 1)
                 {
                     Orientation.Degrees -= 0.25f;

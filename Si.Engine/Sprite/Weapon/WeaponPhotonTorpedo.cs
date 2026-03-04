@@ -17,19 +17,19 @@ namespace Si.Engine.Sprite.Weapon
         {
             if (CanFire)
             {
-                _engine.Rendering.AddScreenShake(4, 100);
+                Engine.Rendering.AddScreenShake(4, 100);
                 _fireSound?.Play();
                 RoundQuantity--;
 
                 if (_toggle)
                 {
                     var offsetRight = Owner.Orientation.RotatedBy(90) * new SiVector(10, 10);
-                    _engine.Sprites.Munitions.Add(this, Owner.Location + offsetRight);
+                    Engine.Sprites.Munitions.Add(this, Owner.Location + offsetRight);
                 }
                 else
                 {
                     var offsetLeft = Owner.Orientation.RotatedBy(-90) * new SiVector(10, 10);
-                    _engine.Sprites.Munitions.Add(this, Owner.Location + offsetLeft);
+                    Engine.Sprites.Munitions.Add(this, Owner.Location + offsetLeft);
                 }
 
                 _toggle = !_toggle;

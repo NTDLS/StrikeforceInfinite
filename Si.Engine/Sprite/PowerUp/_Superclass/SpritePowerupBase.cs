@@ -40,13 +40,13 @@ namespace Si.Engine.Sprite.PowerUp._Superclass
 
         public override void Explode()
         {
-            _engine.Assets.GetAudio("Sounds/Powerup/PowerUp1").Play();
+            Engine.Assets.GetAudio("Sounds/Powerup/PowerUp1").Play();
             QueueForDelete();
         }
 
         public virtual void ApplyIntelligence(float epoch, SiVector displacementVector)
         {
-            if (IntersectsAABB(_engine.Player.Sprite))
+            if (IntersectsAABB(Engine.Player.Sprite))
             {
                 Explode();
             }
