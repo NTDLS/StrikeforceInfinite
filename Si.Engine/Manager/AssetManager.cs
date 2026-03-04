@@ -284,8 +284,6 @@ namespace Si.Engine.Manager
                 ? 0
                 : 100.0 * (originalSize - compressedSize) / originalSize;
 
-            _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
-
             _assetsDatabase.Execute("UPDATE Assets SET BaseType = @BaseType, Bytes = @Bytes, IsCompressed = @IsCompressed WHERE Key = @Key",
                 new
                 {
@@ -316,7 +314,10 @@ namespace Si.Engine.Manager
             _cache.Clear();
         }
 
-        public byte[] ReadRowAssetBytes(string assetKey)
+        /// <summary>
+        /// Reads the asset bytes (such as an image, wav file, text, etc.) from the database and returns them.
+        /// </summary>
+        public byte[] ReadAssetBytes(string assetKey)
         {
             var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Bytes, IsCompressed FROM Assets WHERE Key = @Key",
                 new { Key = assetKey });

@@ -51,7 +51,7 @@ namespace Si.AssetExplorer
             try
             {
                 var asset = _engine.Assets.GetAsset(node.AssetKey);
-                var assetBytes = _engine.Assets.ReadRowAssetBytes(node.AssetKey);
+                var assetBytes = _engine.Assets.ReadAssetBytes(node.AssetKey);
 
                 var asstKeyName = node.AssetKey.Split('/').Last();
 
@@ -95,7 +95,6 @@ namespace Si.AssetExplorer
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    //var pngBytes = EasyImage.LoadAnyToPngBytes(dialog.FileName);
                     _engine.Assets.WriteAssetBytes(node.AssetKey, dialog.FileName);
                     _loadSelectedTreeNode(node);
                 }
