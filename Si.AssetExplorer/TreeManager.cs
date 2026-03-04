@@ -2,6 +2,7 @@
 using Si.Engine;
 using Si.Library;
 using Talkster.Client.Controls;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Si.AssetExplorer
 {
@@ -22,6 +23,87 @@ namespace Si.AssetExplorer
             _loadSelectedTreeNode = loadSelectedTreeNode;
 
             _treeView.NodeMouseDoubleClick += TreeView_NodeMouseDoubleClick;
+            _treeView.NodeMouseClick += TreeView_NodeMouseClick;
+        }
+
+        private void TreeView_NodeMouseClick(object? sender, TreeNodeMouseClickEventArgs e)
+        {
+            try
+            {
+                if (e.Button == MouseButtons.Right && e.Node is SiTreeNode node)
+                {
+                    _treeView.SelectedNode = node;
+
+                    var menu = new ContextMenuStrip();
+                    menu.Items.Add("Replace Asset", null, (s, e) => ReplaceAsset(node));
+                    menu.Items.Add("Export Asset", null, (s, e) => ExportAsset(node));
+                    menu.Show(_treeView, e.Location);
+                }
+            }
+            catch (Exception ex)
+            {
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
+        }
+
+        private void ExportAsset(SiTreeNode node)
+        {
+            try
+            {
+                var asset = _engine.Assets.GetAsset(node.AssetKey);
+                var assetBytes = _engine.Assets.ReadRowAssetBytes(node.AssetKey);
+
+                var asstKeyName = node.AssetKey.Split('/').Last();
+
+                using var dialog = new SaveFileDialog
+                {
+                    Title = "Save Asset",
+                    Filter = $"{asset.BaseType} File (*.{asset.BaseType})|*.{asset.BaseType}|All Files (*.*)|*.*",
+                    FileName = $"{asstKeyName}.{asset.BaseType}",
+                    DefaultExt = $"{asset.BaseType}",
+                    AddExtension = true,
+                    OverwritePrompt = true
+                };
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllBytes(dialog.FileName, assetBytes);
+                }
+            }
+            catch (Exception ex)
+            {
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
+        }
+
+        private void ReplaceAsset(SiTreeNode node)
+        {
+            try
+            {
+                using var dialog = new OpenFileDialog
+                {
+                    Title = "Select File",
+                    Filter =
+                    "Supported Files (*.wav;*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.txt;*.json)|*.wav;*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.txt;*.json|" +
+                    "Wave Audio (*.wav)|*.wav|" +
+                    "Images (*.png;*.jpg;*.jpeg;*.bmp;*.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|" +
+                    "Text Files (*.txt)|*.txt|" +
+                    "JSON Files (*.json)|*.json|" +
+                    "All Files (*.*)|*.*",
+                    Multiselect = false
+                };
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    //var pngBytes = EasyImage.LoadAnyToPngBytes(dialog.FileName);
+                    _engine.Assets.WriteAssetBytes(node.AssetKey, dialog.FileName);
+                    _loadSelectedTreeNode(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
         }
 
         private void TreeView_NodeMouseDoubleClick(object? sender, TreeNodeMouseClickEventArgs e)

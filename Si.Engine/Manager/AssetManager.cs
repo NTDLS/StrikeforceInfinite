@@ -315,5 +315,13 @@ namespace Si.Engine.Manager
 
             _cache.Clear();
         }
+
+        public byte[] ReadRowAssetBytes(string assetKey)
+        {
+            var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Bytes, IsCompressed FROM Assets WHERE Key = @Key",
+                new { Key = assetKey });
+
+            return  model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+        }
     }
 }
