@@ -10,7 +10,7 @@
         /// <summary>
         /// Name of the dynamically compiled controller class, if applicable.
         /// </summary>
-        public string? Controller { get; set; }
+        public string? ControllerName { get; set; }
 
         public AssetContainer(string key, string baseType, AssetMetadata metadata, object obj)
         {

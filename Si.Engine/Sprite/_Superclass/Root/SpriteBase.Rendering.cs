@@ -1,5 +1,4 @@
 ﻿using SharpDX.Mathematics.Interop;
-using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library.Sprite;
 using System.Drawing;

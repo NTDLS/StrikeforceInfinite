@@ -11,6 +11,7 @@ namespace Si.Engine.Sprite
         private SpriteInteractiveBase? _rootOwner = null;
         private SpriteInteractiveBase? _owner = null;
         public SiVector? LocationRelativeToOwner { get; set; }
+        public string? AssetKey { get; private set; }
 
         /// <summary>
         /// Determines the behavior of a attachment sprite's orientation.
@@ -25,6 +26,7 @@ namespace Si.Engine.Sprite
         public SpriteAttachment(EngineCore engine, string? assetKey)
             : base(engine, assetKey)
         {
+            AssetKey = assetKey;
         }
 
         /// <summary>

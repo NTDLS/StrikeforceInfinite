@@ -5,7 +5,6 @@ using Si.Engine.Menu;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Engine.Sprite.KinematicBody;
 using Si.Engine.Sprite.PowerUp._Superclass;
 using Si.Engine.Sprite.Weapon._Superclass;
@@ -122,9 +121,9 @@ namespace Si.Engine.Manager
             //TODO: We need to remove this hardcoded "SpriteBase" default and replace it with the dynamically compiled class (controller).
             string className = string.IsNullOrEmpty(asset.Metadata.Class) ? "SpriteBase" : asset.Metadata.Class;
 
-            if (asset.Controller != null)
+            if (asset.ControllerName != null)
             {
-                className = asset.Controller;
+                className = asset.ControllerName;
             }
 
             var classType = SiReflection.GetTypeByName(className);

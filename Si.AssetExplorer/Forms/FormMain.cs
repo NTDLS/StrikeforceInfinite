@@ -1,3 +1,4 @@
+using ICSharpCode.AvalonEdit;
 using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
 using Si.AssetExplorer.Controls;
@@ -17,6 +18,7 @@ namespace Si.AssetExplorer
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
         private readonly PropertyListManager _propertListManager;
+        private readonly TextEditor _textEditor;
 
         public FormMain()
         {
@@ -37,6 +39,16 @@ namespace Si.AssetExplorer
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
             Shown += FormMain_Shown;
+
+            _textEditor = new TextEditor();
+
+            var editorContainer = new System.Windows.Forms.Integration.ElementHost
+            {
+                Dock = DockStyle.Fill,
+                Child = _textEditor
+            };
+
+            splitContainerRight.Panel1.Controls.Add(editorContainer);
         }
 
         private void PictureBoxPreview_MouseWheel(object? sender, MouseEventArgs e)
@@ -151,6 +163,14 @@ namespace Si.AssetExplorer
                         o.RotationSpeed = 0f;
                         o.Speed = 0;
                         o.Throttle = 0;
+                    });
+
+                    //Show the asset C# code.
+                    var asset = _engine.Assets.ReadAssetController(node.AssetKey);
+
+                    Invoke(() =>
+                    {
+                        _textEditor.Text = asset.Controller ?? string.Empty;
                     });
 
                     _propertListManager.PopulateProperties(node.AssetKey, sprite);

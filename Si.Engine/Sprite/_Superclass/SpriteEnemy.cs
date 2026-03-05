@@ -1,7 +1,6 @@
-﻿using Si.Engine.Sprite._Superclass;
-using Si.Library.Mathematics;
+﻿using Si.Library.Mathematics;
 
-namespace Si.Engine.Sprite.Enemy._Superclass
+namespace Si.Engine.Sprite._Superclass
 {
     /// <summary>
     /// The enemy base is a sub-class of the ship base. It is used by Peon and Boss enemies.

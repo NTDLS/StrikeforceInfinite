@@ -1,8 +1,9 @@
 ﻿using Si.Engine.AI.Logistics;
-using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Enemy._Superclass;
-using Si.Engine.Sprite.Weapon;
+using Si.Engine.Sprite._Superclass;
+using Si.Library;
 using Si.Library.Mathematics;
+using Si.Rendering;
+using System.Drawing;
 using System.Linq;
 
 namespace Si.Engine.Sprite.Enemy.Debug
@@ -13,107 +14,66 @@ namespace Si.Engine.Sprite.Enemy.Debug
     internal class SpriteEnemyDebug(EngineCore engine, string assetKey)
         : SpriteEnemy(engine, assetKey)
     {
-        private SpriteAnimation? _thrusterAnimation;
-        private SpriteAnimation? _boosterAnimation;
+        private SpriteAttachment? _thrusterLeft;
+        private SpriteAttachment? _thrusterRight;
 
         public override void OnMaterialized()
         {
-            RecalculateMovementVectorFromOrientation();
-
-            OnVisibilityChanged += EnemyBase_OnVisibilityChanged;
-
-            _thrusterAnimation = Engine.Sprites.Animations.Add("Sprites/Animation/ThrustStandard32x32", (o) =>
-            {
-                o.Location = Location;
-                o.Orientation = Orientation;
-                o.IsVisible = true;
-                o.OwnerUID = UID;
-            });
-
-            _boosterAnimation = Engine.Sprites.Animations.Add("Sprites/Animation/ThrustBoost32x32", (o) =>
-            {
-                o.Location = Location;
-                o.Orientation = Orientation;
-                o.IsVisible = true;
-                o.OwnerUID = UID;
-            });
-
-            UpdateThrustAnimationPositions();
+            Orientation.Degrees = SiRandom.Between(0, 359);
 
             AddAIController(new AILogisticsHostileEngagement(Engine, this, [Engine.Player.Sprite]));
+
             SetCurrentAIController<AILogisticsHostileEngagement>();
-            base.OnMaterialized();
+
+            _thrusterLeft = Attachments.Single(o => o.AssetKey == "Sprites/Enemy/Boss/Devastator/Jet.Left");
+            _thrusterRight = Attachments.Single(o => o.AssetKey == "Sprites/Enemy/Boss/Devastator/Jet.Right");
+
+            RecalculateMovementVectorFromOrientation();
         }
 
-        public override void LocationChanged() => UpdateThrustAnimationPositions();
-
-        private void UpdateThrustAnimationPositions()
+        private float TargetThrottle
         {
-            var pointBehind = (Orientation * -1) * new SiVector(20, 20);
-
-            if (_thrusterAnimation != null && _thrusterAnimation.IsVisible)
+            get
             {
-                _thrusterAnimation.Orientation = Orientation;
-                _thrusterAnimation.Location = Location + pointBehind;
-            }
-            if (_boosterAnimation != null && _boosterAnimation.IsVisible)
-            {
-                _boosterAnimation.Orientation = Orientation;
-                _boosterAnimation.Location = Location + pointBehind;
-            }
-        }
-
-        private void EnemyBase_OnVisibilityChanged(SpriteBase sender)
-        {
-            _thrusterAnimation?.IsVisible = false;
-            _boosterAnimation?.IsVisible = false;
-        }
-
-        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
-        {
-            base.ApplyIntelligence(epoch, cameraDisplacement);
-            ApplyWeaponsLogic();
-        }
-
-        private void ApplyWeaponsLogic()
-        {
-            var playersIAmPointingAt = GetPointingAtOf(Engine.Sprites.AllVisiblePlayers, 2.0f);
-            if (playersIAmPointingAt.Any())
-            {
-                var closestDistance = ClosestDistanceOf(playersIAmPointingAt);
-
-                if (closestDistance < 1000)
+                if (_thrusterLeft?.IsDeadOrExploded == true && _thrusterRight?.IsDeadOrExploded == true)
                 {
-                    if (closestDistance > 500 && HasWeaponAndAmmo<WeaponVulcanCannon>())
-                    {
-                        FireWeapon<WeaponVulcanCannon>();
-                    }
-                    else if (closestDistance > 0 && HasWeaponAndAmmo<WeaponDualVulcanCannon>())
-                    {
-                        FireWeapon<WeaponDualVulcanCannon>();
-                    }
+                    return 0.05f; // idle drift
+                }
+                else if (_thrusterLeft?.IsDeadOrExploded == true || _thrusterRight?.IsDeadOrExploded == true)
+                {
+                    return 0.5f;  // limp mode
+                }
+                else
+                {
+                    return 1.0f;  // full thrust
                 }
             }
         }
 
-        /// <summary>
-        /// Moves the sprite based on its thrust/boost (velocity).
-        /// </summary>
-        /// <param name="cameraDisplacement"></param>
         public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
+            Throttle = SiMath.Damp(Throttle, TargetThrottle, 0.01f, epoch);
+
+            var offset = Orientation * new SiVector(40f, 40f);
+
+            if (_thrusterLeft?.IsDeadOrExploded == true)
+            {
+                Engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+            }
+            if (_thrusterRight?.IsDeadOrExploded == true)
+            {
+                Engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+            }
+
+            if (HullHealth <= Metadata.Hull / 2)
+            {
+                Engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(0, 1));
+            }
+
             base.ApplyMotion(epoch, cameraDisplacement);
-
-            _thrusterAnimation?.IsVisible = MovementVector.Sum() > 0;
-            _boosterAnimation?.IsVisible = Throttle > 1;
         }
 
-        public override void Cleanup()
-        {
-            _thrusterAnimation?.QueueForDelete();
-            _boosterAnimation?.QueueForDelete();
 
-            base.Cleanup();
-        }
     }
 }
+

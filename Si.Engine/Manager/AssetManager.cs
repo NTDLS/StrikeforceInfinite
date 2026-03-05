@@ -135,7 +135,7 @@ namespace Si.Engine.Manager
                         && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
                         && !string.IsNullOrWhiteSpace(assetContainer.Metadata.AssetKey))
                     {
-                        var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_');
+                        var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_');
 
                         var classCode = SiAssetControllerClassText.Get(assetContainer.Metadata.Class, assetClassName, model.Controller);
 
@@ -144,7 +144,7 @@ namespace Si.Engine.Manager
                         //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
                         SiReflection.GetTypeByName(assetClassName);
 
-                        assetContainer.Controller = assetClassName;
+                        assetContainer.ControllerName = assetClassName;
                     }
 
                     lock (_collection)
@@ -345,6 +345,15 @@ namespace Si.Engine.Manager
                 new { Key = assetKey });
 
             return model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+        }
+
+        /// <summary>
+        /// Used to read the C# controller for the asset because we do not store it in memory in an uncompiled form.
+        /// </summary>
+        public AssetDatabaseModel ReadAssetController(string assetKey)
+        {
+            return _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Key, BaseType, Controller FROM Assets WHERE Key = @Key",
+                new { Key = assetKey });
         }
 
         /// <summary>
