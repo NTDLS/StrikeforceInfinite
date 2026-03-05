@@ -232,6 +232,8 @@ namespace Si.Engine.Manager
 
             _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 
+            metadata.AssetKey = assetKey;
+
             _assetsDatabase.Execute("INSERT INTO Assets (Key, BaseType, Bytes, IsCompressed, Metadata)"
                 + "VALUES (@Key, @BaseType, @Bytes, @IsCompressed, @Metadata)",
                 new
@@ -254,6 +256,8 @@ namespace Si.Engine.Manager
         public void WriteAssetMetadata(string assetKey, AssetMetadata metadata)
         {
             _cache.Clear();
+
+            metadata.AssetKey = assetKey;
 
             _assetsDatabase.Execute("UPDATE Assets SET Metadata = @Metadata WHERE Key = @Key",
                 new
