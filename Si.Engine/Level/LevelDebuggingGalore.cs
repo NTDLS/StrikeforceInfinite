@@ -68,6 +68,9 @@ namespace Si.Engine.Level
 
         private void AddEnemies()
         {
+            _engine.Sprites.Enemies.Add("Sprites/Enemy/Peon/Phoenix");
+
+
             _engine.Sprites.Enemies.Add("Sprites/Enemy/Boss/Devastator/Hull", (sprite) =>
             {
                 sprite.Location = _engine.Display.RandomOnScreenLocation();

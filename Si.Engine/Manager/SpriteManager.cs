@@ -190,8 +190,7 @@ namespace Si.Engine.Manager
 
         public T Add<T>(string assetKey, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            var sprite = Create<T>(assetKey);
-            initilizationProc?.Invoke(sprite);
+            var sprite = Create<T>(assetKey, initilizationProc);
             Insert(sprite);
             return sprite;
         }
@@ -217,7 +216,11 @@ namespace Si.Engine.Manager
             {
                 throw new Exception("NULL sprites cannot be added to the manager.");
             }
-            _engine.Events.Once(() => _collection.Add(sprite));
+            _engine.Events.Once(() =>
+            {
+                _collection.Add(sprite);
+                sprite.OnMaterialized();
+            });
 
             _engine.MultiplayLobby?.ActionBuffer.RecordSpawn(sprite.GetMultiPlayActionSpawn());
         }

@@ -22,10 +22,6 @@ namespace Si.Engine.Sprite.Enemy._Superclass
                 engine.Rendering.Materials.Brushes.Red, new SiVector());
         }
 
-        public virtual void BeforeCreate() { }
-
-        public virtual void AfterCreate() { }
-
         public override void OrientationChanged() => LocationChanged();
 
         public override void Explode()

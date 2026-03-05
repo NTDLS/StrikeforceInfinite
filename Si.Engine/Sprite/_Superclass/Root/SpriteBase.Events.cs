@@ -19,5 +19,12 @@ namespace Si.Engine.Sprite._Superclass._Root
         public virtual void VisibilityChanged() { }
         public virtual void LocationChanged() { }
         public virtual void OrientationChanged() { }
+
+        /// <summary>
+        /// Called after the sprite is created and added to the engine.
+        /// This is useful for doing things that require the sprite to be fully initialized and part of the engine,
+        /// such as adding child sprites or accessing engine services.
+        /// </summary>
+        public virtual void OnMaterialized() { }
     }
 }
