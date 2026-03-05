@@ -2,6 +2,7 @@
 using NTDLS.WinFormsHelpers;
 using Si.AssetExplorer.Controls;
 using Si.Library;
+using static Si.Library.SiConstants;
 
 namespace Si.AssetExplorer.Forms
 {
@@ -24,9 +25,7 @@ namespace Si.AssetExplorer.Forms
 
             var sampleText = EmbeddedResource.Load("Samples/CSharpTextSample.txt");
 
-            _fontSampleTextbox = new SiCodeEditor(panelFontSampleParent, sampleText);
-
-            //FullyFeaturedCodeEditor.ApplyEditorSettings(_fontSampleTextbox);
+            _fontSampleTextbox = new SiCodeEditor(panelFontSampleParent, SiCodeType.CSharp, sampleText);
 
             foreach (var font in FontFamily.Families)
             {

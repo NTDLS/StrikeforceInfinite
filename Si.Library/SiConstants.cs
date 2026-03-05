@@ -36,6 +36,15 @@ namespace Si.Library
             }
         }
 
+        public enum SiCodeType
+        {
+            Text,
+            CSharp,
+            JSON,
+            XML,
+            MarkDown
+        }
+
         public enum PropertyEditorGroup
         {
             Base,

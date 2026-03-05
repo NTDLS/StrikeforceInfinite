@@ -10,11 +10,17 @@
 
   <ItemGroup>
     <None Remove="Highlighters\SiCSharpHighlighter.xshd" />
+    <None Remove="Highlighters\SiJsonHighlighter.xshd" />
+    <None Remove="Highlighters\SiMarkDownHighlighter.xshd" />
+    <None Remove="Highlighters\SiXmlHighlighter.xshd" />
     <None Remove="Samples\CSharpTextSample.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Highlighters\SiCSharpHighlighter.xshd" />
+    <EmbeddedResource Include="Highlighters\SiJsonHighlighter.xshd" />
+    <EmbeddedResource Include="Highlighters\SiMarkDownHighlighter.xshd" />
+    <EmbeddedResource Include="Highlighters\SiXmlHighlighter.xshd" />
     <EmbeddedResource Include="Samples\CSharpTextSample.txt" />
   </ItemGroup>
 

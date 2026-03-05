@@ -34,6 +34,7 @@ namespace Si.AssetExplorer
             splitContainerLeft = new SplitContainer();
             treeViewAssets = new DoubleBufferedTreeView();
             splitContainerRight = new SplitContainer();
+            tabControlCode = new TabControl();
             splitContainerProperties = new SplitContainer();
             pictureBoxPreview = new PictureBox();
             listViewProperties = new ListView();
@@ -41,12 +42,13 @@ namespace Si.AssetExplorer
             richTextBoxOutput = new RichTextBox();
             toolStrip1 = new ToolStrip();
             toolStripButtonSettings = new ToolStripButton();
-            toolStripButtonDevelopmentConsole = new ToolStripButton();
+            toolStripButtonDeveloperConsole = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
             splitContainerLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).BeginInit();
+            splitContainerRight.Panel1.SuspendLayout();
             splitContainerRight.Panel2.SuspendLayout();
             splitContainerRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).BeginInit();
@@ -64,6 +66,7 @@ namespace Si.AssetExplorer
             // splitContainerLeft
             // 
             splitContainerLeft.Dock = DockStyle.Fill;
+            splitContainerLeft.FixedPanel = FixedPanel.Panel1;
             splitContainerLeft.Location = new Point(0, 0);
             splitContainerLeft.Name = "splitContainerLeft";
             // 
@@ -89,8 +92,13 @@ namespace Si.AssetExplorer
             // splitContainerRight
             // 
             splitContainerRight.Dock = DockStyle.Fill;
+            splitContainerRight.FixedPanel = FixedPanel.Panel2;
             splitContainerRight.Location = new Point(0, 0);
             splitContainerRight.Name = "splitContainerRight";
+            // 
+            // splitContainerRight.Panel1
+            // 
+            splitContainerRight.Panel1.Controls.Add(tabControlCode);
             // 
             // splitContainerRight.Panel2
             // 
@@ -98,6 +106,15 @@ namespace Si.AssetExplorer
             splitContainerRight.Size = new Size(523, 429);
             splitContainerRight.SplitterDistance = 259;
             splitContainerRight.TabIndex = 0;
+            // 
+            // tabControlCode
+            // 
+            tabControlCode.Dock = DockStyle.Fill;
+            tabControlCode.Location = new Point(0, 0);
+            tabControlCode.Name = "tabControlCode";
+            tabControlCode.SelectedIndex = 0;
+            tabControlCode.Size = new Size(259, 429);
+            tabControlCode.TabIndex = 0;
             // 
             // splitContainerProperties
             // 
@@ -167,7 +184,7 @@ namespace Si.AssetExplorer
             // toolStrip1
             // 
             toolStrip1.Font = new Font("Segoe UI", 9F);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDevelopmentConsole });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 25);
@@ -185,16 +202,16 @@ namespace Si.AssetExplorer
             toolStripButtonSettings.ToolTipText = "Settings";
             toolStripButtonSettings.Click += ToolStripButtonSettings_Click;
             // 
-            // toolStripButtonDevelopmentConsole
+            // toolStripButtonDeveloperConsole
             // 
-            toolStripButtonDevelopmentConsole.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButtonDevelopmentConsole.Image = (Image)resources.GetObject("toolStripButtonDevelopmentConsole.Image");
-            toolStripButtonDevelopmentConsole.ImageTransparentColor = Color.Magenta;
-            toolStripButtonDevelopmentConsole.Name = "toolStripButtonDevelopmentConsole";
-            toolStripButtonDevelopmentConsole.Size = new Size(23, 22);
-            toolStripButtonDevelopmentConsole.Text = "Development Console";
-            toolStripButtonDevelopmentConsole.ToolTipText = "Development Console";
-            toolStripButtonDevelopmentConsole.Click += ToolStripButtonDevelopmentConsole_Click;
+            toolStripButtonDeveloperConsole.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonDeveloperConsole.Image = (Image)resources.GetObject("toolStripButtonDeveloperConsole.Image");
+            toolStripButtonDeveloperConsole.ImageTransparentColor = Color.Magenta;
+            toolStripButtonDeveloperConsole.Name = "toolStripButtonDeveloperConsole";
+            toolStripButtonDeveloperConsole.Size = new Size(23, 22);
+            toolStripButtonDeveloperConsole.Text = "Developer Console";
+            toolStripButtonDeveloperConsole.ToolTipText = "Developer Console";
+            toolStripButtonDeveloperConsole.Click += ToolStripButtonDeveloperConsole_Click;
             // 
             // FormMain
             // 
@@ -210,6 +227,7 @@ namespace Si.AssetExplorer
             splitContainerLeft.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).EndInit();
             splitContainerLeft.ResumeLayout(false);
+            splitContainerRight.Panel1.ResumeLayout(false);
             splitContainerRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).EndInit();
             splitContainerRight.ResumeLayout(false);
@@ -241,6 +259,7 @@ namespace Si.AssetExplorer
         private RichTextBox richTextBoxOutput;
         private ToolStrip toolStrip1;
         private ToolStripButton toolStripButtonSettings;
-        private ToolStripButton toolStripButtonDevelopmentConsole;
+        private ToolStripButton toolStripButtonDeveloperConsole;
+        private TabControl tabControlCode;
     }
 }

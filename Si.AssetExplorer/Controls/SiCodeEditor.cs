@@ -4,6 +4,7 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Si.Library;
 using System.ComponentModel;
 using System.Xml;
+using static Si.Library.SiConstants;
 
 namespace Si.AssetExplorer.Controls
 {
@@ -11,6 +12,7 @@ namespace Si.AssetExplorer.Controls
         : System.Windows.Forms.Integration.ElementHost
     {
         public TextEditor Editor { get; private set; }
+        public bool TextHasChanged { get; private set; } = false;
 
         #region Passthrough properties.
 
@@ -53,28 +55,42 @@ namespace Si.AssetExplorer.Controls
 
         #endregion
 
-        public SiCodeEditor(Control parent, string text)
-            : this(parent)
+        public SiCodeEditor(Control parent, SiCodeType codeType, string text)
+            : this(parent, codeType)
         {
             Text = text;
         }
 
-        public SiCodeEditor(Control parent)
+        public SiCodeEditor(Control parent, SiCodeType codeType)
         {
-            var highlighterText = EmbeddedResource.Load("Highlighters/SiCSharpHighlighter.xshd");
-
             Editor = new TextEditor();
+
+            Editor.TextChanged += (object? sender, EventArgs e) => TextHasChanged = true;
 
             this.Child = Editor;
             Dock = DockStyle.Fill;
 
-            using var stringReader = new StringReader(highlighterText);
-            using var reader = XmlReader.Create(stringReader);
-            Editor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-            reader.Close();
-            stringReader.Close();
+            var highlighterText = codeType switch
+            {
+                SiCodeType.CSharp => EmbeddedResource.Load("Highlighters/SiCSharpHighlighter.xshd"),
+                SiCodeType.JSON => EmbeddedResource.Load("Highlighters/SiJsonHighlighter.xshd"),
+                SiCodeType.MarkDown => EmbeddedResource.Load("Highlighters/SiMarkDownHighlighter.xshd"),
+                SiCodeType.XML => EmbeddedResource.Load("Highlighters/SiXmlHighlighter.xshd"),
+                _ => null
+            };
+
+            if (highlighterText != null)
+            {
+                using var stringReader = new StringReader(highlighterText);
+                using var reader = XmlReader.Create(stringReader);
+                Editor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                reader.Close();
+                stringReader.Close();
+            }
 
             parent.Controls.Add(this);
+
+            TextHasChanged = false;
         }
 
         /// <summary>

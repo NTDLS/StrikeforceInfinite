@@ -17,7 +17,7 @@ namespace Si.AssetExplorer
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
         private readonly PropertyListManager _propertListManager;
-        private readonly SiCodeEditor _textEditor;
+        private readonly TabManager _tabManager;
 
         public FormMain()
         {
@@ -30,16 +30,17 @@ namespace Si.AssetExplorer
 
             pictureBoxPreview.MouseWheel += PictureBoxPreview_MouseWheel;
 
-            _engine = new EngineCore(pictureBoxPreview, Library.SiConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
+            _engine = new EngineCore(pictureBoxPreview, SiConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
             _engine.Display.ZoomOverride = 0.1f; // Start zoomed out to show the whole sprite.
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
+
             _treeManager = new TreeManager(treeViewAssets, _engine, WriteOutput, LoadSelectedTreeNode);
             _propertListManager = new PropertyListManager(listViewProperties, _engine, WriteOutput, PropertiesEdited);
+            _tabManager = new TabManager(_engine, tabControlCode);
+
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
             Shown += FormMain_Shown;
-
-            _textEditor = new SiCodeEditor(splitContainerRight.Panel1);
         }
 
         private void PictureBoxPreview_MouseWheel(object? sender, MouseEventArgs e)
@@ -161,7 +162,7 @@ namespace Si.AssetExplorer
 
                     Invoke(() =>
                     {
-                        _textEditor.Text = asset.Controller ?? string.Empty;
+                        _tabManager.AddTab(node.AssetKey, asset.Controller ?? string.Empty, SiCodeType.CSharp);
                     });
 
                     _propertListManager.PopulateProperties(node.AssetKey, sprite);
@@ -218,7 +219,7 @@ namespace Si.AssetExplorer
             }
         }
 
-        private void ToolStripButtonDevelopmentConsole_Click(object sender, EventArgs e)
+        private void ToolStripButtonDeveloperConsole_Click(object sender, EventArgs e)
         {
             _engine.Development?.EnsureVisibility();
         }
