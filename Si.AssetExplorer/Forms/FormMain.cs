@@ -36,7 +36,7 @@ namespace Si.AssetExplorer
 
             _treeManager = new TreeManager(treeViewAssets, _engine, WriteOutput, LoadSelectedTreeNode);
             _propertListManager = new PropertyListManager(listViewProperties, _engine, WriteOutput, PropertiesEdited);
-            _tabManager = new TabManager(_engine, tabControlCode);
+            _tabManager = new TabManager(_engine, tabControlCode, TabSelected);
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
@@ -137,12 +137,24 @@ namespace Si.AssetExplorer
         {
             try
             {
+                _tabManager.AddTab(node.AssetKey);
+            }
+            catch (Exception ex)
+            {
+                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
+        }
+
+        private void TabSelected(SiTabPage tab)
+        {
+            try
+            {
                 _engine.Events.Once(() =>
                 {
                     _engine.Sprites.QueueAllForDeletion();
                     _engine.Sprites.HardDeleteAllQueuedDeletions();
 
-                    var sprite = _engine.Sprites.EditorAdd(node.AssetKey, (o) =>
+                    var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, (o) =>
                     {
                         if (o is SpriteAnimation spriteAnimation)
                         {
@@ -157,15 +169,7 @@ namespace Si.AssetExplorer
                         o.Throttle = 0;
                     });
 
-                    //Show the asset C# code.
-                    var asset = _engine.Assets.ReadAssetController(node.AssetKey);
-
-                    Invoke(() =>
-                    {
-                        _tabManager.AddTab(node.AssetKey, asset.Controller ?? string.Empty, SiCodeType.CSharp);
-                    });
-
-                    _propertListManager.PopulateProperties(node.AssetKey, sprite);
+                    _propertListManager.PopulateProperties(tab.AssetKey, sprite);
                 });
             }
             catch (Exception ex)

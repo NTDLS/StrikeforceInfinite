@@ -9,14 +9,27 @@ namespace Si.AssetExplorer
     internal class TabManager
     {
         public TabControl TabControl { get; private set; }
+        private readonly Action<SiTabPage> _tabSelected;
         private readonly EngineCore _engine;
+        private SiTabPage? _lastSelectedTab; //Just so that we dont keep reloading the same tab on selection.
 
-        public TabManager(EngineCore engine, TabControl tabControl)
+        public TabManager(EngineCore engine, TabControl tabControl, Action<SiTabPage> tabSelected)
         {
+            _tabSelected = tabSelected;
             TabControl = tabControl;
             _engine = engine;
 
             TabControl.MouseUp += TabControl_MouseUp;
+            tabControl.Selected += (object? sender, TabControlEventArgs e) => InvokeTabChanged(tabControl.SelectedTab as SiTabPage);
+        }
+
+        private void InvokeTabChanged(SiTabPage? tabPage)
+        {
+            if (tabPage != null && tabPage != _lastSelectedTab)
+            {
+                _lastSelectedTab = tabPage;
+                _tabSelected.Invoke(tabPage);
+            }
         }
 
         private void TabControl_MouseUp(object? sender, MouseEventArgs e)
@@ -48,18 +61,26 @@ namespace Si.AssetExplorer
             return null;
         }
 
-        public SiTabPage AddTab(string assetKey, string codeText, SiCodeType codeType)
+        public SiTabPage AddTab(string assetKey)
         {
             var existingTab = FindTabByFileName(assetKey);
             if (existingTab != null)
             {
                 TabControl.SelectedTab = existingTab;
+                InvokeTabChanged(existingTab);
                 return existingTab;
             }
+
+            var asset = _engine.Assets.ReadAssetController(assetKey);
+
+            //TODO: We should probably determine the code type based on the asset's base type or metadata.
+            string codeText = asset.Controller ?? string.Empty;
+            var codeType = SiCodeType.CSharp; // Default to C# for now, but this should be determined dynamically.
 
             var tabPage = new SiTabPage(assetKey, codeText, codeType);
             TabControl.TabPages.Add(tabPage);
             TabControl.SelectedTab = tabPage;
+            InvokeTabChanged(tabPage);
             return tabPage;
         }
 
