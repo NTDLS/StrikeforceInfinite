@@ -7,7 +7,7 @@ namespace Si.Engine.AI._Superclass
     /// </summary>
     public interface IAIController
     {
-        void ApplyIntelligence(float epoch, SiVector displacementVector);
+        void ApplyIntelligence(float epoch, SiVector cameraDisplacement);
         AIStateHandler? CurrentAIState { get; }
     }
 }

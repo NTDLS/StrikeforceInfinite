@@ -106,7 +106,7 @@ namespace Si.AssetExplorer.Forms
             {
                 if (treeViewAssets.InvokeRequired)
                 {
-                    treeViewAssets.Invoke(new Action<AssetContainer, List<string?>>(UpsertTreeNodesPath), asset, selectedAssetKeys);
+                    treeViewAssets.Invoke(new Action<AssetContainer, List<string>>(UpsertTreeNodesPath), asset, selectedAssetKeys);
                     return;
                 }
 

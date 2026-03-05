@@ -48,7 +48,7 @@ namespace Si.Engine.AI._Superclass
         /// Fired when the engine wants the sprite to make a decision based on the current AI state.
         /// </summary>
         public event ApplyIntelligenceProc? OnApplyIntelligence;
-        public delegate void ApplyIntelligenceProc(float epoch, SiVector displacementVector, AIStateHandler? state);
+        public delegate void ApplyIntelligenceProc(float epoch, SiVector cameraDisplacement, AIStateHandler? state);
 
         #endregion
 
@@ -65,9 +65,9 @@ namespace Si.Engine.AI._Superclass
             ObservedObjects = observedObjects ?? [];
         }
 
-        public void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
-            OnApplyIntelligence?.Invoke(epoch, displacementVector, CurrentAIState);
+            OnApplyIntelligence?.Invoke(epoch, cameraDisplacement, CurrentAIState);
             CurrentAIState?.Tick(epoch);
         }
 

@@ -50,7 +50,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             };
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
             var munitions = VisibleOfType<MunitionBase>();
             if (munitions.Count() != 0)
@@ -77,8 +77,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
                         threadPoolTracker.Enqueue(() => //Enqueue an item into the thread pool.
                         {
-                            munition.ApplyMotion(epoch, displacementVector); //Move the munition.
-                            munition.ApplyIntelligence(epoch, displacementVector);
+                            munition.ApplyMotion(epoch, cameraDisplacement); //Move the munition.
+                            munition.ApplyIntelligence(epoch, cameraDisplacement);
                             Engine.MultiplayLobby?.ActionBuffer.RecordMotion(munition.GetMultiPlayActionVector());
 
                             if (filteredCandidates.Length > 0)

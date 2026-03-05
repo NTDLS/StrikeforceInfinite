@@ -72,7 +72,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             }
         }
 
-        public virtual void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public virtual void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             if (AgeInMilliseconds > MillisecondsToLive)
             {
@@ -81,7 +81,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             }
         }
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
             if (!Engine.Display.TotalCanvasBounds.Balloon(SceneDistanceLimit).IntersectsWith(RenderBounds))
             {

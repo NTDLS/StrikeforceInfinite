@@ -30,65 +30,17 @@ namespace Si.Engine.Sprite.Enemy._Superclass
 
         public override void Explode()
         {
-            Engine.Player.Stats.Bounty += Metadata.Bounty ?? 0;
-
-            /*
-            if (SiRandom.PercentChance(10))
-            {
-                var powerup = SiRandom.Between(0, 4) switch
-                {
-                    0 => new SpritePowerupAmmo(_engine),
-                    1 => new SpritePowerupBoost(_engine),
-                    2 => new SpritePowerupBounty(_engine),
-                    3 => new SpritePowerupRepair(_engine),
-                    4 => new SpritePowerupShield(_engine),
-                    _ => null as SpritePowerupBase
-                };
-
-                if (powerup != null)
-                {
-                    powerup.Location = Location;
-                    _engine.Sprites.Powerups.Add(powerup);
-                }
-            }
-            */
             base.Explode();
         }
 
         /// <summary>
         /// Moves the sprite based on its velocity/boost (velocity) taking into account the background scroll.
         /// </summary>
-        /// <param name="displacementVector"></param>
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
-            /*
-            //When an enemy has boost available, it will use it.
-            if (AvailableBoost > 0)
-            {
-                if (ThrottlePercentage < 1.0) //Ramp up the boost until it is at 100%
-                {
-                    ThrottlePercentage += _engine.Settings.EnemyVelocityRampUp;
-                }
-                AvailableBoost -= MaximumBoostSpeed * ThrottlePercentage; //Consume boost.
+            base.ApplyMotion(epoch, cameraDisplacement);
 
-                if (AvailableBoost < 0) //Sanity check available boost.
-                {
-                    AvailableBoost = 0;
-                }
-            }
-            else if (ThrottlePercentage > 0) //Ramp down the boost.
-            {
-                ThrottlePercentage -= _engine.Settings.EnemyVelocityRampDown;
-                if (ThrottlePercentage < 0)
-                {
-                    ThrottlePercentage = 0;
-                }
-            }
-            */
-
-            base.ApplyMotion(epoch, displacementVector);
-
-            FixRadarPositionIndicator();
+            AdjustRadarPositionIndicator();
         }
     }
 }

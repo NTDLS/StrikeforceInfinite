@@ -65,7 +65,7 @@ namespace Si.Engine.Sprite._Superclass
             return weapon;
         }
 
-        public void FixRadarPositionIndicator()
+        public void AdjustRadarPositionIndicator()
         {
             if (RadarPositionIndicator != null && RadarPositionText != null)
             {

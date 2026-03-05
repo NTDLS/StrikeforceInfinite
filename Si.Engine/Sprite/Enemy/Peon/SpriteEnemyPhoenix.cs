@@ -20,12 +20,12 @@ namespace Si.Engine.Sprite.Enemy.Peon
             SetCurrentAIController<AILogisticsOffScreenReentry>();
         }
 
-        public override void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             //RotateMovementVector(45, epoch);
             //RotateOrientation(45, epoch);
 
-            base.ApplyIntelligence(epoch, displacementVector);
+            base.ApplyIntelligence(epoch, cameraDisplacement);
             ApplyWeaponsLogic();
         }
 

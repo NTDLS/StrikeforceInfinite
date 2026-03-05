@@ -154,8 +154,8 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// <summary>
         /// Moves the sprite based on its movement vector and the epoch.
         /// </summary>
-        /// <param name="displacementVector"></param>
-        public virtual void ApplyMotion(float epoch, SiVector displacementVector)
+        /// <param name="cameraDisplacement"></param>
+        public virtual void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
             //Perform any auto-rotation.
             Orientation.Radians += RotationSpeed * epoch;

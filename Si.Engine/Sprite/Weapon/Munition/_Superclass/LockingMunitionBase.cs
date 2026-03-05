@@ -21,7 +21,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
             LockedTarget = lockedTarget;
         }
 
-        public override void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             if (LockedTarget != null)
             {
@@ -36,7 +36,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
                 }
             }
 
-            base.ApplyIntelligence(epoch, displacementVector);
+            base.ApplyIntelligence(epoch, cameraDisplacement);
         }
     }
 }

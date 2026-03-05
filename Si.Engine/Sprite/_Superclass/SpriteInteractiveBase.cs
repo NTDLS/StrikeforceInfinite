@@ -277,10 +277,10 @@ namespace Si.Engine.Sprite._Superclass
         /// Provides a way to make basic decisions about the sprite that do not necessarily have anything to do with movement.
         /// </summary>
         /// <param name="epoch"></param>
-        /// <param name="displacementVector"></param>
-        public virtual void ApplyIntelligence(float epoch, SiVector displacementVector)
+        /// <param name="cameraDisplacement"></param>
+        public virtual void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
-            CurrentAIController?.ApplyIntelligence(epoch, displacementVector);
+            CurrentAIController?.ApplyIntelligence(epoch, cameraDisplacement);
             Weapons?.ForEach(o => o.ApplyIntelligence(epoch));
         }
 

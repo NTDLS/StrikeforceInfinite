@@ -18,7 +18,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
         {
         }
 
-        public override void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             if (FiredFromType == SiFiredFromType.Enemy)
             {
@@ -54,7 +54,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
                 }
             }
 
-            base.ApplyIntelligence(epoch, displacementVector);
+            base.ApplyIntelligence(epoch, cameraDisplacement);
         }
     }
 }

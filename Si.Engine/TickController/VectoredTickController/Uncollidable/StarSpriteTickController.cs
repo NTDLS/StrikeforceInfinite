@@ -32,49 +32,49 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             });
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
-            if (Math.Abs(displacementVector.X) > 1 || Math.Abs(displacementVector.Y) > 1)
+            if (Math.Abs(cameraDisplacement.X) > 1 || Math.Abs(cameraDisplacement.Y) > 1)
             {
                 #region Add new stars...
 
                 if (SpriteManager.VisibleOfType<SpriteStar>().Length < Engine.Settings.DeltaFrameTargetStarCount) //Never wan't more than n stars.
                 {
-                    if (displacementVector.X > 0)
+                    if (cameraDisplacement.X > 0)
                     {
                         if (SiRandom.PercentChance(20))
                         {
-                            int x = SiRandom.Between(Engine.Display.TotalCanvasSize.Width - (int)displacementVector.X, Engine.Display.TotalCanvasSize.Width);
+                            int x = SiRandom.Between(Engine.Display.TotalCanvasSize.Width - (int)cameraDisplacement.X, Engine.Display.TotalCanvasSize.Width);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
                             AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
 
                     }
-                    else if (displacementVector.X < 0)
+                    else if (cameraDisplacement.X < 0)
                     {
                         if (SiRandom.PercentChance(20))
                         {
-                            int x = SiRandom.Between(0, (int)-displacementVector.X);
+                            int x = SiRandom.Between(0, (int)-cameraDisplacement.X);
                             int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
                             AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
 
                     }
-                    if (displacementVector.Y > 0)
+                    if (cameraDisplacement.Y > 0)
                     {
                         if (SiRandom.PercentChance(20))
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
-                            int y = SiRandom.Between(Engine.Display.TotalCanvasSize.Height - (int)displacementVector.Y, Engine.Display.TotalCanvasSize.Height);
+                            int y = SiRandom.Between(Engine.Display.TotalCanvasSize.Height - (int)cameraDisplacement.Y, Engine.Display.TotalCanvasSize.Height);
                             AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
                     }
-                    else if (displacementVector.Y < 0)
+                    else if (cameraDisplacement.Y < 0)
                     {
                         if (SiRandom.PercentChance(20))
                         {
                             int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
-                            int y = SiRandom.Between(0, (int)-displacementVector.Y);
+                            int y = SiRandom.Between(0, (int)-cameraDisplacement.Y);
                             AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
                     }
@@ -84,7 +84,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
                 foreach (var star in All())
                 {
-                    star.ApplyMotion(epoch, displacementVector);
+                    star.ApplyMotion(epoch, cameraDisplacement);
 
                     //Remove stars that are too far off-screen.
                     if (Engine.Display.TotalCanvasBounds.Balloon(_maxDistance).IntersectsWith(star.RenderBounds) == false)

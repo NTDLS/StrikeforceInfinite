@@ -44,7 +44,7 @@ namespace Si.Engine.Sprite.PowerUp._Superclass
             QueueForDelete();
         }
 
-        public virtual void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public virtual void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             if (IntersectsAABB(Engine.Player.Sprite))
             {

@@ -208,10 +208,10 @@ namespace Si.Engine
 
             _engine.Input.Snapshot();
 
-            var displacementVector = _engine.Player.ExecuteWorldClockTick(epoch);
+            var cameraDisplacement = _engine.Player.ExecuteWorldClockTick(epoch);
 
             //Enqueue each vectored tick controller for a thread.
-            var vectoredParameters = new object[] { epoch, displacementVector };
+            var vectoredParameters = new object[] { epoch, cameraDisplacement };
             if (_worldClockSubPool != null)
             {
                 foreach (var vectored in _vectoredTickControllers)
@@ -223,7 +223,7 @@ namespace Si.Engine
                 //Wait on all enqueued threads to complete.
                 if (!SiUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
                 {
-                    return displacementVector; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
+                    return cameraDisplacement; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
                 }
             }
             else
@@ -246,7 +246,7 @@ namespace Si.Engine
                 //Wait on all enqueued threads to complete.
                 if (!SiUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
                 {
-                    return displacementVector; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
+                    return cameraDisplacement; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
                 }
             }
             else
@@ -259,7 +259,7 @@ namespace Si.Engine
 
             _engine.Sprites.HardDeleteAllQueuedDeletions();
 
-            return displacementVector;
+            return cameraDisplacement;
         }
 
         private void UpdateStatusText(SiDefermentEvent sender, object? refObj)

@@ -15,7 +15,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
             if (Engine.ExecutionMode == SiConstants.SiEngineExecutionMode.Edit)
             {
@@ -24,8 +24,8 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
             foreach (var sprite in Visible().Where(o => o.IsDeadOrExploded == false))
             {
-                sprite.ApplyMotion(epoch, displacementVector);
-                sprite.ApplyIntelligence(epoch, displacementVector);
+                sprite.ApplyMotion(epoch, cameraDisplacement);
+                sprite.ApplyIntelligence(epoch, cameraDisplacement);
 
                 Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
             }

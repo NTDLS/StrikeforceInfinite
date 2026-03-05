@@ -12,13 +12,13 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
-            if (displacementVector.Sum() != 0)
+            if (cameraDisplacement.Sum() != 0)
             {
                 foreach (var skyBox in All())
                 {
-                    skyBox.ApplyMotion(epoch, displacementVector);
+                    skyBox.ApplyMotion(epoch, cameraDisplacement);
                 }
             }
         }

@@ -66,7 +66,7 @@ namespace Si.Engine.Sprite
             }
         }
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
             if (AttachmentPositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
             {
@@ -78,7 +78,7 @@ namespace Si.Engine.Sprite
                 Orientation = CalculatedOrientation;
             }
 
-            base.ApplyMotion(epoch, displacementVector);
+            base.ApplyMotion(epoch, cameraDisplacement);
         }
 
         /// <summary>

@@ -40,7 +40,7 @@ namespace Si.Engine.Sprite
         {
         }
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
             Orientation.Radians += RotationSpeed * epoch;
 
@@ -49,7 +49,7 @@ namespace Si.Engine.Sprite
                 RecalculateMovementVectorFromAngle(Orientation.RadiansSigned);
             }
 
-            base.ApplyMotion(epoch, displacementVector);
+            base.ApplyMotion(epoch, cameraDisplacement);
 
             if (CleanupMode == ParticleCleanupMode.FadeToBlack)
             {

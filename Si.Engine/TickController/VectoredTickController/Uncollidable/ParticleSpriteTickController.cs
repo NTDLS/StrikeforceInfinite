@@ -20,11 +20,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
             foreach (var particle in Visible())
             {
-                particle.ApplyMotion(epoch, displacementVector);
+                particle.ApplyMotion(epoch, cameraDisplacement);
                 Engine.MultiplayLobby?.ActionBuffer.RecordMotion(particle.GetMultiPlayActionVector());
             }
         }

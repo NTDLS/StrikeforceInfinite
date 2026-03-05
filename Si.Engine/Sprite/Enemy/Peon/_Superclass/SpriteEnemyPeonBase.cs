@@ -72,10 +72,10 @@ namespace Si.Engine.Sprite.Enemy.Peon._Superclass
         /// <summary>
         /// Moves the sprite based on its thrust/boost (velocity).
         /// </summary>
-        /// <param name="displacementVector"></param>
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        /// <param name="cameraDisplacement"></param>
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
-            base.ApplyMotion(epoch, displacementVector);
+            base.ApplyMotion(epoch, cameraDisplacement);
 
             if (ThrusterAnimation != null)
             {

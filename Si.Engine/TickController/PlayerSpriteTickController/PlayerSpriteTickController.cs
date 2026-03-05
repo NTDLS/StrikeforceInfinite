@@ -292,15 +292,15 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
 
             Sprite.PerformCollisionDetection(epoch);
 
-            var displacementVector = Sprite.MovementVector * epoch;
+            var cameraDisplacement = Sprite.MovementVector * epoch;
 
             //Scroll the background.
-            Engine.Display.CameraPosition += displacementVector;
+            Engine.Display.CameraPosition += cameraDisplacement;
 
             //Move the player in the direction of the background. This keeps the player visually in place, which is in the center screen.
-            Sprite.Location += displacementVector;
+            Sprite.Location += cameraDisplacement;
 
-            return displacementVector;
+            return cameraDisplacement;
         }
 
         public void ResetAndShow()

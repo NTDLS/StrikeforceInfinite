@@ -10,14 +10,14 @@ namespace Si.Engine.Sprite.Enemy.Boss.Garrison
         {
         }
 
-        public override void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             if (this.IsPointingAt(Engine.Player.Sprite, 10, 1000))
             {
                 FireWeapon<WeaponLancer>();
             }
 
-            base.ApplyIntelligence(epoch, displacementVector);
+            base.ApplyIntelligence(epoch, cameraDisplacement);
         }
     }
 }

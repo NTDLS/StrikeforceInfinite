@@ -29,11 +29,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             PausedText.IsVisible = false;
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
             foreach (var textBlock in Visible().Where(o => o.IsFixedPosition == false))
             {
-                textBlock.ApplyMotion(epoch, displacementVector);
+                textBlock.ApplyMotion(epoch, cameraDisplacement);
             }
         }
 

@@ -31,11 +31,11 @@ namespace Si.Engine.Sprite
         private SiVector _currentOffset = new();
         private readonly float _maxOffset = 200;
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
-            if (displacementVector.Sum() != 0)
+            if (cameraDisplacement.Sum() != 0)
             {
-                var offsetIncrement = new SiVector(displacementVector.Normalize());
+                var offsetIncrement = new SiVector(cameraDisplacement.Normalize());
 
                 offsetIncrement.X *= (1 - (Math.Abs(_currentOffset.X) / _maxOffset));
                 offsetIncrement.Y *= (1 - (Math.Abs(_currentOffset.Y) / _maxOffset));

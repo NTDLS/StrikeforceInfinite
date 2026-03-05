@@ -14,7 +14,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
         {
         }
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
             // Since the turret.BaseLocation is relative to the top-left corner of the base sprite, we need
             // to get the position relative to the center of the base sprite image so that we can rotate around that.

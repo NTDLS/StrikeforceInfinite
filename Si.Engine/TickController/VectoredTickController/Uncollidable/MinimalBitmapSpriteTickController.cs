@@ -16,11 +16,11 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
             foreach (var sprite in Visible())
             {
-                sprite.ApplyMotion(epoch, displacementVector);
+                sprite.ApplyMotion(epoch, cameraDisplacement);
 
                 Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
             }

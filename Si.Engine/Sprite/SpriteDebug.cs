@@ -34,7 +34,7 @@ namespace Si.Engine.Sprite
             Throttle = 0.05f;
         }
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
             Orientation.Degrees += 0.1f;
 
@@ -42,7 +42,7 @@ namespace Si.Engine.Sprite
             //var deltaAngleU = this.HeadingAngleToInUnsignedDegrees(_engine.Player.Sprite);
             //System.Diagnostics.Debug.WriteLine($"U {deltaAngleU:n2}    S {deltaAngleS:n2}");
 
-            base.ApplyMotion(epoch, displacementVector);
+            base.ApplyMotion(epoch, cameraDisplacement);
         }
     }
 }

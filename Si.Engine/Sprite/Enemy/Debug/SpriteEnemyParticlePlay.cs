@@ -48,7 +48,7 @@ namespace Si.Engine.Sprite.Enemy.Debug
         SpriteParticle _particle3;
         SpriteParticle _particle4;
 
-        public override void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             Orientation.RadiansSigned += 0.05f; // = this.AngleToInSignedRadians(_engine.Player.Sprite);
 
@@ -64,7 +64,7 @@ namespace Si.Engine.Sprite.Enemy.Debug
             var point4 = Orientation * new SiVector(50, 50) * -1;
             _particle4.Location = Location + point4;
 
-            base.ApplyIntelligence(epoch, displacementVector);
+            base.ApplyIntelligence(epoch, cameraDisplacement);
         }
     }
 }

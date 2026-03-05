@@ -24,7 +24,7 @@ namespace Si.Engine.AI.Logistics
             OnApplyIntelligence += AILogisticsDemo_OnApplyIntelligence;
         }
 
-        private void AILogisticsDemo_OnApplyIntelligence(float epoch, SiVector displacementVector, AIStateHandler? state)
+        private void AILogisticsDemo_OnApplyIntelligence(float epoch, SiVector cameraDisplacement, AIStateHandler? state)
         {
             if (_doExplosions)
             {

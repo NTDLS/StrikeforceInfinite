@@ -15,12 +15,12 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector displacementVector)
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
             foreach (var sprite in Visible())
             {
-                sprite.ApplyIntelligence(epoch, displacementVector);
-                sprite.ApplyMotion(epoch, displacementVector);
+                sprite.ApplyIntelligence(epoch, cameraDisplacement);
+                sprite.ApplyMotion(epoch, cameraDisplacement);
                 sprite.PerformCollisionDetection(epoch);
 
                 Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());

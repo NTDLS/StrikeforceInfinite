@@ -45,7 +45,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
             }
         }
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
             Throttle = SiMath.Damp(Throttle, TargetThrottle, 0.01f, epoch);
 
@@ -65,7 +65,7 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
                 Engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(0, 1));
             }
 
-            base.ApplyMotion(epoch, displacementVector);
+            base.ApplyMotion(epoch, cameraDisplacement);
         }
     }
 }

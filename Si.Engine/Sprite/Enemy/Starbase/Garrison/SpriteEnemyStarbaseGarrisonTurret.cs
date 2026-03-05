@@ -14,7 +14,7 @@ namespace Si.Engine.Sprite.Enemy.Starbase.Garrison
         {
         }
 
-        public override void ApplyIntelligence(float epoch, SiVector displacementVector)
+        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             if (DistanceTo(Engine.Player.Sprite) < 1000)
             {
@@ -44,7 +44,7 @@ namespace Si.Engine.Sprite.Enemy.Starbase.Garrison
                 }
             }
 
-            base.ApplyIntelligence(epoch, displacementVector);
+            base.ApplyIntelligence(epoch, cameraDisplacement);
         }
     }
 }

@@ -25,10 +25,10 @@ namespace Si.Engine.Sprite
             //}
         }
 
-        public override void ApplyMotion(float epoch, SiVector displacementVector)
+        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
             //We omit orientation for stars since they are point-like.
-            Location -= displacementVector * Speed * Throttle * epoch;
+            Location -= cameraDisplacement * Speed * Throttle * epoch;
         }
     }
 }
