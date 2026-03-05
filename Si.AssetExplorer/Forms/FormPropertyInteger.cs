@@ -13,6 +13,8 @@
         public FormPropertyInteger(PropertyItem propertyItem)
         {
             InitializeComponent();
+
+            Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
 

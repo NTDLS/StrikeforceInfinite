@@ -4,7 +4,6 @@ using Si.Engine;
 using Si.Library;
 using System.Text.Json;
 using Talkster.Client.Controls;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Si.AssetExplorer
 {

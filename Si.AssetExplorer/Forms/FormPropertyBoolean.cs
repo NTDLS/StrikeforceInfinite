@@ -13,6 +13,8 @@
         public FormPropertyBoolean(PropertyItem propertyItem)
         {
             InitializeComponent();
+
+            Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             checkBoxWorking.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             textBoxDescription.Text = propertyItem.Attributes?.Description ?? string.Empty;
             checkBoxWorking.Checked = Convert.ToBoolean(propertyItem.WorkingValue ?? false);

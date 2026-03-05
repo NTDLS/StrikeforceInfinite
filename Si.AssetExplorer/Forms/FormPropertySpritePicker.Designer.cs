@@ -1,6 +1,6 @@
 ﻿namespace Si.AssetExplorer.Forms
 {
-    partial class FormPropertySingleSpritePicker
+    partial class FormPropertySpritePicker
     {
         /// <summary>
         /// Required designer variable.
@@ -28,23 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertySingleSpritePicker));
-            numericUpDown = new NumericUpDown();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertySpritePicker));
             labelName = new Label();
             buttonCancel = new Button();
             buttonSave = new Button();
             textBoxDescription = new TextBox();
             labelDescription = new Label();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown).BeginInit();
+            treeViewAssets = new TreeView();
             SuspendLayout();
-            // 
-            // numericUpDown
-            // 
-            numericUpDown.DecimalPlaces = 5;
-            numericUpDown.Location = new Point(12, 43);
-            numericUpDown.Name = "numericUpDown";
-            numericUpDown.Size = new Size(139, 23);
-            numericUpDown.TabIndex = 1;
             // 
             // labelName
             // 
@@ -56,73 +47,78 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(265, 187);
+            buttonCancel.Location = new Point(268, 407);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(90, 25);
-            buttonCancel.TabIndex = 5;
+            buttonCancel.TabIndex = 4;
             buttonCancel.Text = "Cancel";
             buttonCancel.Click += ButtonCancel_Click;
             // 
             // buttonSave
             // 
-            buttonSave.Location = new Point(169, 187);
+            buttonSave.Location = new Point(172, 407);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(90, 25);
-            buttonSave.TabIndex = 4;
+            buttonSave.TabIndex = 3;
             buttonSave.Text = "Save";
             buttonSave.Click += ButtonSave_Click;
             // 
             // textBoxDescription
             // 
-            textBoxDescription.Location = new Point(12, 102);
+            textBoxDescription.Location = new Point(12, 322);
             textBoxDescription.Multiline = true;
             textBoxDescription.Name = "textBoxDescription";
             textBoxDescription.ReadOnly = true;
             textBoxDescription.ScrollBars = ScrollBars.Vertical;
-            textBoxDescription.Size = new Size(343, 79);
-            textBoxDescription.TabIndex = 3;
+            textBoxDescription.Size = new Size(346, 79);
+            textBoxDescription.TabIndex = 2;
             textBoxDescription.Text = "Description";
             // 
             // labelDescription
             // 
-            labelDescription.Location = new Point(12, 74);
+            labelDescription.Location = new Point(12, 304);
             labelDescription.Name = "labelDescription";
-            labelDescription.Size = new Size(90, 25);
-            labelDescription.TabIndex = 5;
+            labelDescription.Size = new Size(90, 15);
+            labelDescription.TabIndex = 1;
             labelDescription.Text = "Description";
             // 
-            // FormPropertySingleSpritePicker
+            // treeViewAssets
+            // 
+            treeViewAssets.Location = new Point(12, 43);
+            treeViewAssets.Name = "treeViewAssets";
+            treeViewAssets.Size = new Size(346, 256);
+            treeViewAssets.TabIndex = 0;
+            // 
+            // FormPropertySpritePicker
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(368, 224);
+            ClientSize = new Size(372, 444);
+            Controls.Add(treeViewAssets);
             Controls.Add(labelDescription);
             Controls.Add(textBoxDescription);
             Controls.Add(buttonCancel);
             Controls.Add(buttonSave);
             Controls.Add(labelName);
-            Controls.Add(numericUpDown);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "FormPropertySingleSpritePicker";
+            Name = "FormPropertySpritePicker";
             Opacity = 0.95D;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
-            ((System.ComponentModel.ISupportInitialize)numericUpDown).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private NumericUpDown numericUpDown;
         private Label labelName;
         private Button buttonCancel;
         private Button buttonSave;
         private TextBox textBoxDescription;
         private Label labelDescription;
+        private TreeView treeViewAssets;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Si.Library;
+﻿using Si.Engine.Sprite;
+using Si.Library;
 using Si.Library.Mathematics;
 using System.Globalization;
 using System.Reflection;
@@ -44,11 +45,17 @@ namespace Si.AssetExplorer
             WorkingValue = SiReflection.GetPropertyValue(metaData, propertyName);
             Attributes = propertyInfo.MetadataAttribute;
             Text = propertyInfo.MetadataAttribute.FriendlyName;
-            SubItems.Add(PropertyStringifier(WorkingValue));
+            SubItems.Add(PropertyStringifier(metaData, propertyName, WorkingValue));
         }
 
-        public static string? PropertyStringifier(object? value)
+        public static string? PropertyStringifier(AssetMetadata metaData, string propertyName, object? value)
         {
+            if (value == null)
+            {
+                return null;
+            }
+
+
             if (value is float f)
                 return string.Format(CultureInfo.InvariantCulture, "{0:#,##0.#####}", f);
             else if (value is double d)
@@ -71,6 +78,20 @@ namespace Si.AssetExplorer
                 return rf.ToString();
             else if (value is SiRange<double> rd)
                 return rd.ToString();
+            else if (value is AssetMetadata asset)
+            {
+                throw new Exception($"Unhandled AssetMetadata property '{propertyName}' in PropertyStringifier. Consider how to represent this property as a string.");
+            }
+            else if (value is List<AssetMetadata> assets)
+            {
+                switch (propertyName)
+                {
+                    case "Attachments":
+                        return string.Join(", ", assets.Select(o => o.AttachmentAssetKey?.Split('/')?.Last()).ToList());
+                    default:
+                        throw new Exception($"Unhandled List<AssetMetadata> property '{propertyName}' in PropertyStringifier.");
+                }
+            }
 
             return value?.ToString();
         }

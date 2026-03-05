@@ -29,26 +29,17 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertyPicker));
-            numericUpDown = new NumericUpDown();
             labelName = new Label();
             buttonCancel = new Button();
             buttonSave = new Button();
             textBoxDescription = new TextBox();
             labelDescription = new Label();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown).BeginInit();
+            comboBoxWorking = new ComboBox();
             SuspendLayout();
-            // 
-            // numericUpDown
-            // 
-            numericUpDown.DecimalPlaces = 5;
-            numericUpDown.Location = new Point(12, 43);
-            numericUpDown.Name = "numericUpDown";
-            numericUpDown.Size = new Size(139, 23);
-            numericUpDown.TabIndex = 1;
             // 
             // labelName
             // 
-            labelName.Location = new Point(12, 15);
+            labelName.Location = new Point(12, 12);
             labelName.Name = "labelName";
             labelName.Size = new Size(346, 25);
             labelName.TabIndex = 0;
@@ -91,17 +82,26 @@
             labelDescription.TabIndex = 2;
             labelDescription.Text = "Description";
             // 
+            // comboBoxWorking
+            // 
+            comboBoxWorking.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxWorking.DropDownWidth = 343;
+            comboBoxWorking.Location = new Point(12, 40);
+            comboBoxWorking.Name = "comboBoxWorking";
+            comboBoxWorking.Size = new Size(343, 23);
+            comboBoxWorking.TabIndex = 1;
+            // 
             // FormPropertyPicker
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(368, 224);
+            Controls.Add(comboBoxWorking);
             Controls.Add(labelDescription);
             Controls.Add(textBoxDescription);
             Controls.Add(buttonCancel);
             Controls.Add(buttonSave);
             Controls.Add(labelName);
-            Controls.Add(numericUpDown);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -111,18 +111,16 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Property Edit";
-            ((System.ComponentModel.ISupportInitialize)numericUpDown).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private NumericUpDown numericUpDown;
         private Label labelName;
         private Button buttonCancel;
         private Button buttonSave;
         private TextBox textBoxDescription;
         private Label labelDescription;
+        private ComboBox comboBoxWorking;
     }
 }

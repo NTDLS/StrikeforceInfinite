@@ -37,10 +37,10 @@ namespace Si.AssetExplorer
             _listView.Columns.Add("Value", 300);
 
             _listView.MouseDoubleClick += UnderlyingListView_MouseDoubleClick;
-            _listView.MouseClick += _listView_MouseClick;
+            _listView.MouseClick += ListView_MouseClick;
         }
 
-        private void _listView_MouseClick(object? sender, MouseEventArgs e)
+        private void ListView_MouseClick(object? sender, MouseEventArgs e)
         {
             try
             {
@@ -176,14 +176,14 @@ namespace Si.AssetExplorer
                         }
                     case PropertyEditorType.MultipleSpritePicker:
                         {
-                            using var form = new FormPropertyMultipleSpritePicker(selectedItem);
+                            using var form = new FormPropertySpritePicker(_engine, selectedItem, true);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.SingleSpritePicker:
                         {
-                            using var form = new FormPropertySingleSpritePicker(selectedItem);
+                            using var form = new FormPropertySpritePicker(_engine, selectedItem, false);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
@@ -248,8 +248,8 @@ namespace Si.AssetExplorer
 
                 var groups = metadataAttribs.Select(o => o.MetadataAttribute?.EditorGroup).Distinct().ToList();
 
+                //Add the groups to the ListView and keep track of them in a dictionary for easy access when adding items.
                 var groupMap = new Dictionary<PropertyEditorGroup, ListViewGroup>();
-
                 foreach (var group in groups)
                 {
                     if (group != null)

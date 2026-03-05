@@ -13,9 +13,10 @@ namespace Si.Library
         public double? MinValue { get; } = null;
         public int? MinLength { get; } = null;
         public Type? EnumType { get; } = null;
+        public string[]? PickList { get; } = null;
 
         public AssetMetadataAttribute(string friendlyName, string description, PropertyEditorGroup editorGroup, PropertyEditorType editorType,
-            double maxValue = 0, double minValue = 0, int minLength = 0, Type? enumType = null)
+            double maxValue = 0, double minValue = 0, int minLength = 0, Type? enumType = null, string[]? pickList = null)
         {
             FriendlyName = friendlyName;
             EditorGroup = editorGroup;
@@ -25,6 +26,7 @@ namespace Si.Library
             MinValue = minValue >= 0 && maxValue >= 0 && maxValue > minValue ? minValue : null;
             MinLength = minLength > 0 ? minLength : null;
             EnumType = enumType;
+            PickList = pickList;
         }
     }
 }
