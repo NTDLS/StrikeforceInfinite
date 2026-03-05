@@ -1,6 +1,5 @@
 ﻿
 using NTDLS.DelegateThreadPooling;
-using NTDLS.Helpers;
 using NTDLS.SqliteDapperWrapper;
 using Si.Audio;
 using Si.Library;

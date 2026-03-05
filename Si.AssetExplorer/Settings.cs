@@ -27,7 +27,9 @@ namespace Si.AssetExplorer
             LocalUserApplicationData.SaveToDisk(Constants.AppName, Instance);
         }
 
-        //[JsonConverter(typeof(StringEnumConverter))]
-        //public PaletteMode Theme { get; set; } = Theming.IsWindowsDarkMode() ? PaletteMode.SparklePurple : PaletteMode.ProfessionalSystem;
+        public bool EditorShowLineNumbers { get; set; } = true;
+        public bool EditorWordWrap { get; set; } = false;
+        public double EditorFontSize { get; set; } = 12.5;
+        public string EditorFontFamily { get; set; } = "Cascadia Mono SemiLight";
     }
 }

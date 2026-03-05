@@ -1,4 +1,3 @@
-using ICSharpCode.AvalonEdit;
 using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
 using Si.AssetExplorer.Controls;
@@ -18,7 +17,7 @@ namespace Si.AssetExplorer
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
         private readonly PropertyListManager _propertListManager;
-        private readonly TextEditor _textEditor;
+        private readonly SiCodeEditor _textEditor;
 
         public FormMain()
         {
@@ -40,15 +39,7 @@ namespace Si.AssetExplorer
 
             Shown += FormMain_Shown;
 
-            _textEditor = new TextEditor();
-
-            var editorContainer = new System.Windows.Forms.Integration.ElementHost
-            {
-                Dock = DockStyle.Fill,
-                Child = _textEditor
-            };
-
-            splitContainerRight.Panel1.Controls.Add(editorContainer);
+            _textEditor = new SiCodeEditor(splitContainerRight.Panel1);
         }
 
         private void PictureBoxPreview_MouseWheel(object? sender, MouseEventArgs e)
