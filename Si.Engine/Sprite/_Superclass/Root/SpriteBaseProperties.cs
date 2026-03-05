@@ -93,13 +93,13 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         public SiVector Orientation
         {
-            get => _orientation;
+            get => _orientation.Clone();
             set
             {
                 if (value.IsNan())
                     throw new Exception("Orientation is invalid");
 
-                _orientation = value;
+                _orientation = value.Clone();
                 _orientation.OnChangeEvent += (SiVector vector) => OrientationChanged();
                 OrientationChanged();
             }
@@ -188,7 +188,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 if (value.IsNan())
                     throw new Exception("Location is invalid");
 
-                _location = value;
+                _location = value.Clone();
                 LocationChanged();
             }
         }
@@ -201,7 +201,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             get => _location - Size / 2.0f; //Changes made to the location object do not affect the sprite.
             set
             {
-                _location = value;
+                _location = value.Clone();
                 LocationChanged();
             }
         }
