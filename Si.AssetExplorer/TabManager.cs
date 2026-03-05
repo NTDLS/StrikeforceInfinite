@@ -23,6 +23,10 @@ namespace Si.AssetExplorer
             tabControl.Selected += (object? sender, TabControlEventArgs e) => InvokeTabChanged(tabControl.SelectedTab as SiTabPage);
         }
 
+        /// <summary>
+        /// Tells the owner form that a tab has been selected, so that it can update the property grid and other UI elements accordingly.
+        /// Guards against re-invoking the event if the same tab is selected again, to avoid unnecessary UI updates.
+        /// </summary>
         private void InvokeTabChanged(SiTabPage? tabPage)
         {
             if (tabPage != null && tabPage != _lastSelectedTab)
