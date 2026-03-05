@@ -8,7 +8,7 @@ namespace Si.Engine.AI.Logistics
     /// <summary>
     /// Keeps an object at a generally safe distance from another object.
     /// </summary>
-    internal class AILogisticsMeander : AIStateMachine
+    public class AILogisticsMeander : AIStateMachine
     {
         //DO NOT USE WITHOUT REWRITE!!
 

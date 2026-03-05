@@ -5,7 +5,7 @@ using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Weapon
 {
-    internal class WeaponThunderstrikeMissile : WeaponBase
+    public class WeaponThunderstrikeMissile : WeaponBase
     {
         private bool _toggle = false;
 

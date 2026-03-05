@@ -4,7 +4,7 @@ using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Weapon
 {
-    internal class WeaponBlunderbuss : WeaponBase
+    public class WeaponBlunderbuss : WeaponBase
     {
         public WeaponBlunderbuss(EngineCore engine, SpriteInteractiveBase owner, string assetKey)
             : base(engine, owner, assetKey)

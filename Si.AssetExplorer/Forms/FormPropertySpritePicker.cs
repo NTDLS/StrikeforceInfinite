@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Si.AssetExplorer.Controls;
+﻿using Si.AssetExplorer.Controls;
 using Si.Engine;
 using Si.Library;
 

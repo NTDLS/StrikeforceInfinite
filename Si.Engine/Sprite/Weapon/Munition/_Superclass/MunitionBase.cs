@@ -58,7 +58,7 @@ namespace Si.Engine.Sprite.Weapon.Munition._Superclass
                 firedFrom = attachment.RootOwner;
             }
 
-            if (firedFrom is SpriteEnemyBase)
+            if (firedFrom is SpriteEnemy)
             {
                 FiredFromType = SiFiredFromType.Enemy;
             }

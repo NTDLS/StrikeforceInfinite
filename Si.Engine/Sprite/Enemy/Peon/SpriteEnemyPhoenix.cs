@@ -8,7 +8,7 @@ using System.Linq;
 namespace Si.Engine.Sprite.Enemy.Peon
 {
     public class SpriteEnemyPhoenix(EngineCore engine, string assetKey)
-        : SpriteEnemyBase(engine, assetKey)
+        : SpriteEnemy(engine, assetKey)
     {
         private SpriteAnimation? _thrusterAnimation;
         private SpriteAnimation? _boosterAnimation;

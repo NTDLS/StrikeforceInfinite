@@ -14,7 +14,7 @@ namespace Si.Engine.AI.Logistics
     /// <summary>
     /// Keeps an object swooping past an object at an indirect angle.
     /// </summary>
-    internal class AILogisticsHostileEngagement
+    public class AILogisticsHostileEngagement
         : AIStateMachine
     {
         private readonly string _boostResourceName = "AILogisticsHostileEngagement_Boost";

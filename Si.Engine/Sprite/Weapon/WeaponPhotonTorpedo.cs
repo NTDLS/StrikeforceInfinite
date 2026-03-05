@@ -4,7 +4,7 @@ using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Weapon
 {
-    internal class WeaponPhotonTorpedo : WeaponBase
+    public class WeaponPhotonTorpedo : WeaponBase
     {
         private bool _toggle = false;
 

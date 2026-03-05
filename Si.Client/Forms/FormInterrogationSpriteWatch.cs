@@ -44,7 +44,7 @@ namespace Si.Client.Forms
                 return;
             }
 
-            if (sprite is SpriteEnemyBase enemy)
+            if (sprite is SpriteEnemy enemy)
             {
                 if (enemy.CurrentAIController != null)
                 {

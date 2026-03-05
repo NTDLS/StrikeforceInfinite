@@ -180,7 +180,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             string extraInfo = string.Empty;
 
-            if (this is SpriteEnemyBase enemy)
+            if (this is SpriteEnemy enemy)
             {
                 extraInfo =
                   $"\t           AI Controller: {enemy.CurrentAIController}\r\n";

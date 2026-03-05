@@ -156,7 +156,7 @@ namespace Si.Engine.Sprite.Weapon._Superclass
                     potentialTarget.IsLockedOnSoft = false;
                 }
             }
-            else if (Owner is SpriteEnemyBase enemy)
+            else if (Owner is SpriteEnemy enemy)
             {
                 Engine.Player.Sprite.IsLockedOnSoft = false;
                 Engine.Player.Sprite.IsLockedOnHard = false;

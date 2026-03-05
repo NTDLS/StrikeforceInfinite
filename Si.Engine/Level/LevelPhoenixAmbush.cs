@@ -37,7 +37,7 @@ namespace Si.Engine.Level
 
         private void AddFreshEnemiesCallback(SiDefermentEvent sender, object? refObj)
         {
-            if (_engine.Sprites.OfType<SpriteEnemyBase>().Count() == 0)
+            if (_engine.Sprites.OfType<SpriteEnemy>().Count() == 0)
             {
                 if (CurrentWave == TotalWaves)
                 {

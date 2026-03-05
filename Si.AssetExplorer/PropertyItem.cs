@@ -1,5 +1,4 @@
-﻿using Si.Engine.Sprite;
-using Si.Library;
+﻿using Si.Library;
 using Si.Library.Mathematics;
 using System.Globalization;
 using System.Reflection;
@@ -82,7 +81,7 @@ namespace Si.AssetExplorer
                 return asset.AssetKey;
             else if (value is List<AssetMetadata> assets)
                 return string.Join(", ", assets.Select(o => o.AssetKey?.Split('/')?.Last()).ToList());
-                //return string.Join(", ", assets.Select(o => o.AssetKey?.Split('/')?.Last()).ToList());
+            //return string.Join(", ", assets.Select(o => o.AssetKey?.Split('/')?.Last()).ToList());
 
             return value?.ToString();
         }

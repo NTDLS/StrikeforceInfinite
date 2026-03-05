@@ -11,7 +11,7 @@ namespace Si.Engine.AI.Logistics
     /// <summary>
     /// Keeps an object swooping past an object at an indirect angle.
     /// </summary>
-    internal class AILogisticsDemo
+    public class AILogisticsDemo
         : AIStateMachine
     {
         private float _explodeCooldown = SiRandom.Between(5, 10);
@@ -49,7 +49,7 @@ namespace Si.Engine.AI.Logistics
             : AIStateHandler
         {
             private readonly AILogisticsDemo _stateMachine;
-            private readonly SpriteEnemyBase? _followSprite;
+            private readonly SpriteEnemy? _followSprite;
             private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
 
             public FollowRandomShip(AILogisticsDemo stateMachine)

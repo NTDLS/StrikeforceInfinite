@@ -424,9 +424,9 @@ namespace Si.Engine.Manager
             {
                 _engine.Invoke(() =>
                 {
-                    if (_engine.Sprites.OfType<SpriteEnemyBase>().Count() > 0)
+                    if (_engine.Sprites.OfType<SpriteEnemy>().Count() > 0)
                     {
-                        _engine.Sprites.OfType<SpriteEnemyBase>()[0].Explode();
+                        _engine.Sprites.OfType<SpriteEnemy>()[0].Explode();
                     }
                 });
             }

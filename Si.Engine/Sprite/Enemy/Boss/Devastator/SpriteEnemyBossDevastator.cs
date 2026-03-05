@@ -1,5 +1,5 @@
 ﻿using Si.Engine.AI.Logistics;
-using Si.Engine.Sprite.Enemy.Boss._Superclass;
+using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 using Si.Rendering;
@@ -8,13 +8,13 @@ using System.Linq;
 
 namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 {
-    internal class SpriteEnemyBossDevastator : SpriteEnemyBossBase
+    internal class SpriteEnemyBossDevastator(EngineCore engine, string assetKey)
+        : SpriteEnemy(engine, assetKey)
     {
-        private readonly SpriteAttachment _thrusterLeft;
-        private readonly SpriteAttachment _thrusterRight;
+        private SpriteAttachment? _thrusterLeft;
+        private SpriteAttachment? _thrusterRight;
 
-        public SpriteEnemyBossDevastator(EngineCore engine, string assetKey)
-            : base(engine, assetKey)
+        public override void OnMaterialized()
         {
             Orientation.Degrees = SiRandom.Between(0, 359);
 
@@ -24,17 +24,19 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 
             _thrusterLeft = Attachments.OfType<SpriteEnemyBossDevastatorLeftJet>().First();
             _thrusterRight = Attachments.OfType<SpriteEnemyBossDevastatorRightJet>().First();
+
+            RecalculateMovementVectorFromOrientation();
         }
 
         private float TargetThrottle
         {
             get
             {
-                if (_thrusterLeft.IsDeadOrExploded && _thrusterRight.IsDeadOrExploded)
+                if (_thrusterLeft?.IsDeadOrExploded == true && _thrusterRight?.IsDeadOrExploded == true)
                 {
                     return 0.05f; // idle drift
                 }
-                else if (_thrusterLeft.IsDeadOrExploded || _thrusterRight.IsDeadOrExploded)
+                else if (_thrusterLeft?.IsDeadOrExploded == true || _thrusterRight?.IsDeadOrExploded == true)
                 {
                     return 0.5f;  // limp mode
                 }
@@ -51,11 +53,11 @@ namespace Si.Engine.Sprite.Enemy.Boss.Devastator
 
             var offset = Orientation * new SiVector(40f, 40f);
 
-            if (_thrusterLeft.IsDeadOrExploded)
+            if (_thrusterLeft?.IsDeadOrExploded == true)
             {
                 Engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
             }
-            if (_thrusterRight.IsDeadOrExploded)
+            if (_thrusterRight?.IsDeadOrExploded == true)
             {
                 Engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
             }

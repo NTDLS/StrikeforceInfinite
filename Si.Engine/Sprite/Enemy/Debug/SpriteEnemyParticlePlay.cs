@@ -1,4 +1,4 @@
-﻿using Si.Engine.Sprite.Enemy.Peon._Superclass;
+﻿using Si.Engine.Sprite.Enemy._Superclass;
 using Si.Library.Mathematics;
 using System.Drawing;
 
@@ -7,10 +7,15 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// <summary>
     /// Debugging enemy unit - a scary sight to see.
     /// </summary>
-    internal class SpriteEnemyParticlePlay : SpriteEnemyPeonBase
+    internal class SpriteEnemyParticlePlay(EngineCore engine, string assetKey)
+        : SpriteEnemy(engine, assetKey)
     {
-        public SpriteEnemyParticlePlay(EngineCore engine, string assetKey)
-            : base(engine, assetKey)
+        private SpriteParticle? _particle1;
+        private SpriteParticle? _particle2;
+        private SpriteParticle? _particle3;
+        private SpriteParticle? _particle4;
+
+        public override void OnMaterialized()
         {
             Throttle = 0;
 
@@ -41,28 +46,25 @@ namespace Si.Engine.Sprite.Enemy.Debug
             _particle4.Shape = Library.SiConstants.ParticleShape.Triangle;
             _particle4.Throttle = 0;
             _particle4.RotationSpeed = 0.02f;
-        }
 
-        SpriteParticle _particle1;
-        SpriteParticle _particle2;
-        SpriteParticle _particle3;
-        SpriteParticle _particle4;
+            base.OnMaterialized();
+        }
 
         public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
         {
             Orientation.RadiansSigned += 0.05f; // = this.AngleToInSignedRadians(_engine.Player.Sprite);
 
             var point1 = Orientation.RotatedBy(90) * new SiVector(50, 50);
-            _particle1.Location = Location + point1;
+            _particle1?.Location = Location + point1;
 
             var point2 = Orientation.RotatedBy(-90) * new SiVector(50, 50);
-            _particle2.Location = Location + point2;
+            _particle2?.Location = Location + point2;
 
             var point3 = Orientation * new SiVector(50, 50);
-            _particle3.Location = Location + point3;
+            _particle3?.Location = Location + point3;
 
             var point4 = Orientation * new SiVector(50, 50) * -1;
-            _particle4.Location = Location + point4;
+            _particle4?.Location = Location + point4;
 
             base.ApplyIntelligence(epoch, cameraDisplacement);
         }

@@ -3,7 +3,6 @@ using Si.Client.Hardware;
 using Si.Engine;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.Mathematics;
-using Si.Library.Sprite;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

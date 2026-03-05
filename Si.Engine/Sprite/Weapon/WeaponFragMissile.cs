@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Si.Engine.Sprite.Weapon
 {
-    internal class WeaponFragMissile : WeaponBase
+    public class WeaponFragMissile : WeaponBase
     {
         private bool _toggle = false;
 

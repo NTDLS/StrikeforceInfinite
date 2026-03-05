@@ -1,9 +1,10 @@
 ﻿
 using NTDLS.DelegateThreadPooling;
+using NTDLS.Helpers;
 using NTDLS.SqliteDapperWrapper;
 using Si.Audio;
-using Si.Engine.Sprite;
 using Si.Library;
+using Si.Library.Compiler;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -119,7 +120,7 @@ namespace Si.Engine.Manager
             });
             var threadPoolTracker = dtp.CreateChildPool();
 
-            var models = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM Assets");
+            var models = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets");
 
             int statusIndex = 0;
             float statusEntryCount = models.Count();
@@ -128,10 +129,27 @@ namespace Si.Engine.Manager
             {
                 threadPoolTracker.Enqueue(() =>
                 {
-                    var asset = DeserializeAssetContainer(model);
+                    var assetContainer = DeserializeAssetContainer(model);
+
+                    if (!string.IsNullOrWhiteSpace(model.Controller)
+                        && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
+                        && !string.IsNullOrWhiteSpace(assetContainer.Metadata.AssetKey))
+                    {
+                        var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_');
+
+                        var classCode = SiAssetControllerClassText.Get(assetContainer.Metadata.Class, assetClassName, model.Controller);
+
+                        SiRuntimeCompiler.CompileToAssembly(classCode);
+
+                        //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
+                        SiReflection.GetTypeByName(assetClassName);
+
+                        assetContainer.Controller = assetClassName;
+                    }
+
                     lock (_collection)
                     {
-                        _collection.Add(model.Key, asset);
+                        _collection.Add(model.Key, assetContainer);
                     }
                     Interlocked.Increment(ref statusIndex);
                 });
@@ -326,7 +344,7 @@ namespace Si.Engine.Manager
             var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Bytes, IsCompressed FROM Assets WHERE Key = @Key",
                 new { Key = assetKey });
 
-            return  model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
+            return model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
         }
 
         /// <summary>

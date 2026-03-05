@@ -1,4 +1,5 @@
-﻿using NTDLS.Helpers;
+﻿using Microsoft.CodeAnalysis;
+using NTDLS.Helpers;
 using SharpDX.Mathematics.Interop;
 using Si.Engine.Menu;
 using Si.Engine.Sprite;
@@ -115,10 +116,16 @@ namespace Si.Engine.Manager
 
         public T Create<T>(string assetKey, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            var metadata = _engine.Assets.GetMetadata(assetKey)
+            var asset = _engine.Assets.GetAsset(assetKey)
                 ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
 
-            string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
+            //TODO: We need to remove this hardcoded "SpriteBase" default and replace it with the dynamically compiled class (controller).
+            string className = string.IsNullOrEmpty(asset.Metadata.Class) ? "SpriteBase" : asset.Metadata.Class;
+
+            if (asset.Controller != null)
+            {
+                className = asset.Controller;
+            }
 
             var classType = SiReflection.GetTypeByName(className);
 
@@ -158,7 +165,7 @@ namespace Si.Engine.Manager
                         constructorParams.Add(assetKey);
                         break;
                     case "firedFrom":
-                        constructorParams.Add(new SpriteEnemyBase(_engine, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteEnemy(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "owner":
                         constructorParams.Add(new SpriteInteractiveBase(_engine, "Sprites/#Internal/Ghost"));
@@ -428,7 +435,7 @@ namespace Si.Engine.Manager
                             && y < _engine.Display.NaturalScreenSize.Height - radarBgImage.Size.Height + radarBgImage.Size.Height
                             )
                         {
-                            if ((sprite is SpritePlayer || sprite is SpriteEnemyBase || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.IsVisible == true)
+                            if ((sprite is SpritePlayer || sprite is SpriteEnemy || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.IsVisible == true)
                             {
                                 sprite.RenderRadar(renderTarget, x, y);
                             }

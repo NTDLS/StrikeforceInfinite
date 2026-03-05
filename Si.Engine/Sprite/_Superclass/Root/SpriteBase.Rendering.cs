@@ -50,7 +50,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         {
             if (_isVisible && SpriteBitmap != null)
             {
-                if (this is SpriteEnemyBase)
+                if (this is SpriteEnemy)
                 {
                     Engine.Rendering.DrawTriangle(renderTarget, x, y, 3, 3, Engine.Rendering.Materials.Colors.OrangeRed);
                 }

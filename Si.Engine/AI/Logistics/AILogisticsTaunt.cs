@@ -8,7 +8,7 @@ namespace Si.Engine.AI.Logistics
     /// <summary>
     /// Keeps an object swooping past an object at an indirect angle.
     /// </summary>
-    internal class AILogisticsTaunt
+    public class AILogisticsTaunt
         : AIStateMachine
     {
         //DO NOT USE WITHOUT REWRITE!!

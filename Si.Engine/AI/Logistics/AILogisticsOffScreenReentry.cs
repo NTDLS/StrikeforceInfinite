@@ -9,7 +9,7 @@ namespace Si.Engine.AI.Logistics
     /// <summary>
     /// Keeps an object swooping past the center of the screen at an indirect angle.
     /// </summary>
-    internal class AILogisticsOffScreenReentry
+    public class AILogisticsOffScreenReentry
         : AIStateMachine
     {
         public AILogisticsOffScreenReentry(EngineCore engine, SpriteInteractiveShipBase owner)

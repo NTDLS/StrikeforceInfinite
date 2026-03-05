@@ -16,7 +16,7 @@ namespace Si.Engine.AI.Logistics
     ///
     /// observedObject is expected to be the player sprite.
     /// </summary>
-    internal class AILogisticsHostileEngagement2
+    public class AILogisticsHostileEngagement2
         : AIStateMachine
     {
         protected ModelParameters Parameters { get; set; }

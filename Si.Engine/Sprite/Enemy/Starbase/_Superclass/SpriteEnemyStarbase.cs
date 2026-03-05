@@ -6,7 +6,7 @@ namespace Si.Engine.Sprite.Enemy.Starbase._Superclass
     /// Base class for "starbase" enemies.
     /// </summary>
     internal class SpriteEnemyStarbase
-        : SpriteEnemyBase
+        : SpriteEnemy
     {
         public SpriteEnemyStarbase(EngineCore engine, string assetKey)
             : base(engine, assetKey)

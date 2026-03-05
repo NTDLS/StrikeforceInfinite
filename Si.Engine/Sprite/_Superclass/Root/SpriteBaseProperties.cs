@@ -93,7 +93,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         public SiVector Orientation
         {
-            get => _orientation.Clone();
+            get => _orientation;
             set
             {
                 if (value.IsNan())
@@ -182,7 +182,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// </summary>
         public SiVector Location
         {
-            get => _location.Clone(); //Changes made to the location object do not affect the sprite.
+            get => _location; //Changes made to the location object do not affect the sprite.
             set
             {
                 if (value.IsNan())

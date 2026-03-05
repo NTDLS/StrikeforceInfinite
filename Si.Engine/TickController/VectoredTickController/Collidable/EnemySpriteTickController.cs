@@ -6,7 +6,7 @@ using Si.Library.Mathematics;
 namespace Si.Engine.TickController.VectoredTickController.Collidable
 {
     public class EnemySpriteTickController
-        : VectoredCollidableTickControllerBase<SpriteEnemyBase>
+        : VectoredCollidableTickControllerBase<SpriteEnemy>
     {
         private readonly EngineCore _engine;
 
