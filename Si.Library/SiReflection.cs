@@ -158,7 +158,7 @@ namespace Si.Library
         /// <summary>
         // Caches all types that inherit from T;
         /// </summary>
-        public static void BuildReflectionCacheOfType<T>()
+        public static void BuildReflectionCacheOfType<T>(Action<string, float>? progressCallback)
         {
             foreach (var item in GetSubClassesOf<T>())
             {

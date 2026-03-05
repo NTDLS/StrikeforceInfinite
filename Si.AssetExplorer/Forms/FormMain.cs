@@ -98,12 +98,23 @@ namespace Si.AssetExplorer
                 {
                     _firstShown = false;
 
-                    using var progress = new ProgressForm(SiConstants.FriendlyName, "Initializing engine...");
+                    using var progressForm = new ProgressForm(SiConstants.FriendlyName, "Initializing engine...");
 
-                    progress.Execute(() =>
+                    progressForm.Execute(() =>
                     {
                         WriteOutput("Initializing engine.", LoggingLevel.Verbose);
-                        _engine.StartEngine();
+
+                        progressForm.SeProgressStyle(ProgressBarStyle.Continuous);
+                        progressForm.SetProgressMinimum(0);
+                        progressForm.SetProgressMaximum(100);
+
+                        void EngineStartupProgressCallback(string message, float progress)
+                        {
+                            progressForm.SetBodyText($"{message} ({progress:n0}%)");
+                            progressForm.SetProgressValue((int)progress);
+                        }
+
+                        _engine.StartEngine(EngineStartupProgressCallback);
                     });
                 }
             }

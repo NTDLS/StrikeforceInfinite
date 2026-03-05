@@ -47,12 +47,17 @@ namespace Si.MpServer
             Sessions.Delete(context.ConnectionId);
         }
 
+        private void EngineStartupProgressCallback(string message, float progress)
+        {
+            Console.WriteLine($"{message} ({progress:n0}%)");
+        }
+
         public void Run()
         {
             Console.WriteLine("Starting multiplay server...");
 
             Console.WriteLine("Starting shared engine.");
-            SharedEngine.StartEngine();
+            SharedEngine.StartEngine(EngineStartupProgressCallback);
 
             Console.WriteLine("Starting reliable messaging server.");
             RmServer.Start(_listenPort);

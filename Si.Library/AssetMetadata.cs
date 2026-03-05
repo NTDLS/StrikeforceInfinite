@@ -5,6 +5,9 @@ namespace Si.Library
 {
     public class AssetMetadata
     {
+        [AssetMetadata("Asset Key", "The asset key of attachment sprite.", PropertyEditorGroup.Base, PropertyEditorType.Readonly)]
+        public string? AssetKey { get; set; }
+
         [AssetMetadata("Sound Volume", "Volumne of the sound expressed in percentages.", PropertyEditorGroup.Audio, PropertyEditorType.Float, minValue: 0, maxValue: 1)]
         public float? SoundVolume { get; set; }
 
@@ -19,9 +22,6 @@ namespace Si.Library
 
         [AssetMetadata("Description", "A brief description of the sprite.", PropertyEditorGroup.Base, PropertyEditorType.String)]
         public string? Description { get; set; }
-
-        [AssetMetadata("Attachment Asset", "The asset key of the attachment sprite.", PropertyEditorGroup.Attachment, PropertyEditorType.String)]
-        public string? AttachmentAssetKey { get; set; }
 
         [AssetMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.", PropertyEditorGroup.Attachment, PropertyEditorType.Vector)]
         public SiVector? AttachmentPosition { get; set; }

@@ -30,19 +30,30 @@ namespace Si.AssetExplorer.Forms
 
             treeViewAssets.CheckBoxes = _multiSelect;
 
-            var selectedAssetKeys = propertyItem.PropertyName switch
-            {
-                "Attachments" => propertyItem.MetaData.Attachments?.Select(o => o.AttachmentAssetKey),
-                _ => throw new Exception($"Unhandled List<AssetMetadata> property '{propertyItem.PropertyName}' in Repopulate."),
-            } ?? [];
+            var selectedAssetKeys = new List<string>();
 
-            Repopulate(selectedAssetKeys.ToList());
+            if (propertyItem.WorkingValue is AssetMetadata asset && asset.AssetKey != null)
+            {
+                selectedAssetKeys.Add(asset.AssetKey);
+            }
+            else if (propertyItem.WorkingValue is List<AssetMetadata> assets)
+            {
+                foreach (var selectedAsset in assets)
+                {
+                    if (selectedAsset.AssetKey != null)
+                    {
+                        selectedAssetKeys.Add(selectedAsset.AssetKey);
+                    }
+                }
+            }
+
+            Repopulate(selectedAssetKeys);
 
             AcceptButton = buttonSave;
             CancelButton = buttonCancel;
         }
 
-        public void Repopulate(List<string?> selectedAssetKeys)
+        public void Repopulate(List<string> selectedAssetKeys)
         {
             if (_engine == null) return;
 
@@ -89,7 +100,7 @@ namespace Si.AssetExplorer.Forms
             }
         }
 
-        private void UpsertTreeNodesPath(AssetContainer asset, List<string?> selectedAssetKeys)
+        private void UpsertTreeNodesPath(AssetContainer asset, List<string> selectedAssetKeys)
         {
             try
             {

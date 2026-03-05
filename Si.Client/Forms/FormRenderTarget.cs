@@ -3,6 +3,7 @@ using Si.Client.Hardware;
 using Si.Engine;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.Mathematics;
+using Si.Library.Sprite;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -69,8 +70,20 @@ namespace Si.Client
                 });
             };
 
-            Shown += (object? sender, EventArgs e)
-                => _engine.StartEngine();
+            Shown += (object? sender, EventArgs e) => Task.Run(() =>
+                {
+                    var loadingDetail = _engine.Sprites.TextBlocks.Add(_engine.Rendering.TextFormats.Loading,
+                        _engine.Rendering.Materials.Brushes.OrangeRed, new SiVector(100, 100), true);
+
+                    void EngineStartupProgressCallback(string message, float progress)
+                    {
+                        loadingDetail?.SetTextAndCenterX($"{message} ({progress:n0}%)");
+                    }
+
+                    _engine.StartEngine(EngineStartupProgressCallback);
+
+                    loadingDetail.QueueForDelete();
+                });
 
             FormClosed += (sender, e)
                 => _engine.ShutdownEngine();
@@ -89,6 +102,7 @@ namespace Si.Client
                 drawingSurface.MouseMove += FormRenderTarget_MouseMove;
             }
         }
+
 
         #region Debug interactions.
 

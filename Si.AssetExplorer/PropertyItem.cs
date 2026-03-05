@@ -79,19 +79,10 @@ namespace Si.AssetExplorer
             else if (value is SiRange<double> rd)
                 return rd.ToString();
             else if (value is AssetMetadata asset)
-            {
-                throw new Exception($"Unhandled AssetMetadata property '{propertyName}' in PropertyStringifier. Consider how to represent this property as a string.");
-            }
+                return asset.AssetKey;
             else if (value is List<AssetMetadata> assets)
-            {
-                switch (propertyName)
-                {
-                    case "Attachments":
-                        return string.Join(", ", assets.Select(o => o.AttachmentAssetKey?.Split('/')?.Last()).ToList());
-                    default:
-                        throw new Exception($"Unhandled List<AssetMetadata> property '{propertyName}' in PropertyStringifier.");
-                }
-            }
+                return string.Join(", ", assets.Select(o => o.AssetKey?.Split('/')?.Last()).ToList());
+                //return string.Join(", ", assets.Select(o => o.AssetKey?.Split('/')?.Last()).ToList());
 
             return value?.ToString();
         }

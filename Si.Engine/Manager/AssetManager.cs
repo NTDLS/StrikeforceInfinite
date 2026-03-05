@@ -108,9 +108,9 @@ namespace Si.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public void LoadAllAssets(SpriteTextBlock? loadingHeader, SpriteTextBlock? loadingDetail)
+        public void LoadAllAssets(Action<string, float>? progressCallback)
         {
-            loadingHeader?.SetTextAndCenterX("Loading packed assets...");
+            progressCallback?.Invoke("Loading assets...", 0);
 
             using var dtp = new DelegateThreadPool(new DelegateThreadPoolConfiguration()
             {
@@ -139,11 +139,11 @@ namespace Si.Engine.Manager
 
             threadPoolTracker.WaitForCompletion(TimeSpan.FromMilliseconds(100), () =>
             {
-                loadingDetail?.SetTextAndCenterX($"{statusIndex / statusEntryCount * 100.0:n0}%");
+                progressCallback?.Invoke("Loading assets...", statusIndex / statusEntryCount * 100.0f);
                 return true;
             });
 
-            loadingDetail?.SetTextAndCenterX($"100%");
+            progressCallback?.Invoke("Loading assets...", 100.0f);
 
             _cache.Clear();
 

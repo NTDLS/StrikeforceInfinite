@@ -381,7 +381,7 @@ namespace Si.Engine
             }
         }
 
-        public void StartEngine()
+        public void StartEngine(Action<string, float>? progressCallback = null)
         {
             if (IsRunning)
             {
@@ -400,26 +400,17 @@ namespace Si.Engine
 
             if (ExecutionMode == SiEngineExecutionMode.Play)
             {
-                var loadingHeader = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
-                Rendering.Materials.Brushes.Red, new SiVector(100, 100), true);
-
-                var loadingDetail = Sprites.TextBlocks.Add(Rendering.TextFormats.Loading,
-                    Rendering.Materials.Brushes.OrangeRed, new SiVector(loadingHeader.X, loadingHeader.Y + 50), true);
-
                 IsInitializing = true;
 
-                HydrateCache(loadingHeader, loadingDetail);
-
-                loadingHeader.QueueForDelete();
-                loadingDetail.QueueForDelete();
+                HydrateCache(progressCallback);
             }
             else if (ExecutionMode == SiEngineExecutionMode.SharedEngineContent)
             {
-                HydrateCache();
+                HydrateCache(progressCallback);
             }
             else if (ExecutionMode == SiEngineExecutionMode.Edit)
             {
-                HydrateCache();
+                HydrateCache(progressCallback);
             }
 
             OnInitializationComplete?.Invoke(this);
@@ -479,15 +470,14 @@ namespace Si.Engine
             //}
         }
 
-        private void HydrateCache(SpriteTextBlock? loadingHeader = null, SpriteTextBlock? loadingDetail = null)
+        private void HydrateCache(Action<string, float>? progressCallback)
         {
-            loadingHeader?.SetTextAndCenterX("Loading assets...");
-            loadingHeader?.SetTextAndCenterX("Loading reflection cache...");
+            progressCallback?.Invoke("Hydrating sprites...", 0);
+            SiReflection.BuildReflectionCacheOfType<SpriteBase>(progressCallback);
+            progressCallback?.Invoke("Hydrating AI machines...", 0);
+            SiReflection.BuildReflectionCacheOfType<AIStateMachine>(progressCallback);
 
-            SiReflection.BuildReflectionCacheOfType<SpriteBase>();
-            SiReflection.BuildReflectionCacheOfType<AIStateMachine>();
-
-            Assets.LoadAllAssets(loadingHeader, loadingDetail);
+            Assets.LoadAllAssets(progressCallback);
         }
 
         public void ShutdownEngine()

@@ -74,9 +74,9 @@ namespace Si.Engine.Sprite._Superclass._Root
 
                 Metadata.Attachments?.ForEach(attachment =>
                 {
-                    if (attachment.AttachmentAssetKey == null) throw new InvalidOperationException("Attachment type cannot be null");
+                    if (attachment.AssetKey == null) throw new InvalidOperationException("AssetKey cannot be null");
                     var locationRelativeToOwner = new SiVector(attachment.AttachmentPosition?.X ?? 0, attachment.AttachmentPosition?.Y ?? 0);
-                    interactive.AttachOfType(attachment.AttachmentAssetKey, locationRelativeToOwner, (sprite) =>
+                    interactive.AttachOfType(attachment.AssetKey, locationRelativeToOwner, (sprite) =>
                     {
                         //We take the orientation and position type of the attachment from the attachment section in the parent metadata if it is specified,
                         //   otherwise we use the default values set in the SpriteAttachment class.

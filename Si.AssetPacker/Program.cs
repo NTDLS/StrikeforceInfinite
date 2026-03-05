@@ -49,22 +49,26 @@ namespace Si.AssetPacker
 
                 var metadataJson = File.ReadAllText($"{fullAssetPath}.meta");
 
-                var metadata = JsonSerializer.Deserialize<AssetMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, SiConstants.JsonSerializerOptions);
-
                 sqliteDb.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 
-                sqliteDb.Execute("INSERT INTO Assets (Key, BaseType, Bytes, IsCompressed, Metadata)"
-                    + "VALUES (@Key, @BaseType, @Bytes, @IsCompressed, @Metadata)",
-                    new
-                    {
-                        Key = assetKey,
-                        Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
-                        IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
-                        Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions),
-                        BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower()
-                    });
+                var metadata = JsonSerializer.Deserialize<AssetMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, SiConstants.JsonSerializerOptions);
+                if (metadata != null)
+                {
+                    metadata.AssetKey = assetKey;
 
-                Console.WriteLine($"[{assetKey}], OriginalSz: {originalSize:n0}, CompressedSz: {compressedBytes.Length:n0} ({ratio:n2}%)");
+                    sqliteDb.Execute("INSERT INTO Assets (Key, BaseType, Bytes, IsCompressed, Metadata)"
+                        + "VALUES (@Key, @BaseType, @Bytes, @IsCompressed, @Metadata)",
+                        new
+                        {
+                            Key = assetKey,
+                            Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
+                            IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
+                            Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions),
+                            BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower()
+                        });
+
+                    Console.WriteLine($"[{assetKey}], OriginalSz: {originalSize:n0}, CompressedSz: {compressedBytes.Length:n0} ({ratio:n2}%)");
+                }
             }
 
             double totalRatio = originalTotalSize == 0
