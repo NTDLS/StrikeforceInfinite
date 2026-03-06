@@ -20,8 +20,15 @@ namespace Si.Engine.Sprite._Superclass
     public class SpriteWeapon
         : SpriteBase
     {
-        protected DateTime _lastFired = DateTime.Now.AddMinutes(-5);
-        protected SiAudioClip? _fireSound;
+        /// <summary>
+        /// UTC datetime that the weapon was last fired.
+        /// </summary>
+        public DateTime LastFired { get; private set; } = DateTime.UtcNow.AddMinutes(-5);
+
+        /// <summary>
+        /// The sound that the weapon makes when firing.
+        /// </summary>
+        public SiAudioClip? FireSound { get; private set; }
         public SpriteBase Owner { get; set; }
 
         public List<WeaponsLock> LockedTargets { get; set; } = new();
@@ -35,7 +42,7 @@ namespace Si.Engine.Sprite._Superclass
 
             if (!string.IsNullOrEmpty(Metadata.SoundAssetKey))
             {
-                _fireSound = Engine.Assets.GetAudio(Metadata.SoundAssetKey, Metadata.SoundVolume ?? 0);
+                FireSound = Engine.Assets.GetAudio(Metadata.SoundAssetKey, Metadata.SoundVolume ?? 0);
             }
         }
 
@@ -110,14 +117,14 @@ namespace Si.Engine.Sprite._Superclass
                 foreach (var hardLock in LockedTargets.Take(Metadata.MaxLocks ?? 0))
                 {
                     hardLock.LockType = SiWeaponsLockType.Hard;
-                    hardLock.Sprite.IsLockedOnHard = true;
+                    hardLock.Sprite.IsLockedOn = true;
                     hardLock.Sprite.IsLockedOnSoft = false;
                 }
 
                 foreach (var softLock in LockedTargets.Skip(Metadata.MaxLocks ?? 0))
                 {
                     softLock.LockType = SiWeaponsLockType.Soft;
-                    softLock.Sprite.IsLockedOnHard = false;
+                    softLock.Sprite.IsLockedOn = false;
                     softLock.Sprite.IsLockedOnSoft = true;
                 }
 
@@ -125,21 +132,21 @@ namespace Si.Engine.Sprite._Superclass
 
                 foreach (var potentialTarget in potentialTargets.Where(o => !lockedTargets.Contains(o)))
                 {
-                    potentialTarget.IsLockedOnHard = false;
+                    potentialTarget.IsLockedOn = false;
                     potentialTarget.IsLockedOnSoft = false;
                 }
             }
             else if (Owner is SpriteEnemy enemy)
             {
                 Engine.Player.Sprite.IsLockedOnSoft = false;
-                Engine.Player.Sprite.IsLockedOnHard = false;
+                Engine.Player.Sprite.IsLockedOn = false;
 
                 if (Metadata.MaxLockDistance > 0 && Owner.IsPointingAt(Engine.Player.Sprite, Metadata.MaxLockOnAngle ?? 0))
                 {
                     var distance = Owner.DistanceTo(Engine.Player.Sprite);
                     if (distance.IsBetween(Metadata.MinLockDistance ?? 0, Metadata.MaxLockDistance.Value))
                     {
-                        Engine.Player.Sprite.IsLockedOnHard = true;
+                        Engine.Player.Sprite.IsLockedOn = true;
                         Engine.Player.Sprite.IsLockedOnSoft = false;
 
                         LockedTargets.Add(new WeaponsLock(Engine.Player.Sprite, Owner.DistanceTo(Engine.Player.Sprite))
@@ -162,7 +169,7 @@ namespace Si.Engine.Sprite._Superclass
             {
                 MunitionsFired++;
                 MunitionQuantity--;
-                _fireSound?.Play();
+                FireSound?.Play();
                 Engine.Sprites.Munitions.Add(this, location);
 
                 return true;
@@ -182,7 +189,7 @@ namespace Si.Engine.Sprite._Superclass
             {
                 MunitionsFired++;
                 MunitionQuantity--;
-                _fireSound?.Play();
+                FireSound?.Play();
                 Engine.Sprites.Munitions.Add(this);
 
                 return true;
@@ -202,10 +209,10 @@ namespace Si.Engine.Sprite._Superclass
                 bool result = false;
                 if (MunitionQuantity > 0)
                 {
-                    result = (DateTime.Now - _lastFired).TotalMilliseconds > (Metadata.FireDelayMilliseconds ?? 0);
+                    result = (DateTime.UtcNow - LastFired).TotalMilliseconds > (Metadata.FireDelayMilliseconds ?? 0);
                     if (result)
                     {
-                        _lastFired = DateTime.Now;
+                        LastFired = DateTime.UtcNow;
                     }
                 }
                 return result;

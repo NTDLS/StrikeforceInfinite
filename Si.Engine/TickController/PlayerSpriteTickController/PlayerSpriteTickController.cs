@@ -79,7 +79,7 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
             }
 
             Sprite.IsLockedOnSoft = false;
-            Sprite.IsLockedOnHard = false;
+            Sprite.IsLockedOn = false;
 
             if (Sprite.IsVisible)
             {

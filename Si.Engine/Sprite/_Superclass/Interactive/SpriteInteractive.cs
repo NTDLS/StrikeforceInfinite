@@ -22,12 +22,18 @@ namespace Si.Engine.Sprite._Superclass.Interactive
     {
         #region Locking Indicator.
 
-        public bool IsLockedOnSoft { get; set; } //This is just graphics candy, the object would be subject of a foreign weapons lock, but the other foreign weapon owner has too many locks.
+        /// <summary>
+        /// This is just graphics candy, the sprite would be subject of a foreign weapons lock, but the other foreign weapon owner has too many locks.
+        /// </summary>
+        public bool IsLockedOnSoft { get; set; }
         protected Bitmap? _lockedOnImage;
         protected Bitmap? _lockedOnSoftImage;
         private bool _isLockedOn = false;
 
-        public bool IsLockedOnHard //The object is the subject of a foreign weapons lock.
+        /// <summary>
+        /// The sprite is the subject of a foreign weapons lock.
+        /// </summary>
+        public bool IsLockedOn
         {
             get => _isLockedOn;
             set
@@ -196,7 +202,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
 
             if (IsVisible)
             {
-                if (_lockedOnImage != null && IsLockedOnHard)
+                if (_lockedOnImage != null && IsLockedOn)
                 {
                     DrawImage(renderTarget, _lockedOnImage, 0);
                 }
