@@ -12,7 +12,7 @@ namespace Si.Engine.AI.Logistics
     {
         //DO NOT USE WITHOUT REWRITE!!
 
-        public AILogisticsMeander(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase>? observedObjects)
+        public AILogisticsMeander(EngineCore engine, SpriteShip owner, List<SpriteBase>? observedObjects)
             : base(engine, owner, observedObjects)
         {
         }

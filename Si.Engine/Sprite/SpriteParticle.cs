@@ -1,7 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
-using Si.Engine.Sprite._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -12,7 +11,7 @@ using static Si.Library.SiConstants;
 namespace Si.Engine.Sprite
 {
     public class SpriteParticle
-        : SpriteParticleBase
+        : _Superclass.SpriteParticle
     {
         /// <summary>
         /// The max travel distance from the creation x,y before the sprite is automatically deleted.

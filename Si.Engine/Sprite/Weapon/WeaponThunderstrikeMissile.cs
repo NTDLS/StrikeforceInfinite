@@ -1,5 +1,4 @@
 ﻿using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 
@@ -9,7 +8,7 @@ namespace Si.Engine.Sprite.Weapon
     {
         private bool _toggle = false;
 
-        public WeaponThunderstrikeMissile(EngineCore engine, SpriteInteractiveBase owner, string assetKey)
+        public WeaponThunderstrikeMissile(EngineCore engine, SpriteInteractive owner, string assetKey)
             : base(engine, owner, assetKey)
         {
         }

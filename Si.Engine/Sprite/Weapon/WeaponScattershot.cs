@@ -1,11 +1,10 @@
 ﻿using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.Weapon._Superclass;
 
 namespace Si.Engine.Sprite.Weapon
 {
     public class WeaponScattershot : WeaponBase
     {
-        public WeaponScattershot(EngineCore engine, SpriteInteractiveBase owner, string assetKey)
+        public WeaponScattershot(EngineCore engine, SpriteInteractive owner, string assetKey)
             : base(engine, owner, assetKey)
         {
         }

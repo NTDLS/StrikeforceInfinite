@@ -31,7 +31,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public SpriteAttachment AddAttachment(string assetKey, SpriteInteractiveBase owner, SiVector locationRelativeToOwner)
+        public SpriteAttachment AddAttachment(string assetKey, SpriteInteractive owner, SiVector locationRelativeToOwner)
         {
             var sprite = Engine.Sprites.Add<SpriteAttachment>(assetKey, (o) =>
             {

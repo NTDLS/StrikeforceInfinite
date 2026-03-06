@@ -1,6 +1,7 @@
 ﻿using Si.AssetExplorer.Controls;
 using Si.Engine;
 using Si.Library;
+using Si.Library.Metadata;
 
 namespace Si.AssetExplorer.Forms
 {

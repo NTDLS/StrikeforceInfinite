@@ -6,10 +6,10 @@ using static Si.Library.SiConstants;
 namespace Si.Engine.Sprite
 {
     public class SpriteAttachment
-        : SpriteInteractiveBase
+        : SpriteInteractive
     {
-        private SpriteInteractiveBase? _rootOwner = null;
-        private SpriteInteractiveBase? _owner = null;
+        private SpriteInteractive? _rootOwner = null;
+        private SpriteInteractive? _owner = null;
         public SiVector? LocationRelativeToOwner { get; set; }
         public string? AssetKey { get; private set; }
 
@@ -87,7 +87,7 @@ namespace Si.Engine.Sprite
         /// Gets and caches the root owner of this attachment.
         /// </summary>
         /// <returns></returns>
-        public SpriteInteractiveBase RootOwner
+        public SpriteInteractive RootOwner
         {
             get
             {
@@ -97,7 +97,7 @@ namespace Si.Engine.Sprite
 
                     do
                     {
-                        _rootOwner = Engine.Sprites.GetSpriteByOwner<SpriteInteractiveBase>(_rootOwner.OwnerUID);
+                        _rootOwner = Engine.Sprites.GetSpriteByOwner<SpriteInteractive>(_rootOwner.OwnerUID);
                     } while (_rootOwner != null && _rootOwner.OwnerUID != 0);
                 }
                 return _rootOwner ?? throw new Exception("Attachment must have a root owner.");
@@ -108,11 +108,11 @@ namespace Si.Engine.Sprite
         /// Gets and caches the root owner of this attachment.
         /// </summary>
         /// <returns></returns>
-        public SpriteInteractiveBase Owner
+        public SpriteInteractive Owner
         {
             get
             {
-                _owner ??= Engine.Sprites.GetSpriteByOwner<SpriteInteractiveBase>(OwnerUID);
+                _owner ??= Engine.Sprites.GetSpriteByOwner<SpriteInteractive>(OwnerUID);
                 return _owner ?? throw new Exception("Attachment must have a root owner.");
             }
         }

@@ -3,7 +3,7 @@ using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite
 {
-    public class SpriteDebug : SpriteInteractiveShipBase
+    public class SpriteDebug : SpriteShip
     {
         public SpriteDebug(EngineCore engine)
             : base(engine, "Sprites/Debug") //TODO: Why is the debug sprite not passed in here?!

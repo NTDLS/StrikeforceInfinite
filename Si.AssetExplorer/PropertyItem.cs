@@ -1,5 +1,6 @@
 ﻿using Si.Library;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System.Globalization;
 using System.Reflection;
 

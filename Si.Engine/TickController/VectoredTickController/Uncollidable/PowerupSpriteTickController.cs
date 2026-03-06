@@ -1,13 +1,13 @@
 ﻿using NTDLS.Helpers;
 using Si.Engine.Manager;
-using Si.Engine.Sprite.PowerUp._Superclass;
+using Si.Engine.Sprite._Superclass;
 using Si.Engine.TickController._Superclass;
 using Si.Library.Mathematics;
 using System;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class PowerupSpriteTickController : VectoredTickControllerBase<SpritePowerupBase>
+    public class PowerupSpriteTickController : VectoredTickControllerBase<SpritePowerup>
     {
         public PowerupSpriteTickController(EngineCore engine, SpriteManager manager)
             : base(engine, manager)
@@ -25,10 +25,10 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public T AddAt<T>(float x, float y) where T : SpritePowerupBase
+        public T AddAt<T>(float x, float y) where T : SpritePowerup
         {
             object[] param = { Engine };
-            var obj = (SpritePowerupBase)Activator.CreateInstance(typeof(T), param).EnsureNotNull();
+            var obj = (SpritePowerup)Activator.CreateInstance(typeof(T), param).EnsureNotNull();
             obj.Location = new SiVector(x, y);
             SpriteManager.Insert(obj);
             return (T)obj;

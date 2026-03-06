@@ -1,12 +1,11 @@
 ﻿using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Weapon
 {
     public class WeaponBlunderbuss : WeaponBase
     {
-        public WeaponBlunderbuss(EngineCore engine, SpriteInteractiveBase owner, string assetKey)
+        public WeaponBlunderbuss(EngineCore engine, SpriteInteractive owner, string assetKey)
             : base(engine, owner, assetKey)
         {
         }

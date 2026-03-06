@@ -52,7 +52,7 @@ namespace Si.Engine.AI.Logistics
 
         public AILogisticsHostileEngagement2(
             EngineCore engine,
-            SpriteInteractiveShipBase owner,
+            SpriteShip owner,
             SpriteBase observedObject,
             ModelParameters parameters)
             : base(engine, owner, [observedObject])

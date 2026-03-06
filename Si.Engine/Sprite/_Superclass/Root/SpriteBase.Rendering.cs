@@ -1,5 +1,4 @@
 ﻿using SharpDX.Mathematics.Interop;
-using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library.Sprite;
 using System.Drawing;
 using static Si.Library.SiConstants;
@@ -53,7 +52,7 @@ namespace Si.Engine.Sprite._Superclass._Root
                 {
                     Engine.Rendering.DrawTriangle(renderTarget, x, y, 3, 3, Engine.Rendering.Materials.Colors.OrangeRed);
                 }
-                else if (this is MunitionBase munition)
+                else if (this is SpriteMunition munition)
                 {
                     float size;
                     RawColor4 color;

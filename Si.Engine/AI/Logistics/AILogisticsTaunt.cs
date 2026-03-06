@@ -13,7 +13,7 @@ namespace Si.Engine.AI.Logistics
     {
         //DO NOT USE WITHOUT REWRITE!!
 
-        public AILogisticsTaunt(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase> observedObjects)
+        public AILogisticsTaunt(EngineCore engine, SpriteShip owner, List<SpriteBase> observedObjects)
             : base(engine, owner, observedObjects)
         {
         }

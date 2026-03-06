@@ -2,8 +2,6 @@
 using Si.Audio;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Weapon._Superclass;
-using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 using System;
@@ -16,7 +14,7 @@ namespace Si.Engine.Sprite
     /// The player base is a sub-class of the ship base. It is only used by the Player and as a model for menu selections.
     /// </summary>
     public class SpritePlayer
-        : SpriteInteractiveBase
+        : SpriteInteractive
     {
         public readonly string BoostResourceName = "SpritePlayerBase:Boost";
 
@@ -195,7 +193,7 @@ namespace Si.Engine.Sprite
             }
         }
 
-        public override void MunitionHit(MunitionBase munition)
+        public override void MunitionHit(SpriteMunition munition)
         {
             Hit(munition);
             if (HullHealth <= 0)
@@ -204,7 +202,7 @@ namespace Si.Engine.Sprite
             }
         }
 
-        public override bool TryMunitionHit(MunitionBase munition, SiVector hitTestPosition)
+        public override bool TryMunitionHit(SpriteMunition munition, SiVector hitTestPosition)
         {
             if (munition.FiredFromType == SiFiredFromType.Enemy)
             {

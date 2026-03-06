@@ -2,6 +2,7 @@
 using Si.Engine;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
+using Si.Library.Metadata;
 using System.Reflection;
 using static Si.Library.SiConstants;
 

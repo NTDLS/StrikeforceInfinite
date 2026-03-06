@@ -1,6 +1,7 @@
 ﻿using NTDLS.Helpers;
 using NTDLS.SqliteDapperWrapper;
 using Si.Library;
+using Si.Library.Metadata;
 using System.IO.Compression;
 using System.Text.Json;
 

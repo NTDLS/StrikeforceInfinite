@@ -4,6 +4,7 @@ using NTDLS.SqliteDapperWrapper;
 using Si.Audio;
 using Si.Library;
 using Si.Library.Compiler;
+using Si.Library.Metadata;
 using System;
 using System.Collections.Generic;
 using System.IO;

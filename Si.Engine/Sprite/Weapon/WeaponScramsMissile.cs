@@ -1,5 +1,4 @@
 ﻿using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace Si.Engine.Sprite.Weapon
     {
         private bool _toggle = false;
 
-        public WeaponScramsMissile(EngineCore engine, SpriteInteractiveBase owner, string assetKey)
+        public WeaponScramsMissile(EngineCore engine, SpriteInteractive owner, string assetKey)
             : base(engine, owner, assetKey)
         {
         }

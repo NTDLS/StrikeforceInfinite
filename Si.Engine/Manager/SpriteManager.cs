@@ -6,9 +6,6 @@ using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite.KinematicBody;
-using Si.Engine.Sprite.PowerUp._Superclass;
-using Si.Engine.Sprite.Weapon._Superclass;
-using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Engine.TickController.VectoredTickController.Collidable;
 using Si.Engine.TickController.VectoredTickController.Uncollidable;
@@ -167,13 +164,13 @@ namespace Si.Engine.Manager
                         constructorParams.Add(new SpriteEnemy(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "owner":
-                        constructorParams.Add(new SpriteInteractiveBase(_engine, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "weapon":
-                        constructorParams.Add(new WeaponBase(_engine, new SpriteInteractiveBase(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new WeaponBase(_engine, new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
                         break;
                     case "lockedTarget":
-                        constructorParams.Add(new SpriteInteractiveBase(_engine, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "location":
                         constructorParams.Add(SiVector.Zero());
@@ -282,18 +279,18 @@ namespace Si.Engine.Manager
             => _collection.OfType<T>().Where(o => o.IsVisible).ToArray();
 
         public T?[] VisibleDamageable<T>() where T : class
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).Select(o => o as T).ToArray();
+            => _collection.OfType<SpriteInteractive>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).Select(o => o as T).ToArray();
 
         //Probably faster than VisibleDamageable<T>().
-        public SpriteInteractiveBase[] VisibleDamageable()
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).ToArray();
+        public SpriteInteractive[] VisibleDamageable()
+            => _collection.OfType<SpriteInteractive>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).ToArray();
 
         public T?[] VisibleCollidable<T>() where T : class
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).Select(o => o as T).ToArray();
+            => _collection.OfType<SpriteInteractive>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).Select(o => o as T).ToArray();
 
         //Probably faster than VisibleCollidable<T>().
-        public SpriteInteractiveBase[] VisibleCollidable()
-            => _collection.OfType<SpriteInteractiveBase>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).ToArray();
+        public SpriteInteractive[] VisibleCollidable()
+            => _collection.OfType<SpriteInteractive>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).ToArray();
 
         public PredictedKinematicBody[] VisibleCollidablePredictiveMove(float epoch)
             => _engine.Sprites.VisibleCollidable().Select(o => new PredictedKinematicBody(o, _engine.Display.CameraPosition, epoch)).ToArray();
@@ -434,7 +431,7 @@ namespace Si.Engine.Manager
                             && y < _engine.Display.NaturalScreenSize.Height - radarBgImage.Size.Height + radarBgImage.Size.Height
                             )
                         {
-                            if ((sprite is SpritePlayer || sprite is SpriteEnemy || sprite is MunitionBase || sprite is SpritePowerupBase) && sprite.IsVisible == true)
+                            if ((sprite is SpritePlayer || sprite is SpriteEnemy || sprite is SpriteMunition || sprite is SpritePowerup) && sprite.IsVisible == true)
                             {
                                 sprite.RenderRadar(renderTarget, x, y);
                             }

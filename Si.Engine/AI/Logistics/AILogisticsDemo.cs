@@ -16,7 +16,7 @@ namespace Si.Engine.AI.Logistics
         private float _explodeCooldown = SiRandom.Between(5, 10);
         private readonly bool _doExplosions = false;
 
-        public AILogisticsDemo(EngineCore engine, SpriteInteractiveShipBase owner)
+        public AILogisticsDemo(EngineCore engine, SpriteShip owner)
             : base(engine, owner, observedObjects: null)
         {
             SetAIState(new ExitScreen(this));

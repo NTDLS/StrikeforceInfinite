@@ -1,7 +1,5 @@
 ﻿using SharpDX;
 using Si.Engine.Manager;
-using Si.Engine.Sprite;
-using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
@@ -13,7 +11,7 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class ParticleSpriteTickController : VectoredTickControllerBase<SpriteParticleBase>
+    public class ParticleSpriteTickController : VectoredTickControllerBase<Sprite._Superclass.SpriteParticle>
     {
         public ParticleSpriteTickController(EngineCore engine, SpriteManager manager)
             : base(engine, manager)
@@ -45,16 +43,16 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public SpriteParticle AddAt(SpriteBase sprite, Color4 color, Size? size = null)
+        public Sprite.SpriteParticle AddAt(SpriteBase sprite, Color4 color, Size? size = null)
         {
-            var obj = new SpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
+            var obj = new Sprite.SpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
             SpriteManager.Insert(obj);
             return obj;
         }
 
-        public SpriteParticle AddAt(SiVector location, Color4 color, Size? size = null)
+        public Sprite.SpriteParticle AddAt(SiVector location, Color4 color, Size? size = null)
         {
-            var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1), color)
+            var obj = new Sprite.SpriteParticle(Engine, location, size ?? new Size(1, 1), color)
             {
                 IsVisible = true
             };
@@ -62,9 +60,9 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
-        public SpriteParticle AddAt(SiVector location, Size? size = null)
+        public Sprite.SpriteParticle AddAt(SiVector location, Size? size = null)
         {
-            var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1))
+            var obj = new Sprite.SpriteParticle(Engine, location, size ?? new Size(1, 1))
             {
                 IsVisible = true
             };

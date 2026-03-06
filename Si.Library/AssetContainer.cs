@@ -1,4 +1,6 @@
-﻿namespace Si.Library
+﻿using Si.Library.Metadata;
+
+namespace Si.Library
 {
     public class AssetContainer
     {

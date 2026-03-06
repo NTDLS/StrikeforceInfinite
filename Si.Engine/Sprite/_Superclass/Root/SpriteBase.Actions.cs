@@ -1,5 +1,4 @@
-﻿using Si.Engine.Sprite.Weapon.Munition._Superclass;
-using Si.Library;
+﻿using Si.Library;
 using Si.Library.Mathematics;
 using System.Linq;
 using static Si.Library.SiConstants;
@@ -19,7 +18,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// <param name="munition">The munition object that is being tested for.</param>
         /// <param name="hitTestPosition">The position to test for hit.</param>
         /// <returns></returns>
-        public virtual bool TryMunitionHit(MunitionBase munition, SiVector hitTestPosition)
+        public virtual bool TryMunitionHit(SpriteMunition munition, SiVector hitTestPosition)
         {
             if (IntersectsAabb(hitTestPosition))
             {
@@ -33,7 +32,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             return false;
         }
 
-        public virtual void MunitionHit(MunitionBase munition)
+        public virtual void MunitionHit(SpriteMunition munition)
         {
             Hit(munition);
             if (HullHealth <= 0)
@@ -72,7 +71,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         /// Hits this object with a given munition.
         /// </summary>
         /// <returns></returns>
-        public virtual void Hit(MunitionBase munition)
+        public virtual void Hit(SpriteMunition munition)
         {
             if (munition.Weapon?.Metadata != null)
             {

@@ -12,7 +12,7 @@ namespace Si.Engine.AI.Logistics
     public class AILogisticsOffScreenReentry
         : AIStateMachine
     {
-        public AILogisticsOffScreenReentry(EngineCore engine, SpriteInteractiveShipBase owner)
+        public AILogisticsOffScreenReentry(EngineCore engine, SpriteShip owner)
             : base(engine, owner, null)
         {
             SetAIState(new ExitScreen(this));

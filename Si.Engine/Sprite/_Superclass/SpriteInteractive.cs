@@ -1,0 +1,382 @@
+﻿using NTDLS.Helpers;
+using SharpDX.Direct2D1;
+using Si.Engine.AI._Superclass;
+using Si.Engine.Sprite._Superclass._Root;
+using Si.Engine.Sprite.KinematicBody;
+using Si.Library;
+using Si.Library.Mathematics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using static Si.Library.SiConstants;
+
+namespace Si.Engine.Sprite._Superclass
+{
+    /// <summary>
+    /// A sprite that the player can see, probably shoot and destroy and might even shoot back.
+    /// </summary>
+    public class SpriteInteractive
+        : SpriteBase
+    {
+        #region Locking Indicator.
+
+        public bool IsLockedOnSoft { get; set; } //This is just graphics candy, the object would be subject of a foreign weapons lock, but the other foreign weapon owner has too many locks.
+        protected Bitmap? _lockedOnImage;
+        protected Bitmap? _lockedOnSoftImage;
+        private bool _isLockedOn = false;
+
+        public bool IsLockedOnHard //The object is the subject of a foreign weapons lock.
+        {
+            get => _isLockedOn;
+            set
+            {
+                if (_isLockedOn == false && value == true)
+                {
+                    //TODO: This should not play every loop.
+                    Engine.Audio.LockedOnBlip?.Play();
+                }
+                _isLockedOn = value;
+            }
+        }
+
+        #endregion
+
+        public float Mass { get; set; }
+
+        public SiRenewableResources RenewableResources { get; set; } = new();
+        public List<WeaponBase> Weapons { get; private set; } = new();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="engine"></param>
+        /// <param name="assetKey"></param>
+        public SpriteInteractive(EngineCore engine, string? assetKey)
+            : base(engine, assetKey)
+        {
+            Mass = SiRandom.Between(Metadata.Mass, 0);
+
+            if (Engine.Assets.IsLoaded)
+            {
+                _lockedOnImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On");
+                _lockedOnSoftImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft");
+            }
+        }
+
+        public SpriteInteractive(EngineCore engine, Bitmap bitmap)
+            : base(engine, null)
+        {
+            if (Engine.Assets.IsLoaded)
+            {
+                _lockedOnImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On.png");
+                _lockedOnSoftImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft.png");
+            }
+
+            SetBitmap(bitmap);
+        }
+
+        #region Artificial Intelligence.
+
+        public IAIController? CurrentAIController { get; set; }
+        private readonly Dictionary<Type, IAIController> _aiControllers = new();
+
+        public void AddAIController(IAIController controller)
+            => _aiControllers.Add(controller.GetType(), controller);
+
+        public void ClearAIControllers()
+        {
+            _aiControllers.Clear();
+            CurrentAIController = null;
+        }
+
+        public IAIController GetAIController<T>() where T : IAIController
+            => _aiControllers[typeof(T)];
+
+        public void SetCurrentAIController<T>() where T : IAIController
+        {
+            CurrentAIController = GetAIController<T>();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// The total velocity multiplied by the given mass.
+        /// </summary>
+        /// <param name="mass"></param>
+        /// <returns></returns>
+        public float TotalMomentum()
+            => TotalVelocity * Mass;
+
+        /// <summary>
+        /// Number that defines how much motion a sprite is in.
+        /// </summary>
+        public float TotalVelocity
+            => MovementVector.SumAbs();
+
+        /// <summary>
+        /// The total velocity multiplied by the given mass, except for the mass is returned when the velocity is 0;
+        /// </summary>
+        /// <param name="mass"></param>
+        /// <returns></returns>
+        public float TotalMomentumWithRestingMass()
+        {
+            var totalRelativeVelocity = TotalVelocity;
+            if (totalRelativeVelocity == 0)
+            {
+                return Mass;
+            }
+            return TotalVelocity * Mass;
+        }
+
+        #region Weapons selection and evaluation.
+
+        public void ClearWeapons() => Weapons.Clear();
+
+        public void AddWeapon(string assetKey, int munitionCount)
+        {
+            var metadata = Engine.Assets.GetMetadata(assetKey)
+                ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
+
+            var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
+            if (weapon == null)
+            {
+                var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
+                weapon = (WeaponBase)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
+                weapon.RoundQuantity += munitionCount;
+                Weapons.Add(weapon);
+            }
+            else
+            {
+                weapon.RoundQuantity += munitionCount;
+            }
+        }
+
+        public int TotalAvailableWeaponRounds() => (from o in Weapons select o.RoundQuantity).Sum();
+        public int TotalWeaponFiredRounds() => (from o in Weapons select o.RoundsFired).Sum();
+
+        public bool HasWeapon<T>() where T : WeaponBase
+        {
+            var existingWeapon = (from o in Weapons where o.GetType() == typeof(T) select o).FirstOrDefault();
+            return existingWeapon != null;
+        }
+
+        public bool HasWeaponAndAmmo<T>() where T : WeaponBase
+        {
+            var existingWeapon = (from o in Weapons where o.GetType() == typeof(T) select o).FirstOrDefault();
+            return existingWeapon != null && existingWeapon.RoundQuantity > 0;
+        }
+
+        public bool FireWeapon<T>() where T : WeaponBase
+        {
+            var weapon = GetWeaponOfType<T>();
+            return weapon?.Fire() == true;
+        }
+
+        public bool FireWeapon<T>(SiVector location) where T : WeaponBase
+        {
+            var weapon = GetWeaponOfType<T>();
+            return weapon?.Fire(location) == true;
+        }
+
+        public WeaponBase? GetWeaponOfType<T>() where T : WeaponBase
+        {
+            return Weapons.OfType<T>().FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Attachments.
+
+        /// <summary>
+        /// Creates a new sprite, adds it to the sprite collection but also adds it to the collection of another
+        /// sprites children for automatic cleanup when parent is destroyed. 
+        /// </summary>
+        /// <returns></returns>
+        public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner, Action<SpriteAttachment>? initilizationProc = null)
+        {
+            var attachment = Engine.Sprites.Attachments.AddAttachment(assetKey, this, locationRelativeToOwner);
+            initilizationProc?.Invoke(attachment);
+            Attachments.Add(attachment);
+            return attachment;
+        }
+
+        #endregion
+
+        public override void Render(RenderTarget renderTarget, float epoch)
+        {
+            base.Render(renderTarget, epoch);
+
+            if (IsVisible)
+            {
+                if (_lockedOnImage != null && IsLockedOnHard)
+                {
+                    DrawImage(renderTarget, _lockedOnImage, 0);
+                }
+                else if (_lockedOnSoftImage != null && IsLockedOnSoft)
+                {
+                    DrawImage(renderTarget, _lockedOnSoftImage, 0);
+                }
+            }
+        }
+
+        public override bool TryMunitionHit(SpriteMunition munition, SiVector hitTestPosition)
+        {
+            if (IntersectsAabb(hitTestPosition))
+            {
+                Hit(munition);
+                if (HullHealth <= 0)
+                {
+                    Explode();
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public override void Explode()
+        {
+            Engine.Events.Add(() =>
+            {
+                switch (Metadata.ExplosionType)
+                {
+                    case ExplosionType.MediumFire:
+                        Engine.Sprites.Animations.AddRandomMediumFireExplosionAt(this);
+                        break;
+                    case ExplosionType.LargeFire:
+                        Engine.Sprites.Animations.AddRandomLargeFireExplosionAt(this);
+                        break;
+                    case ExplosionType.SmallFire:
+                        Engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
+                        break;
+                    case ExplosionType.MicroFire:
+                        Engine.Sprites.Animations.AddRandomMicroFireExplosionAt(this);
+                        break;
+                    case ExplosionType.Energy:
+                        Engine.Sprites.Animations.AddRandomEnergyExplosionAt(this);
+                        break;
+                }
+
+                if (Metadata.ParticleBlastOnExplodeAmount?.IsValid() == true)
+                    Engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(Metadata.ParticleBlastOnExplodeAmount.Min, Metadata.ParticleBlastOnExplodeAmount.Max));
+
+                if (Metadata.FragmentOnExplode == true)
+                    Engine.Sprites.CreateFragmentsOf(this);
+
+                if (Metadata.ScreenShakeOnExplodeAmount?.IsValid() == true)
+                    Engine.Rendering.AddScreenShake(Metadata.ScreenShakeOnExplodeAmount.Min, Metadata.ScreenShakeOnExplodeAmount.Max);
+
+                Engine.Audio.PlayRandomExplosion();
+            });
+
+            base.Explode();
+        }
+
+        /// <summary>
+        /// Provides a way to make basic decisions about the sprite that do not necessarily have anything to do with movement.
+        /// </summary>
+        /// <param name="epoch"></param>
+        /// <param name="cameraDisplacement"></param>
+        public virtual void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
+        {
+            CurrentAIController?.ApplyIntelligence(epoch, cameraDisplacement);
+            Weapons?.ForEach(o => o.ApplyIntelligence(epoch));
+        }
+
+        /// <summary>
+        /// Performs collision detection for this one sprite using the passed in collection of collidable bodies.
+        /// 
+        /// This is called before ApplyMotion().
+        /// </summary>
+        public virtual void PerformCollisionDetection(float epoch)
+        {
+            if (Metadata.CollisionDetection != true || IsDeadOrExploded || !IsVisible)
+            {
+                return;
+            }
+
+            //HEY PAT!
+            // - [] This function (PerformCollisionDetection) is called before ApplyMotion().
+            // - [] _engine.Collisions.Collidables contains all objects that have CollisionDetection enabled.
+            // - [] Each element in collidables[] has a Position property which is the location where
+            //      the sprite will be AFTER the next call to ApplyMotion() (e.g. the sprite has not
+            //      yet moved but this will tell you where it will be when it next moves).
+            //      We should? be able to use this to detect a collision and back each of the sprites
+            //      velocities off... right?
+            // - [x] Note that thisCollidable also contains the predicted location after the move.
+            // - [] How the hell do we handle collateral collisions? Please tell me we don't have to iterate.... 
+            // - [x] Turns out a big problem is going to be that each colliding sprite will have two separate handlers.
+            //      this might make it difficult.... not sure yet.
+            // - [x] I think we need to determine the angle of the "collider" and do the bounce math on that.
+            // - [x] I added sprite mass, velocity and momentum. This should help us determine who's gonna get moved and by what amount.
+            // - [x] One issue we have is that if a sprite is moving away from the collision, then this code
+            //      will reverse that and move the sprite into the collision causing them to overlap and become stuck.
+
+            //IsHighlighted = true;
+
+            var thisCollidable = new PredictedKinematicBody(this, Engine.Display.CameraPosition, epoch);
+
+            /// It is important to remeber that need to verify the visibility of sprites that are colliding
+            ///     because the collection of collidables is a snapshot from the start of the tick and the
+            ///     visibility can change between that snapshot and this calculation.
+            foreach (var other in Engine.Collisions.Collidables.Where(o => o.Sprite.IsVisible))
+            {
+                if (thisCollidable.Sprite == other.Sprite || Engine.Collisions.IsAlreadyHandled(thisCollidable.Sprite, other.Sprite))
+                {
+                    continue;
+                }
+
+                if (thisCollidable.IntersectsSAT(other))
+                {
+                    //The items recorded to this collection are rendered to the screen via
+                    //  EngineCore.RenderEverything() when Engine.Settings.HighlightCollisions is true.
+                    var collisionPair = Engine.Collisions.CreateAndRecord(thisCollidable, other);
+
+                    //Comment this out to see the collision overlaps.
+                    RespondToCollisions(collisionPair);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Changes the movement vector of two sprites involved in a collision.
+        /// </summary>
+        /// <param name="collisionPair"></param>
+        public void RespondToCollisions(OverlappingKinematicBodyPair collisionPair)
+        {
+            var A = collisionPair.Body1.Sprite;
+            var B = collisionPair.Body2.Sprite;
+
+            float mA = A.Mass;
+            float mB = B.Mass;
+
+            // normal from A -> B (pick one direction and stick to it).
+            var n = (B.Location - A.Location).Normalize();
+
+            var vA = A.MovementVector;
+            var vB = B.MovementVector;
+
+            var rv = vB - vA; // relative velocity of B w.r.t A
+            float velAlongNormal = rv.Dot(n);
+
+            if (velAlongNormal > 0f)
+                return; // separating
+
+            float restitution = 1.0f; // 1=perfectly elastic; try 0.2..0.8 for game-feel
+            float invMassA = (mA <= 0f) ? 0f : 1f / mA;
+            float invMassB = (mB <= 0f) ? 0f : 1f / mB;
+
+            float j = -(1f + restitution) * velAlongNormal;
+            j /= (invMassA + invMassB);
+
+            var impulse = j * n;
+
+            // Apply impulses
+            A.MovementVector = vA - impulse * invMassA;
+            B.MovementVector = vB + impulse * invMassB;
+
+            // I don't want players to bounce too much.
+            if (A is SpritePlayer) A.MovementVector = (A.MovementVector + vA) * 0.5f;
+            if (B is SpritePlayer) B.MovementVector = (B.MovementVector + vB) * 0.5f;
+        }
+    }
+}

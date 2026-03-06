@@ -68,7 +68,7 @@ namespace Si.Engine.Manager
             Detected.Clear();
         }
 
-        public bool IsAlreadyHandled(SpriteInteractiveBase sprite1, SpriteInteractiveBase sprite2)
+        public bool IsAlreadyHandled(SpriteInteractive sprite1, SpriteInteractive sprite2)
             => Detected.ContainsKey(OverlappingKinematicBodyPair.MakeKey(sprite1.UID, sprite2.UID));
 
         public bool IsAlreadyHandled(PredictedKinematicBody body1, PredictedKinematicBody body2)

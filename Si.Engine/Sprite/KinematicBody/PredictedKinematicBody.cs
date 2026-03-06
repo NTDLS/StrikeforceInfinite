@@ -19,7 +19,7 @@ namespace Si.Engine.Sprite.KinematicBody
         /// <summary>
         /// Reference to the sprite.
         /// </summary>
-        public SpriteInteractiveBase Sprite { get; set; }
+        public SpriteInteractive Sprite { get; set; }
 
         /// <summary>
         /// The location of the render window when the prediction was made.
@@ -64,7 +64,7 @@ namespace Si.Engine.Sprite.KinematicBody
         /// </summary>
         public SiVector RenderLocation => PredictedLocation - RenderWindowPosition;
 
-        public PredictedKinematicBody(SpriteInteractiveBase sprite, SiVector renderWindowPosition, float epoch)
+        public PredictedKinematicBody(SpriteInteractive sprite, SiVector renderWindowPosition, float epoch)
         {
             RenderWindowPosition = renderWindowPosition;
 

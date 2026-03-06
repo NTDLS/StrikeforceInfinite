@@ -19,7 +19,7 @@ namespace Si.Engine.AI.Logistics
     {
         private readonly string _boostResourceName = "AILogisticsHostileEngagement_Boost";
 
-        public AILogisticsHostileEngagement(EngineCore engine, SpriteInteractiveShipBase owner, List<SpriteBase>? observedObjects)
+        public AILogisticsHostileEngagement(EngineCore engine, SpriteShip owner, List<SpriteBase>? observedObjects)
             : base(engine, owner, observedObjects)
         {
             owner.OnHit += Owner_OnHit;

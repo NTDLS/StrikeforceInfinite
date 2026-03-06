@@ -1,11 +1,11 @@
-﻿using Si.Engine.Sprite.PowerUp._Superclass;
+﻿using Si.Engine.Sprite._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.PowerUp
 {
     internal class SpritePowerupAmmo
-        : SpritePowerupBase
+        : SpritePowerup
     {
         private readonly int imageCount = 3;
 

@@ -11,7 +11,7 @@ namespace Si.Engine.Sprite
     /// These are generic collidable, interactive bitmap sprites. They can take damage and even shoot back.
     /// </summary>
     public class SpriteInteractiveBitmap
-        : SpriteInteractiveBase
+        : SpriteInteractive
     {
         /// <summary>
         /// The max travel distance from the creation x,y before the sprite is automatically deleted.

@@ -1,12 +1,11 @@
 ﻿using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.Weapon._Superclass;
 using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Weapon
 {
     public class WeaponDualVulcanCannon : WeaponBase
     {
-        public WeaponDualVulcanCannon(EngineCore engine, SpriteInteractiveBase owner, string assetKey)
+        public WeaponDualVulcanCannon(EngineCore engine, SpriteInteractive owner, string assetKey)
             : base(engine, owner, assetKey)
         {
         }

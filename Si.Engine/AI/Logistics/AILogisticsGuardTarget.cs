@@ -21,7 +21,7 @@ namespace Si.Engine.AI.Logistics
             public float MaxDistance { get; set; } = 200;
         }
 
-        public AILogisticsGuardTarget(EngineCore engine, SpriteInteractiveShipBase owner, SpriteBase observedObject, ModelParameters parameters)
+        public AILogisticsGuardTarget(EngineCore engine, SpriteShip owner, SpriteBase observedObject, ModelParameters parameters)
             : base(engine, owner, [observedObject])
         {
             SetAIState(new GoToDistance(this));

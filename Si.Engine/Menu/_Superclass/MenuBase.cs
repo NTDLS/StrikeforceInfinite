@@ -1,5 +1,5 @@
 ﻿using SharpDX.DirectInput;
-using Si.Engine.Sprite;
+using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite.MenuItem;
 using Si.Library.Mathematics;
 using System;

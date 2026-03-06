@@ -3,8 +3,6 @@ using Si.Engine.Manager;
 using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
-using Si.Engine.Sprite.Weapon._Superclass;
-using Si.Engine.Sprite.Weapon.Munition._Superclass;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
@@ -15,16 +13,16 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class MunitionSpriteTickController : VectoredTickControllerBase<MunitionBase>
+    public class MunitionSpriteTickController : VectoredTickControllerBase<SpriteMunition>
     {
         #region Private Classes.
 
         private struct MunitionObjectHit
         {
             public SpriteBase Object { get; set; }
-            public MunitionBase Munition { get; set; }
+            public SpriteMunition Munition { get; set; }
 
-            public MunitionObjectHit(MunitionBase munition, SpriteBase obj)
+            public MunitionObjectHit(SpriteMunition munition, SpriteBase obj)
             {
                 Object = obj;
                 Munition = munition;
@@ -52,7 +50,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
         public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
         {
-            var munitions = VisibleOfType<MunitionBase>();
+            var munitions = VisibleOfType<SpriteMunition>();
             if (munitions.Count() != 0)
             {
                 var interactiveSprites = SpriteManager.VisibleDamageable();
@@ -133,7 +131,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         /// <param name="lockedTarget"></param>
         /// <param name="xyOffset"></param>
         /// <returns></returns>
-        public void AddLockedOnTo(WeaponBase weapon, SpriteInteractiveBase lockedTarget, SiVector? location = null)
+        public void AddLockedOnTo(WeaponBase weapon, SpriteInteractive lockedTarget, SiVector? location = null)
         {
             var obj = weapon.CreateMunition(location, lockedTarget);
             SpriteManager.Insert(obj);

@@ -1,6 +1,7 @@
 ﻿using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using Si.Library.Sprite;
 using System;
 using System.Drawing;
@@ -63,7 +64,7 @@ namespace Si.Engine.Sprite._Superclass._Root
             SetHullHealth(Metadata.Hull ?? 0);
             SetShieldHealth(Metadata.Shields ?? 0);
 
-            if (this is SpriteInteractiveBase interactive)
+            if (this is SpriteInteractive interactive)
             {
                 Metadata.WeaponAssetKeys?.ForEach(weaponAssetKey =>
                 {

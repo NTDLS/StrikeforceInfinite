@@ -1,7 +1,7 @@
 ﻿using Si.Library.Mathematics;
 using static Si.Library.SiConstants;
 
-namespace Si.Library
+namespace Si.Library.Metadata
 {
     public class AssetMetadata
     {

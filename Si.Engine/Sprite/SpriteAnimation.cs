@@ -2,6 +2,7 @@
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
+using Si.Engine.Sprite._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
 using System;

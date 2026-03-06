@@ -1,5 +1,5 @@
 ﻿using Si.Engine.Manager;
-using Si.Engine.Sprite;
+using Si.Engine.Sprite._Superclass;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.ExtensionMethods;
