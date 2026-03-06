@@ -35,7 +35,7 @@ namespace Si.Engine.AI.Logistics
                     if (Owner.IsWithinCurrentScaledScreenBounds)
                     {
                         var attachments = Owner.Attachments.Where(a => !a.IsDeadOrExploded).ToList();
-                        SiRandom.OneOfNullable(attachments)?.Explode();
+                        attachments.OneOfNullable()?.Explode();
 
                         if (!Owner.IsDeadOrExploded && Owner.IsVisible && attachments.Count == 0)
                             Owner.Explode();
@@ -54,7 +54,7 @@ namespace Si.Engine.AI.Logistics
             public FollowRandomShip(AILogisticsDemo stateMachine)
             {
                 _stateMachine = stateMachine;
-                _followSprite = SiRandom.OneOfNullable(_stateMachine.Engine.Sprites.Enemies.Visible());
+                _followSprite = _stateMachine.Engine.Sprites.Enemies.Visible().OneOfNullable();
             }
 
             public void Tick(float epoch)

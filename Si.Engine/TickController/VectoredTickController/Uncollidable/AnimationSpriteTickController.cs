@@ -42,7 +42,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public void AddRandomMicroFireExplosionAt(SpriteBase positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Micro Fire Explosions");
-            Add(SiRandom.OneOf(assetKeys), (sprite) =>
+            Add(assetKeys.OneOf(), (sprite) =>
             {
                 sprite.Location = positionOf.Location.Clone();
             });
@@ -54,7 +54,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public void AddRandomSmallFireExplosionAt(SpriteBase positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Small Fire Explosions");
-            Add(SiRandom.OneOf(assetKeys), (sprite) =>
+            Add(assetKeys.OneOf(), (sprite) =>
             {
                 sprite.Location = positionOf.Location.Clone();
             });
@@ -67,7 +67,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public void AddRandomMediumFireExplosionAt(SpriteBase positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Medium Fire Explosions");
-            Add(SiRandom.OneOf(assetKeys), (sprite) =>
+            Add(assetKeys.OneOf(), (sprite) =>
             {
                 sprite.Location = positionOf.Location.Clone();
             });
@@ -80,7 +80,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public void AddRandomLargeFireExplosionAt(SpriteBase positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Large Fire Explosions");
-            Add(SiRandom.OneOf(assetKeys), (sprite) =>
+            Add(assetKeys.OneOf(), (sprite) =>
             {
                 sprite.Location = positionOf.Location.Clone();
             });
@@ -92,7 +92,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         public void AddRandomEnergyExplosionAt(SpriteBase positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Energy Explosions");
-            Add(SiRandom.OneOf(assetKeys), (sprite) =>
+            Add(assetKeys.OneOf(), (sprite) =>
             {
                 sprite.Location = positionOf.Location.Clone();
             });

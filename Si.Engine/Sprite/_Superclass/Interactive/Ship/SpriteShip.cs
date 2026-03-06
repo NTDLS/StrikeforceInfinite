@@ -1,5 +1,4 @@
 ﻿using Si.Engine.Sprite._Superclass.TextBlock;
-using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System;
@@ -20,49 +19,6 @@ namespace Si.Engine.Sprite._Superclass.Interactive.Ship
         public SpriteShip(EngineCore engine, string assetKey)
             : base(engine, assetKey)
         {
-        }
-
-        /// <summary>
-        /// Fires a drone weapon (a weapon without ammo limits).
-        /// </summary>
-        /// <param name="weaponTypeName"></param>
-        /// <returns></returns>
-        public bool FireDroneWeapon(string weaponTypeName)
-        {
-            return GetDroneWeaponByTypeName(weaponTypeName)?.Fire() == true;
-        }
-
-        /// <summary>
-        /// Builds the cache of all weapons so the drone can fire quickly.
-        /// </summary>
-        private void BuildDroneWeaponsCache()
-        {
-            var allWeapons = SiReflection.GetSubClassesOf<SpriteWeapon>();
-
-            foreach (var weapon in allWeapons)
-            {
-                _ = GetDroneWeaponByTypeName(weapon.Name);
-            }
-        }
-
-        /// <summary>
-        /// Gets a cached drone weapon (a weapon without ammo limits).
-        /// </summary>
-        /// <param name="weaponTypeName"></param>
-        /// <returns></returns>
-        private SpriteWeapon GetDroneWeaponByTypeName(string weaponTypeName)
-        {
-            if (_droneWeaponsCache.TryGetValue(weaponTypeName, out var weapon))
-            {
-                return weapon;
-            }
-
-            var weaponType = SiReflection.GetTypeByName(weaponTypeName);
-            weapon = SiReflection.CreateInstanceFromType<SpriteWeapon>(weaponType, new object[] { Engine, this });
-
-            _droneWeaponsCache.Add(weaponTypeName, weapon);
-
-            return weapon;
         }
 
         public void AdjustRadarPositionIndicator()

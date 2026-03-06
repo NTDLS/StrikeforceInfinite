@@ -117,17 +117,10 @@ namespace Si.Engine.Manager
             var asset = _engine.Assets.GetAsset(assetKey)
                 ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
 
-            //TODO: We need to remove this hardcoded "SpriteBase" default and replace it with the dynamically compiled class (controller).
-            string className = string.IsNullOrEmpty(asset.Metadata.Class) ? "SpriteBase" : asset.Metadata.Class;
-
-            if (asset.ControllerName != null)
-            {
-                className = asset.ControllerName;
-            }
-
-            var classType = SiReflection.GetTypeByName(className);
-
-            var sprite = (T)Activator.CreateInstance(classType, [_engine, assetKey]).EnsureNotNull();
+            var className = (string.IsNullOrEmpty(asset.ControllerName) ? asset.Metadata.Class : asset.ControllerName)
+                ?? throw new Exception($"The sprite {assetKey} does not have a class or controller defined in its metadata.");
+            var type = SiReflection.GetTypeByName(className);
+            var sprite = (T)Activator.CreateInstance(type, [_engine, assetKey]).EnsureNotNull();
             initializationProc?.Invoke(sprite);
             return sprite;
         }

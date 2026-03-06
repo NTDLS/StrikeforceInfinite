@@ -2,7 +2,7 @@
 
 namespace Si.Library
 {
-    public class SiRandom
+    public static class SiRandom
     {
         public static Random Generator = new();
 
@@ -40,7 +40,7 @@ namespace Si.Library
         public static T OneOf<T>(T[] values)
             => values[Between(0, values.Length - 1)];
 
-        public static T OneOf<T>(IList<T> values)
+        public static T OneOf<T>(this IList<T> values)
         {
             if (values == null || values.Count == 0)
                 throw new ArgumentException("Collection cannot be empty.", nameof(values));
@@ -48,7 +48,7 @@ namespace Si.Library
             return values[Between(0, values.Count - 1)];
         }
 
-        public static T? OneOfNullable<T>(IList<T>? values)
+        public static T? OneOfNullable<T>(this IList<T>? values)
         {
             if (values == null || values.Count == 0)
             {

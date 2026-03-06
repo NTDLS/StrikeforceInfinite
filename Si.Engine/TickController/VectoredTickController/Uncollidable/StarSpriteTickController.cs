@@ -26,7 +26,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Star");
 
-            Engine.Sprites.Add<SpriteStar>(SiRandom.OneOf(assetKeys), (sprite) =>
+            Engine.Sprites.Add<SpriteStar>(assetKeys.OneOf(), (sprite) =>
             {
                 sprite.Location = position;
             });
