@@ -136,13 +136,20 @@ namespace Si.Engine.Sprite._Superclass.Interactive
 
         public void AddWeapon(string assetKey, int munitionCount)
         {
-            var metadata = Engine.Assets.GetMetadata(assetKey)
+            var asset = Engine.Assets.GetAsset(assetKey)
                 ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
-            var weapon = Weapons.SingleOrDefault(o => o.Metadata?.Name == metadata.Name);
+            var weapon = Weapons.SingleOrDefault(o => o.Metadata?.Name == asset.Metadata.Name);
             if (weapon == null)
             {
-                var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
+                string? className = asset.Metadata.Class;
+
+                if (asset.ControllerName != null)
+                {
+                    className = asset.ControllerName;
+                }
+
+                var type = SiReflection.GetTypeByName(className ?? throw new Exception("Weapon class is not defined."));
                 weapon = (SpriteWeapon)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
                 weapon.MunitionQuantity += munitionCount;
                 Weapons.Add(weapon);
@@ -177,10 +184,10 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         /// sprites children for automatic cleanup when parent is destroyed. 
         /// </summary>
         /// <returns></returns>
-        public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner, Action<SpriteAttachment>? initilizationProc = null)
+        public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner, Action<SpriteAttachment>? initializationProc = null)
         {
             var attachment = Engine.Sprites.Attachments.AddAttachment(assetKey, this, locationRelativeToOwner);
-            initilizationProc?.Invoke(attachment);
+            initializationProc?.Invoke(attachment);
             Attachments.Add(attachment);
             return attachment;
         }

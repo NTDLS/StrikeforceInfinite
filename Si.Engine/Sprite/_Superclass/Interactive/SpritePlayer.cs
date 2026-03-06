@@ -241,10 +241,17 @@ namespace Si.Engine.Sprite._Superclass.Interactive
 
         public void SetPrimaryWeapon(string assetKey, int munitionCount)
         {
-            var metadata = Engine.Assets.GetMetadata(assetKey)
+            var asset = Engine.Assets.GetAsset(assetKey)
                 ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
-            var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
+            string? className = asset.Metadata.Class;
+
+            if (asset.ControllerName != null)
+            {
+                className = asset.ControllerName;
+            }
+
+            var type = SiReflection.GetTypeByName(className ?? throw new Exception("Weapon class is not defined."));
             PrimaryWeapon = (SpriteWeapon)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
             PrimaryWeapon.MunitionQuantity = munitionCount;
         }

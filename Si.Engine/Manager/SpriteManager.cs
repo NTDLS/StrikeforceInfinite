@@ -109,10 +109,10 @@ namespace Si.Engine.Manager
         {
         }
 
-        public SpriteBase Create(string assetKey, Action<SpriteBase>? initilizationProc = null)
-            => Create<SpriteBase>(assetKey, initilizationProc);
+        public SpriteBase Create(string assetKey, Action<SpriteBase>? initializationProc = null)
+            => Create<SpriteBase>(assetKey, initializationProc);
 
-        public T Create<T>(string assetKey, Action<T>? initilizationProc = null) where T : SpriteBase
+        public T Create<T>(string assetKey, Action<T>? initializationProc = null) where T : SpriteBase
         {
             var asset = _engine.Assets.GetAsset(assetKey)
                 ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
@@ -128,11 +128,11 @@ namespace Si.Engine.Manager
             var classType = SiReflection.GetTypeByName(className);
 
             var sprite = (T)Activator.CreateInstance(classType, [_engine, assetKey]).EnsureNotNull();
-            initilizationProc?.Invoke(sprite);
+            initializationProc?.Invoke(sprite);
             return sprite;
         }
 
-        public SpriteBase EditorAdd(string assetKey, Action<SpriteBase>? initilizationProc = null)
+        public SpriteBase EditorAdd(string assetKey, Action<SpriteBase>? initializationProc = null)
         {
             if (_engine.ExecutionMode != SiConstants.SiEngineExecutionMode.Edit)
             {
@@ -183,27 +183,27 @@ namespace Si.Engine.Manager
             }
 
             var sprite = (SpriteBase)Activator.CreateInstance(classType, constructorParams.ToArray()).EnsureNotNull();
-            initilizationProc?.Invoke(sprite);
+            initializationProc?.Invoke(sprite);
 
-            initilizationProc?.Invoke(sprite);
+            initializationProc?.Invoke(sprite);
             Insert(sprite);
             return sprite;
         }
 
-        public SpriteBase Add(string assetKey, Action<SpriteBase>? initilizationProc = null)
-            => Add<SpriteBase>(assetKey, initilizationProc);
+        public SpriteBase Add(string assetKey, Action<SpriteBase>? initializationProc = null)
+            => Add<SpriteBase>(assetKey, initializationProc);
 
-        public T Add<T>(string assetKey, Action<T>? initilizationProc = null) where T : SpriteBase
+        public T Add<T>(string assetKey, Action<T>? initializationProc = null) where T : SpriteBase
         {
-            var sprite = Create<T>(assetKey, initilizationProc);
+            var sprite = Create<T>(assetKey, initializationProc);
             Insert(sprite);
             return sprite;
         }
 
-        public T Add<T>(SharpDX.Direct2D1.Bitmap bitmap, Action<T>? initilizationProc = null) where T : SpriteBase
+        public T Add<T>(SharpDX.Direct2D1.Bitmap bitmap, Action<T>? initializationProc = null) where T : SpriteBase
         {
             T sprite = (T)Activator.CreateInstance(typeof(T), [_engine, bitmap]).EnsureNotNull();
-            initilizationProc?.Invoke(sprite);
+            initializationProc?.Invoke(sprite);
             Insert(sprite);
             return sprite;
         }

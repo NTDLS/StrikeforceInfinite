@@ -32,17 +32,17 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
         /*
         #region Tightly-typed Pass through factory methods to SpriteManager.
 
-        public SpriteEnemyBase Create(string assetKey, Action<SpriteEnemyBase>? initilizationProc = null)
-            => SpriteManager.Create<SpriteEnemyBase>(assetKey, initilizationProc);
+        public SpriteEnemyBase Create(string assetKey, Action<SpriteEnemyBase>? initializationProc = null)
+            => SpriteManager.Create<SpriteEnemyBase>(assetKey, initializationProc);
 
-        public SpriteEnemyBase Add(string assetKey, Action<SpriteEnemyBase>? initilizationProc = null)
-            => SpriteManager.Add<SpriteEnemyBase>(assetKey, initilizationProc);
+        public SpriteEnemyBase Add(string assetKey, Action<SpriteEnemyBase>? initializationProc = null)
+            => SpriteManager.Add<SpriteEnemyBase>(assetKey, initializationProc);
 
         public void Insert(SpriteEnemyBase sprite)
              => SpriteManager.Insert(sprite);
 
-        public SpriteEnemyBase Add(SharpDX.Direct2D1.Bitmap bitmap, Action<SpriteEnemyBase>? initilizationProc = null)
-            => SpriteManager.Add<SpriteEnemyBase>(bitmap, initilizationProc);
+        public SpriteEnemyBase Add(SharpDX.Direct2D1.Bitmap bitmap, Action<SpriteEnemyBase>? initializationProc = null)
+            => SpriteManager.Add<SpriteEnemyBase>(bitmap, initializationProc);
 
         #endregion
         */
