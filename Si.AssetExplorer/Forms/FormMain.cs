@@ -128,11 +128,20 @@ namespace Si.AssetExplorer
             }
         }
 
+        /// <summary>
+        /// An attribute property was edited in the property list.
+        /// </summary>
+        /// <param name="sprite"></param>
+        /// <param name="propertyItem"></param>
         private void PropertiesEdited(SpriteBase sprite, PropertyItem propertyItem)
         {
 
         }
 
+        /// <summary>
+        /// A tree node was double-clicked.
+        /// </summary>
+        /// <param name="node"></param>
         private void LoadSelectedTreeNode(SiTreeNode node)
         {
             try
@@ -145,6 +154,10 @@ namespace Si.AssetExplorer
             }
         }
 
+        /// <summary>
+        /// A tab page was selected.
+        /// </summary>
+        /// <param name="tab"></param>
         private void TabSelected(SiTabPage tab)
         {
             try
