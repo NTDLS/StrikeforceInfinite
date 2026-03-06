@@ -1,6 +1,6 @@
 ﻿using Si.Engine.Menu._Superclass;
-using Si.Engine.Sprite;
-using Si.Engine.Sprite.MenuItem;
+using Si.Engine.Sprite._Superclass.Interactive;
+using Si.Engine.Sprite._Superclass.TextBlock;
 using Si.Library.Mathematics;
 using System.Collections.Generic;
 using System.Linq;

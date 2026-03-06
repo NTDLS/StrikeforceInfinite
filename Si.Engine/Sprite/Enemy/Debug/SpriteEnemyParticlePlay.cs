@@ -1,4 +1,5 @@
 ﻿using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass.Interactive.Ship;
 using Si.Library.Mathematics;
 using System.Drawing;
 

@@ -1,5 +1,6 @@
 ﻿using SharpDX.Mathematics.Interop;
-using Si.Library.Sprite;
+using Si.Engine.Sprite._Superclass.Interactive.Ship;
+using Si.Engine.Sprite._Superclass.Munition;
 using System.Drawing;
 using static Si.Library.SiConstants;
 
@@ -8,7 +9,7 @@ namespace Si.Engine.Sprite._Superclass._Root
     /// <summary>
     /// Represents a single item that can be rendered to the screen. All on-screen objects are derived from this class.
     /// </summary>
-    public partial class SpriteBase : ISprite
+    public partial class SpriteBase
     {
         public virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {

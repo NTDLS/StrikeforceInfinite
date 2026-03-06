@@ -1,5 +1,5 @@
 ﻿using SharpDX.Mathematics.Interop;
-using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Library;
 using Si.Library.Mathematics;
 using System.Drawing;

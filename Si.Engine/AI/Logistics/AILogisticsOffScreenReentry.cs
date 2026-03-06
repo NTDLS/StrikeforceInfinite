@@ -1,5 +1,5 @@
 ﻿using Si.Engine.AI._Superclass;
-using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass.Interactive.Ship;
 using Si.Library;
 using Si.Library.Mathematics;
 using static Si.Library.SiConstants;

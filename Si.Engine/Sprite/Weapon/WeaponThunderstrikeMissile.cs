@@ -1,10 +1,11 @@
 ﻿using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Weapon
 {
-    public class WeaponThunderstrikeMissile : WeaponBase
+    public class WeaponThunderstrikeMissile : SpriteWeapon
     {
         private bool _toggle = false;
 

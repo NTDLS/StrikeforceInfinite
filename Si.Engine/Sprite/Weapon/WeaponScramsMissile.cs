@@ -1,11 +1,12 @@
 ﻿using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using System.Linq;
 
 namespace Si.Engine.Sprite.Weapon
 {
-    public class WeaponScramsMissile : WeaponBase
+    public class WeaponScramsMissile : SpriteWeapon
     {
         private bool _toggle = false;
 

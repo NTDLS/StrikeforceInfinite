@@ -1,8 +1,7 @@
 ﻿using NTDLS.Helpers;
 using SharpDX.Mathematics.Interop;
 using Si.Engine.Menu._Superclass;
-using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.MenuItem;
+using Si.Engine.Sprite._Superclass.TextBlock;
 using Si.Library.Mathematics;
 using Si.Rendering;
 using System.Linq;

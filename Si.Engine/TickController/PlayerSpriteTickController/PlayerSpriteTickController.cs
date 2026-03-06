@@ -1,5 +1,5 @@
 ﻿using Si.Engine.Persistent;
-using Si.Engine.Sprite;
+using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Engine.TickController._Superclass;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;

@@ -1,5 +1,6 @@
 ﻿using Si.Engine.AI.Logistics;
-using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass.Interactive;
+using Si.Engine.Sprite._Superclass.Interactive.Ship;
 using Si.Library;
 using Si.Library.Mathematics;
 using Si.Rendering;

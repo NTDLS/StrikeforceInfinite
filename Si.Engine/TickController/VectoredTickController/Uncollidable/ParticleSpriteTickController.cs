@@ -1,5 +1,6 @@
 ﻿using SharpDX;
 using Si.Engine.Manager;
+using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
@@ -43,16 +44,16 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public Sprite.SpriteParticle AddAt(SpriteBase sprite, Color4 color, Size? size = null)
+        public SpriteParticle AddAt(SpriteBase sprite, Color4 color, Size? size = null)
         {
-            var obj = new Sprite.SpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
+            var obj = new SpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
             SpriteManager.Insert(obj);
             return obj;
         }
 
-        public Sprite.SpriteParticle AddAt(SiVector location, Color4 color, Size? size = null)
+        public SpriteParticle AddAt(SiVector location, Color4 color, Size? size = null)
         {
-            var obj = new Sprite.SpriteParticle(Engine, location, size ?? new Size(1, 1), color)
+            var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1), color)
             {
                 IsVisible = true
             };
@@ -60,9 +61,9 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
-        public Sprite.SpriteParticle AddAt(SiVector location, Size? size = null)
+        public SpriteParticle AddAt(SiVector location, Size? size = null)
         {
-            var obj = new Sprite.SpriteParticle(Engine, location, size ?? new Size(1, 1))
+            var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1))
             {
                 IsVisible = true
             };

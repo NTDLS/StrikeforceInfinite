@@ -1,5 +1,5 @@
-﻿using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite._Superclass._Root;
+﻿using Si.Engine.Sprite._Superclass._Root;
+using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using Si.Engine.Menu._Superclass;
-using Si.Engine.Sprite.MenuItem;
+using Si.Engine.Sprite._Superclass.TextBlock;
 using Si.Library.Mathematics;
 
 namespace Si.Engine.Menu

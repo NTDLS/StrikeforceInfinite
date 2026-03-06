@@ -1,4 +1,4 @@
-﻿using Si.Engine.Sprite._Superclass;
+﻿using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Engine.Sprite.KinematicBody;
 using System.Collections.Generic;
 

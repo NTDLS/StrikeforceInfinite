@@ -1,9 +1,10 @@
 ﻿using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite.Weapon
 {
-    public class WeaponPhotonTorpedo : WeaponBase
+    public class WeaponPhotonTorpedo : SpriteWeapon
     {
         private bool _toggle = false;
 

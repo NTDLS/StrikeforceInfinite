@@ -1,12 +1,11 @@
 ﻿using Si.Library.Mathematics;
-using Si.Library.Sprite;
 
 namespace Si.Engine.Sprite._Superclass._Root
 {
     /// <summary>
     /// Represents a single item that can be rendered to the screen. All on-screen objects are derived from this class.
     /// </summary>
-    public partial class SpriteBase : ISprite
+    public partial class SpriteBase
     {
         /// <summary>
         /// Sets the movement vector in the direction of the sprite taking into account the speed and throttle percentage.

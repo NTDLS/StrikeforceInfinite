@@ -1,5 +1,5 @@
 ﻿using Si.Engine.Level._Superclass;
-using Si.Engine.Sprite._Superclass;
+using Si.Engine.Sprite._Superclass.Interactive.Ship;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;

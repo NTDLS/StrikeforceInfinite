@@ -1,6 +1,6 @@
 ﻿using SharpDX.DirectInput;
-using Si.Engine.Sprite._Superclass;
-using Si.Engine.Sprite.MenuItem;
+using Si.Engine.Sprite._Superclass.MenuItem;
+using Si.Engine.Sprite._Superclass.TextBlock;
 using Si.Library.Mathematics;
 using System;
 using System.Collections.Generic;

@@ -1,8 +1,9 @@
 ﻿using NTDLS.DelegateThreadPooling;
 using Si.Engine.Manager;
-using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
+using Si.Engine.Sprite._Superclass.Interactive;
+using Si.Engine.Sprite._Superclass.Munition;
 using Si.Engine.TickController._Superclass;
 using Si.Library;
 using Si.Library.Mathematics;
@@ -112,13 +113,13 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public void Add(WeaponBase weapon)
+        public void Add(SpriteWeapon weapon)
         {
             var obj = weapon.CreateMunition();
             SpriteManager.Insert(obj);
         }
 
-        public void Add(WeaponBase weapon, SiVector? location = null)
+        public void Add(SpriteWeapon weapon, SiVector? location = null)
         {
             var obj = weapon.CreateMunition(location);
             SpriteManager.Insert(obj);
@@ -131,7 +132,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         /// <param name="lockedTarget"></param>
         /// <param name="xyOffset"></param>
         /// <returns></returns>
-        public void AddLockedOnTo(WeaponBase weapon, SpriteInteractive lockedTarget, SiVector? location = null)
+        public void AddLockedOnTo(SpriteWeapon weapon, SpriteInteractive lockedTarget, SiVector? location = null)
         {
             var obj = weapon.CreateMunition(location, lockedTarget);
             SpriteManager.Insert(obj);

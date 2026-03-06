@@ -1,6 +1,6 @@
 ﻿using Si.Engine.AI._Superclass;
-using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
+using Si.Engine.Sprite._Superclass.Interactive.Ship;
 using Si.Library;
 using Si.Library.Mathematics;
 using System.Linq;

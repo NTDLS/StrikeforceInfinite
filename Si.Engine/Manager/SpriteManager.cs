@@ -2,9 +2,11 @@
 using NTDLS.Helpers;
 using SharpDX.Mathematics.Interop;
 using Si.Engine.Menu;
-using Si.Engine.Sprite;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
+using Si.Engine.Sprite._Superclass.Interactive;
+using Si.Engine.Sprite._Superclass.Interactive.Ship;
+using Si.Engine.Sprite._Superclass.Munition;
 using Si.Engine.Sprite.KinematicBody;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Engine.TickController.VectoredTickController.Collidable;
@@ -167,7 +169,7 @@ namespace Si.Engine.Manager
                         constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "weapon":
-                        constructorParams.Add(new WeaponBase(_engine, new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteWeapon(_engine, new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
                         break;
                     case "lockedTarget":
                         constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
