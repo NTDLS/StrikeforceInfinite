@@ -30,13 +30,13 @@ namespace Si.Engine.Sprite._Superclass
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteMinimalBitmap(EngineCore engine, string assetKey)
-            : base(engine, assetKey)
+        public SpriteMinimalBitmap(EngineCore engine, SpriteBase? owner, string assetKey)
+            : base(engine, owner, assetKey)
         {
         }
 
-        public SpriteMinimalBitmap(EngineCore engine, SharpDX.Direct2D1.Bitmap bitmap)
-            : base(engine, null)
+        public SpriteMinimalBitmap(EngineCore engine, SpriteBase? owner, SharpDX.Direct2D1.Bitmap bitmap)
+            : base(engine, owner, null)
         {
             SetBitmap(bitmap);
         }

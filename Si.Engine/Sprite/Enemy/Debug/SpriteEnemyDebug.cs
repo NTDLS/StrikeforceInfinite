@@ -1,4 +1,5 @@
 ﻿using Si.Engine.AI.Logistics;
+using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Engine.Sprite._Superclass.Interactive.Ship;
 using Si.Library;
@@ -12,8 +13,8 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// <summary>
     /// Debugging enemy unit - a scary sight to see.
     /// </summary>
-    internal class SpriteEnemyDebug(EngineCore engine, string assetKey)
-        : SpriteEnemy(engine, assetKey)
+    internal class SpriteEnemyDebug(EngineCore engine, SpriteBase owner, string assetKey)
+        : SpriteEnemy(engine, owner, assetKey)
     {
         private SpriteAttachment? _thrusterLeft;
         private SpriteAttachment? _thrusterRight;

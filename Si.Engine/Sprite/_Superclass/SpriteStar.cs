@@ -8,7 +8,7 @@ namespace Si.Engine.Sprite._Superclass
         : SpriteBase
     {
         public SpriteStar(EngineCore engine, string assetKey)
-            : base(engine, assetKey)
+            : base(engine, null, assetKey)
         {
             X = SiRandom.Between(0, engine.Display.TotalCanvasSize.Width);
             Y = SiRandom.Between(0, engine.Display.TotalCanvasSize.Height);

@@ -17,6 +17,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         : ISprite
     {
         protected EngineCore Engine { get; private set; }
+        public SpriteBase? Owner { get; private set; }
 
         public SharpDX.Direct2D1.Bitmap? SpriteBitmap { get; private set; }
         private bool _readyForDeletion;
@@ -26,9 +27,10 @@ namespace Si.Engine.Sprite._Superclass._Root
         private AssetMetadata? _metadata = null;
         public AssetMetadata Metadata => _metadata ?? throw new NullReferenceException();
 
-        public SpriteBase(EngineCore engine, string? assetKey)
+        public SpriteBase(EngineCore engine, SpriteBase? owner, string? assetKey)
         {
             Engine = engine;
+            Owner = owner;
 
             IsHighlighted = Engine.Settings.HighlightAllSprites;
             Orientation = SiVector.One();

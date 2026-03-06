@@ -163,16 +163,16 @@ namespace Si.Engine.Manager
                         constructorParams.Add(assetKey);
                         break;
                     case "firedFrom":
-                        constructorParams.Add(new SpriteEnemy(_engine, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteEnemy(_engine, null, "Sprites/#Internal/Ghost"));
                         break;
                     case "owner":
-                        constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteInteractive(_engine, null, "Sprites/#Internal/Ghost"));
                         break;
                     case "weapon":
-                        constructorParams.Add(new SpriteWeapon(_engine, new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteWeapon(_engine, new SpriteInteractive(_engine, null, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
                         break;
                     case "lockedTarget":
-                        constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteInteractive(_engine, null, "Sprites/#Internal/Ghost"));
                         break;
                     case "location":
                         constructorParams.Add(SiVector.Zero());

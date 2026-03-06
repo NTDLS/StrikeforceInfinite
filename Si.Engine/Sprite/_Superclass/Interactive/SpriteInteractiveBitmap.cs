@@ -1,4 +1,5 @@
-﻿using Si.Library.ExtensionMethods;
+﻿using Si.Engine.Sprite._Superclass._Root;
+using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
 using Si.Rendering;
 using System;
@@ -29,13 +30,13 @@ namespace Si.Engine.Sprite._Superclass.Interactive
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteInteractiveBitmap(EngineCore engine, string assetKey)
-            : base(engine, assetKey)
+        public SpriteInteractiveBitmap(EngineCore engine, SpriteBase? owner, string assetKey)
+            : base(engine, owner, assetKey)
         {
         }
 
-        public SpriteInteractiveBitmap(EngineCore engine, SharpDX.Direct2D1.Bitmap bitmap)
-            : base(engine, bitmap)
+        public SpriteInteractiveBitmap(EngineCore engine, SpriteBase? owner, SharpDX.Direct2D1.Bitmap bitmap)
+            : base(engine, owner, bitmap)
         {
         }
 

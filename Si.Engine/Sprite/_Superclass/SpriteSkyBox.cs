@@ -8,7 +8,7 @@ namespace Si.Engine.Sprite._Superclass
         : SpriteBase
     {
         public SpriteSkyBox(EngineCore engine, string assetKey)
-            : base(engine, assetKey)
+            : base(engine, null, assetKey)
         {
             //selectedImageIndex = SiRandom.Between(0, _imageCount - 1);
 

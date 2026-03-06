@@ -33,7 +33,7 @@ namespace Si.Engine.Sprite._Superclass.Munition
         /// <param name="location">The optional location for the munition to originate from (if not specified, we'll use the location of the firedFrom sprite).</param>
         /// <param name="angleDegrees">>The optional angle for the munition to travel on (if not specified, we'll use the angle of the firedFrom sprite).</param>
         public SpriteMunition(EngineCore engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey, SiVector location, float? angleDegrees = null)
-            : base(engine, assetKey)
+            : base(engine, null, assetKey)
         {
             Weapon = weapon;
             RadarDotSize = new SiVector(1, 1);

@@ -20,19 +20,16 @@ namespace Si.Engine.Sprite._Superclass
     public class SpriteWeapon
         : SpriteBase
     {
-        protected SpriteInteractive Owner { get; private set; }
         protected DateTime _lastFired = DateTime.Now.AddMinutes(-5);
         protected SiAudioClip? _fireSound;
 
         public List<WeaponsLock> LockedTargets { get; set; } = new();
-        public int RoundsFired { get; set; }
-        public int RoundQuantity { get; set; }
+        public int MunitionsFired { get; set; }
+        public int MunitionQuantity { get; set; }
 
-        public SpriteWeapon(EngineCore engine, SpriteInteractive owner, string? assetKey)
-            : base(engine, assetKey)
+        public SpriteWeapon(EngineCore engine, SpriteBase owner, string? assetKey)
+            : base(engine, owner, assetKey)
         {
-            Owner = owner;
-
             if (!string.IsNullOrEmpty(Metadata.SoundAssetKey))
             {
                 _fireSound = Engine.Assets.GetAudio(Metadata.SoundAssetKey, Metadata.SoundVolume ?? 0);
@@ -187,8 +184,8 @@ namespace Si.Engine.Sprite._Superclass
 
             if (CanFire)
             {
-                RoundsFired++;
-                RoundQuantity--;
+                MunitionsFired++;
+                MunitionQuantity--;
                 _fireSound?.Play();
                 Engine.Sprites.Munitions.Add(this, location);
 
@@ -207,8 +204,8 @@ namespace Si.Engine.Sprite._Superclass
 
             if (CanFire)
             {
-                RoundsFired++;
-                RoundQuantity--;
+                MunitionsFired++;
+                MunitionQuantity--;
                 _fireSound?.Play();
                 Engine.Sprites.Munitions.Add(this);
 
@@ -227,7 +224,7 @@ namespace Si.Engine.Sprite._Superclass
             get
             {
                 bool result = false;
-                if (RoundQuantity > 0)
+                if (MunitionQuantity > 0)
                 {
                     result = (DateTime.Now - _lastFired).TotalMilliseconds > (Metadata.FireDelayMilliseconds ?? 0);
                     if (result)

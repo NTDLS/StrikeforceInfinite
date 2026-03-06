@@ -135,7 +135,7 @@ namespace Si.Engine.Manager
                         && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
                         && !string.IsNullOrWhiteSpace(assetContainer.Metadata.AssetKey))
                     {
-                        var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_');
+                        var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_').Replace(' ', '_');
 
                         var classCode = SiAssetControllerClassText.Get(assetContainer.Metadata.Class, assetClassName, model.Controller);
 

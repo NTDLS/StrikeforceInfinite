@@ -1,4 +1,5 @@
-﻿using Si.Engine.Sprite._Superclass.TextBlock;
+﻿using Si.Engine.Sprite._Superclass._Root;
+using Si.Engine.Sprite._Superclass.TextBlock;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
@@ -17,8 +18,8 @@ namespace Si.Engine.Sprite._Superclass.Interactive.Ship
         public SpriteRadarPositionIndicator? RadarPositionIndicator { get; protected set; }
         public SpriteRadarPositionTextBlock? RadarPositionText { get; protected set; }
 
-        public SpriteShip(EngineCore engine, string assetKey)
-            : base(engine, assetKey)
+        public SpriteShip(EngineCore engine, SpriteBase? owner, string assetKey)
+            : base(engine, owner, assetKey)
         {
         }
 

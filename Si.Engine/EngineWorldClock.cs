@@ -283,11 +283,11 @@ namespace Si.Engine
 
                 if (player.PrimaryWeapon?.Metadata != null)
                 {
-                    playerStatsText += $"Pri-Weapon: {player.PrimaryWeapon.Metadata.Name} x{player.PrimaryWeapon?.RoundQuantity:n0}\r\n";
+                    playerStatsText += $"Pri-Weapon: {player.PrimaryWeapon.Metadata.Name} x{player.PrimaryWeapon?.MunitionQuantity:n0}\r\n";
                 }
                 if (player.SelectedSecondaryWeapon?.Metadata != null)
                 {
-                    playerStatsText += $"Sec-Weapon: {player.SelectedSecondaryWeapon?.Metadata.Name} x{player.SelectedSecondaryWeapon?.RoundQuantity:n0}\r\n";
+                    playerStatsText += $"Sec-Weapon: {player.SelectedSecondaryWeapon?.Metadata.Name} x{player.SelectedSecondaryWeapon?.MunitionQuantity:n0}\r\n";
                 }
 
                 playerStatsText += $"{_engine.Display.FrameCounter.AverageFrameRate:n2}fps";

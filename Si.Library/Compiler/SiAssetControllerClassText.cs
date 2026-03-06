@@ -5,7 +5,6 @@
         public static string Get(string baseClassName, string assetControllerClassName, string controllerCode)
         {
             return @$"
-                using Si.Engine.Sprite.Weapon; //We will be deleteing this once its all moved to the asset pack.
                 using NTDLS.Helpers;
                 using SharpDX.Direct2D1;
                 using SharpDX.Mathematics.Interop;
@@ -30,7 +29,8 @@
                 using System;
 
 
-                public class {assetControllerClassName}(EngineCore engine, string assetKey) : {baseClassName}(engine, assetKey), Si.Library.Compiler.ISiRuntimeCompiled
+                public class {assetControllerClassName}(EngineCore engine, SpriteBase owner, string assetKey)
+                    : {baseClassName}(engine, owner, assetKey), Si.Library.Compiler.ISiRuntimeCompiled
                 {{
                     public string GetControllerName() => ""{assetControllerClassName}"";
 

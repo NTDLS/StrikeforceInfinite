@@ -1,4 +1,5 @@
-﻿using Si.Library.Mathematics;
+﻿using Si.Engine.Sprite._Superclass._Root;
+using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite._Superclass.Interactive.Ship
 {
@@ -8,8 +9,8 @@ namespace Si.Engine.Sprite._Superclass.Interactive.Ship
     public class SpriteEnemy
         : SpriteShip
     {
-        public SpriteEnemy(EngineCore engine, string assetKey)
-                : base(engine, assetKey)
+        public SpriteEnemy(EngineCore engine, SpriteBase? owner, string assetKey)
+            : base(engine, owner, assetKey)
         {
             RecalculateMovementVectorFromOrientation();
 

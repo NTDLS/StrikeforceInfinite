@@ -108,11 +108,11 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
                 {
                     if (Sprite.PrimaryWeapon != null && Sprite.PrimaryWeapon.Fire())
                     {
-                        if (Sprite.PrimaryWeapon?.RoundQuantity == 25)
+                        if (Sprite.PrimaryWeapon?.MunitionQuantity == 25)
                         {
                             Sprite.AmmoLowSound?.Play();
                         }
-                        if (Sprite.PrimaryWeapon?.RoundQuantity == 0)
+                        if (Sprite.PrimaryWeapon?.MunitionQuantity == 0)
                         {
                             Sprite.AmmoEmptySound?.Play();
                         }
@@ -123,11 +123,11 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
                 {
                     if (Sprite.SelectedSecondaryWeapon != null && Sprite.SelectedSecondaryWeapon.Fire())
                     {
-                        if (Sprite.SelectedSecondaryWeapon?.RoundQuantity == 25)
+                        if (Sprite.SelectedSecondaryWeapon?.MunitionQuantity == 25)
                         {
                             Sprite.AmmoLowSound?.Play();
                         }
-                        if (Sprite.SelectedSecondaryWeapon?.RoundQuantity == 0)
+                        if (Sprite.SelectedSecondaryWeapon?.MunitionQuantity == 0)
                         {
                             Sprite.AmmoEmptySound?.Play();
                             Sprite.SelectFirstAvailableUsableSecondaryWeapon();

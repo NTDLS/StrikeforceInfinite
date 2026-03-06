@@ -1,4 +1,5 @@
-﻿using Si.Library.Mathematics;
+﻿using Si.Engine.Sprite._Superclass._Root;
+using Si.Library.Mathematics;
 using System;
 using static Si.Library.SiConstants;
 
@@ -8,7 +9,6 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         : SpriteInteractive
     {
         private SpriteInteractive? _rootOwner = null;
-        private SpriteInteractive? _owner = null;
         public SiVector? LocationRelativeToOwner { get; set; }
         public string? AssetKey { get; private set; }
 
@@ -22,8 +22,8 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         /// </summary>
         public AttachmentPositionType AttachmentPositionType { get; set; }
 
-        public SpriteAttachment(EngineCore engine, string? assetKey)
-            : base(engine, assetKey)
+        public SpriteAttachment(EngineCore engine, SpriteBase? owner, string? assetKey)
+            : base(engine, owner, assetKey)
         {
             AssetKey = assetKey;
         }
@@ -100,19 +100,6 @@ namespace Si.Engine.Sprite._Superclass.Interactive
                     } while (_rootOwner != null && _rootOwner.OwnerUID != 0);
                 }
                 return _rootOwner ?? throw new Exception("Attachment must have a root owner.");
-            }
-        }
-
-        /// <summary>
-        /// Gets and caches the root owner of this attachment.
-        /// </summary>
-        /// <returns></returns>
-        public SpriteInteractive Owner
-        {
-            get
-            {
-                _owner ??= Engine.Sprites.GetSpriteByOwner<SpriteInteractive>(OwnerUID);
-                return _owner ?? throw new Exception("Attachment must have a root owner.");
             }
         }
     }

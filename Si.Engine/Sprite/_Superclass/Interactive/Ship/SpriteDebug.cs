@@ -1,48 +1,25 @@
-﻿using Si.Library.Mathematics;
+﻿using Si.Engine.Sprite._Superclass._Root;
+using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite._Superclass.Interactive.Ship
 {
     public class SpriteDebug
         : SpriteShip
     {
-        public SpriteDebug(EngineCore engine)
-            : base(engine, "Sprites/Debug") //TODO: Why is the debug sprite not passed in here?!
+        public SpriteDebug(EngineCore engine, SpriteBase? owner, string assetKey)
+            : base(engine, owner, assetKey)
         {
-            Initialize();
+            RecalculateMovementVectorFromOrientation();
         }
 
-        public SpriteDebug(EngineCore engine, float x, float y)
-            : base(engine, "Sprites/Debug") //TODO: Why is the debug sprite not passed in here?!
-        {
-            Initialize();
-            X = x;
-            Y = y;
-        }
-
-        public SpriteDebug(EngineCore engine, float x, float y, string assetKey)
-            : base(engine, assetKey)
-        {
-            Initialize();
-            X = x;
-            Y = y;
-        }
-
-        private void Initialize()
-        {
-            SetHullHealth(100000);
-            Speed = 1.5f;
-            Throttle = 0.05f;
-        }
-
+        /// <summary>
+        /// Moves the sprite based on its velocity/boost (velocity) taking into account the background scroll.
+        /// </summary>
         public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
         {
-            Orientation.Degrees += 0.1f;
-
-            //var deltaAngleS = this.HeadingAngleToInSignedDegrees(_engine.Player.Sprite.Location);
-            //var deltaAngleU = this.HeadingAngleToInUnsignedDegrees(_engine.Player.Sprite);
-            //System.Diagnostics.Debug.WriteLine($"U {deltaAngleU:n2}    S {deltaAngleS:n2}");
-
             base.ApplyMotion(epoch, cameraDisplacement);
+
+            AdjustRadarPositionIndicator();
         }
     }
 }

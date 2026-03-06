@@ -40,12 +40,12 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         public SpriteWeapon? SelectedSecondaryWeapon { get; private set; }
 
         public SpritePlayer(EngineCore engine)
-            : base(engine, (string?)null)
+            : base(engine, null, (string?)null)
         {
         }
 
         public SpritePlayer(EngineCore engine, string assetKey)
-            : base(engine, assetKey)
+            : base(engine, null, assetKey)
         {
             OnHit += SpritePlayer_OnHit;
 
@@ -246,7 +246,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
 
             var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
             PrimaryWeapon = (SpriteWeapon)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
-            PrimaryWeapon.RoundQuantity = munitionCount;
+            PrimaryWeapon.MunitionQuantity = munitionCount;
         }
 
         public SpriteWeapon? SelectPreviousAvailableUsableSecondaryWeapon()
@@ -294,7 +294,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
 
         public SpriteWeapon? SelectFirstAvailableUsableSecondaryWeapon()
         {
-            var existingWeapon = (from o in Weapons where o.RoundQuantity > 0 select o).FirstOrDefault();
+            var existingWeapon = (from o in Weapons where o.MunitionQuantity > 0 select o).FirstOrDefault();
             if (existingWeapon != null)
             {
                 SelectedSecondaryWeapon = existingWeapon;
@@ -308,7 +308,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
 
         public SpriteWeapon? SelectLastAvailableUsableSecondaryWeapon()
         {
-            var existingWeapon = (from o in Weapons where o.RoundQuantity > 0 select o).LastOrDefault();
+            var existingWeapon = (from o in Weapons where o.MunitionQuantity > 0 select o).LastOrDefault();
             if (existingWeapon != null)
             {
                 SelectedSecondaryWeapon = existingWeapon;

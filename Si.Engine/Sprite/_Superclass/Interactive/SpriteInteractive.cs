@@ -1,4 +1,5 @@
-﻿using NTDLS.Helpers;
+﻿using Microsoft.CodeAnalysis;
+using NTDLS.Helpers;
 using SharpDX.Direct2D1;
 using Si.Engine.AI._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
@@ -52,8 +53,8 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="assetKey"></param>
-        public SpriteInteractive(EngineCore engine, string? assetKey)
-            : base(engine, assetKey)
+        public SpriteInteractive(EngineCore engine, SpriteBase? owner, string? assetKey)
+            : base(engine, owner, assetKey)
         {
             Mass = SiRandom.Between(Metadata.Mass, 0);
 
@@ -64,8 +65,8 @@ namespace Si.Engine.Sprite._Superclass.Interactive
             }
         }
 
-        public SpriteInteractive(EngineCore engine, Bitmap bitmap)
-            : base(engine, null)
+        public SpriteInteractive(EngineCore engine, SpriteBase? owner, Bitmap bitmap)
+            : base(engine, owner, null)
         {
             if (Engine.Assets.IsLoaded)
             {
@@ -138,51 +139,34 @@ namespace Si.Engine.Sprite._Superclass.Interactive
             var metadata = Engine.Assets.GetMetadata(assetKey)
                 ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
 
-            var weapon = Weapons.Where(o => o.Metadata?.Name == metadata.Name).SingleOrDefault();
+            var weapon = Weapons.SingleOrDefault(o => o.Metadata?.Name == metadata.Name);
             if (weapon == null)
             {
                 var type = SiReflection.GetTypeByName(metadata.Class ?? throw new Exception("Weapon class is not defined."));
                 weapon = (SpriteWeapon)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
-                weapon.RoundQuantity += munitionCount;
+                weapon.MunitionQuantity += munitionCount;
                 Weapons.Add(weapon);
             }
             else
             {
-                weapon.RoundQuantity += munitionCount;
+                weapon.MunitionQuantity += munitionCount;
             }
         }
 
-        public int TotalAvailableWeaponRounds() => (from o in Weapons select o.RoundQuantity).Sum();
-        public int TotalWeaponFiredRounds() => (from o in Weapons select o.RoundsFired).Sum();
+        public int TotalAvailableWeaponMunitions() => (from o in Weapons select o.MunitionQuantity).Sum();
+        public int TotalWeaponFiredMunitions() => (from o in Weapons select o.MunitionsFired).Sum();
 
-        public bool HasWeapon<T>() where T : SpriteWeapon
-        {
-            var existingWeapon = (from o in Weapons where o.GetType() == typeof(T) select o).FirstOrDefault();
-            return existingWeapon != null;
-        }
+        public bool HasWeapon(string assetKey)
+            => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey) != null;
 
-        public bool HasWeaponAndAmmo<T>() where T : SpriteWeapon
-        {
-            var existingWeapon = (from o in Weapons where o.GetType() == typeof(T) select o).FirstOrDefault();
-            return existingWeapon != null && existingWeapon.RoundQuantity > 0;
-        }
+        public bool HasWeaponAndAmmo(string assetKey)
+            => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey)?.MunitionQuantity > 0;
 
-        public bool FireWeapon<T>() where T : SpriteWeapon
-        {
-            var weapon = GetWeaponOfType<T>();
-            return weapon?.Fire() == true;
-        }
+        public bool FireWeapon(string assetKey)
+            => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey)?.Fire() == true;
 
-        public bool FireWeapon<T>(SiVector location) where T : SpriteWeapon
-        {
-            var weapon = GetWeaponOfType<T>();
-            return weapon?.Fire(location) == true;
-        }
-
-        public SpriteWeapon? GetWeaponOfType<T>() where T : SpriteWeapon
-        {
-            return Weapons.OfType<T>().FirstOrDefault();
-        }
+        public bool FireWeapon(string assetKey, SiVector location)
+            => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey)?.Fire(location) == true;
 
         #endregion
 
