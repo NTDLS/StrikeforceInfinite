@@ -28,8 +28,8 @@ namespace Si.Engine.Sprite._Superclass
             }
         }
 
-        public SpritePowerup(EngineCore engine, SpriteBase? owner, string assetKey)
-            : base(engine, owner, assetKey)
+        public SpritePowerup(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             RadarDotSize = new SiVector(4, 4);
         }

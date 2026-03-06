@@ -127,7 +127,7 @@ namespace Si.Engine.Manager
 
             var classType = SiReflection.GetTypeByName(className);
 
-            var sprite = (T)Activator.CreateInstance(classType, _engine, assetKey).EnsureNotNull();
+            var sprite = (T)Activator.CreateInstance(classType, [_engine, assetKey]).EnsureNotNull();
             initilizationProc?.Invoke(sprite);
             return sprite;
         }
@@ -163,16 +163,16 @@ namespace Si.Engine.Manager
                         constructorParams.Add(assetKey);
                         break;
                     case "firedFrom":
-                        constructorParams.Add(new SpriteEnemy(_engine, null, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteEnemy(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "owner":
-                        constructorParams.Add(new SpriteInteractive(_engine, null, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "weapon":
-                        constructorParams.Add(new SpriteWeapon(_engine, new SpriteInteractive(_engine, null, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteWeapon(_engine, new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
                         break;
                     case "lockedTarget":
-                        constructorParams.Add(new SpriteInteractive(_engine, null, "Sprites/#Internal/Ghost"));
+                        constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "location":
                         constructorParams.Add(SiVector.Zero());
@@ -202,7 +202,7 @@ namespace Si.Engine.Manager
 
         public T Add<T>(SharpDX.Direct2D1.Bitmap bitmap, Action<T>? initilizationProc = null) where T : SpriteBase
         {
-            T sprite = (T)Activator.CreateInstance(typeof(T), _engine, bitmap).EnsureNotNull();
+            T sprite = (T)Activator.CreateInstance(typeof(T), [_engine, bitmap]).EnsureNotNull();
             initilizationProc?.Invoke(sprite);
             Insert(sprite);
             return sprite;

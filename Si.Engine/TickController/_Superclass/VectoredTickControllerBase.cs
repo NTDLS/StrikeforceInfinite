@@ -39,7 +39,7 @@ namespace Si.Engine.TickController._Superclass
         #region Tightly-typed Pass through factory methods to SpriteManager.
 
         public T Create(string assetKey, Action<T>? initilizationProc = null)
-            => SpriteManager.Create<T>(assetKey, initilizationProc = null);
+            => SpriteManager.Create<T>(assetKey, initilizationProc);
 
         public T Add(string assetKey, Action<T>? initilizationProc = null)
             => SpriteManager.Add<T>(assetKey, initilizationProc);

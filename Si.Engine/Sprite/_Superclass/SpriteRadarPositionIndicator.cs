@@ -6,7 +6,7 @@ namespace Si.Engine.Sprite._Superclass
         : SpriteBase
     {
         public SpriteRadarPositionIndicator(EngineCore engine, string assetKey)
-            : base(engine, null, assetKey)
+            : base(engine, assetKey)
         {
             X = 0;
             Y = 0;

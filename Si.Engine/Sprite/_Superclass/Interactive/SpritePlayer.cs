@@ -40,12 +40,12 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         public SpriteWeapon? SelectedSecondaryWeapon { get; private set; }
 
         public SpritePlayer(EngineCore engine)
-            : base(engine, null, (string?)null)
+            : base(engine, (string?)null)
         {
         }
 
         public SpritePlayer(EngineCore engine, string assetKey)
-            : base(engine, null, assetKey)
+            : base(engine, assetKey)
         {
             OnHit += SpritePlayer_OnHit;
 

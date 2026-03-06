@@ -41,7 +41,7 @@ namespace Si.Engine.Sprite._Superclass.TextBlock
         #endregion
 
         public SpriteTextBlock(EngineCore engine, TextFormat format, SolidColorBrush color, SiVector location, bool isFixedPosition)
-            : base(engine, null, null)
+            : base(engine, null)
         {
             RenderScaleOrder = SiRenderScaleOrder.PostScale;
             IsFixedPosition = isFixedPosition;

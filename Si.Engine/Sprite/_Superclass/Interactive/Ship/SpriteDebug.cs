@@ -1,13 +1,12 @@
-﻿using Si.Engine.Sprite._Superclass._Root;
-using Si.Library.Mathematics;
+﻿using Si.Library.Mathematics;
 
 namespace Si.Engine.Sprite._Superclass.Interactive.Ship
 {
     public class SpriteDebug
         : SpriteShip
     {
-        public SpriteDebug(EngineCore engine, SpriteBase? owner, string assetKey)
-            : base(engine, owner, assetKey)
+        public SpriteDebug(EngineCore engine, string assetKey)
+            : base(engine, assetKey)
         {
             RecalculateMovementVectorFromOrientation();
         }

@@ -46,7 +46,7 @@ namespace Si.Engine.Sprite._Superclass
         public Color4 GradientEndColor { get; set; }
 
         public SpriteParticle(EngineCore engine, SiVector location, Size size, Color4? color = null)
-            : base(engine, null, null)
+            : base(engine, null)
         {
             SetSize(size);
 

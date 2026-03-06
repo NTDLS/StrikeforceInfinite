@@ -22,14 +22,17 @@ namespace Si.Engine.Sprite._Superclass
     {
         protected DateTime _lastFired = DateTime.Now.AddMinutes(-5);
         protected SiAudioClip? _fireSound;
+        public SpriteBase Owner { get; set; }
 
         public List<WeaponsLock> LockedTargets { get; set; } = new();
         public int MunitionsFired { get; set; }
         public int MunitionQuantity { get; set; }
 
         public SpriteWeapon(EngineCore engine, SpriteBase owner, string? assetKey)
-            : base(engine, owner, assetKey)
+            : base(engine, assetKey)
         {
+            Owner = owner;
+
             if (!string.IsNullOrEmpty(Metadata.SoundAssetKey))
             {
                 _fireSound = Engine.Assets.GetAudio(Metadata.SoundAssetKey, Metadata.SoundVolume ?? 0);

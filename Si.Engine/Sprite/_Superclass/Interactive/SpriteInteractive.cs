@@ -53,8 +53,8 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="assetKey"></param>
-        public SpriteInteractive(EngineCore engine, SpriteBase? owner, string? assetKey)
-            : base(engine, owner, assetKey)
+        public SpriteInteractive(EngineCore engine, string? assetKey)
+            : base(engine, assetKey)
         {
             Mass = SiRandom.Between(Metadata.Mass, 0);
 
@@ -65,8 +65,8 @@ namespace Si.Engine.Sprite._Superclass.Interactive
             }
         }
 
-        public SpriteInteractive(EngineCore engine, SpriteBase? owner, Bitmap bitmap)
-            : base(engine, owner, null)
+        public SpriteInteractive(EngineCore engine, Bitmap bitmap)
+            : base(engine, null)
         {
             if (Engine.Assets.IsLoaded)
             {

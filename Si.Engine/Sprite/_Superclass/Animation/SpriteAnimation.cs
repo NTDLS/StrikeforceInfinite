@@ -26,7 +26,7 @@ namespace Si.Engine.Sprite._Superclass.Animation
         public float FramesPerSecond { get; private set; } = 1;
 
         public SpriteAnimation(EngineCore engine, string assetKey)
-            : base(engine, null, assetKey)
+            : base(engine, assetKey)
         {
             Location = SiVector.Zero();
 

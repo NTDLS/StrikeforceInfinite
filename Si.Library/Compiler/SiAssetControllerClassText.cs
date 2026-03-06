@@ -2,8 +2,31 @@
 {
     public static class SiAssetControllerClassText
     {
+        private class ConstructorSignatures
+        {
+            public string Signature { get; set; }
+            public string Parameters { get; set; }
+
+            public ConstructorSignatures(string signature, string parameters)
+            {
+                Signature = signature;
+                Parameters = parameters;
+            }
+        }
+
+        private static Dictionary<string, ConstructorSignatures> ConstructorSignaturesByBaseClass = new()
+        {
+            { "SpriteWeapon", new ConstructorSignatures("EngineCore engine, SpriteBase owner, string assetKey", "engine, owner, assetKey") },
+        };
+
         public static string Get(string baseClassName, string assetControllerClassName, string controllerCode)
         {
+            if (ConstructorSignaturesByBaseClass.TryGetValue(baseClassName, out var constructorSignatures) == false)
+            {
+                //Default constructor signature if the base class is not found in the dictionary.
+                constructorSignatures = new("EngineCore engine, string assetKey", "engine, assetKey");
+            }
+
             return @$"
                 using NTDLS.Helpers;
                 using SharpDX.Direct2D1;
@@ -28,9 +51,8 @@
                 using System.Linq;
                 using System;
 
-
-                public class {assetControllerClassName}(EngineCore engine, SpriteBase owner, string assetKey)
-                    : {baseClassName}(engine, owner, assetKey), Si.Library.Compiler.ISiRuntimeCompiled
+                public class {assetControllerClassName}({constructorSignatures.Signature})
+                    : {baseClassName}({constructorSignatures.Parameters}), Si.Library.Compiler.ISiRuntimeCompiled
                 {{
                     public string GetControllerName() => ""{assetControllerClassName}"";
 
