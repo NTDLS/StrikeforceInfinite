@@ -1,6 +1,6 @@
-﻿using SharpDX.Direct2D1;
-using Ae.Engine.Menu._Superclass;
+﻿using Ae.Engine.Menu._Superclass;
 using Ae.Engine.TickController._Superclass;
+using SharpDX.Direct2D1;
 using System.Collections.Generic;
 
 namespace Ae.Engine.TickController.UnvectoredTickController
@@ -14,7 +14,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         private MenuBase? _current = null;
         public MenuBase? Current { get => _current; }
 
-        public MenuTickController(SiEngine engine)
+        public MenuTickController(AeEngine engine)
             : base(engine) { }
 
         public void Render(RenderTarget renderTarget, float epoch)

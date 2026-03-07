@@ -1,14 +1,14 @@
-﻿using SharpDX;
-using SharpDX.Direct2D1;
-using SharpDX.Mathematics.Interop;
-using Ae.Engine.Sprite._Superclass._Root;
+﻿using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Library;
 using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using Ae.Rendering;
+using SharpDX;
+using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
 using System.Drawing;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass
 {
@@ -47,7 +47,7 @@ namespace Ae.Engine.Sprite._Superclass
         /// </summary>
         public Color4 GradientEndColor { get; set; }
 
-        public SpriteParticle(SiEngine engine, SiVector location, Size size, Color4? color = null)
+        public SpriteParticle(AeEngine engine, AeVector location, Size size, Color4? color = null)
             : base(engine, null)
         {
             SetSize(size);
@@ -55,14 +55,14 @@ namespace Ae.Engine.Sprite._Superclass
             Location = location.Clone();
 
             Color = color ?? engine.Rendering.Materials.Colors.White;
-            RotationSpeed = SiRandom.Between(0.01f, 0.09f) * SiRandom.PositiveOrNegative();
+            RotationSpeed = AeRandom.Between(0.01f, 0.09f) * AeRandom.PositiveOrNegative();
 
-            Speed = SiRandom.Between(100f, 400f);
-            Orientation.Degrees = SiRandom.Between(0, 359);
+            Speed = AeRandom.Between(100f, 400f);
+            Orientation.Degrees = AeRandom.Between(0, 359);
             Throttle = 1;
         }
 
-        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             Orientation.Degrees += RotationSpeed * epoch;
 

@@ -18,7 +18,7 @@ namespace Ae.AssetExplorer.Forms
         {
             if (string.IsNullOrWhiteSpace(textBoxFolderName.Text))
             {
-                MessageBox.Show("Folder name cannot be empty.", SiConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Folder name cannot be empty.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

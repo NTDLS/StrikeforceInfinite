@@ -10,7 +10,7 @@ namespace Ae.Engine.Situation
     internal class SituationFreeFlight
         : SituationBase
     {
-        public SituationFreeFlight(SiEngine engine)
+        public SituationFreeFlight(AeEngine engine)
             : base(engine,
                   "Free Flight",
                   "Theres nothing in this quadrant or the next that will threaten us.")

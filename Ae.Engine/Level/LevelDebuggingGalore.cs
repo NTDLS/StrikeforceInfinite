@@ -5,7 +5,7 @@ using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using System;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Level
 {
@@ -16,7 +16,7 @@ namespace Ae.Engine.Level
     internal class LevelDebuggingGalore
         : LevelBase
     {
-        public LevelDebuggingGalore(SiEngine engine)
+        public LevelDebuggingGalore(AeEngine engine)
             : base(engine,
                   "Debugging Galore",
                     "The situation is dire. Explosions here can cause\r\n"
@@ -37,13 +37,13 @@ namespace Ae.Engine.Level
             _engine.Player.Sprite.AddShieldHealth(10);
         }
 
-        private void FirstShowPlayerCallback(SiDefermentEvent sender, object? refObj)
+        private void FirstShowPlayerCallback(AeDefermentEvent sender, object? refObj)
         {
             _engine.Player.ResetAndShow();
-            AddSingleFireEvent(SiRandom.Between(0, 800), AddFreshEnemiesCallback);
+            AddSingleFireEvent(AeRandom.Between(0, 800), AddFreshEnemiesCallback);
         }
 
-        private void AddFreshEnemiesCallback(SiDefermentEvent sender, object? refObj)
+        private void AddFreshEnemiesCallback(AeDefermentEvent sender, object? refObj)
         {
             if (_engine.Sprites.OfType<SpriteEnemy>().Count() == 0)
             {
@@ -234,37 +234,37 @@ namespace Ae.Engine.Level
 
         public void AddSingleAsteroid()
         {
-            var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{SiRandom.Between(0, 0)}.png");
+            var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{AeRandom.Between(0, 0)}.png");
 
-            asteroid.Location = new SiVector(800, 800);
+            asteroid.Location = new AeVector(800, 800);
             asteroid.Speed = 1.0f;
-            asteroid.Orientation = SiVector.FromUnsignedDegrees(-45);
+            asteroid.Orientation = AeVector.FromUnsignedDegrees(-45);
 
             asteroid.SetHullHealth(100);
         }
 
-        public void AddAsteroidField(SiVector offset, int rowCount, int colCount)
+        public void AddAsteroidField(AeVector offset, int rowCount, int colCount)
         {
             for (int row = 0; row < rowCount; row++)
             {
                 for (int col = 0; col < colCount; col++)
                 {
-                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{SiRandom.Between(0, 23)}");
+                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{AeRandom.Between(0, 23)}");
 
                     var asteroidSize = asteroid.Size.Width + asteroid.Size.Height;
 
                     float totalXOffset = (offset.X + asteroidSize * colCount);
                     float totalYOffset = (offset.Y + (asteroidSize * rowCount));
 
-                    asteroid.Location = new SiVector(totalXOffset - asteroidSize * col, totalYOffset - asteroidSize * row);
+                    asteroid.Location = new AeVector(totalXOffset - asteroidSize * col, totalYOffset - asteroidSize * row);
 
-                    asteroid.Orientation = SiRandom.RandomOrientationVector();
-                    asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
+                    asteroid.Orientation = AeRandom.RandomOrientationVector();
+                    asteroid.Speed = AeRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
-                    asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
-                    asteroid.Metadata.Mass = new SiRange<float>(Mass.Large);
+                    asteroid.RotationSpeed = AeRandom.RandomSign(AeRandom.Between(1f, 360f).ToRadians());
+                    asteroid.Metadata.Mass = new AeRange<float>(Mass.Large);
 
-                    asteroid.RecalculateMovementVectorFromAngle(SiRandom.Between(1f, 360f).ToRadians());
+                    asteroid.RecalculateMovementVectorFromAngle(AeRandom.Between(1f, 360f).ToRadians());
                     asteroid.VectorType = ParticleVectorType.Default;
 
                     //asteroid.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-1.5f, -0.4f) : SiRandom.Between(0.4f, 1.5f);

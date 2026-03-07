@@ -8,9 +8,9 @@ namespace Ae.Engine.EngineLibrary
         public AutoResetEvent Event = new(false);
         public Guid Id { get; set; }
         public Action Action { get; set; }
-        public SiEngine Engine { get; set; }
+        public AeEngine Engine { get; set; }
 
-        public RenderLoopInvocation(SiEngine engine, Action action)
+        public RenderLoopInvocation(AeEngine engine, Action action)
         {
             Id = Guid.NewGuid();
             Engine = engine;

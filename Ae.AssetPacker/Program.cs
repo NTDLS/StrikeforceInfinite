@@ -1,7 +1,7 @@
-﻿using NTDLS.Helpers;
-using NTDLS.SqliteDapperWrapper;
-using Ae.Library;
+﻿using Ae.Library;
 using Ae.Library.Metadata;
+using NTDLS.Helpers;
+using NTDLS.SqliteDapperWrapper;
 using System.IO.Compression;
 using System.Text.Json;
 
@@ -52,7 +52,7 @@ namespace Ae.AssetPacker
 
                 sqliteDb.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 
-                var metadata = JsonSerializer.Deserialize<AssetMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, SiConstants.JsonSerializerOptions);
+                var metadata = JsonSerializer.Deserialize<AssetMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, AeConstants.JsonSerializerOptions);
                 if (metadata != null)
                 {
                     metadata.AssetKey = assetKey;
@@ -62,9 +62,9 @@ namespace Ae.AssetPacker
                         new
                         {
                             Key = assetKey,
-                            Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
-                            IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
-                            Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions),
+                            Bytes = ratio >= AeConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
+                            IsCompressed = ratio >= AeConstants.MinimumCompressionRatio ? true : false,
+                            Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
                             BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower()
                         });
 

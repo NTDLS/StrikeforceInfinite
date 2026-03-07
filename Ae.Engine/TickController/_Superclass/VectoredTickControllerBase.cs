@@ -1,7 +1,7 @@
-﻿using NTDLS.Helpers;
-using Ae.Engine.Manager;
+﻿using Ae.Engine.Manager;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Library.Mathematics;
+using NTDLS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Ae.Engine.TickController._Superclass
     public class VectoredTickControllerBase<T>
         : ITickController<T> where T : SpriteBase
     {
-        public SiEngine Engine { get; private set; }
+        public AeEngine Engine { get; private set; }
         public SpriteManager SpriteManager { get; private set; }
 
         public subType[] VisibleOfType<subType>() where subType : T => SpriteManager.VisibleOfType<subType>();
@@ -25,9 +25,9 @@ namespace Ae.Engine.TickController._Superclass
         public T? FirstByTag(string name) => SpriteManager.OfType<T>().FirstOrDefault(o => o.SpriteTag == name);
         public IEnumerable<T> AllByTag(string name) => SpriteManager.OfType<T>().Where(o => o.SpriteTag == name);
 
-        public virtual void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement) { }
+        public virtual void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement) { }
 
-        public VectoredTickControllerBase(SiEngine engine, SpriteManager manager)
+        public VectoredTickControllerBase(AeEngine engine, SpriteManager manager)
         {
             Engine = engine;
             SpriteManager = manager;

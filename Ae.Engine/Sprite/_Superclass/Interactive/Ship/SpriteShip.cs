@@ -18,7 +18,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive.Ship
         public SpriteRadarPositionIndicator? RadarPositionIndicator { get; protected set; }
         public SpriteRadarPositionTextBlock? RadarPositionText { get; protected set; }
 
-        public SpriteShip(SiEngine engine, string assetKey)
+        public SpriteShip(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
         }
@@ -39,11 +39,11 @@ namespace Ae.Engine.Sprite._Superclass.Interactive.Ship
                     float requiredAngleRadians = Engine.Player.Sprite.AngleToInSignedRadians(this);
 
                     RadarPositionIndicator.Location = Engine.Display.CenterCanvas
-                        + new SiVector(requiredAngleRadians) * new SiVector(200, 200);
+                        + new AeVector(requiredAngleRadians) * new AeVector(200, 200);
                     RadarPositionIndicator.Orientation.RadiansSigned = requiredAngleRadians;
 
                     RadarPositionText.Location = Engine.Display.CenterCanvas
-                        + new SiVector(requiredAngleRadians) * new SiVector(120, 120);
+                        + new AeVector(requiredAngleRadians) * new AeVector(120, 120);
                     RadarPositionIndicator.Orientation.RadiansSigned = requiredAngleRadians;
                 }
                 else

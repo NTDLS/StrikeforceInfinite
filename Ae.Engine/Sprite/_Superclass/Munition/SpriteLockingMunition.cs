@@ -15,14 +15,14 @@ namespace Ae.Engine.Sprite._Superclass.Munition
     {
         public SpriteInteractive? LockedTarget { get; private set; }
 
-        public SpriteLockingMunition(SiEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
-             SpriteInteractive? lockedTarget, SiVector location)
+        public SpriteLockingMunition(AeEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
+             SpriteInteractive? lockedTarget, AeVector location)
             : base(engine, weapon, firedFrom, assetKey, location)
         {
             LockedTarget = lockedTarget;
         }
 
-        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
+        public override void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
             if (LockedTarget != null)
             {

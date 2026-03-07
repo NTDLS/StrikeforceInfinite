@@ -1,4 +1,4 @@
-﻿using static Ae.Library.SiConstants;
+﻿using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass._Root
 {

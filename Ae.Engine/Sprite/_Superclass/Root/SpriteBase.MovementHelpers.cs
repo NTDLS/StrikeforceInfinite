@@ -1,7 +1,7 @@
 ﻿using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using System;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass._Root
 {
@@ -56,7 +56,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// angle (with given tolerance) then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
-        public bool RotateMovementVectorIfNotPointingAt(SiVector toLocation, float rotationAmountDegrees, SimpleDirection simpleDirection, float varianceDegrees, float epoch)
+        public bool RotateMovementVectorIfNotPointingAt(AeVector toLocation, float rotationAmountDegrees, SimpleDirection simpleDirection, float varianceDegrees, float epoch)
         {
             var deltaAngle = this.HeadingAngleToInSignedDegrees(toLocation);
 

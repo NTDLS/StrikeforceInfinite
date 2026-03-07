@@ -15,12 +15,12 @@ namespace Ae.Engine.Manager
     /// </summary>
     public class CollisionManager
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         public Dictionary<string, OverlappingKinematicBodyPair> Detected { get; private set; } = new();
 
         public PredictedKinematicBody[] Collidables { get; private set; } = new PredictedKinematicBody[0];
 
-        public CollisionManager(SiEngine engine)
+        public CollisionManager(AeEngine engine)
         {
             _engine = engine;
         }

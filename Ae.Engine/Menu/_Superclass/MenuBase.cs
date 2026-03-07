@@ -1,21 +1,21 @@
-﻿using SharpDX.DirectInput;
-using Ae.Engine.Sprite._Superclass.MenuItem;
+﻿using Ae.Engine.Sprite._Superclass.MenuItem;
 using Ae.Engine.Sprite._Superclass.TextBlock;
 using Ae.Library.Mathematics;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Menu._Superclass
 {
     /// <summary>
     /// A menu instance. Allows for setting title text, adding items and managing selections.
     /// </summary>
-    public class MenuBase(SiEngine engine)
+    public class MenuBase(AeEngine engine)
     {
-        protected SiEngine _engine = engine;
+        protected AeEngine _engine = engine;
         private DateTime _lastInputHandled = DateTime.UtcNow;
 
         public List<SpriteMenuItem> Items { get; private set; } = new();
@@ -99,7 +99,7 @@ namespace Ae.Engine.Menu._Superclass
             }
         }
 
-        public SpriteMenuItem AddTitleItem(SiVector location, string text)
+        public SpriteMenuItem AddTitleItem(AeVector location, string text)
         {
             var item = new SpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuTitle, _engine.Rendering.Materials.Brushes.Red, location)
             {
@@ -110,7 +110,7 @@ namespace Ae.Engine.Menu._Superclass
             return item;
         }
 
-        public SpriteMenuItem AddTextBlock(SiVector location, string text)
+        public SpriteMenuItem AddTextBlock(AeVector location, string text)
         {
             var item = new SpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuGeneral, _engine.Rendering.Materials.Brushes.Red, location)
             {
@@ -121,7 +121,7 @@ namespace Ae.Engine.Menu._Superclass
             return item;
         }
 
-        public SpriteMenuItem AddSelectableItem(SiVector location, string key, string text)
+        public SpriteMenuItem AddSelectableItem(AeVector location, string key, string text)
         {
             var item = new SpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuItem, _engine.Rendering.Materials.Brushes.OrangeRed, location)
             {
@@ -133,7 +133,7 @@ namespace Ae.Engine.Menu._Superclass
             return item;
         }
 
-        public SpriteMenuSelectableTextInput AddSelectableTextInput(SiVector location, string key, string text = "", int characterLimit = 100)
+        public SpriteMenuSelectableTextInput AddSelectableTextInput(AeVector location, string key, string text = "", int characterLimit = 100)
         {
             var item = new SpriteMenuSelectableTextInput(_engine, this, _engine.Rendering.TextFormats.TextInputItem, _engine.Rendering.Materials.Brushes.LawnGreen, location)
             {

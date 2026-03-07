@@ -2,7 +2,7 @@
 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Library;
 using Ae.Library.Mathematics;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.AI.Logistics
 {
@@ -12,7 +12,7 @@ namespace Ae.Engine.AI.Logistics
     public class AILogisticsOffScreenReentry
         : AIStateMachine
     {
-        public AILogisticsOffScreenReentry(SiEngine engine, SpriteShip owner)
+        public AILogisticsOffScreenReentry(AeEngine engine, SpriteShip owner)
             : base(engine, owner, null)
         {
             SetAIState(new ExitScreen(this));
@@ -25,13 +25,13 @@ namespace Ae.Engine.AI.Logistics
             : AIStateHandler
         {
             private int _lastHullHealth = stateMachine.Owner.HullHealth;
-            private SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+            private SimpleDirection _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
             private float _rotationEpochs = 0;
             private float _rotationDegreesPerSec = 0;
 
             public void Tick(float epoch)
             {
-                stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
+                stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
 
                 if (stateMachine.Owner.IsWithinCurrentScaledScreenBounds == false)
                 {
@@ -41,9 +41,9 @@ namespace Ae.Engine.AI.Logistics
                 {
                     if (_rotationEpochs <= 0 && stateMachine.Owner.HullHealth < _lastHullHealth)
                     {
-                        _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
-                        _rotationEpochs = SiRandom.Between(1.0f, 2.0f);
-                        _rotationDegreesPerSec = SiRandom.Between(20, 50);
+                        _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+                        _rotationEpochs = AeRandom.Between(1.0f, 2.0f);
+                        _rotationDegreesPerSec = AeRandom.Between(20, 50);
                     }
                     _lastHullHealth = stateMachine.Owner.HullHealth;
 
@@ -65,8 +65,8 @@ namespace Ae.Engine.AI.Logistics
         private class RotateToCenterScene(AILogisticsOffScreenReentry stateMachine)
             : AIStateHandler
         {
-            private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
-            private readonly float _rotationDegreesPerSec = SiRandom.Between(20, 50);
+            private readonly SimpleDirection _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+            private readonly float _rotationDegreesPerSec = AeRandom.Between(20, 50);
 
             public void Tick(float epoch)
             {
@@ -76,7 +76,7 @@ namespace Ae.Engine.AI.Logistics
                 }
                 else
                 {
-                    stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 1.0f, 1.0f, epoch);
+                    stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 1.0f, 1.0f, epoch);
 
                     if (_rotateDirection == SimpleDirection.Clockwise)
                         stateMachine.Owner.RotateMovementVector(_rotationDegreesPerSec, epoch);
@@ -111,7 +111,7 @@ namespace Ae.Engine.AI.Logistics
                         return;
                     }
 
-                    stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
+                    stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
                 }
 
                 _lastHullHealth = stateMachine.Owner.HullHealth;

@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using NTDLS.Helpers;
-using SharpDX.Mathematics.Interop;
-using Ae.Engine.KinematicBody;
+﻿using Ae.Engine.KinematicBody;
 using Ae.Engine.Menu;
 using Ae.Engine.Sprite._Superclass;
 using Ae.Engine.Sprite._Superclass._Root;
@@ -14,10 +11,13 @@ using Ae.Engine.TickController.VectoredTickController.Uncollidable;
 using Ae.Library;
 using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
+using Microsoft.CodeAnalysis;
+using NTDLS.Helpers;
+using SharpDX.Mathematics.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Manager
 {
@@ -31,9 +31,9 @@ namespace Ae.Engine.Manager
         public delegate void CollectionAccessor(SpriteBase[] sprites);
         public delegate T CollectionAccessorT<T>(SpriteBase[] sprites);
 
-        private readonly SiEngine _engine;
-        private SiVector? _radarScale;
-        private SiVector? _radarOffset;
+        private readonly AeEngine _engine;
+        private AeVector? _radarScale;
+        private AeVector? _radarOffset;
 
         public bool RenderRadar { get; set; } = false;
 
@@ -57,7 +57,7 @@ namespace Ae.Engine.Manager
 
         #endregion
 
-        public SpriteManager(SiEngine engine)
+        public SpriteManager(AeEngine engine)
         {
             _engine = engine;
 
@@ -119,7 +119,7 @@ namespace Ae.Engine.Manager
 
             var className = (string.IsNullOrEmpty(asset.ControllerName) ? asset.Metadata.Class : asset.ControllerName)
                 ?? throw new Exception($"The sprite {assetKey} does not have a class or controller defined in its metadata.");
-            var type = SiReflection.GetTypeByName(className);
+            var type = AeReflection.GetTypeByName(className);
             var sprite = (T)Activator.CreateInstance(type, [_engine, assetKey]).EnsureNotNull();
             initializationProc?.Invoke(sprite);
             return sprite;
@@ -127,7 +127,7 @@ namespace Ae.Engine.Manager
 
         public SpriteBase EditorAdd(string assetKey, Action<SpriteBase>? initializationProc = null)
         {
-            if (_engine.ExecutionMode != SiConstants.SiEngineExecutionMode.Edit)
+            if (_engine.ExecutionMode != AeConstants.SiEngineExecutionMode.Edit)
             {
                 throw new Exception("EditorAdd can only be used in Editor mode.");
             }
@@ -137,7 +137,7 @@ namespace Ae.Engine.Manager
 
             string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
 
-            var classType = SiReflection.GetTypeByName(className);
+            var classType = AeReflection.GetTypeByName(className);
 
             var firstConstructor = classType.GetConstructors().First();
 
@@ -168,7 +168,7 @@ namespace Ae.Engine.Manager
                         constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
                         break;
                     case "location":
-                        constructorParams.Add(SiVector.Zero());
+                        constructorParams.Add(AeVector.Zero());
                         break;
                     default:
                         throw new Exception($"Constructor parameter {parameter.Name} for {classType.Name} is not handled.");
@@ -331,7 +331,7 @@ namespace Ae.Engine.Manager
             {
                 if (obj != with)
                 {
-                    if (obj.IntersectsAABB(with.Location, new SiVector(with.Size.Width, with.Size.Height)))
+                    if (obj.IntersectsAABB(with.Location, new AeVector(with.Size.Width, with.Size.Height)))
                     {
                         objects.Add(obj);
                     }
@@ -341,9 +341,9 @@ namespace Ae.Engine.Manager
         }
 
         public SpriteBase[] Intersections(float x, float y, float width, float height)
-            => Intersections(new SiVector(x, y), new SiVector(width, height));
+            => Intersections(new AeVector(x, y), new AeVector(width, height));
 
-        public SpriteBase[] Intersections(SiVector location, SiVector size)
+        public SpriteBase[] Intersections(AeVector location, AeVector size)
         {
             var objects = new List<SpriteBase>();
 
@@ -357,7 +357,7 @@ namespace Ae.Engine.Manager
             return objects.ToArray();
         }
 
-        public SpriteBase[] RenderLocationIntersections(SiVector location, SiVector size, bool includeInvisible = false)
+        public SpriteBase[] RenderLocationIntersections(AeVector location, AeVector size, bool includeInvisible = false)
         {
             var objects = new List<SpriteBase>();
 
@@ -399,8 +399,8 @@ namespace Ae.Engine.Manager
                     float radarVisionWidth = _engine.Display.TotalCanvasSize.Width * radarDistance;
                     float radarVisionHeight = _engine.Display.TotalCanvasSize.Height * radarDistance;
 
-                    _radarScale = new SiVector(radarBgImage.Size.Width / radarVisionWidth, radarBgImage.Size.Height / radarVisionHeight);
-                    _radarOffset = new SiVector(radarBgImage.Size.Width / 2.0f, radarBgImage.Size.Height / 2.0f); //Best guess until player is visible.
+                    _radarScale = new AeVector(radarBgImage.Size.Width / radarVisionWidth, radarBgImage.Size.Height / radarVisionHeight);
+                    _radarOffset = new AeVector(radarBgImage.Size.Width / 2.0f, radarBgImage.Size.Height / 2.0f); //Best guess until player is visible.
                 }
 
                 if (_engine.Player.Sprite is not null && _engine.Player.Sprite.IsVisible)
@@ -408,7 +408,7 @@ namespace Ae.Engine.Manager
                     float centerOfRadarX = (int)(radarBgImage.Size.Width / 2.0f) - 2.0f; //Subtract half the dot size.
                     float centerOfRadarY = (int)(radarBgImage.Size.Height / 2.0f) - 2.0f; //Subtract half the dot size.
 
-                    _radarOffset = new SiVector(
+                    _radarOffset = new AeVector(
                             _engine.Display.NaturalScreenSize.Width - radarBgImage.Size.Width + (centerOfRadarX - _engine.Player.Sprite.X * _radarScale.X),
                             _engine.Display.NaturalScreenSize.Height - radarBgImage.Size.Height + (centerOfRadarY - _engine.Player.Sprite.Y * _radarScale.Y)
                         );
@@ -486,12 +486,12 @@ namespace Ae.Engine.Manager
                 {
                     o.Location = sprite.Location.Clone();
                     o.CleanupMode = ParticleCleanupMode.DistanceOffScreen;
-                    o.FadeToBlackReductionAmount = SiRandom.Between(0.001f, 0.01f); //TODO: Can we implement this?
-                    o.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(45f, 180f).ToRadians());
+                    o.FadeToBlackReductionAmount = AeRandom.Between(0.001f, 0.01f); //TODO: Can we implement this?
+                    o.RotationSpeed = AeRandom.RandomSign(AeRandom.Between(45f, 180f).ToRadians());
                     o.VectorType = ParticleVectorType.Default;
 
-                    o.Orientation.Degrees = SiRandom.Between(0.0f, 359.0f);
-                    o.Speed = SiRandom.Between(100, 350f);
+                    o.Orientation.Degrees = AeRandom.Between(0.0f, 359.0f);
+                    o.Speed = AeRandom.Between(100, 350f);
                     o.Throttle = 1;
                 });
             }

@@ -3,7 +3,7 @@ using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Library;
 using Ae.Library.Mathematics;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.AI.Logistics
 {
@@ -13,24 +13,24 @@ namespace Ae.Engine.AI.Logistics
     public class AILogisticsDemo
         : AIStateMachine
     {
-        private float _explodeCooldown = SiRandom.Between(5, 10);
+        private float _explodeCooldown = AeRandom.Between(5, 10);
         private readonly bool _doExplosions = false;
 
-        public AILogisticsDemo(SiEngine engine, SpriteShip owner)
+        public AILogisticsDemo(AeEngine engine, SpriteShip owner)
             : base(engine, owner, observedObjects: null)
         {
             SetAIState(new ExitScreen(this));
             OnApplyIntelligence += AILogisticsDemo_OnApplyIntelligence;
         }
 
-        private void AILogisticsDemo_OnApplyIntelligence(float epoch, SiVector cameraDisplacement, AIStateHandler? state)
+        private void AILogisticsDemo_OnApplyIntelligence(float epoch, AeVector cameraDisplacement, AIStateHandler? state)
         {
             if (_doExplosions)
             {
                 _explodeCooldown -= epoch;
                 if (_explodeCooldown <= 0f)
                 {
-                    _explodeCooldown = SiRandom.Between(2.0f, 5.0f);
+                    _explodeCooldown = AeRandom.Between(2.0f, 5.0f);
 
                     if (Owner.IsWithinCurrentScaledScreenBounds)
                     {
@@ -49,7 +49,7 @@ namespace Ae.Engine.AI.Logistics
         {
             private readonly AILogisticsDemo _stateMachine;
             private readonly SpriteEnemy? _followSprite;
-            private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+            private readonly SimpleDirection _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
 
             public FollowRandomShip(AILogisticsDemo stateMachine)
             {
@@ -84,7 +84,7 @@ namespace Ae.Engine.AI.Logistics
         {
             public void Tick(float epoch)
             {
-                stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 3.0f, 1.0f, epoch);
+                stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 3.0f, 1.0f, epoch);
 
                 if (stateMachine.Owner.IsWithinCurrentScaledScreenBounds == false)
                 {
@@ -99,7 +99,7 @@ namespace Ae.Engine.AI.Logistics
         private class RotateToCenterScene(AILogisticsDemo stateMachine)
             : AIStateHandler
         {
-            private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+            private readonly SimpleDirection _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
 
             public void Tick(float epoch)
             {
@@ -109,7 +109,7 @@ namespace Ae.Engine.AI.Logistics
                 }
                 else
                 {
-                    stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 1.0f, 1.0f, epoch);
+                    stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 1.0f, 1.0f, epoch);
 
                     if (_rotateDirection == SimpleDirection.Clockwise)
                         stateMachine.Owner.RotateMovementVector(45, epoch);
@@ -122,7 +122,7 @@ namespace Ae.Engine.AI.Logistics
         private class ApproachTarget(AILogisticsDemo stateMachine)
             : AIStateHandler
         {
-            private readonly SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+            private readonly SimpleDirection _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
             private float _lastDistance = stateMachine.Owner.DistanceTo(stateMachine.Engine.Display.CenterOfCurrentScreen);
 
             public void Tick(float epoch)
@@ -137,7 +137,7 @@ namespace Ae.Engine.AI.Logistics
                 {
                     _lastDistance = currentDistance;
 
-                    stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
+                    stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
 
                     if (_rotateDirection == SimpleDirection.Clockwise)
                         stateMachine.Owner.RotateMovementVector(1f, epoch);

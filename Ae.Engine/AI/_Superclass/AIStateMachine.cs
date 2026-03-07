@@ -15,7 +15,7 @@ namespace Ae.Engine.AI._Superclass
         /// <summary>
         /// Reference to the engine core class.
         /// </summary>
-        public SiEngine Engine { get; private set; }
+        public AeEngine Engine { get; private set; }
 
         /// <summary>
         /// Reference to the sprite that is being controlled by this AI model.
@@ -48,7 +48,7 @@ namespace Ae.Engine.AI._Superclass
         /// Fired when the engine wants the sprite to make a decision based on the current AI state.
         /// </summary>
         public event ApplyIntelligenceProc? OnApplyIntelligence;
-        public delegate void ApplyIntelligenceProc(float epoch, SiVector cameraDisplacement, AIStateHandler? state);
+        public delegate void ApplyIntelligenceProc(float epoch, AeVector cameraDisplacement, AIStateHandler? state);
 
         #endregion
 
@@ -58,14 +58,14 @@ namespace Ae.Engine.AI._Superclass
         /// <param name="engine">Reference to the engine core class.</param>
         /// <param name="owner">Reference to the sprite that is being controlled by this AI model.</param>
         /// <param name="observedObject">Reference to the object that the sprite is observing (probably the player, but can be other objects).</param>
-        public AIStateMachine(SiEngine engine, SpriteInteractive owner, List<SpriteBase>? observedObjects = null)
+        public AIStateMachine(AeEngine engine, SpriteInteractive owner, List<SpriteBase>? observedObjects = null)
         {
             Engine = engine;
             Owner = owner;
             ObservedObjects = observedObjects ?? [];
         }
 
-        public void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
+        public void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
             OnApplyIntelligence?.Invoke(epoch, cameraDisplacement, CurrentAIState);
             CurrentAIState?.Tick(epoch);

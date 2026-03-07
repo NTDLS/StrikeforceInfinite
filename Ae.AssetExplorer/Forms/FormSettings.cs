@@ -1,14 +1,14 @@
-﻿using NTDLS.Persistence;
-using NTDLS.WinFormsHelpers;
-using Ae.AssetExplorer.Controls;
+﻿using Ae.AssetExplorer.Controls;
 using Ae.Library;
-using static Ae.Library.SiConstants;
+using NTDLS.Persistence;
+using NTDLS.WinFormsHelpers;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {
     public partial class FormSettings : Form
     {
-        private readonly SiCodeEditor _fontSampleTextbox;
+        private readonly AeCodeEditor _fontSampleTextbox;
         private readonly Graphics _graphics;
 
         public FormSettings()
@@ -25,7 +25,7 @@ namespace Ae.AssetExplorer.Forms
 
             var sampleText = EmbeddedResource.Load("Samples/CSharpTextSample.txt");
 
-            _fontSampleTextbox = new SiCodeEditor(panelFontSampleParent, SiCodeType.CSharp, sampleText);
+            _fontSampleTextbox = new AeCodeEditor(panelFontSampleParent, SiCodeType.CSharp, sampleText);
 
             foreach (var font in FontFamily.Families)
             {
@@ -85,14 +85,14 @@ namespace Ae.AssetExplorer.Forms
                     EditorFontFamily = comboBoxFont.Text
                 };
 
-                LocalUserApplicationData.SaveToDisk($"{SiConstants.FriendlyName}\\Ae.AssetExplorer", settings);
+                LocalUserApplicationData.SaveToDisk($"{AeConstants.FriendlyName}\\Ae.AssetExplorer", settings);
                 Settings.Instance = settings;
 
                 this.InvokeClose(DialogResult.OK);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, SiConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

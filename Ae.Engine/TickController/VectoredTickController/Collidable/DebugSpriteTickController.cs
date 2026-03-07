@@ -8,12 +8,12 @@ namespace Ae.Engine.TickController.VectoredTickController.Collidable
     public class DebugSpriteTickController
         : VectoredCollidableTickControllerBase<SpriteDebug>
     {
-        public DebugSpriteTickController(SiEngine engine, SpriteManager manager)
+        public DebugSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
+        public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
             foreach (var sprite in Visible())
             {

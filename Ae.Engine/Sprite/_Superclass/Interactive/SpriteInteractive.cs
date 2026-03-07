@@ -1,17 +1,17 @@
-﻿using Microsoft.CodeAnalysis;
-using NTDLS.Helpers;
-using SharpDX.Direct2D1;
-using Ae.Engine.AI._Superclass;
+﻿using Ae.Engine.AI._Superclass;
 using Ae.Engine.KinematicBody;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Munition;
 using Ae.Library;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
+using Microsoft.CodeAnalysis;
+using NTDLS.Helpers;
+using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Interactive
 {
@@ -53,7 +53,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
 
         public float Mass { get; set; }
 
-        public SiRenewableResources RenewableResources { get; set; } = new();
+        public AeRenewableResources RenewableResources { get; set; } = new();
         public List<SpriteWeapon> Weapons { get; private set; } = new();
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="assetKey"></param>
-        public SpriteInteractive(SiEngine engine, string? assetKey)
+        public SpriteInteractive(AeEngine engine, string? assetKey)
             : base(engine, assetKey)
         {
-            Mass = SiRandom.Between(Metadata.Mass, 0);
+            Mass = AeRandom.Between(Metadata.Mass, 0);
 
             if (Engine.Assets.IsLoaded)
             {
@@ -73,7 +73,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
             }
         }
 
-        public SpriteInteractive(SiEngine engine, Bitmap bitmap)
+        public SpriteInteractive(AeEngine engine, Bitmap bitmap)
             : base(engine, null)
         {
             if (Engine.Assets.IsLoaded)
@@ -152,7 +152,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
             {
                 var className = (string.IsNullOrEmpty(asset.ControllerName) ? asset.Metadata.Class : asset.ControllerName)
                     ?? throw new Exception($"The sprite {assetKey} does not have a class or controller defined in its metadata.");
-                var type = SiReflection.GetTypeByName(className);
+                var type = AeReflection.GetTypeByName(className);
 
                 weapon = (SpriteWeapon)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
                 weapon.MunitionQuantity += munitionCount;
@@ -176,7 +176,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         public bool FireWeapon(string assetKey)
             => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey)?.Fire() == true;
 
-        public bool FireWeapon(string assetKey, SiVector location)
+        public bool FireWeapon(string assetKey, AeVector location)
             => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey)?.Fire(location) == true;
 
         #endregion
@@ -188,7 +188,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         /// sprites children for automatic cleanup when parent is destroyed. 
         /// </summary>
         /// <returns></returns>
-        public SpriteAttachment AttachOfType(string assetKey, SiVector locationRelativeToOwner, Action<SpriteAttachment>? initializationProc = null)
+        public SpriteAttachment AttachOfType(string assetKey, AeVector locationRelativeToOwner, Action<SpriteAttachment>? initializationProc = null)
         {
             var attachment = Engine.Sprites.Attachments.AddAttachment(assetKey, this, locationRelativeToOwner);
             initializationProc?.Invoke(attachment);
@@ -215,7 +215,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
             }
         }
 
-        public override bool TryMunitionHit(SpriteMunition munition, SiVector hitTestPosition)
+        public override bool TryMunitionHit(SpriteMunition munition, AeVector hitTestPosition)
         {
             if (IntersectsAabb(hitTestPosition))
             {
@@ -253,7 +253,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
                 }
 
                 if (Metadata.ParticleBlastOnExplodeAmount?.IsValid() == true)
-                    Engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(Metadata.ParticleBlastOnExplodeAmount.Min, Metadata.ParticleBlastOnExplodeAmount.Max));
+                    Engine.Sprites.Particles.ParticleBlastAt(this, AeRandom.Between(Metadata.ParticleBlastOnExplodeAmount.Min, Metadata.ParticleBlastOnExplodeAmount.Max));
 
                 if (Metadata.FragmentOnExplode == true)
                     Engine.Sprites.CreateFragmentsOf(this);
@@ -272,7 +272,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         /// </summary>
         /// <param name="epoch"></param>
         /// <param name="cameraDisplacement"></param>
-        public virtual void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
+        public virtual void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
             CurrentAIController?.ApplyIntelligence(epoch, cameraDisplacement);
             Weapons?.ForEach(o => o.ApplyIntelligence(epoch));

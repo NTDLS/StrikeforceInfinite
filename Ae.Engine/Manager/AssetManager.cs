@@ -1,10 +1,10 @@
 ﻿
-using NTDLS.DelegateThreadPooling;
-using NTDLS.SqliteDapperWrapper;
 using Ae.Audio;
 using Ae.Library;
 using Ae.Library.Compiler;
 using Ae.Library.Metadata;
+using NTDLS.DelegateThreadPooling;
+using NTDLS.SqliteDapperWrapper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,12 +25,12 @@ namespace Ae.Engine.Manager
         public const string AssetPackagePath = "Ae.Assets.db";
 #endif
         public bool IsLoaded { get; private set; }
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private readonly Dictionary<string, AssetContainer> _collection = new();
         private readonly SqliteManagedFactory _assetsDatabase = new($"Data Source={AssetPackagePath}");
-        private readonly SiCache _cache = new(SiCache.CacheExpirationScheme.Sliding, TimeSpan.FromSeconds(600));
+        private readonly AeCache _cache = new(AeCache.CacheExpirationScheme.Sliding, TimeSpan.FromSeconds(600));
 
-        public AssetManager(SiEngine engine)
+        public AssetManager(AeEngine engine)
         {
             _engine = engine;
         }
@@ -86,11 +86,11 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public SiAudioClip GetAudio(string assetKey, float? volume = null)
+        public AeAudioClip GetAudio(string assetKey, float? volume = null)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
-                var audioClip = assetContainer.Object as SiAudioClip
+                var audioClip = assetContainer.Object as AeAudioClip
                     ?? throw new FileNotFoundException($"Asset could not be converted to audio: {assetKey}");
                 audioClip.SetInitialVolume(volume ?? assetContainer.Metadata.SoundVolume ?? 1);
                 audioClip.SetLoopForever(assetContainer.Metadata.LoopSound ?? false);
@@ -137,12 +137,12 @@ namespace Ae.Engine.Manager
                     {
                         var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_').Replace(' ', '_');
 
-                        var classCode = SiAssetControllerClassText.Get(assetContainer.Metadata.Class, assetClassName, model.Controller);
+                        var classCode = AeAssetControllerClassText.Get(assetContainer.Metadata.Class, assetClassName, model.Controller);
 
-                        SiRuntimeCompiler.CompileToAssembly(classCode);
+                        AeRuntimeCompiler.CompileToAssembly(classCode);
 
                         //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
-                        SiReflection.GetTypeByName(assetClassName);
+                        AeReflection.GetTypeByName(assetClassName);
 
                         assetContainer.ControllerName = assetClassName;
                     }
@@ -175,7 +175,7 @@ namespace Ae.Engine.Manager
             var gamerTagsText = GetText("Text/GamerTags");
             var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
 
-            var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
+            var randomIndex = AeRandom.Between(0, gamerTags.Count - 1);
             return gamerTags[randomIndex];
         }
 
@@ -184,7 +184,7 @@ namespace Ae.Engine.Manager
             var gamerTagsText = GetText("Text/LobbyNames");
             var gamerTags = gamerTagsText.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).Select(g => g.Trim()).ToList();
 
-            var randomIndex = SiRandom.Between(0, gamerTags.Count - 1);
+            var randomIndex = AeRandom.Between(0, gamerTags.Count - 1);
             return gamerTags[randomIndex];
         }
 
@@ -197,7 +197,7 @@ namespace Ae.Engine.Manager
                 case "json":
                 case "txt":
                     {
-                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, AeConstants.JsonSerializerOptions)
                            ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         var obj = Encoding.UTF8.GetString(bytes);
@@ -208,7 +208,7 @@ namespace Ae.Engine.Manager
                 case "jpg":
                 case "bmp":
                     {
-                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, AeConstants.JsonSerializerOptions)
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         using var stream = new MemoryStream(bytes);
@@ -218,11 +218,11 @@ namespace Ae.Engine.Manager
                     }
                 case "wav":
                     {
-                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, SiConstants.JsonSerializerOptions)
+                        var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, AeConstants.JsonSerializerOptions)
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         using var stream = new MemoryStream(bytes);
-                        var obj = new SiAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
+                        var obj = new AeAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
 
                         return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }
@@ -257,9 +257,9 @@ namespace Ae.Engine.Manager
                 new
                 {
                     Key = assetKey,
-                    Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
-                    IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
-                    Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions),
+                    Bytes = ratio >= AeConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
+                    IsCompressed = ratio >= AeConstants.MinimumCompressionRatio ? true : false,
+                    Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
                     BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
                 });
 
@@ -281,7 +281,7 @@ namespace Ae.Engine.Manager
                 new
                 {
                     Key = assetKey,
-                    Metadata = JsonSerializer.Serialize(metadata, SiConstants.JsonSerializerOptions)
+                    Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions)
                 });
 
             RefreshAssetIntoCollection(assetKey);
@@ -310,8 +310,8 @@ namespace Ae.Engine.Manager
                 new
                 {
                     Key = assetKey,
-                    Bytes = ratio >= SiConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
-                    IsCompressed = ratio >= SiConstants.MinimumCompressionRatio ? true : false,
+                    Bytes = ratio >= AeConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
+                    IsCompressed = ratio >= AeConstants.MinimumCompressionRatio ? true : false,
                     BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
                 });
 

@@ -32,7 +32,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
             var collisions = new List<SpriteBase>();
 
             //Get the starting position of the sprite before it was last moved.
-            var hitTestPosition = new SiVector(Location - (MovementVector * epoch));
+            var hitTestPosition = new AeVector(Location - (MovementVector * epoch));
             var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(hitTestPosition));
 
@@ -81,7 +81,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
             ///     between where it ended up and where it should have come from given its movement vector.
 
             //Get the starting position of the sprite before it was last moved.
-            var hitTestPosition = new SiVector(Location - (MovementVector * epoch));
+            var hitTestPosition = new AeVector(Location - (MovementVector * epoch));
             var directionVector = MovementVector.Normalize();
 
             //We want to step at least 1 pixel at a time, but for larger sprites we can step more
@@ -141,8 +141,8 @@ namespace Ae.Engine.Sprite._Superclass._Root
 
             var collisions = new List<SpriteBase>();
 
-            var hitTestPosition = new SiVector(Location);
-            var destinationPoint = new SiVector(Location + (MovementVector * epoch));
+            var hitTestPosition = new AeVector(Location);
+            var destinationPoint = new AeVector(Location + (MovementVector * epoch));
             var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(destinationPoint));
 
@@ -188,8 +188,8 @@ namespace Ae.Engine.Sprite._Superclass._Root
             /// Takes the position of an object before it has been moved and tests each location
             ///     between where it is and where it will end up given its movement vector.
 
-            var hitTestPosition = new SiVector(Location);
-            var destinationPoint = new SiVector(Location + (MovementVector * epoch));
+            var hitTestPosition = new AeVector(Location);
+            var destinationPoint = new AeVector(Location + (MovementVector * epoch));
             var directionVector = MovementVector.Normalize();
             var totalTravelDistance = Math.Abs(Location.DistanceTo(destinationPoint));
 
@@ -228,7 +228,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// <param name="distance">Distance to detect collisions.</param>
         /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
         /// <returns></returns>
-        public List<SpriteBase> FindCollisionsAlongDistanceVectorAabb(float distance, SiVector? angle = null)
+        public List<SpriteBase> FindCollisionsAlongDistanceVectorAabb(float distance, AeVector? angle = null)
             => FindCollisionsAlongDistanceVectorAabb(Engine.Sprites.Visible(), distance, angle);
 
         /// <summary>
@@ -238,11 +238,11 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// <param name="distance">Distance to detect collisions.</param>
         /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
         /// <returns></returns>
-        public List<SpriteBase> FindCollisionsAlongDistanceVectorAabb(SpriteBase[] objectsThatCanBeHit, float distance, SiVector? angle = null)
+        public List<SpriteBase> FindCollisionsAlongDistanceVectorAabb(SpriteBase[] objectsThatCanBeHit, float distance, AeVector? angle = null)
         {
             var collisions = new List<SpriteBase>();
 
-            var hitTestPosition = new SiVector(Location);
+            var hitTestPosition = new AeVector(Location);
             var directionVector = angle ?? Orientation;
 
             //Hit-test each position along the sprite path.
@@ -267,7 +267,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// <param name="distance">Distance to detect collisions.</param>
         /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
         /// <returns></returns>
-        public SpriteBase? FindFirstCollisionAlongDistanceVectorAabb(float distance, SiVector? angle = null)
+        public SpriteBase? FindFirstCollisionAlongDistanceVectorAabb(float distance, AeVector? angle = null)
             => FindFirstCollisionAlongDistanceVectorAabb(Engine.Sprites.Visible(), distance, angle);
 
         /// <summary>
@@ -277,9 +277,9 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// <param name="distance">Distance to detect collisions.</param>
         /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
         /// <returns></returns>
-        public SpriteBase? FindFirstCollisionAlongDistanceVectorAabb(SpriteBase[] objectsThatCanBeHit, float distance, SiVector? angle = null)
+        public SpriteBase? FindFirstCollisionAlongDistanceVectorAabb(SpriteBase[] objectsThatCanBeHit, float distance, AeVector? angle = null)
         {
-            var hitTestPosition = new SiVector(Location);
+            var hitTestPosition = new AeVector(Location);
             var directionVector = angle ?? Orientation;
 
             //Hit-test each position along the sprite path.
@@ -341,7 +341,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// Determines if two axis-aligned bounding boxes (AABB) intersect.
         /// </summary>
         /// <returns></returns>
-        public bool IntersectsAABB(SpriteBase otherObject, SiVector sizeAdjust)
+        public bool IntersectsAABB(SpriteBase otherObject, AeVector sizeAdjust)
         {
             if (IsVisible && otherObject.IsVisible && !IsQueuedForDeletion && !otherObject.IsQueuedForDeletion)
             {
@@ -374,7 +374,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// Determines if two axis-aligned bounding boxes (AABB) intersect.
         /// </summary>
         /// <returns></returns>
-        public bool IntersectsAABB(SiVector location, SiVector size)
+        public bool IntersectsAABB(AeVector location, AeVector size)
         {
             var alteredHitBox = new RectangleF(
                 location.X,
@@ -390,7 +390,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// Determines if two axis-aligned bounding boxes (AABB) intersect.
         /// </summary>
         /// <returns></returns>
-        public bool RenderLocationIntersectsAABB(SiVector location, SiVector size)
+        public bool RenderLocationIntersectsAABB(AeVector location, AeVector size)
         {
             var alteredHitBox = new RectangleF(
                 location.X,
@@ -406,7 +406,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// Determines if two axis-aligned bounding boxes (AABB) intersect.
         /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
-        public bool IntersectsAabb(SiVector location)
+        public bool IntersectsAabb(AeVector location)
         {
             var alteredHitBox = new RectangleF(location.X, location.Y, 1f, 1f);
             return Bounds.IntersectsWith(alteredHitBox);
@@ -423,7 +423,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// as it provides the minimal bounding box that encompasses the object's entire path, including its
         /// size.</remarks>
         /// <returns>A tuple containing the minimum and maximum corners of the calculated AABB as vectors.</returns>
-        public (SiVector min, SiVector max) SweptAabbForMotion(float epoch)
+        public (AeVector min, AeVector max) SweptAabbForMotion(float epoch)
         {
             var startPos = Location;
             var endPos = Location + (MovementVector * epoch);
@@ -439,9 +439,9 @@ namespace Ae.Engine.Sprite._Superclass._Root
             float ex = MathF.Abs(c) * hw + MathF.Abs(s) * hh;
             float ey = MathF.Abs(s) * hw + MathF.Abs(c) * hh;
 
-            var half = new SiVector(ex, ey);
+            var half = new AeVector(ex, ey);
 
-            return SiAxisAlignedBoundingBox.SweptAabbForMotion(startPos, endPos, half);
+            return AeAxisAlignedBoundingBox.SweptAabbForMotion(startPos, endPos, half);
         }
 
         /// <summary>
@@ -450,11 +450,11 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <remarks>Use this method to determine the spatial boundaries of the object in 2D space, which
         /// is useful for collision detection, rendering, or spatial queries.</remarks>
-        /// <returns>A tuple containing two <see cref="SiVector"/> values: the minimum point at the current location, and the
+        /// <returns>A tuple containing two <see cref="AeVector"/> values: the minimum point at the current location, and the
         /// maximum point determined by adding the width and height to the location.</returns>
-        public (SiVector min, SiVector max) GetAabbMinMax()
+        public (AeVector min, AeVector max) GetAabbMinMax()
         {
-            var half = new SiVector(Size.Width * 0.5f, Size.Height * 0.5f);
+            var half = new AeVector(Size.Width * 0.5f, Size.Height * 0.5f);
             return (Location - half, Location + half);
         }
 
@@ -464,9 +464,9 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <remarks>Use this method to determine the spatial boundaries of the object in 2D space, which
         /// is useful for collision detection, rendering, or spatial queries.</remarks>
-        /// <returns>A tuple containing two <see cref="SiVector"/> values: the minimum point at the current location, and the
+        /// <returns>A tuple containing two <see cref="AeVector"/> values: the minimum point at the current location, and the
         /// maximum point determined by adding the width and height to the location.</returns>
-        public (SiVector min, SiVector max) GetAabbMinMaxRotated()
+        public (AeVector min, AeVector max) GetAabbMinMaxRotated()
         {
             // Center
             float cx = Location.X;
@@ -485,8 +485,8 @@ namespace Ae.Engine.Sprite._Superclass._Root
             float ex = MathF.Abs(c) * hw + MathF.Abs(s) * hh;
             float ey = MathF.Abs(s) * hw + MathF.Abs(c) * hh;
 
-            var min = new SiVector(cx - ex, cy - ey);
-            var max = new SiVector(cx + ex, cy + ey);
+            var min = new AeVector(cx - ex, cy - ey);
+            var max = new AeVector(cx + ex, cy + ey);
             return (min, max);
         }
     }

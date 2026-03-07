@@ -10,13 +10,13 @@ namespace Ae.AssetExplorer
     internal class TreeManager
     {
         public readonly DoubleBufferedTreeView _treeView;
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         public readonly Action<string, LoggingLevel?> _writeOutput;
-        public readonly Action<SiTreeNode> _loadSelectedTreeNode;
+        public readonly Action<AeTreeNode> _loadSelectedTreeNode;
 
-        public TreeManager(DoubleBufferedTreeView treeView, SiEngine engine,
+        public TreeManager(DoubleBufferedTreeView treeView, AeEngine engine,
             Action<string, LoggingLevel?> writeOutput,
-            Action<SiTreeNode> loadSelectedTreeNode)
+            Action<AeTreeNode> loadSelectedTreeNode)
         {
             _engine = engine;
             _treeView = treeView;
@@ -31,7 +31,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                if (e.Button == MouseButtons.Right && e.Node is SiTreeNode node)
+                if (e.Button == MouseButtons.Right && e.Node is AeTreeNode node)
                 {
                     _treeView.SelectedNode = node;
 
@@ -58,7 +58,7 @@ namespace Ae.AssetExplorer
             }
         }
 
-        private void CreateFolder(SiTreeNode node)
+        private void CreateFolder(AeTreeNode node)
         {
             using var form = new FormCreateFolder();
             if (form.ShowDialog() == DialogResult.OK)
@@ -71,23 +71,23 @@ namespace Ae.AssetExplorer
                 }
                 var newAssetKey = $"{node.AssetKey}/{newFolderName}".Trim('/');
 
-                var newNode = new SiTreeNode(newFolderName, newFolderName, newAssetKey, SiTreeNodeType.Folder);
+                var newNode = new AeTreeNode(newFolderName, newFolderName, newAssetKey, SiTreeNodeType.Folder);
                 node.Nodes.Add(newNode);
                 node.Expand();
                 _treeView.SelectedNode = newNode;
             }
         }
 
-        private void DeleteAsset(SiTreeNode node)
+        private void DeleteAsset(AeTreeNode node)
         {
             if (MessageBox.Show("Are you sure you want to delete this asset?",
-                SiConstants.FriendlyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                AeConstants.FriendlyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 _engine.Assets.DeleteAsset(node.AssetKey);
             }
         }
 
-        private void ExportAsset(SiTreeNode node, bool exportMetadata)
+        private void ExportAsset(AeTreeNode node, bool exportMetadata)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace Ae.AssetExplorer
                     File.WriteAllBytes(dialog.FileName, assetBytes);
                     if (exportMetadata)
                     {
-                        var metadataJson = JsonSerializer.Serialize(asset.Metadata, SiConstants.JsonSerializerOptions);
+                        var metadataJson = JsonSerializer.Serialize(asset.Metadata, AeConstants.JsonSerializerOptions);
                         File.WriteAllText($"{dialog.FileName}.meta", metadataJson);
                     }
                 }
@@ -122,7 +122,7 @@ namespace Ae.AssetExplorer
             }
         }
 
-        private void ReplaceAsset(SiTreeNode node)
+        private void ReplaceAsset(AeTreeNode node)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                var node = e.Node as SiTreeNode ?? throw new InvalidOperationException("Expected SiTreeNode type.");
+                var node = e.Node as AeTreeNode ?? throw new InvalidOperationException("Expected SiTreeNode type.");
                 if (node.NodeType == SiTreeNodeType.Asset)
                 {
                     _loadSelectedTreeNode(node);
@@ -207,7 +207,7 @@ namespace Ae.AssetExplorer
                     return;
                 }
 
-                foreach (SiTreeNode node in _treeView.Nodes)
+                foreach (AeTreeNode node in _treeView.Nodes)
                 {
                     node.Expand();
                 }
@@ -252,7 +252,7 @@ namespace Ae.AssetExplorer
                             displayName = Path.GetFileNameWithoutExtension(part);
                         }
 
-                        var newNode = new SiTreeNode(part, displayName, asset.Key, nodeType);
+                        var newNode = new AeTreeNode(part, displayName, asset.Key, nodeType);
                         workingLevel.Add(newNode);
                         workingLevel = newNode.Nodes;
                     }

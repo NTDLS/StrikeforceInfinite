@@ -74,7 +74,7 @@ namespace Ae.Engine.Manager
             "Sprite-Visible|uid:Required:Numeric,state:Required:Boolean|Displays whether a given sprite is visible or not.",
         };
 
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private readonly Stack<string> _commandStack = new();
         private readonly IInterrogationForm _interrogationForm;
 
@@ -82,7 +82,7 @@ namespace Ae.Engine.Manager
         private readonly List<MethodInfo> _concreteFunctions;
         public bool IsVisible { get; private set; } = false;
 
-        public DevelopmentManager(SiEngine engine, IInterrogationForm interrogationForm)
+        public DevelopmentManager(AeEngine engine, IInterrogationForm interrogationForm)
         {
             _engine = engine;
             _interrogationForm = interrogationForm;
@@ -184,7 +184,7 @@ namespace Ae.Engine.Manager
 
         public void CommandHandler_Display_Adapters(InterrogationCommand command)
         {
-            var text = SiRenderingUtility.GetGraphicsAdaptersDescriptions();
+            var text = AeRenderingUtility.GetGraphicsAdaptersDescriptions();
             _interrogationForm.Write(text, System.Drawing.Color.Black);
         }
 
@@ -335,7 +335,7 @@ namespace Ae.Engine.Manager
 
         public void CommandHandler_Sprite_ListTypes(InterrogationCommand command)
         {
-            var spriteTypes = SiReflection.GetSubClassesOf<SpriteBase>();
+            var spriteTypes = AeReflection.GetSubClassesOf<SpriteBase>();
 
             StringBuilder text = new();
 
@@ -360,7 +360,7 @@ namespace Ae.Engine.Manager
 
 
             var sprite = _engine.Sprites.Create(assetKey);
-            sprite.Location = new SiVector(x, y);
+            sprite.Location = new AeVector(x, y);
             sprite.IsVisible = true;
 
             _interrogationForm.WriteLine($"\tCreatedUID: {sprite.UID}", System.Drawing.Color.Black);
@@ -558,7 +558,7 @@ namespace Ae.Engine.Manager
 
                 if (baseSprite != null && targetSprite != null)
                 {
-                    var result = SiVectorSpriteExtensions.AngleToInUnsignedDegrees(baseSprite, targetSprite);
+                    var result = AeVectorSpriteExtensions.AngleToInUnsignedDegrees(baseSprite, targetSprite);
                     _interrogationForm.WriteLine($"\tAngleTo: {result:n4}", System.Drawing.Color.Black);
                 }
             });

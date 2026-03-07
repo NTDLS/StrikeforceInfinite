@@ -3,7 +3,7 @@ using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using System;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Munition
 {
@@ -14,13 +14,13 @@ namespace Ae.Engine.Sprite._Superclass.Munition
     internal class SpriteSeekingMunition
         : SpriteMunition
     {
-        public SpriteSeekingMunition(SiEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
-             SpriteInteractive? lockedTarget, SiVector location)
+        public SpriteSeekingMunition(AeEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
+             SpriteInteractive? lockedTarget, AeVector location)
             : base(engine, weapon, firedFrom, assetKey, location)
         {
         }
 
-        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
+        public override void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
             if (FiredFromType == SiFiredFromType.Enemy)
             {

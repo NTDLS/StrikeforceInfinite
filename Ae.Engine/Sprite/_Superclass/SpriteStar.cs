@@ -9,11 +9,11 @@ namespace Ae.Engine.Sprite._Superclass
     public class SpriteStar
         : SpriteBase
     {
-        public SpriteStar(SiEngine engine, string assetKey)
+        public SpriteStar(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
-            X = SiRandom.Between(0, engine.Display.TotalCanvasSize.Width);
-            Y = SiRandom.Between(0, engine.Display.TotalCanvasSize.Height);
+            X = AeRandom.Between(0, engine.Display.TotalCanvasSize.Width);
+            Y = AeRandom.Between(0, engine.Display.TotalCanvasSize.Height);
 
             Z = int.MinValue + 1000;
 
@@ -23,11 +23,11 @@ namespace Ae.Engine.Sprite._Superclass
             //}
             //else
             //{
-            Throttle = SiRandom.Between(4, 8) / 10.0f;
+            Throttle = AeRandom.Between(4, 8) / 10.0f;
             //}
         }
 
-        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             //We omit orientation for stars since they are point-like.
             Location -= cameraDisplacement * Speed * Throttle * epoch;

@@ -5,7 +5,7 @@ using Ae.Library;
 using Ae.Library.Mathematics;
 using System.Collections.Generic;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.AI.Logistics
 {
@@ -19,7 +19,7 @@ namespace Ae.Engine.AI.Logistics
     {
         private readonly string _boostResourceName = "AILogisticsHostileEngagement_Boost";
 
-        public AILogisticsHostileEngagement(SiEngine engine, SpriteShip owner, List<SpriteBase>? observedObjects)
+        public AILogisticsHostileEngagement(AeEngine engine, SpriteShip owner, List<SpriteBase>? observedObjects)
             : base(engine, owner, observedObjects)
         {
             owner.OnHit += Owner_OnHit;
@@ -36,8 +36,8 @@ namespace Ae.Engine.AI.Logistics
         {
             private readonly AILogisticsHostileEngagement _stateMachine;
             private SimpleDirection _rotateDirection;
-            private float _rotationAngle = SiRandom.Variance(5, 0.10f);
-            private readonly SiVector _targetLocation;
+            private float _rotationAngle = AeRandom.Variance(5, 0.10f);
+            private readonly AeVector _targetLocation;
             private readonly SpriteBase _observedObject;
 
             public GotoRadiusOfObservedObject(AILogisticsHostileEngagement stateMachine)
@@ -54,11 +54,11 @@ namespace Ae.Engine.AI.Logistics
             {
                 if (_stateMachine.TimeInStateSeconds >= 2.5)
                 {
-                    _rotationAngle = SiMath.Damp(_rotationAngle, 25, decayRatePerSecond: 4.5f, epoch);
+                    _rotationAngle = AeMath.Damp(_rotationAngle, 25, decayRatePerSecond: 4.5f, epoch);
                 }
 
                 //Throttle up during the turn.
-                _stateMachine.Owner.Throttle = SiMath.Damp(_stateMachine.Owner.Throttle, 1.5f, 0.2f, epoch);
+                _stateMachine.Owner.Throttle = AeMath.Damp(_stateMachine.Owner.Throttle, 1.5f, 0.2f, epoch);
 
                 if (_rotationAngle >= 4.9f)
                 {
@@ -86,7 +86,7 @@ namespace Ae.Engine.AI.Logistics
             public void Tick(float epoch)
             {
                 //Throttle down during the steady path.
-                _stateMachine.Owner.Throttle = SiMath.Damp(_stateMachine.Owner.Throttle, 0, 0.2f, epoch);
+                _stateMachine.Owner.Throttle = AeMath.Damp(_stateMachine.Owner.Throttle, 0, 0.2f, epoch);
 
                 _burndownEpochs -= epoch;
 

@@ -75,7 +75,7 @@ namespace Ae.AssetExplorer.Forms
         {
             if (comboBoxWorking.SelectedItem == null)
             {
-                MessageBox.Show("Please select a value.", SiConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select a value.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

@@ -1,12 +1,12 @@
-﻿using SharpDX.Mathematics.Interop;
-using Ae.Engine.Sprite._Superclass.Interactive;
+﻿using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Library;
 using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
+using SharpDX.Mathematics.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass._Root
 {
@@ -31,12 +31,12 @@ namespace Ae.Engine.Sprite._Superclass._Root
             }
         }
 
-        private SiVector _movementVector = SiVector.One();
+        private AeVector _movementVector = AeVector.One();
         /// <summary>
         /// Vector representing both speed and direction (Orientation * Speed * Throttle).
         /// Typically set by a call to RecalculateOrientationMovementVector()
         /// </summary>
-        public SiVector MovementVector
+        public AeVector MovementVector
         {
             get
             {
@@ -84,14 +84,14 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// </summary>
         public float RotationSpeed { get; set; } = 0;
 
-        private SiVector _orientation = SiVector.One();
+        private AeVector _orientation = AeVector.One();
         /// <summary>
         /// The angle in which the sprite is pointing, note that this is NOT the travel angle.
         /// The travel angle is baked into the MovementVector. If you need the movement vector
         /// to follow this direction angle then call RecalculateOrientationMovementVector() after modifying
         /// the PointingAngle.
         /// </summary>
-        public SiVector Orientation
+        public AeVector Orientation
         {
             get => _orientation;
             set
@@ -100,17 +100,17 @@ namespace Ae.Engine.Sprite._Superclass._Root
                     throw new Exception("Orientation is invalid");
 
                 _orientation = value.Clone();
-                _orientation.OnChangeEvent += (SiVector vector) => OrientationChanged();
+                _orientation.OnChangeEvent += (AeVector vector) => OrientationChanged();
                 OrientationChanged();
             }
         }
 
         public SharpDX.Direct2D1.Bitmap? GetImage() => SpriteBitmap;
         public string? SpriteTag { get; set; }
-        public uint UID { get; private set; } = SiSequenceGenerator.Next();
+        public uint UID { get; private set; } = AeSequenceGenerator.Next();
         public uint OwnerUID { get; set; }
         public List<SpriteAttachment> Attachments { get; private set; } = new();
-        public SiVector RadarDotSize { get; set; } = new SiVector(4, 4);
+        public AeVector RadarDotSize { get; set; } = new AeVector(4, 4);
         public bool IsWithinCurrentScaledScreenBounds => Engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds);
         public bool IsHighlighted { get; set; } = false;
         public bool HighlightSweptMotionRect { get; set; } = false;
@@ -180,7 +180,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// The x,y, location of the center of the sprite in the universe.
         /// Do not modify the X,Y of the returned location, it will have no effect.
         /// </summary>
-        public SiVector Location
+        public AeVector Location
         {
             get => _location; //Changes made to the location object do not affect the sprite.
             set
@@ -196,7 +196,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// <summary>
         /// The top left corner of the sprite in the universe.
         /// </summary>
-        public SiVector LocationTopLeft
+        public AeVector LocationTopLeft
         {
             get => _location - Size / 2.0f; //Changes made to the location object do not affect the sprite.
             set
@@ -210,7 +210,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// The x,y, location of the center of the sprite on the screen.
         /// Do not modify the X,Y of the returned location, it will have no effect.
         /// </summary>
-        public SiVector RenderLocation
+        public AeVector RenderLocation
         {
             get
             {

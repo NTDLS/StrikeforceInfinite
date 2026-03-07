@@ -8,19 +8,19 @@ namespace Ae.Engine.Manager
     /// </summary>
     public class AudioManager
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
 
-        public SiAudioClip? BackgroundMusicSound { get; private set; }
-        public SiAudioClip? RadarBlipsSound { get; private set; }
-        public SiAudioClip? DoorIsAjarSound { get; private set; }
-        public SiAudioClip? LockedOnBlip { get; private set; }
-        public SiAudioClip? Click { get; private set; }
+        public AeAudioClip? BackgroundMusicSound { get; private set; }
+        public AeAudioClip? RadarBlipsSound { get; private set; }
+        public AeAudioClip? DoorIsAjarSound { get; private set; }
+        public AeAudioClip? LockedOnBlip { get; private set; }
+        public AeAudioClip? Click { get; private set; }
 
-        public AudioManager(SiEngine engine)
+        public AudioManager(AeEngine engine)
         {
             _engine = engine;
 
-            engine.OnInitializationComplete += (SiEngine engine) =>
+            engine.OnInitializationComplete += (AeEngine engine) =>
             {
                 Click = _engine.Assets.GetAudio("Sounds/Other/Click");
                 DoorIsAjarSound = _engine.Assets.GetAudio("Sounds/Ship/Door Is Ajar");
@@ -43,7 +43,7 @@ namespace Ae.Engine.Manager
         public void PlayRandomExplosion()
         {
             var assetKeys = _engine.Assets.GetAssetKeysInPath("Sounds/Explode");
-            _engine.Assets.GetAudio(SiRandom.OneOf(assetKeys)).Play();
+            _engine.Assets.GetAudio(AeRandom.OneOf(assetKeys)).Play();
         }
     }
 }

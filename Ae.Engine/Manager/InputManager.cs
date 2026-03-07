@@ -1,14 +1,14 @@
-﻿using SharpDX.DirectInput;
-using SharpDX.XInput;
-using Ae.Engine.Sprite._Superclass.Interactive.Ship;
+﻿using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Library;
 using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
+using SharpDX.DirectInput;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Manager
 {
@@ -17,7 +17,7 @@ namespace Ae.Engine.Manager
     /// </summary>
     public class InputManager
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private readonly Dictionary<SiPlayerKey, float> _playerKeyStates = new();
         private bool _collectDetailedKeyInformation = false;
         private readonly Dictionary<Key, bool> _allKeyStates = new();
@@ -47,7 +47,7 @@ namespace Ae.Engine.Manager
         //Controller controller;
         //Gamepad gamepad;
 
-        public InputManager(SiEngine engine)
+        public InputManager(AeEngine engine)
         {
             _engine = engine;
 
@@ -378,28 +378,28 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void AddAsteroidField(SiVector offset, int rowCount, int colCount)
+        public void AddAsteroidField(AeVector offset, int rowCount, int colCount)
         {
             for (int row = 0; row < rowCount; row++)
             {
                 for (int col = 0; col < colCount; col++)
                 {
-                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{SiRandom.Between(0, 23)}");
+                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{AeRandom.Between(0, 23)}");
 
                     var asteroidSize = asteroid.Size.Width + asteroid.Size.Height;
 
                     float totalXOffset = (offset.X + asteroidSize * colCount);
                     float totalYOffset = (offset.Y + (asteroidSize * rowCount));
 
-                    asteroid.Location = new SiVector(totalXOffset - asteroidSize * col, totalYOffset - asteroidSize * row);
+                    asteroid.Location = new AeVector(totalXOffset - asteroidSize * col, totalYOffset - asteroidSize * row);
 
-                    asteroid.Orientation = SiRandom.RandomOrientationVector();
-                    asteroid.Speed = SiRandom.Variance(asteroid.Speed, 0.20f);
-                    asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
+                    asteroid.Orientation = AeRandom.RandomOrientationVector();
+                    asteroid.Speed = AeRandom.Variance(asteroid.Speed, 0.20f);
+                    asteroid.RotationSpeed = AeRandom.RandomSign(AeRandom.Between(1f, 360f).ToRadians());
                     asteroid.Throttle = 1;
                     asteroid.VectorType = ParticleVectorType.Default;
 
-                    asteroid.RecalculateMovementVectorFromAngle(SiRandom.Variance(-45, 0.10f).ToRadians());
+                    asteroid.RecalculateMovementVectorFromAngle(AeRandom.Variance(-45, 0.10f).ToRadians());
 
                     //asteroid.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-1.5f, -0.4f) : SiRandom.Between(0.4f, 1.5f);
                     //asteroid.RotationSpeed = 0;
@@ -442,7 +442,7 @@ namespace Ae.Engine.Manager
                 _engine.Invoke(() =>
                 {
                     _engine.Sprites.QueueAllForDeletionByTag("DEBUG_ASTEROID");
-                    AddAsteroidField(new SiVector(), 4, 4);
+                    AddAsteroidField(new AeVector(), 4, 4);
                     //_engine.Rendering.AddScreenShake(4, 100);
                 });
             }
@@ -452,13 +452,13 @@ namespace Ae.Engine.Manager
                 {
                     _engine.Sprites.QueueAllForDeletionByTag("DEBUG_ASTEROID");
 
-                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{SiRandom.Between(0, 0)}");
+                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{AeRandom.Between(0, 0)}");
 
                     asteroid.SpriteTag = "DEBUG_ASTEROID";
-                    asteroid.Location = _engine.Player.Sprite.Location + new SiVector(100, 100);
+                    asteroid.Location = _engine.Player.Sprite.Location + new AeVector(100, 100);
                     asteroid.Speed = 1.0f;
-                    asteroid.RotationSpeed = SiRandom.RandomSign(SiRandom.Between(1f, 360f).ToRadians());
-                    asteroid.Orientation = SiVector.FromUnsignedDegrees(-45);
+                    asteroid.RotationSpeed = AeRandom.RandomSign(AeRandom.Between(1f, 360f).ToRadians());
+                    asteroid.Orientation = AeVector.FromUnsignedDegrees(-45);
 
                     asteroid.SetHullHealth(100);
                 });

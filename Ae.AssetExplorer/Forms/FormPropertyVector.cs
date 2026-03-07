@@ -5,7 +5,7 @@ namespace Ae.AssetExplorer.Forms
     public partial class FormPropertyVector
         : Form
     {
-        public SiVector Value => new((float)numericUpDownWorkingX.Value, (float)numericUpDownWorkingY.Value);
+        public AeVector Value => new((float)numericUpDownWorkingX.Value, (float)numericUpDownWorkingY.Value);
 
         public FormPropertyVector()
         {
@@ -22,11 +22,11 @@ namespace Ae.AssetExplorer.Forms
 
             numericUpDownWorkingX.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
             numericUpDownWorkingX.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
-            numericUpDownWorkingX.Value = (decimal?)(propertyItem.WorkingValue as SiVector)?.X ?? 0;
+            numericUpDownWorkingX.Value = (decimal?)(propertyItem.WorkingValue as AeVector)?.X ?? 0;
 
             numericUpDownWorkingY.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? decimal.MinValue;
             numericUpDownWorkingY.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? decimal.MaxValue;
-            numericUpDownWorkingY.Value = (decimal?)(propertyItem.WorkingValue as SiVector)?.Y ?? 0;
+            numericUpDownWorkingY.Value = (decimal?)(propertyItem.WorkingValue as AeVector)?.Y ?? 0;
 
             AcceptButton = buttonSave;
             CancelButton = buttonCancel;

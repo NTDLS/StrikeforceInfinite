@@ -1,15 +1,15 @@
-﻿using NTDLS.DatagramMessaging;
-using Ae.MpCommsMessages.DatagramMessages.SpriteActions;
+﻿using Ae.MpCommsMessages.DatagramMessages.SpriteActions;
+using NTDLS.DatagramMessaging;
 using System.Net;
 
 namespace Ae.MpClientToServerComms
 {
     public class SpriteActionBuffer
     {
-        private readonly List<SiSpriteAction> _spriteActionBuffer = new();
+        private readonly List<AeSpriteAction> _spriteActionBuffer = new();
         public bool ShouldRecordEvents { get; set; } = true;
 
-        private void AppendBuffer(SiSpriteAction? action)
+        private void AppendBuffer(AeSpriteAction? action)
         {
             if (ShouldRecordEvents && action != null)
             {
@@ -20,20 +20,20 @@ namespace Ae.MpClientToServerComms
         /// <summary>
         /// Buffers sprite vector information so that all of the updates can be sent at one time at the end of the game loop.
         /// </summary>
-        public void RecordMotion(SiSpriteActionMotion? action)
+        public void RecordMotion(AeSpriteActionMotion? action)
             => AppendBuffer(action);
 
         public void RecordHit(uint spriteUID, uint munitionUID)
-            => AppendBuffer(new SiSpriteActionHit(spriteUID, munitionUID));
+            => AppendBuffer(new AeSpriteActionHit(spriteUID, munitionUID));
 
-        public void RecordSpawn(SiSpriteActionSpawn? action)
+        public void RecordSpawn(AeSpriteActionSpawn? action)
             => AppendBuffer(action);
 
         public void RecordExplode(uint spriteUID)
-            => AppendBuffer(new SiSpriteActionExplode(spriteUID));
+            => AppendBuffer(new AeSpriteActionExplode(spriteUID));
 
         public void RecordDelete(uint spriteUID)
-            => AppendBuffer(new SiSpriteActionDelete(spriteUID));
+            => AppendBuffer(new AeSpriteActionDelete(spriteUID));
 
         public void FlushSpriteVectorsToClients(DmMessenger dmMessenger, IEnumerable<IPEndPoint?>? iPEndPoints)
         {
@@ -47,7 +47,7 @@ namespace Ae.MpClientToServerComms
                 //System.Diagnostics.Debug.WriteLine($"MultiplayUID: {_spriteVectors.Select(o=>o.MultiplayUID).Distinct().Count()}");
                 //UdpManager.WriteMessage(SiConstants.MultiplayServerAddress, SiConstants.MultiplayServerTCPPort, spriteActions);
 
-                var actionCollection = new SiSpriteActionCollection(_spriteActionBuffer.ToArray());
+                var actionCollection = new AeSpriteActionCollection(_spriteActionBuffer.ToArray());
 
                 //Task.Run(() => ??
                 //Parallel.ForEach(sessions, session => ??

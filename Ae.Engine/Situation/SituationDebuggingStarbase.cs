@@ -10,7 +10,7 @@ namespace Ae.Engine.Situation
     internal class SituationDebuggingStarbase
         : SituationBase
     {
-        public SituationDebuggingStarbase(SiEngine engine)
+        public SituationDebuggingStarbase(AeEngine engine)
             : base(engine,
                   "Debugging Starbase",
                   "The situation is dire and the explosions here typically\r\n"

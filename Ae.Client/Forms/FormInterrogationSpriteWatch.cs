@@ -11,11 +11,11 @@ namespace Ae.Client.Forms
 {
     public partial class FormInterrogationSpriteWatch : Form
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private readonly ISprite _sprite;
         private readonly Timer _timer = new();
 
-        internal FormInterrogationSpriteWatch(SiEngine engine, ISprite sprite)
+        internal FormInterrogationSpriteWatch(AeEngine engine, ISprite sprite)
         {
             InitializeComponent();
             _engine = engine;

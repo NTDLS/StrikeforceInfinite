@@ -1,13 +1,13 @@
-﻿using NTDLS.Helpers;
+﻿using Ae.Library;
+using Ae.Library.Mathematics;
+using Ae.Library.Metadata;
+using NTDLS.Helpers;
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
-using Ae.Library;
-using Ae.Library.Mathematics;
-using Ae.Library.Metadata;
 using System;
 using System.Drawing;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Animation
 {
@@ -27,12 +27,12 @@ namespace Ae.Engine.Sprite._Superclass.Animation
         public SiAnimationPlayMode PlayMode { get; set; }
         public float FramesPerSecond { get; private set; } = 1;
 
-        public SpriteAnimation(SiEngine engine, string assetKey)
+        public SpriteAnimation(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
-            Location = SiVector.Zero();
+            Location = AeVector.Zero();
 
-            FramesPerSecond = SiRandom.Between(Metadata.FramesPerSecond, 0);
+            FramesPerSecond = AeRandom.Between(Metadata.FramesPerSecond, 0);
             SetSize(new Size(Metadata.FrameWidth.EnsureNotNull(), Metadata.FrameHeight.EnsureNotNull()));
 
             PlayMode = Metadata.PlayMode.EnsureNotNull();

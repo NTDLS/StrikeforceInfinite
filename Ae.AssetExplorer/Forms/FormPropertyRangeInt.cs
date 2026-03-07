@@ -5,7 +5,7 @@ namespace Ae.AssetExplorer.Forms
     public partial class FormPropertyRangeInt
         : Form
     {
-        public SiRange<int> Value => new((int)numericUpDownWorkingMin.Value, (int)numericUpDownWorkingMax.Value);
+        public AeRange<int> Value => new((int)numericUpDownWorkingMin.Value, (int)numericUpDownWorkingMax.Value);
 
         public FormPropertyRangeInt()
         {
@@ -22,11 +22,11 @@ namespace Ae.AssetExplorer.Forms
 
             numericUpDownWorkingMin.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? int.MinValue;
             numericUpDownWorkingMin.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
-            numericUpDownWorkingMin.Value = (decimal?)(propertyItem.WorkingValue as SiRange<int>)?.Min ?? 0;
+            numericUpDownWorkingMin.Value = (decimal?)(propertyItem.WorkingValue as AeRange<int>)?.Min ?? 0;
 
             numericUpDownWorkingMax.Minimum = (decimal?)propertyItem.Attributes?.MinValue ?? int.MinValue;
             numericUpDownWorkingMax.Maximum = (decimal?)propertyItem.Attributes?.MaxValue ?? int.MaxValue;
-            numericUpDownWorkingMax.Value = (decimal?)(propertyItem.WorkingValue as SiRange<int>)?.Max ?? 0;
+            numericUpDownWorkingMax.Value = (decimal?)(propertyItem.WorkingValue as AeRange<int>)?.Max ?? 0;
 
             AcceptButton = buttonSave;
             CancelButton = buttonCancel;

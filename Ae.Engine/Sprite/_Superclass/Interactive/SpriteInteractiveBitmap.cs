@@ -3,7 +3,7 @@ using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using Ae.Rendering;
 using System;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Interactive
 {
@@ -31,17 +31,17 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteInteractiveBitmap(SiEngine engine, string assetKey)
+        public SpriteInteractiveBitmap(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
         }
 
-        public SpriteInteractiveBitmap(SiEngine engine, SharpDX.Direct2D1.Bitmap bitmap)
+        public SpriteInteractiveBitmap(AeEngine engine, SharpDX.Direct2D1.Bitmap bitmap)
             : base(engine, bitmap)
         {
         }
 
-        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             Orientation.Radians += RotationSpeed * epoch;
 

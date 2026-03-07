@@ -1,5 +1,5 @@
 ﻿using Ae.Library.Mathematics;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Library.Metadata
 {
@@ -24,7 +24,7 @@ namespace Ae.Library.Metadata
         public string? Description { get; set; }
 
         [AssetMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.", PropertyEditorGroup.Attachment, PropertyEditorType.Vector)]
-        public SiVector? AttachmentPosition { get; set; }
+        public AeVector? AttachmentPosition { get; set; }
 
         #region InteractiveSpriteMetadata
 
@@ -38,16 +38,16 @@ namespace Ae.Library.Metadata
         public ExplosionType? ExplosionType { get; set; }
 
         [AssetMetadata("Particle Blast On Explode Amount", "Specifies the amount of particles generated when the sprite explodes.", PropertyEditorGroup.Destroy, PropertyEditorType.RangeInt)]
-        public SiRange<int>? ParticleBlastOnExplodeAmount { get; set; }
+        public AeRange<int>? ParticleBlastOnExplodeAmount { get; set; }
 
         [AssetMetadata("Fragment On Explode", "Indicates whether the sprite should fragment upon explosion.", PropertyEditorGroup.Destroy, PropertyEditorType.Boolean)]
         public bool? FragmentOnExplode { get; set; }
 
         [AssetMetadata("Screen Shake On Explode Amount", "Specifies the intensity of screen shake when the sprite explodes.", PropertyEditorGroup.Destroy, PropertyEditorType.RangeInt)]
-        public SiRange<int>? ScreenShakeOnExplodeAmount { get; set; }
+        public AeRange<int>? ScreenShakeOnExplodeAmount { get; set; }
 
         [AssetMetadata("Speed", "The speed of the sprite.", PropertyEditorGroup.Momentum, PropertyEditorType.RangeFloat)]
-        public SiRange<float>? Speed { get; set; }
+        public AeRange<float>? Speed { get; set; }
 
         [AssetMetadata("Max Throttle", "The maximum throttle of the sprite.", PropertyEditorGroup.Momentum, PropertyEditorType.Float)]
         public float? MaxThrottle { get; set; }
@@ -63,7 +63,7 @@ namespace Ae.Library.Metadata
         /// Mass == 0 is infinite mass, it cannot be moved by ineterial forces.
         /// </summary>
         [AssetMetadata("Mass", "The mass of the sprite, which affects its resistance to acceleration and deceleration in physics calculations when munition detection is enabled. A higher mass makes the sprite more resistant to external forces, while a lower mass makes it more agile but also more susceptible to being moved by such forces. A mass of 0 is considered infinite mass, meaning the sprite cannot be moved by inertial forces.", PropertyEditorGroup.Momentum, PropertyEditorType.RangeFloat)]
-        public SiRange<float>? Mass { get; set; }
+        public AeRange<float>? Mass { get; set; }
 
         /// <summary>
         /// How many hit points does the sprite have? When this reaches 0, the sprite is destroyed.
@@ -137,7 +137,7 @@ namespace Ae.Library.Metadata
         public int? FrameHeight { get; set; }
 
         [AssetMetadata("Frames Per Second", "The number of frames displayed per second in the sprite animation.", PropertyEditorGroup.Animation, PropertyEditorType.RangeFloat)]
-        public SiRange<float>? FramesPerSecond { get; set; }
+        public AeRange<float>? FramesPerSecond { get; set; }
 
         [AssetMetadata("Play Mode", "The play mode of the sprite animation.", PropertyEditorGroup.Animation, PropertyEditorType.Enum, enumType: typeof(SiAnimationPlayMode))]
         public SiAnimationPlayMode? PlayMode { get; set; }
@@ -166,7 +166,7 @@ namespace Ae.Library.Metadata
         public int? FireDelayMilliseconds { get; set; }
 
         [AssetMetadata("Damage", "The amount of damage dealt by the munition.", PropertyEditorGroup.Munitions, PropertyEditorType.RangeInt)]
-        public SiRange<int>? Damage { get; set; }
+        public AeRange<int>? Damage { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum angle, in degrees, within which a target can be locked on.

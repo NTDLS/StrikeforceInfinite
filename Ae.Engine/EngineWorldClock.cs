@@ -1,14 +1,14 @@
-﻿using NTDLS.DelegateThreadPooling;
-using Ae.Engine.Manager;
+﻿using Ae.Engine.Manager;
 using Ae.Engine.TickController._Superclass;
 using Ae.Library;
 using Ae.Library.Mathematics;
 using Ae.Rendering;
+using NTDLS.DelegateThreadPooling;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine
 {
@@ -18,7 +18,7 @@ namespace Ae.Engine
     internal class EngineWorldClock
         : IDisposable
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private bool _shutdown = false;
         private bool _isPaused = false;
         private readonly Thread _worldClockThread;
@@ -41,7 +41,7 @@ namespace Ae.Engine
         private readonly List<TickControllerMethod> _vectoredTickControllers = new();
         private readonly List<TickControllerMethod> _unvectoredTickControllers = new();
 
-        public EngineWorldClock(SiEngine engine)
+        public EngineWorldClock(AeEngine engine)
         {
             _engine = engine;
             _worldClockThreadPool = new(new DelegateThreadPoolConfiguration()
@@ -73,8 +73,8 @@ namespace Ae.Engine
 
             foreach (var property in properties)
             {
-                if (SiReflection.IsAssignableToGenericType(property.PropertyType, typeof(VectoredTickControllerBase<>))
-                    || SiReflection.IsAssignableToGenericType(property.PropertyType, typeof(VectoredCollidableTickControllerBase<>)))
+                if (AeReflection.IsAssignableToGenericType(property.PropertyType, typeof(VectoredTickControllerBase<>))
+                    || AeReflection.IsAssignableToGenericType(property.PropertyType, typeof(VectoredCollidableTickControllerBase<>)))
                 {
                     var method = property.PropertyType.GetMethod("ExecuteWorldClockTick")
                         ?? throw new Exception("VectoredTickController must contain ExecuteWorldClockTick");
@@ -85,7 +85,7 @@ namespace Ae.Engine
                     _vectoredTickControllers.Add(new TickControllerMethod(instance, method));
 
                 }
-                else if (SiReflection.IsAssignableToGenericType(property.PropertyType, typeof(UnvectoredTickControllerBase<>)))
+                else if (AeReflection.IsAssignableToGenericType(property.PropertyType, typeof(UnvectoredTickControllerBase<>)))
                 {
                     var method = property.PropertyType.GetMethod("ExecuteWorldClockTick")
                         ?? throw new Exception("VectoredTickController must contain ExecuteWorldClockTick");
@@ -107,7 +107,7 @@ namespace Ae.Engine
             _shutdown = false;
             _worldClockThread.Start();
 
-            _engine.Events.Add(10, UpdateStatusText, SiDefermentEvent.SiDefermentEventMode.Recurring);
+            _engine.Events.Add(10, UpdateStatusText, AeDefermentEvent.SiDefermentEventMode.Recurring);
         }
 
         public void Dispose()
@@ -142,7 +142,7 @@ namespace Ae.Engine
         private void WorldClockThreadProc()
         {
             var framePerSecondLimit = _engine.Settings.VerticalSync ?
-                SiRenderingUtility.GetScreenRefreshRate(_engine.Display.Screen, _engine.Settings.GraphicsAdapterId)
+                AeRenderingUtility.GetScreenRefreshRate(_engine.Display.Screen, _engine.Settings.GraphicsAdapterId)
                 : _engine.Settings.TargetFrameRate;
 
             float targetTimePerFrameMicroseconds = 1000000.0f / framePerSecondLimit;
@@ -190,7 +190,7 @@ namespace Ae.Engine
             }
         }
 
-        private SiVector ExecuteWorldClockTick(float epoch)
+        private AeVector ExecuteWorldClockTick(float epoch)
         {
             _engine.Settings.MultithreadedWorldClock = false;
 
@@ -222,7 +222,7 @@ namespace Ae.Engine
                 }
 
                 //Wait on all enqueued threads to complete.
-                if (!SiUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
+                if (!AeUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
                 {
                     return cameraDisplacement; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
                 }
@@ -245,7 +245,7 @@ namespace Ae.Engine
                 }
 
                 //Wait on all enqueued threads to complete.
-                if (!SiUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
+                if (!AeUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
                 {
                     return cameraDisplacement; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
                 }
@@ -263,7 +263,7 @@ namespace Ae.Engine
             return cameraDisplacement;
         }
 
-        private void UpdateStatusText(SiDefermentEvent sender, object? refObj)
+        private void UpdateStatusText(AeDefermentEvent sender, object? refObj)
         {
             if (_engine.Situations?.CurrentSituation?.State == SiSituationState.Started)
             {

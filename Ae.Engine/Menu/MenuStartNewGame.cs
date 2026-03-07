@@ -11,7 +11,7 @@ namespace Ae.Engine.Menu
     internal class MenuStartNewGame
         : MenuBase
     {
-        public MenuStartNewGame(SiEngine engine)
+        public MenuStartNewGame(AeEngine engine)
             : base(engine)
         {
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
@@ -19,46 +19,46 @@ namespace Ae.Engine.Menu
             float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
-            var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Axis Engine");
+            var itemTitle = AddTitleItem(new AeVector(offsetX, offsetY), "Axis Engine");
             itemTitle.X -= itemTitle.Size.Width / 2;
             offsetY += itemTitle.Size.Height + 60;
 
-            var menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "SINGLE_PLAYER", " Single Player ");
+            var menuItem = AddSelectableItem(new AeVector(offsetX, offsetY), "SINGLE_PLAYER", " Single Player ");
             menuItem.Selected = true;
             menuItem.X -= menuItem.Size.Width / 2;
             offsetY += menuItem.Size.Height + 5;
 
-            menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "JOIN_MULTIPLAYER", " Join Multiplayer ");
+            menuItem = AddSelectableItem(new AeVector(offsetX, offsetY), "JOIN_MULTIPLAYER", " Join Multiplayer ");
             menuItem.X -= menuItem.Size.Width / 2;
             offsetY += menuItem.Size.Height + 5;
 
-            menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "HOST_MULTIPLAYER", " Host Multiplayer ");
+            menuItem = AddSelectableItem(new AeVector(offsetX, offsetY), "HOST_MULTIPLAYER", " Host Multiplayer ");
             menuItem.X -= menuItem.Size.Width / 2;
             offsetY += menuItem.Size.Height + 5;
 
             offsetY += 50;
 
-            var helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Forward, Reverse and Rotate with <W>, <A>, <S>, and <D>.");
+            var helpItem = AddTextBlock(new AeVector(offsetX, offsetY), "Forward, Reverse and Rotate with <W>, <A>, <S>, and <D>.");
             helpItem.X -= helpItem.Size.Width / 2;
             offsetY += helpItem.Size.Height + 5;
 
-            helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Strafe with <LEFT> and <RIGHT> arrows.");
+            helpItem = AddTextBlock(new AeVector(offsetX, offsetY), "Strafe with <LEFT> and <RIGHT> arrows.");
             helpItem.X -= helpItem.Size.Width / 2;
             offsetY += helpItem.Size.Height + 5;
 
-            helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Surge Drive with <SHIFT>.");
+            helpItem = AddTextBlock(new AeVector(offsetX, offsetY), "Surge Drive with <SHIFT>.");
             helpItem.X -= helpItem.Size.Width / 2;
             offsetY += helpItem.Size.Height + 5;
 
-            helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Fire primary with <SPACE>.");
+            helpItem = AddTextBlock(new AeVector(offsetX, offsetY), "Fire primary with <SPACE>.");
             helpItem.X -= helpItem.Size.Width / 2;
             offsetY += helpItem.Size.Height + 10;
 
-            helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Fire secondary with <CTRL>.");
+            helpItem = AddTextBlock(new AeVector(offsetX, offsetY), "Fire secondary with <CTRL>.");
             helpItem.X -= helpItem.Size.Width / 2;
             offsetY += helpItem.Size.Height + 10;
 
-            helpItem = AddTextBlock(new SiVector(offsetX, offsetY), "Change weapons with <Q> and <E>.");
+            helpItem = AddTextBlock(new AeVector(offsetX, offsetY), "Change weapons with <Q> and <E>.");
             helpItem.X -= helpItem.Size.Width / 2;
             offsetY += helpItem.Size.Height + 10;
 

@@ -4,7 +4,7 @@ using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using Ae.Rendering;
 using System;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass
 {
@@ -32,18 +32,18 @@ namespace Ae.Engine.Sprite._Superclass
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteMinimalBitmap(SiEngine engine, string assetKey)
+        public SpriteMinimalBitmap(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
         }
 
-        public SpriteMinimalBitmap(SiEngine engine, SharpDX.Direct2D1.Bitmap bitmap)
+        public SpriteMinimalBitmap(AeEngine engine, SharpDX.Direct2D1.Bitmap bitmap)
             : base(engine, null)
         {
             SetBitmap(bitmap);
         }
 
-        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             Orientation.Degrees += RotationSpeed * epoch;
 

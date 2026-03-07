@@ -1,7 +1,7 @@
-﻿using NTDLS.Helpers;
-using Ae.Engine;
+﻿using Ae.Engine;
 using Ae.Engine.Interrogation._Superclass;
 using Ae.Library.Sprite;
+using NTDLS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +14,7 @@ namespace Ae.Client.Forms
 {
     public partial class FormInterrogation : Form, IInterrogationForm
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private readonly List<string> _commandHistory = new();
         private int _commandHistoryIndex = 0;
         private DateTime _lastTabKeyTimestamp = DateTime.UtcNow;
@@ -69,7 +69,7 @@ namespace Ae.Client.Forms
             textBoxCommand.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        internal FormInterrogation(SiEngine engine)
+        internal FormInterrogation(AeEngine engine)
         {
             InitializeComponent();
 
@@ -229,7 +229,7 @@ namespace Ae.Client.Forms
             richTextBoxOutput.ResumeLayout();
         }
 
-        public void StartWatch(SiEngine engine, ISprite sprite)
+        public void StartWatch(AeEngine engine, ISprite sprite)
         {
             Task.Run(() =>
             {

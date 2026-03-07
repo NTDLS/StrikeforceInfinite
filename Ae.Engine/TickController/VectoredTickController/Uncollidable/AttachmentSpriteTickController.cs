@@ -10,14 +10,14 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
     public class AttachmentSpriteTickController
         : VectoredTickControllerBase<SpriteAttachment>
     {
-        public AttachmentSpriteTickController(SiEngine engine, SpriteManager manager)
+        public AttachmentSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
+        public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
-            if (Engine.ExecutionMode == SiConstants.SiEngineExecutionMode.Edit)
+            if (Engine.ExecutionMode == AeConstants.SiEngineExecutionMode.Edit)
             {
                 return;
             }
@@ -31,7 +31,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public SpriteAttachment AddAttachment(string assetKey, SpriteInteractive owner, SiVector locationRelativeToOwner)
+        public SpriteAttachment AddAttachment(string assetKey, SpriteInteractive owner, AeVector locationRelativeToOwner)
         {
             var sprite = Engine.Sprites.Add<SpriteAttachment>(assetKey, (o) =>
             {

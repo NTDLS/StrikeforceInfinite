@@ -5,7 +5,7 @@ using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using System;
 using System.Diagnostics;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.TickController.PlayerSpriteTickController
 {
@@ -15,18 +15,18 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
     public class PlayerSpriteTickController
         : PlayerSpriteTickControllerBase<SpritePlayer>
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private readonly Stopwatch _inputDelay = new();
 
         public PlayerStats Stats { get; set; } = new(); //This should be saved.
         public SpritePlayer Sprite { get; set; }
 
-        public PlayerSpriteTickController(SiEngine engine)
+        public PlayerSpriteTickController(AeEngine engine)
             : base(engine)
         {
             Sprite = new SpritePlayer(engine); //We want to make sure this is never null.
 
-            engine.OnInitializationComplete += (SiEngine engine) =>
+            engine.OnInitializationComplete += (AeEngine engine) =>
             {
                 //This is where the player is created.
                 if (engine.ExecutionMode == SiEngineExecutionMode.Play)
@@ -70,13 +70,13 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
         /// Moves the player taking into account any inputs and returns a X,Y describing the amount and direction of movement.
         /// </summary>
         /// <returns></returns>
-        public override SiVector ExecuteWorldClockTick(float epoch)
+        public override AeVector ExecuteWorldClockTick(float epoch)
         {
             if (_engine.ExecutionMode == SiEngineExecutionMode.Edit)
             {
                 //We dont want the player to move at all in edit mode, so just return a zero vector.
                 //Otherwise this can also cause micro-changes to the camera position.
-                return SiVector.Zero();
+                return AeVector.Zero();
             }
 
             Sprite.IsLockedOnSoft = false;

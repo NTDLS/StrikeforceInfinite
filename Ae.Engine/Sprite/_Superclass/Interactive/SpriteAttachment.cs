@@ -1,7 +1,7 @@
 ﻿using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using System;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Interactive
 {
@@ -10,7 +10,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         : SpriteInteractive
     {
         private SpriteInteractive? _rootOwner = null;
-        public SiVector? LocationRelativeToOwner { get; set; }
+        public AeVector? LocationRelativeToOwner { get; set; }
         public string? AssetKey { get; private set; }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         /// </summary>
         public AttachmentPositionType AttachmentPositionType { get; set; }
 
-        public SpriteAttachment(SiEngine engine, string? assetKey)
+        public SpriteAttachment(AeEngine engine, string? assetKey)
             : base(engine, assetKey)
         {
             AssetKey = assetKey;
@@ -33,7 +33,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         /// We expose the CalculatedLocation because the actual Location is not updated when the sprite is dead.
         /// This allows us to still get the correct location of the attachment even when dead.
         /// </summary>
-        public SiVector CalculatedLocation
+        public AeVector CalculatedLocation
         {
             get
             {
@@ -55,7 +55,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         /// We expose the CalculatedOrientation because the actual Orientation is not updated when the sprite is dead.
         /// This allows us to still get the correct Orientation of the attachment even when dead.
         /// </summary>
-        public SiVector CalculatedOrientation
+        public AeVector CalculatedOrientation
         {
             get
             {
@@ -68,7 +68,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
             }
         }
 
-        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             if (AttachmentPositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
             {

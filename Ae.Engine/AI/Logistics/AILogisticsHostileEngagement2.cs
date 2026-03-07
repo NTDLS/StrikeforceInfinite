@@ -4,7 +4,7 @@ using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Library;
 using Ae.Library.Mathematics;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.AI.Logistics
 {
@@ -51,7 +51,7 @@ namespace Ae.Engine.AI.Logistics
         }
 
         public AILogisticsHostileEngagement2(
-            SiEngine engine,
+            AeEngine engine,
             SpriteShip owner,
             SpriteBase observedObject,
             ModelParameters parameters)
@@ -70,9 +70,9 @@ namespace Ae.Engine.AI.Logistics
             : AIStateHandler
         {
             private readonly float _rotationDegreesPerSec =
-                SiRandom.Between(stateMachine.Parameters.MinRotateDegPerSec, stateMachine.Parameters.MaxRotateDegPerSec);
+                AeRandom.Between(stateMachine.Parameters.MinRotateDegPerSec, stateMachine.Parameters.MaxRotateDegPerSec);
 
-            private SimpleDirection _rotateDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+            private SimpleDirection _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
 
             public void Tick(float epoch)
             {
@@ -93,7 +93,7 @@ namespace Ae.Engine.AI.Logistics
                 }
 
                 // Rotate (current pattern matches your existing style).
-                stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 0.8f, 1.0f, epoch);
+                stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 0.8f, 1.0f, epoch);
 
                 if (_rotateDirection == SimpleDirection.Clockwise)
                     stateMachine.Owner.RotateMovementVector(_rotationDegreesPerSec, epoch);
@@ -102,7 +102,7 @@ namespace Ae.Engine.AI.Logistics
 
                 // Occasionally flip direction so we don't get stuck in a bad orbit if your "pointing" != "movement".
                 // (Keeps behavior similar to your other logistics AIs.)
-                if (SiRandom.PercentChance(2))
+                if (AeRandom.PercentChance(2))
                     _rotateDirection = (_rotateDirection == SimpleDirection.Clockwise) ? SimpleDirection.CounterClockwise : SimpleDirection.Clockwise;
             }
         }
@@ -136,7 +136,7 @@ namespace Ae.Engine.AI.Logistics
                 // If we're far, keep closing; if we're in the ring, switch to strafe/orbit.
                 if (dist > stateMachine.Parameters.PreferredDistance)
                 {
-                    stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
+                    stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 2.0f, 1.0f, epoch);
 
                     // If we've drifted off the aim, reacquire rather than blindly thrusting.
                     if (!stateMachine.Owner.IsPointingAt(stateMachine.Target, stateMachine.Parameters.AimToleranceDegrees))
@@ -160,7 +160,7 @@ namespace Ae.Engine.AI.Logistics
         {
             private int _lastHullHealth = stateMachine.Owner.HullHealth;
 
-            private SimpleDirection _strafeDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+            private SimpleDirection _strafeDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
             private float _strafeEpochs = 0;
             private float _rotationDegreesPerSec = 0;
 
@@ -190,14 +190,14 @@ namespace Ae.Engine.AI.Logistics
                 }
 
                 // Maintain speed in the fight ring.
-                stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 1.6f, 1.0f, epoch);
+                stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 1.6f, 1.0f, epoch);
 
                 // Start / refresh a strafe burst occasionally or on small damage.
                 if (_strafeEpochs <= 0)
                 {
-                    _strafeDirection = SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
-                    _strafeEpochs = SiRandom.Between(stateMachine.Parameters.MinStrafeSeconds, stateMachine.Parameters.MaxStrafeSeconds);
-                    _rotationDegreesPerSec = SiRandom.Between(stateMachine.Parameters.MinRotateDegPerSec, stateMachine.Parameters.MaxRotateDegPerSec);
+                    _strafeDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+                    _strafeEpochs = AeRandom.Between(stateMachine.Parameters.MinStrafeSeconds, stateMachine.Parameters.MaxStrafeSeconds);
+                    _rotationDegreesPerSec = AeRandom.Between(stateMachine.Parameters.MinRotateDegPerSec, stateMachine.Parameters.MaxRotateDegPerSec);
                 }
 
                 _strafeEpochs -= epoch;
@@ -229,15 +229,15 @@ namespace Ae.Engine.AI.Logistics
             private float _remaining = stateMachine.Parameters.BreakAwaySeconds;
 
             private readonly SimpleDirection _rotateDirection =
-                SiRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+                AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
 
             private readonly float _rotationDegreesPerSec =
-                SiRandom.Between(stateMachine.Parameters.MinRotateDegPerSec, stateMachine.Parameters.MaxRotateDegPerSec);
+                AeRandom.Between(stateMachine.Parameters.MinRotateDegPerSec, stateMachine.Parameters.MaxRotateDegPerSec);
 
             public void Tick(float epoch)
             {
                 // Push hard while breaking away.
-                stateMachine.Owner.Throttle = SiMath.Damp(stateMachine.Owner.Throttle, 2.2f, 1.0f, epoch);
+                stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 2.2f, 1.0f, epoch);
 
                 // Spiral out a bit (keeps it from just backing straight out).
                 if (_rotateDirection == SimpleDirection.Clockwise)

@@ -30,10 +30,10 @@ namespace Ae.Engine.Sprite._Superclass
             }
         }
 
-        public SpritePowerup(SiEngine engine, string assetKey)
+        public SpritePowerup(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
-            RadarDotSize = new SiVector(4, 4);
+            RadarDotSize = new AeVector(4, 4);
         }
 
         public override void Cleanup()
@@ -47,7 +47,7 @@ namespace Ae.Engine.Sprite._Superclass
             QueueForDelete();
         }
 
-        public virtual void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
+        public virtual void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
             if (IntersectsAABB(Engine.Player.Sprite))
             {

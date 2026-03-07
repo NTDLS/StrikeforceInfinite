@@ -10,7 +10,7 @@ namespace Ae.Engine.Level
     internal class LevelFreeFlight
         : LevelBase
     {
-        public LevelFreeFlight(SiEngine engine)
+        public LevelFreeFlight(AeEngine engine)
             : base(engine,
                   "Free Flight",
                   "There's nothing in this quadrant or the next that will threaten us.")
@@ -25,7 +25,7 @@ namespace Ae.Engine.Level
             AddSingleFireEvent(500, FirstShowPlayerCallback);
         }
 
-        private void FirstShowPlayerCallback(SiDefermentEvent sender, object? refObj)
+        private void FirstShowPlayerCallback(AeDefermentEvent sender, object? refObj)
         {
             _engine.Player.ResetAndShow();
         }

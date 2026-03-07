@@ -1,8 +1,8 @@
 ﻿using Ae.Library;
 using System;
 using System.Collections.Generic;
-using static Ae.Library.SiConstants;
-using static Ae.Library.SiDefermentEvent;
+using static Ae.Library.AeConstants;
+using static Ae.Library.AeDefermentEvent;
 
 namespace Ae.Engine.Level._Superclass
 {
@@ -11,8 +11,8 @@ namespace Ae.Engine.Level._Superclass
     /// </summary>
     public class LevelBase
     {
-        protected SiEngine _engine;
-        protected List<SiDefermentEvent> Events = new();
+        protected AeEngine _engine;
+        protected List<AeDefermentEvent> Events = new();
 
         public Guid UID { get; private set; } = Guid.NewGuid();
         public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace Ae.Engine.Level._Superclass
         public int TotalWaves { get; set; } = 1;
         public SiLevelState State { get; protected set; } = SiLevelState.NotYetStarted;
 
-        public LevelBase(SiEngine engine, string name, string description)
+        public LevelBase(AeEngine engine, string name, string description)
         {
             _engine = engine;
             Name = name;
@@ -39,7 +39,7 @@ namespace Ae.Engine.Level._Superclass
             State = SiLevelState.Started;
         }
 
-        protected SiDefermentEvent AddRecuringFireEvent(int milliseconds, SiDefermentExecuteCallback executeCallback)
+        protected AeDefermentEvent AddRecuringFireEvent(int milliseconds, SiDefermentExecuteCallback executeCallback)
         {
             //Keep track of recurring events to we can delete them when we are done.
             var obj = _engine.Events.Add(milliseconds, executeCallback, null, SiDefermentEventMode.Recurring);
@@ -47,7 +47,7 @@ namespace Ae.Engine.Level._Superclass
             return obj;
         }
 
-        protected SiDefermentEvent AddSingleFireEvent(int milliseconds, SiDefermentExecuteCallback executeCallback)
+        protected AeDefermentEvent AddSingleFireEvent(int milliseconds, SiDefermentExecuteCallback executeCallback)
         {
             return _engine.Events.Add(milliseconds, executeCallback);
         }

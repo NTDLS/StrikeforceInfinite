@@ -23,7 +23,7 @@ namespace Ae.Client
         {
             trackBarResolution.Scroll += TrackBarResolution_Scroll;
 
-            var settings = SiEngine.LoadSettings();
+            var settings = AeEngine.LoadSettings();
 
             checkBoxFineTuneFrameRate.Checked = settings.FineTuneFramerate;
             checkBoxPlayMusic.Checked = settings.PlayMusic;
@@ -74,7 +74,7 @@ namespace Ae.Client
                 }
             }
 
-            var adapters = SiRenderingUtility.GetGraphicsAdapters();
+            var adapters = AeRenderingUtility.GetGraphicsAdapters();
             foreach (var item in adapters)
             {
                 comboBoxGraphicsAdapter.Items.Add(item);
@@ -137,7 +137,7 @@ namespace Ae.Client
         {
             try
             {
-                var settings = SiEngine.LoadSettings();
+                var settings = AeEngine.LoadSettings();
 
                 settings.FineTuneFramerate = checkBoxFineTuneFrameRate.Checked;
                 settings.PlayMusic = checkBoxPlayMusic.Checked;
@@ -161,7 +161,7 @@ namespace Ae.Client
 
                 settings.FullScreen = (trackBarResolution.Value == MAX_RESOLUTIONS);
 
-                var graphicsAdapter = comboBoxGraphicsAdapter.SelectedItem as SiGraphicsAdapter;
+                var graphicsAdapter = comboBoxGraphicsAdapter.SelectedItem as AeGraphicsAdapter;
                 if (graphicsAdapter == null)
                 {
                     throw new Exception("You must select a graphics adapter.");
@@ -169,7 +169,7 @@ namespace Ae.Client
 
                 settings.GraphicsAdapterId = graphicsAdapter.DeviceId;
 
-                SiEngine.SaveSettings(settings);
+                AeEngine.SaveSettings(settings);
                 Close();
             }
             catch (Exception ex)

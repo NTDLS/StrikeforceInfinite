@@ -12,7 +12,7 @@ namespace Ae.Engine.Level
     internal class LevelDebuggingStarbase
         : LevelBase
     {
-        public LevelDebuggingStarbase(SiEngine engine)
+        public LevelDebuggingStarbase(AeEngine engine)
             : base(engine,
                   "Debugging Starbase",
                   "The level is dire, the explosions here typically\r\n"
@@ -33,13 +33,13 @@ namespace Ae.Engine.Level
             _engine.Player.Sprite.AddShieldHealth(10);
         }
 
-        private void FirstShowPlayerCallback(SiDefermentEvent sender, object? refObj)
+        private void FirstShowPlayerCallback(AeDefermentEvent sender, object? refObj)
         {
             _engine.Player.ResetAndShow();
-            AddSingleFireEvent(SiRandom.Between(0, 800), AddFreshEnemiesCallback);
+            AddSingleFireEvent(AeRandom.Between(0, 800), AddFreshEnemiesCallback);
         }
 
-        private void AddFreshEnemiesCallback(SiDefermentEvent sender, object? refObj)
+        private void AddFreshEnemiesCallback(AeDefermentEvent sender, object? refObj)
         {
             if (_engine.Sprites.OfType<SpriteEnemy>().Count() == 0)
             {

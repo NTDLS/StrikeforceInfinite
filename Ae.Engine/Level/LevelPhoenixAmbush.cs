@@ -11,7 +11,7 @@ namespace Ae.Engine.Level
     internal class LevelPhoenixAmbush
         : LevelBase
     {
-        public LevelPhoenixAmbush(SiEngine engine)
+        public LevelPhoenixAmbush(AeEngine engine)
             : base(engine,
                   "Phoenix Ambush",
                   "We're safe now - or are we? Its an AMBUSH!"
@@ -31,12 +31,12 @@ namespace Ae.Engine.Level
             _engine.Player.Sprite.AddShieldHealth(10);
         }
 
-        private void FirstShowPlayerCallback(SiDefermentEvent sender, object? refObj)
+        private void FirstShowPlayerCallback(AeDefermentEvent sender, object? refObj)
         {
             _engine.Player.ResetAndShow();
         }
 
-        private void AddFreshEnemiesCallback(SiDefermentEvent sender, object? refObj)
+        private void AddFreshEnemiesCallback(AeDefermentEvent sender, object? refObj)
         {
             if (_engine.Sprites.OfType<SpriteEnemy>().Count() == 0)
             {
@@ -46,11 +46,11 @@ namespace Ae.Engine.Level
                     return;
                 }
 
-                int enemyCount = SiRandom.Between(CurrentWave + 1, CurrentWave + 5);
+                int enemyCount = AeRandom.Between(CurrentWave + 1, CurrentWave + 5);
 
                 for (int i = 0; i < enemyCount; i++)
                 {
-                    AddSingleFireEvent(SiRandom.Between(0, 800), AddEnemyCallback);
+                    AddSingleFireEvent(AeRandom.Between(0, 800), AddEnemyCallback);
                 }
 
                 _engine.Audio.RadarBlipsSound?.Play();
@@ -59,7 +59,7 @@ namespace Ae.Engine.Level
             }
         }
 
-        private void AddEnemyCallback(SiDefermentEvent sender, object? refObj)
+        private void AddEnemyCallback(AeDefermentEvent sender, object? refObj)
         {
             //_engine.Sprites.Enemies.AddTypeOf<SpriteEnemyPhoenix>();
         }

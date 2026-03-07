@@ -9,7 +9,7 @@ namespace Ae.Engine.Sprite._Superclass
     public class SpriteSkyBox
         : SpriteBase
     {
-        public SpriteSkyBox(SiEngine engine, string assetKey)
+        public SpriteSkyBox(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             //selectedImageIndex = SiRandom.Between(0, _imageCount - 1);
@@ -30,14 +30,14 @@ namespace Ae.Engine.Sprite._Superclass
             //}
         }
 
-        private SiVector _currentOffset = new();
+        private AeVector _currentOffset = new();
         private readonly float _maxOffset = 200;
 
-        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             if (cameraDisplacement.Sum() != 0)
             {
-                var offsetIncrement = new SiVector(cameraDisplacement.Normalize());
+                var offsetIncrement = new AeVector(cameraDisplacement.Normalize());
 
                 offsetIncrement.X *= (1 - (Math.Abs(_currentOffset.X) / _maxOffset));
                 offsetIncrement.Y *= (1 - (Math.Abs(_currentOffset.Y) / _maxOffset));

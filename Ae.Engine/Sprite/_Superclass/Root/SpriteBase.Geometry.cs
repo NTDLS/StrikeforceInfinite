@@ -50,7 +50,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
 
         public float DistanceSquaredTo(SpriteBase to) => Location.DistanceSquaredTo(to.Location);
 
-        public float DistanceTo(SiVector to) => Location.DistanceTo(to);
+        public float DistanceTo(AeVector to) => Location.DistanceTo(to);
 
         /// <summary>
         /// Of the given sprites, returns the sprite that is the closest.

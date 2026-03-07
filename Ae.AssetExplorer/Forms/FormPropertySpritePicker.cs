@@ -8,7 +8,7 @@ namespace Ae.AssetExplorer.Forms
     public partial class FormPropertySpritePicker
         : Form
     {
-        private readonly SiEngine? _engine;
+        private readonly AeEngine? _engine;
         private readonly bool _multiSelect;
         public List<string> Value => _selectedAssetKeys;
         private List<string> _selectedAssetKeys = new List<string>();
@@ -18,7 +18,7 @@ namespace Ae.AssetExplorer.Forms
             InitializeComponent();
         }
 
-        public FormPropertySpritePicker(SiEngine engine, PropertyItem propertyItem, bool multiSelect)
+        public FormPropertySpritePicker(AeEngine engine, PropertyItem propertyItem, bool multiSelect)
         {
             InitializeComponent();
             _engine = engine;
@@ -134,7 +134,7 @@ namespace Ae.AssetExplorer.Forms
                             displayName = Path.GetFileNameWithoutExtension(part);
                         }
 
-                        var newNode = new SiTreeNode(part, displayName, asset.Key, nodeType);
+                        var newNode = new AeTreeNode(part, displayName, asset.Key, nodeType);
                         workingLevel.Add(newNode);
                         workingLevel = newNode.Nodes;
 
@@ -163,7 +163,7 @@ namespace Ae.AssetExplorer.Forms
                     return;
                 }
 
-                foreach (SiTreeNode node in treeViewAssets.Nodes)
+                foreach (AeTreeNode node in treeViewAssets.Nodes)
                 {
                     node.Expand();
                 }
@@ -203,7 +203,7 @@ namespace Ae.AssetExplorer.Forms
             {
                 GetCheckedNodes(treeViewAssets).ToList().ForEach(o =>
                 {
-                    if (o is SiTreeNode node)
+                    if (o is AeTreeNode node)
                     {
                         _selectedAssetKeys.Add(node.AssetKey);
                     }
@@ -211,9 +211,9 @@ namespace Ae.AssetExplorer.Forms
             }
             else
             {
-                if (treeViewAssets.SelectedNode is not SiTreeNode node)
+                if (treeViewAssets.SelectedNode is not AeTreeNode node)
                 {
-                    MessageBox.Show("Please select an asset.", SiConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please select an asset.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 

@@ -11,7 +11,7 @@ namespace Ae.Library.Sprite
         /// The x,y, location of the center of the sprite in the universe.
         /// Do not modify the X,Y of the returned location, it will have no effect.
         /// </summary>
-        public SiVector Location { get; set; }
+        public AeVector Location { get; set; }
 
         /// <summary>
         /// Number or radians to rotate the sprite Orientation along its center at each call to ApplyMotion().
@@ -25,6 +25,6 @@ namespace Ae.Library.Sprite
         /// to follow this direction angle then call RecalculateOrientationMovementVector() after modifying
         /// the PointingAngle.
         /// </summary>
-        public SiVector Orientation { get; set; }
+        public AeVector Orientation { get; set; }
     }
 }

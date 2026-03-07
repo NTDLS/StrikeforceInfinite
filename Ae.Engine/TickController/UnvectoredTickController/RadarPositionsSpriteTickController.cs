@@ -14,7 +14,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
     {
         private readonly SpriteManager _manager;
 
-        public RadarPositionsSpriteTickController(SiEngine engine, SpriteManager manager)
+        public RadarPositionsSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine)
         {
             _manager = manager;
@@ -37,7 +37,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
                         {
                             if (accountedFor.Contains(child) == false)
                             {
-                                if (parent != child && parent.IntersectsAABB(child, new SiVector(100, 100)))
+                                if (parent != child && parent.IntersectsAABB(child, new AeVector(100, 100)))
                                 {
                                     group.Add(child);
                                     accountedFor.Add(child);

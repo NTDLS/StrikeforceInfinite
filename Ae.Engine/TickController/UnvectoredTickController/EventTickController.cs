@@ -1,16 +1,16 @@
-﻿using NTDLS.Semaphore;
-using Ae.Engine.Menu;
+﻿using Ae.Engine.Menu;
 using Ae.Engine.TickController._Superclass;
 using Ae.Library;
+using NTDLS.Semaphore;
 using System.Collections.Generic;
-using static Ae.Library.SiDefermentEvent;
+using static Ae.Library.AeDefermentEvent;
 
 namespace Ae.Engine.TickController.UnvectoredTickController
 {
     public class EventTickController
-        : UnvectoredTickControllerBase<SiDefermentEvent>
+        : UnvectoredTickControllerBase<AeDefermentEvent>
     {
-        private readonly PessimisticCriticalResource<List<SiDefermentEvent>> _collection = new();
+        private readonly PessimisticCriticalResource<List<AeDefermentEvent>> _collection = new();
 
         /// <summary>
         /// Delegate for the event execution callback.
@@ -19,7 +19,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="parameter">An object passed by the user code</param>
         public delegate void SiDefermentSimpleExecuteCallbackT<T>(T parameter);
 
-        public EventTickController(SiEngine engine)
+        public EventTickController(AeEngine engine)
             : base(engine)
         {
         }
@@ -53,13 +53,13 @@ namespace Ae.Engine.TickController.UnvectoredTickController
 
         #region Factories.
 
-        public SiDefermentEvent Once(SiDefermentSimpleExecuteCallback executionCallback,
+        public AeDefermentEvent Once(SiDefermentSimpleExecuteCallback executionCallback,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(0,
-                    (SiDefermentEvent sender, object? refObj) =>
+                var obj = new AeDefermentEvent(0,
+                    (AeDefermentEvent sender, object? refObj) =>
                     {
                         executionCallback();
                     });
@@ -68,13 +68,13 @@ namespace Ae.Engine.TickController.UnvectoredTickController
             });
         }
 
-        public SiDefermentEvent Once<T>(SiDefermentSimpleExecuteCallbackT<T> executionCallback, T parameter,
+        public AeDefermentEvent Once<T>(SiDefermentSimpleExecuteCallbackT<T> executionCallback, T parameter,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(0,
-                    (SiDefermentEvent sender, object? refObj) =>
+                var obj = new AeDefermentEvent(0,
+                    (AeDefermentEvent sender, object? refObj) =>
                     {
                         executionCallback(parameter);
                     });
@@ -83,12 +83,12 @@ namespace Ae.Engine.TickController.UnvectoredTickController
             });
         }
 
-        public SiDefermentEvent Once(SiDefermentExecuteCallback executionCallback, object? parameter = null,
+        public AeDefermentEvent Once(SiDefermentExecuteCallback executionCallback, object? parameter = null,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(0, parameter, executionCallback, SiDefermentEventMode.OneTime, threadModel);
+                var obj = new AeDefermentEvent(0, parameter, executionCallback, SiDefermentEventMode.OneTime, threadModel);
                 o.Add(obj);
                 return obj;
             });
@@ -103,13 +103,13 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="eventMode">Whether the event is one time or recurring.</param>
         /// <param name="threadModel">Whether the event callback is run synchronous or asynchronous.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback, object? parameter = null,
+        public AeDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback, object? parameter = null,
             SiDefermentEventMode eventMode = SiDefermentEventMode.OneTime,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(timeoutMilliseconds, parameter, executionCallback, eventMode, threadModel);
+                var obj = new AeDefermentEvent(timeoutMilliseconds, parameter, executionCallback, eventMode, threadModel);
                 o.Add(obj);
                 return obj;
             });
@@ -123,13 +123,13 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="eventMode">Whether the event is one time or recurring.</param>
         /// <param name="threadModel">Whether the event callback is run synchronous or asynchronous.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback,
+        public AeDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback,
             SiDefermentEventMode eventMode = SiDefermentEventMode.OneTime,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(timeoutMilliseconds, null, executionCallback, eventMode, threadModel);
+                var obj = new AeDefermentEvent(timeoutMilliseconds, null, executionCallback, eventMode, threadModel);
                 o.Add(obj);
                 return obj;
             });
@@ -142,12 +142,12 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="executionCallback">The callback function that will be called when the timeout expires.</param>
         /// <param name="eventMode">Whether the event is one time or recurring.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback,
+        public AeDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback,
             SiDefermentEventMode eventMode = SiDefermentEventMode.OneTime)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(timeoutMilliseconds, null, executionCallback, eventMode);
+                var obj = new AeDefermentEvent(timeoutMilliseconds, null, executionCallback, eventMode);
                 o.Add(obj);
                 return obj;
             });
@@ -160,11 +160,11 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="parameter">An object that will be passed to the execution callback.</param>
         /// <param name="executionCallback">The callback function that will be called when the timeout expires.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(int timeoutMilliseconds, object parameter, SiDefermentExecuteCallback executionCallback)
+        public AeDefermentEvent Add(int timeoutMilliseconds, object parameter, SiDefermentExecuteCallback executionCallback)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(timeoutMilliseconds, parameter, executionCallback);
+                var obj = new AeDefermentEvent(timeoutMilliseconds, parameter, executionCallback);
                 o.Add(obj);
                 return obj;
             });
@@ -176,11 +176,11 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="timeoutMilliseconds">Time until the event is fired.</param>
         /// <param name="executionCallback">The callback function that will be called when the timeout expires.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback)
+        public AeDefermentEvent Add(int timeoutMilliseconds, SiDefermentExecuteCallback executionCallback)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(timeoutMilliseconds, executionCallback);
+                var obj = new AeDefermentEvent(timeoutMilliseconds, executionCallback);
                 o.Add(obj);
                 return obj;
             });
@@ -194,12 +194,12 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="parameter">An object passed by the user code</param>
         /// <param name="executionCallback">The callback function that will be called when the timeout expires.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add<T>(int timeoutMilliseconds, T parameter, SiDefermentSimpleExecuteCallbackT<T> executionCallback)
+        public AeDefermentEvent Add<T>(int timeoutMilliseconds, T parameter, SiDefermentSimpleExecuteCallbackT<T> executionCallback)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(timeoutMilliseconds,
-                    (SiDefermentEvent sender, object? refObj) =>
+                var obj = new AeDefermentEvent(timeoutMilliseconds,
+                    (AeDefermentEvent sender, object? refObj) =>
                 {
                     executionCallback(parameter);
                 });
@@ -214,11 +214,11 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="timeoutMilliseconds">Time until the event is fired.</param>
         /// <param name="executionCallback">The callback function that will be called when the timeout expires.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(int timeoutMilliseconds, SiDefermentSimpleExecuteCallback executionCallback)
+        public AeDefermentEvent Add(int timeoutMilliseconds, SiDefermentSimpleExecuteCallback executionCallback)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(timeoutMilliseconds, executionCallback);
+                var obj = new AeDefermentEvent(timeoutMilliseconds, executionCallback);
                 o.Add(obj);
                 return obj;
             });
@@ -230,11 +230,11 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="timeoutMilliseconds">Time until the event is fired.</param>
         /// <param name="executionCallback">The callback function that will be called when the timeout expires.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(SiDefermentSimpleExecuteCallback executionCallback)
+        public AeDefermentEvent Add(SiDefermentSimpleExecuteCallback executionCallback)
         {
             return _collection.Use(o =>
             {
-                var obj = new SiDefermentEvent(0, executionCallback);
+                var obj = new AeDefermentEvent(0, executionCallback);
                 o.Add(obj);
                 return obj;
             });
@@ -245,7 +245,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// </summary>
         /// <param name="SiDefermentEvent">An existing event to add.</param>
         /// <returns></returns>
-        public SiDefermentEvent Add(SiDefermentEvent obj)
+        public AeDefermentEvent Add(AeDefermentEvent obj)
         {
             return _collection.Use(o =>
             {
@@ -258,7 +258,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// Deletes an event from the collection.
         /// </summary>
         /// <param name="obj"></param>
-        public void HardDelete(SiDefermentEvent obj)
+        public void HardDelete(AeDefermentEvent obj)
         {
             _collection.Use(o =>
             {

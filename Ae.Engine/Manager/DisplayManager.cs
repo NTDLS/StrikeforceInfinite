@@ -13,11 +13,11 @@ namespace Ae.Engine.Manager
     /// </summary>
     public class DisplayManager
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
 
-        public SiFrameCounter FrameCounter { get; private set; } = new();
+        public AeFrameCounter FrameCounter { get; private set; } = new();
 
-        public Dictionary<Point, SiQuadrant> Quadrants { get; private set; } = new();
+        public Dictionary<Point, AeQuadrant> Quadrants { get; private set; } = new();
 
         /// <summary>
         /// The X,Y of the top left of the render window. This is the corner of the total
@@ -25,7 +25,7 @@ namespace Ae.Engine.Manager
         /// will be centered in this window and the window will moved with the players movements.
         /// This can be thought of as the camera.
         /// </summary>
-        public SiVector CameraPosition { get; set; } = new();
+        public AeVector CameraPosition { get; set; } = new();
         public Control DrawingSurface { get; private set; }
         public Screen Screen { get; private set; }
 
@@ -67,8 +67,8 @@ namespace Ae.Engine.Manager
 
         public float TotalCanvasDiagonal { get; private set; }
 
-        public SiVector CenterCanvas;
-        public SiVector CenterOfCurrentScreen => CameraPosition + CenterCanvas;
+        public AeVector CenterCanvas;
+        public AeVector CenterOfCurrentScreen => CameraPosition + CenterCanvas;
 
         /// <summary>
         /// The size of the screen with no scaling.
@@ -91,7 +91,7 @@ namespace Ae.Engine.Manager
         /// </summary>
         /// <param name="screenPosition"></param>
         /// <returns></returns>
-        public SiVector TranslateScreenPosition(Point screenPosition)
+        public AeVector TranslateScreenPosition(Point screenPosition)
         {
             var src = _engine.Display.GetCurrentScaledScreenBounds();
 
@@ -99,7 +99,7 @@ namespace Ae.Engine.Manager
             var x = src.Left + (screenPosition.X * (src.Width / _engine.Display.NaturalScreenSize.Width));
             var y = src.Top + (screenPosition.Y * (src.Height / _engine.Display.NaturalScreenSize.Height));
 
-            return new SiVector(x, y);
+            return new AeVector(x, y);
         }
 
         public RectangleF GetCurrentScaledScreenBounds()
@@ -133,52 +133,52 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public SiVector RandomOnScreenLocation()
+        public AeVector RandomOnScreenLocation()
         {
             var currentScaledScreenBounds = GetCurrentScaledScreenBounds();
 
-            return new SiVector(
-                    SiRandom.Between((int)currentScaledScreenBounds.Left, (int)(currentScaledScreenBounds.Left + currentScaledScreenBounds.Width)),
-                    SiRandom.Between((int)currentScaledScreenBounds.Top, (int)(currentScaledScreenBounds.Top + currentScaledScreenBounds.Height))
+            return new AeVector(
+                    AeRandom.Between((int)currentScaledScreenBounds.Left, (int)(currentScaledScreenBounds.Left + currentScaledScreenBounds.Width)),
+                    AeRandom.Between((int)currentScaledScreenBounds.Top, (int)(currentScaledScreenBounds.Top + currentScaledScreenBounds.Height))
                 );
         }
 
         //TODO: Test and fix this.
-        public SiVector RandomOffScreenLocation(int minOffscreenDistance = 100, int maxOffscreenDistance = 500)
+        public AeVector RandomOffScreenLocation(int minOffscreenDistance = 100, int maxOffscreenDistance = 500)
         {
-            if (SiRandom.FlipCoin())
+            if (AeRandom.FlipCoin())
             {
-                if (SiRandom.FlipCoin())
+                if (AeRandom.FlipCoin())
                 {
-                    return new SiVector(
-                        CameraPosition.X + -SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
-                        CameraPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
+                    return new AeVector(
+                        CameraPosition.X + -AeRandom.Between(minOffscreenDistance, maxOffscreenDistance),
+                        CameraPosition.Y + AeRandom.Between(0, TotalCanvasSize.Height));
                 }
                 else
                 {
-                    return new SiVector(
-                        CameraPosition.X + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
-                        CameraPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
+                    return new AeVector(
+                        CameraPosition.X + AeRandom.Between(minOffscreenDistance, maxOffscreenDistance),
+                        CameraPosition.Y + AeRandom.Between(0, TotalCanvasSize.Height));
                 }
             }
             else
             {
-                if (SiRandom.FlipCoin())
+                if (AeRandom.FlipCoin())
                 {
-                    return new SiVector(
-                        CameraPosition.X + TotalCanvasSize.Width + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
-                        CameraPosition.Y + SiRandom.Between(0, TotalCanvasSize.Height));
+                    return new AeVector(
+                        CameraPosition.X + TotalCanvasSize.Width + AeRandom.Between(minOffscreenDistance, maxOffscreenDistance),
+                        CameraPosition.Y + AeRandom.Between(0, TotalCanvasSize.Height));
                 }
                 else
                 {
-                    return new SiVector(
-                        CameraPosition.X + TotalCanvasSize.Width + SiRandom.Between(minOffscreenDistance, maxOffscreenDistance),
-                        CameraPosition.Y + -SiRandom.Between(0, TotalCanvasSize.Height));
+                    return new AeVector(
+                        CameraPosition.X + TotalCanvasSize.Width + AeRandom.Between(minOffscreenDistance, maxOffscreenDistance),
+                        CameraPosition.Y + -AeRandom.Between(0, TotalCanvasSize.Height));
                 }
             }
         }
 
-        public DisplayManager(SiEngine engine, Control drawingSurface, Size? sizeOverride = null)
+        public DisplayManager(AeEngine engine, Control drawingSurface, Size? sizeOverride = null)
         {
             _engine = engine;
             DrawingSurface = drawingSurface;
@@ -202,12 +202,12 @@ namespace Ae.Engine.Manager
 
             TotalCanvasSize = new Size(totalSizeX, totalSizeY);
             OverdrawSize = new Size(totalSizeX - NaturalScreenSize.Width, totalSizeY - NaturalScreenSize.Height);
-            CenterCanvas = new SiVector(TotalCanvasSize.Width / 2.0f, TotalCanvasSize.Height / 2.0f);
+            CenterCanvas = new AeVector(TotalCanvasSize.Width / 2.0f, TotalCanvasSize.Height / 2.0f);
 
             TotalCanvasDiagonal = (float)Math.Sqrt(TotalCanvasSize.Width * TotalCanvasSize.Width + TotalCanvasSize.Height * TotalCanvasSize.Height);
         }
 
-        public SiQuadrant GetQuadrant(float x, float y)
+        public AeQuadrant GetQuadrant(float x, float y)
         {
             var coordinates = new Point((int)(x / NaturalScreenSize.Width), (int)(y / NaturalScreenSize.Height));
 
@@ -219,7 +219,7 @@ namespace Ae.Engine.Manager
                     NaturalScreenSize.Width,
                     NaturalScreenSize.Height);
 
-                var quad = new SiQuadrant(coordinates, absoluteBounds);
+                var quad = new AeQuadrant(coordinates, absoluteBounds);
 
                 Quadrants.Add(coordinates, quad);
             }

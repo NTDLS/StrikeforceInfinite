@@ -1,8 +1,8 @@
-﻿using SharpDX.Mathematics.Interop;
-using Ae.Engine.Sprite._Superclass.Interactive.Ship;
+﻿using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Engine.Sprite._Superclass.Munition;
+using SharpDX.Mathematics.Interop;
 using System.Drawing;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass._Root
 {

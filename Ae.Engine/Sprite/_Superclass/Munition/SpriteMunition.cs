@@ -7,7 +7,7 @@ using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using Ae.Rendering;
 using System;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Munition
 {
@@ -34,23 +34,23 @@ namespace Ae.Engine.Sprite._Superclass.Munition
         /// <param name="assetKey">The image for the munition.</param>
         /// <param name="location">The optional location for the munition to originate from (if not specified, we'll use the location of the firedFrom sprite).</param>
         /// <param name="angleDegrees">>The optional angle for the munition to travel on (if not specified, we'll use the angle of the firedFrom sprite).</param>
-        public SpriteMunition(SiEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey, SiVector location, float? angleDegrees = null)
+        public SpriteMunition(AeEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey, AeVector location, float? angleDegrees = null)
             : base(engine, assetKey)
         {
             Weapon = weapon;
-            RadarDotSize = new SiVector(1, 1);
+            RadarDotSize = new AeVector(1, 1);
             SceneDistanceLimit = Engine.Settings.MunitionSceneDistanceLimit;
 
-            float headingRadians = angleDegrees == null ? firedFrom.Orientation.RadiansSigned : SiMath.DegToRad(angleDegrees.Value);
+            float headingRadians = angleDegrees == null ? firedFrom.Orientation.RadiansSigned : AeMath.DegToRad(angleDegrees.Value);
             if (Metadata.AngleVarianceDegrees > 0)
             {
-                var variance = SiMath.DegToRad(SiRandom.Between(0, Metadata.AngleVarianceDegrees.Value));
-                headingRadians += (SiRandom.FlipCoin() ? 1 : -1) * variance;
+                var variance = AeMath.DegToRad(AeRandom.Between(0, Metadata.AngleVarianceDegrees.Value));
+                headingRadians += (AeRandom.FlipCoin() ? 1 : -1) * variance;
             }
 
             Location = location;
-            Orientation = new SiVector(headingRadians);
-            Speed = SiRandom.Between(Metadata.Speed, 0);
+            Orientation = new AeVector(headingRadians);
+            Speed = AeRandom.Between(Metadata.Speed, 0);
             RecalculateMovementVectorFromOrientation();
 
             if (firedFrom is SpriteAttachment attachment)
@@ -73,7 +73,7 @@ namespace Ae.Engine.Sprite._Superclass.Munition
             }
         }
 
-        public virtual void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
+        public virtual void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
             if (AgeInMilliseconds > MillisecondsToLive)
             {
@@ -82,7 +82,7 @@ namespace Ae.Engine.Sprite._Superclass.Munition
             }
         }
 
-        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             if (!Engine.Display.TotalCanvasBounds.Balloon(SceneDistanceLimit).IntersectsWith(RenderBounds))
             {

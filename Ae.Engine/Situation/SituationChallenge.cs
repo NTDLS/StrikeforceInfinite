@@ -10,7 +10,7 @@ namespace Ae.Engine.Situation
     internal class SituationChallenge
         : SituationBase
     {
-        public SituationChallenge(SiEngine engine)
+        public SituationChallenge(AeEngine engine)
             : base(engine,
                   "The First Challenge",
                   "The first challenge level... play at your own risk."

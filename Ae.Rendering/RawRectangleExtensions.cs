@@ -1,5 +1,5 @@
-﻿using SharpDX.Mathematics.Interop;
-using Ae.Library.Mathematics;
+﻿using Ae.Library.Mathematics;
+using SharpDX.Mathematics.Interop;
 
 namespace Ae.Rendering
 {
@@ -13,7 +13,7 @@ namespace Ae.Rendering
             return new RawRectangleF(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom);
         }
 
-        public static RawRectangleF Balloon(this RawRectangleF rectangle, SiVector size)
+        public static RawRectangleF Balloon(this RawRectangleF rectangle, AeVector size)
         {
             var rec = rectangle.Clone();
             rec.Left -= size.X;

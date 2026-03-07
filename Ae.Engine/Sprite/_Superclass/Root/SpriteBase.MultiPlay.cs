@@ -1,6 +1,6 @@
 ﻿using Ae.MpCommsMessages.DatagramMessages.SpriteActions;
 using System;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass._Root
 {
@@ -9,7 +9,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         //public virtual SiSpriteActionVector GetMultiplayVector() { return null; }
         private DateTime _lastMultiplaySpriteVectorUpdate = DateTime.MinValue;
 
-        public virtual SiSpriteActionMotion? GetMultiPlayActionVector()
+        public virtual AeSpriteActionMotion? GetMultiPlayActionVector()
         {
             if (Engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
             {
@@ -17,7 +17,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
                 {
                     _lastMultiplaySpriteVectorUpdate = DateTime.UtcNow;
 
-                    return new SiSpriteActionMotion(UID)
+                    return new AeSpriteActionMotion(UID)
                     {
                         X = X,
                         Y = Y,
@@ -33,7 +33,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
             return null;
         }
 
-        public virtual SiSpriteActionSpawn? GetMultiPlayActionSpawn()
+        public virtual AeSpriteActionSpawn? GetMultiPlayActionSpawn()
         {
             if (Engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
             {
@@ -41,7 +41,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
                 {
                     _lastMultiplaySpriteVectorUpdate = DateTime.UtcNow;
 
-                    return new SiSpriteActionSpawn(UID, GetType().Name)
+                    return new AeSpriteActionSpawn(UID, GetType().Name)
                     {
                         X = X,
                         Y = Y,

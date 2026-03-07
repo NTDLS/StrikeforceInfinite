@@ -15,7 +15,7 @@ namespace Ae.Engine.Menu
     {
         private readonly SpriteMenuItem _situationBlurb;
 
-        public MenuSituationSelect(SiEngine engine)
+        public MenuSituationSelect(AeEngine engine)
             : base(engine)
         {
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
@@ -23,19 +23,19 @@ namespace Ae.Engine.Menu
             float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
-            var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Select a Situation");
+            var itemTitle = AddTitleItem(new AeVector(offsetX, offsetY), "Select a Situation");
             itemTitle.X -= itemTitle.Size.Width / 2;
             offsetY += itemTitle.Size.Height + 60;
 
             offsetX = currentScaledScreenBounds.X + 40;
             offsetY += itemTitle.Height;
 
-            _situationBlurb = AddTextBlock(new SiVector(offsetX, offsetY), "");
+            _situationBlurb = AddTextBlock(new AeVector(offsetX, offsetY), "");
             _situationBlurb.X = offsetX + 300;
             _situationBlurb.Y = offsetY - _situationBlurb.Size.Height;
 
             //Use reflection to get a list of possible situation types.
-            var situationTypes = SiReflection.GetSubClassesOf<SituationBase>().OrderBy(o => o.Name).ToList();
+            var situationTypes = AeReflection.GetSubClassesOf<SituationBase>().OrderBy(o => o.Name).ToList();
 
             //Move the debug situation to the top of the list.
             var situations = situationTypes.Where(o => o.Name.Contains("Debug")).FirstOrDefault();
@@ -47,9 +47,9 @@ namespace Ae.Engine.Menu
 
             foreach (var situationType in situationTypes)
             {
-                var situationInstance = SiReflection.CreateInstanceFromType<SituationBase>(situationType, new object[] { engine, });
+                var situationInstance = AeReflection.CreateInstanceFromType<SituationBase>(situationType, new object[] { engine, });
 
-                var menuItem = AddSelectableItem(new SiVector(offsetX + 25, offsetY), situationInstance.Name, $"> {situationInstance.Name}");
+                var menuItem = AddSelectableItem(new AeVector(offsetX + 25, offsetY), situationInstance.Name, $"> {situationInstance.Name}");
 
                 menuItem.UserData = situationInstance;
 

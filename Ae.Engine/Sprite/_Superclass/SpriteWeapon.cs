@@ -1,5 +1,4 @@
-﻿using NTDLS.Helpers;
-using Ae.Audio;
+﻿using Ae.Audio;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
@@ -8,10 +7,11 @@ using Ae.Library;
 using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
+using NTDLS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass
 {
@@ -30,14 +30,14 @@ namespace Ae.Engine.Sprite._Superclass
         /// <summary>
         /// The sound that the weapon makes when firing.
         /// </summary>
-        public SiAudioClip? FireSound { get; private set; }
+        public AeAudioClip? FireSound { get; private set; }
         public SpriteBase Owner { get; set; }
 
         public List<WeaponsLock> LockedTargets { get; set; } = new();
         public int MunitionsFired { get; set; }
         public int MunitionQuantity { get; set; }
 
-        public SpriteWeapon(SiEngine engine, SpriteBase owner, string? assetKey)
+        public SpriteWeapon(AeEngine engine, SpriteBase owner, string? assetKey)
             : base(engine, assetKey)
         {
             Owner = owner;
@@ -61,7 +61,7 @@ namespace Ae.Engine.Sprite._Superclass
             }
         }
 
-        public SpriteMunition CreateMunition(SiVector? location = null, SpriteInteractive? lockedTarget = null)
+        public SpriteMunition CreateMunition(AeVector? location = null, SpriteInteractive? lockedTarget = null)
         {
             if (Owner == null)
             {
@@ -82,7 +82,7 @@ namespace Ae.Engine.Sprite._Superclass
 
             var className = (string.IsNullOrEmpty(asset.ControllerName) ? asset.Metadata.Class : asset.ControllerName)
                 ?? throw new Exception($"The sprite {munitionAssetKey} does not have a class or controller defined in its metadata.");
-            var type = SiReflection.GetTypeByName(className);
+            var type = AeReflection.GetTypeByName(className);
 
             var munitionSprite = (SpriteMunition)Activator.CreateInstance(type,
                 [Engine, this, Owner, munitionAssetKey, lockedTarget, location ?? Owner.Location]).EnsureNotNull();
@@ -160,7 +160,7 @@ namespace Ae.Engine.Sprite._Superclass
             }
         }
 
-        public virtual bool Fire(SiVector location)
+        public virtual bool Fire(AeVector location)
         {
             if (Owner == null)
             {

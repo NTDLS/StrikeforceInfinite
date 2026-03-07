@@ -30,7 +30,7 @@ namespace Ae.Engine.Menu
         private Timer _animationTimer;
         private SelectedSprite? _selectedSprite;
 
-        public MenuSelectLoadout(SiEngine engine)
+        public MenuSelectLoadout(AeEngine engine)
             : base(engine)
         {
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
@@ -38,14 +38,14 @@ namespace Ae.Engine.Menu
             float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
-            var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Select a Loadout");
+            var itemTitle = AddTitleItem(new AeVector(offsetX, offsetY), "Select a Loadout");
             itemTitle.X -= itemTitle.Size.Width / 2;
             offsetY += itemTitle.Size.Height + 60;
 
             offsetX = currentScaledScreenBounds.X + 40;
             offsetY += itemTitle.Height;
 
-            _shipBlurb = AddTextBlock(new SiVector(offsetX, offsetY), "");
+            _shipBlurb = AddTextBlock(new AeVector(offsetX, offsetY), "");
             _shipBlurb.X = offsetX + 250;
             _shipBlurb.Y = offsetY - _shipBlurb.Size.Height;
 
@@ -74,7 +74,7 @@ namespace Ae.Engine.Menu
                 offsetY += playerSprite.Size.Height / 2.0f + previousSpriteSize / 2.0f + 25;
                 previousSpriteSize = playerSprite.Size.Height;
 
-                var menuItem = AddSelectableItem(new SiVector(offsetX + 75, offsetY), playerSprite.Metadata.Name ?? "Unknown Ship", playerSprite.Metadata.Name ?? "Unknown Ship");
+                var menuItem = AddSelectableItem(new AeVector(offsetX + 75, offsetY), playerSprite.Metadata.Name ?? "Unknown Ship", playerSprite.Metadata.Name ?? "Unknown Ship");
                 menuItem.Y -= menuItem.Size.Height / 2;
 
                 menuItem.UserData = new SelectedSprite(playerShipContainer.Key, playerSprite);

@@ -1,13 +1,13 @@
-﻿using NTDLS.DatagramMessaging;
-using Ae.MpCommsMessages.DatagramMessages.SpriteActions;
+﻿using Ae.MpCommsMessages.DatagramMessages.SpriteActions;
+using NTDLS.DatagramMessaging;
 using System;
 
 namespace Ae.Engine.MultiPlay
 {
-    internal class DatagramMessageHandler(SiEngine engine)
+    internal class DatagramMessageHandler(AeEngine engine)
         : IDmDatagramHandler
     {
-        public void SiSpriteActionDelete(DmContext context, SiSpriteActionDelete payload)
+        public void SiSpriteActionDelete(DmContext context, AeSpriteActionDelete payload)
         {
             try
             {
@@ -17,7 +17,7 @@ namespace Ae.Engine.MultiPlay
             }
         }
 
-        public void SiSpriteActionExplode(DmContext context, SiSpriteActionExplode payload)
+        public void SiSpriteActionExplode(DmContext context, AeSpriteActionExplode payload)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Ae.Engine.MultiPlay
             }
         }
 
-        public void SiSpriteActionSpawn(DmContext context, SiSpriteActionSpawn payload)
+        public void SiSpriteActionSpawn(DmContext context, AeSpriteActionSpawn payload)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Ae.Engine.MultiPlay
             }
         }
 
-        public void SiSpriteActionVector(DmContext context, SiSpriteActionMotion payload)
+        public void SiSpriteActionVector(DmContext context, AeSpriteActionMotion payload)
         {
             try
             {

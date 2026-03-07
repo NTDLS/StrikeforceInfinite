@@ -42,7 +42,7 @@ namespace Ae.AssetExplorer
             Group = group;
             MetaData = metaData;
             PropertyName = propertyName;
-            WorkingValue = SiReflection.GetPropertyValue(metaData, propertyName);
+            WorkingValue = AeReflection.GetPropertyValue(metaData, propertyName);
             Attributes = propertyInfo.MetadataAttribute;
             Text = propertyInfo.MetadataAttribute.FriendlyName;
             SubItems.Add(PropertyStringifier(metaData, propertyName, WorkingValue));
@@ -70,13 +70,13 @@ namespace Ae.AssetExplorer
                 return s;
             else if (value is bool b)
                 return b.ToString();
-            else if (value is SiVector v)
+            else if (value is AeVector v)
                 return v.ToString();
-            else if (value is SiRange<int> ri)
+            else if (value is AeRange<int> ri)
                 return ri.ToString();
-            else if (value is SiRange<float> rf)
+            else if (value is AeRange<float> rf)
                 return rf.ToString();
-            else if (value is SiRange<double> rd)
+            else if (value is AeRange<double> rd)
                 return rd.ToString();
             else if (value is AssetMetadata asset)
                 return asset.AssetKey;

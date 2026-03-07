@@ -3,7 +3,7 @@ using Ae.Engine.Sprite._Superclass.Munition;
 using Ae.Library;
 using Ae.Library.Mathematics;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass._Root
 {
@@ -20,7 +20,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// <param name="munition">The munition object that is being tested for.</param>
         /// <param name="hitTestPosition">The position to test for hit.</param>
         /// <returns></returns>
-        public virtual bool TryMunitionHit(SpriteMunition munition, SiVector hitTestPosition)
+        public virtual bool TryMunitionHit(SpriteMunition munition, AeVector hitTestPosition)
         {
             if (IntersectsAabb(hitTestPosition))
             {
@@ -77,7 +77,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         {
             if (munition.Weapon?.Metadata != null)
             {
-                Hit(SiRandom.Between(munition.Weapon.Metadata.Damage, 0));
+                Hit(AeRandom.Between(munition.Weapon.Metadata.Damage, 0));
             }
         }
 

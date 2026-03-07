@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Client
 {
@@ -18,7 +18,7 @@ namespace Ae.Client
     {
         private readonly List<SpriteBase> highlightedSprites = new();
         private readonly ToolTip _interrogationTip = new();
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private readonly bool _fullScreen = false;
 
         public FormRenderTarget()
@@ -27,7 +27,7 @@ namespace Ae.Client
 
             var drawingSurface = new Control();
             Controls.Add(drawingSurface);
-            _engine = new SiEngine(drawingSurface, SiEngineExecutionMode.None);
+            _engine = new AeEngine(drawingSurface, SiEngineExecutionMode.None);
         }
 
         public FormRenderTarget(Screen screen)
@@ -36,7 +36,7 @@ namespace Ae.Client
 
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
 
-            var settings = SiEngine.LoadSettings();
+            var settings = AeEngine.LoadSettings();
 
             if (settings.FullScreen)
             {
@@ -53,7 +53,7 @@ namespace Ae.Client
             };
             Controls.Add(drawingSurface);
 
-            _engine = new SiEngine(drawingSurface, SiEngineExecutionMode.Play);
+            _engine = new AeEngine(drawingSurface, SiEngineExecutionMode.Play);
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
@@ -61,7 +61,7 @@ namespace Ae.Client
             statusStripDebug.Visible = false;
 #endif
 
-            _engine.OnShutdown += (SiEngine sender) =>
+            _engine.OnShutdown += (AeEngine sender) =>
             {   //If the engine is stopped, close the main form.
                 Invoke((MethodInvoker)delegate
                 {
@@ -72,7 +72,7 @@ namespace Ae.Client
             Shown += (object? sender, EventArgs e) => Task.Run(() =>
                 {
                     var loadingDetail = _engine.Sprites.TextBlocks.Add(_engine.Rendering.TextFormats.Loading,
-                        _engine.Rendering.Materials.Brushes.OrangeRed, new SiVector(100, 100), true);
+                        _engine.Rendering.Materials.Brushes.OrangeRed, new AeVector(100, 100), true);
 
                     void EngineStartupProgressCallback(string message, float progress)
                     {
@@ -119,8 +119,8 @@ namespace Ae.Client
 
                 highlightedSprites.Clear();
 
-                var sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One()).ToList();
-                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One()))
+                var sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, AeVector.One()).ToList();
+                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, AeVector.One()))
                 {
                     sprites.Add(_engine.Player.Sprite);
                 }
@@ -141,8 +141,8 @@ namespace Ae.Client
 
             _engine.Invoke(() =>
             {
-                sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, SiVector.One(), true).ToList();
-                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, SiVector.One()))
+                sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, AeVector.One(), true).ToList();
+                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, AeVector.One()))
                 {
                     //TODO: WHAT?!
                     sprites.Add(_engine.Player.Sprite);

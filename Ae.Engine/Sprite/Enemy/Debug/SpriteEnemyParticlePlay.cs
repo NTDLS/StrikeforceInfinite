@@ -8,7 +8,7 @@ namespace Ae.Engine.Sprite.Enemy.Debug
     /// <summary>
     /// Debugging enemy unit - a scary sight to see.
     /// </summary>
-    internal class SpriteEnemyParticlePlay(SiEngine engine, string assetKey)
+    internal class SpriteEnemyParticlePlay(AeEngine engine, string assetKey)
         : SpriteEnemy(engine, assetKey)
     {
         private SpriteParticle? _particle1;
@@ -20,51 +20,51 @@ namespace Ae.Engine.Sprite.Enemy.Debug
         {
             Throttle = 0;
 
-            _particle1 = Engine.Sprites.Particles.AddAt(SiVector.Zero(), new Size(5, 5));
-            _particle1.Pattern = Library.SiConstants.ParticleColorType.Solid;
+            _particle1 = Engine.Sprites.Particles.AddAt(AeVector.Zero(), new Size(5, 5));
+            _particle1.Pattern = Library.AeConstants.ParticleColorType.Solid;
             _particle1.Color = Engine.Rendering.Materials.Colors.Red;
-            _particle1.Shape = Library.SiConstants.ParticleShape.HollowEllipse;
+            _particle1.Shape = Library.AeConstants.ParticleShape.HollowEllipse;
             _particle1.Throttle = 0;
             _particle1.RotationSpeed = 0;
 
-            _particle2 = Engine.Sprites.Particles.AddAt(SiVector.Zero(), new Size(5, 5));
-            _particle2.Pattern = Library.SiConstants.ParticleColorType.Solid;
+            _particle2 = Engine.Sprites.Particles.AddAt(AeVector.Zero(), new Size(5, 5));
+            _particle2.Pattern = Library.AeConstants.ParticleColorType.Solid;
             _particle2.Color = Engine.Rendering.Materials.Colors.Green;
-            _particle2.Shape = Library.SiConstants.ParticleShape.FilledEllipse;
+            _particle2.Shape = Library.AeConstants.ParticleShape.FilledEllipse;
             _particle2.Throttle = 0;
             _particle2.RotationSpeed = 0;
 
-            _particle3 = Engine.Sprites.Particles.AddAt(SiVector.Zero(), new Size(10, 10));
-            _particle3.Pattern = Library.SiConstants.ParticleColorType.Solid;
+            _particle3 = Engine.Sprites.Particles.AddAt(AeVector.Zero(), new Size(10, 10));
+            _particle3.Pattern = Library.AeConstants.ParticleColorType.Solid;
             _particle3.Color = Engine.Rendering.Materials.Colors.Blue;
-            _particle3.Shape = Library.SiConstants.ParticleShape.HollowRectangle;
+            _particle3.Shape = Library.AeConstants.ParticleShape.HollowRectangle;
             _particle3.Throttle = 0;
             _particle3.RotationSpeed = 0.02f;
 
-            _particle4 = Engine.Sprites.Particles.AddAt(SiVector.Zero(), new Size(10, 10));
-            _particle4.Pattern = Library.SiConstants.ParticleColorType.Solid;
+            _particle4 = Engine.Sprites.Particles.AddAt(AeVector.Zero(), new Size(10, 10));
+            _particle4.Pattern = Library.AeConstants.ParticleColorType.Solid;
             _particle4.Color = Engine.Rendering.Materials.Colors.Cyan;
-            _particle4.Shape = Library.SiConstants.ParticleShape.Triangle;
+            _particle4.Shape = Library.AeConstants.ParticleShape.Triangle;
             _particle4.Throttle = 0;
             _particle4.RotationSpeed = 0.02f;
 
             base.OnMaterialized();
         }
 
-        public override void ApplyIntelligence(float epoch, SiVector cameraDisplacement)
+        public override void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
             Orientation.RadiansSigned += 0.05f; // = this.AngleToInSignedRadians(_engine.Player.Sprite);
 
-            var point1 = Orientation.RotatedBy(90) * new SiVector(50, 50);
+            var point1 = Orientation.RotatedBy(90) * new AeVector(50, 50);
             _particle1?.Location = Location + point1;
 
-            var point2 = Orientation.RotatedBy(-90) * new SiVector(50, 50);
+            var point2 = Orientation.RotatedBy(-90) * new AeVector(50, 50);
             _particle2?.Location = Location + point2;
 
-            var point3 = Orientation * new SiVector(50, 50);
+            var point3 = Orientation * new AeVector(50, 50);
             _particle3?.Location = Location + point3;
 
-            var point4 = Orientation * new SiVector(50, 50) * -1;
+            var point4 = Orientation * new AeVector(50, 50) * -1;
             _particle4?.Location = Location + point4;
 
             base.ApplyIntelligence(epoch, cameraDisplacement);

@@ -8,15 +8,15 @@ namespace Ae.Engine.TickController.VectoredTickController.Collidable
     public class EnemySpriteTickController
         : VectoredCollidableTickControllerBase<SpriteEnemy>
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
 
-        public EnemySpriteTickController(SiEngine engine, SpriteManager manager)
+        public EnemySpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
             _engine = engine;
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
+        public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
             foreach (var sprite in Visible())
             {

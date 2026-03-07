@@ -8,10 +8,10 @@ namespace Ae.Engine.TickController.UnvectoredTickController
     public class SituationTickController
         : UnvectoredTickControllerBase<SituationBase>
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         public SituationBase? CurrentSituation { get; private set; }
 
-        public SituationTickController(SiEngine engine)
+        public SituationTickController(AeEngine engine)
             : base(engine)
         {
             _engine = engine;
@@ -19,16 +19,16 @@ namespace Ae.Engine.TickController.UnvectoredTickController
 
         public void Select(string name)
         {
-            var situationTypes = SiReflection.GetSubClassesOf<SituationBase>();
+            var situationTypes = AeReflection.GetSubClassesOf<SituationBase>();
             var situationType = situationTypes.Where(o => o.Name == name).First();
-            CurrentSituation = SiReflection.CreateInstanceFromType<SituationBase>(situationType, new object[] { _engine, });
+            CurrentSituation = AeReflection.CreateInstanceFromType<SituationBase>(situationType, new object[] { _engine, });
         }
 
         public override void ExecuteWorldClockTick()
         {
             if (CurrentSituation?.CurrentLevel != null)
             {
-                if (CurrentSituation.CurrentLevel.State == SiConstants.SiLevelState.Ended)
+                if (CurrentSituation.CurrentLevel.State == AeConstants.SiLevelState.Ended)
                 {
                     AdvanceLevel();
                 }

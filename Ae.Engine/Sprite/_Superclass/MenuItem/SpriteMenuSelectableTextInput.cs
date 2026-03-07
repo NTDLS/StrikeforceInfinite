@@ -1,9 +1,9 @@
-﻿using SharpDX.Direct2D1;
-using SharpDX.DirectWrite;
-using Ae.Engine.Menu._Superclass;
+﻿using Ae.Engine.Menu._Superclass;
 using Ae.Engine.Sprite._Superclass.TextBlock;
 using Ae.Library.Mathematics;
-using static Ae.Library.SiConstants;
+using SharpDX.Direct2D1;
+using SharpDX.DirectWrite;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.MenuItem
 {
@@ -15,7 +15,7 @@ namespace Ae.Engine.Sprite._Superclass.MenuItem
     {
         public int CharacterLimit { get; set; }
 
-        public SpriteMenuSelectableTextInput(SiEngine engine, MenuBase menu, TextFormat format, SolidColorBrush color, SiVector location, int characterLimit = 100)
+        public SpriteMenuSelectableTextInput(AeEngine engine, MenuBase menu, TextFormat format, SolidColorBrush color, AeVector location, int characterLimit = 100)
             : base(engine, menu, format, color, location)
         {
             ItemType = SiMenuItemType.SelectableTextInput;

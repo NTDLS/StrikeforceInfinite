@@ -1,7 +1,7 @@
-﻿using SharpDX.Mathematics.Interop;
-using Ae.Engine.Sprite._Superclass.Interactive;
+﻿using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Library;
 using Ae.Library.Mathematics;
+using SharpDX.Mathematics.Interop;
 using System.Drawing;
 using System.Linq;
 
@@ -24,7 +24,7 @@ namespace Ae.Engine.KinematicBody
         /// <summary>
         /// The location of the render window when the prediction was made.
         /// </summary>
-        public SiVector RenderWindowPosition { get; private set; }
+        public AeVector RenderWindowPosition { get; private set; }
 
         /// <summary>
         /// Size of the referenced sprite.
@@ -34,12 +34,12 @@ namespace Ae.Engine.KinematicBody
         /// <summary>
         /// Predicted location after next call to ApplyMotion().
         /// </summary>
-        public SiVector PredictedLocation { get; private set; }
+        public AeVector PredictedLocation { get; private set; }
 
         /// <summary>
         /// Predicted direction after next call to ApplyMotion().
         /// </summary>
-        public SiVector PredictedDirection { get; private set; }
+        public AeVector PredictedDirection { get; private set; }
 
         /// <summary>
         /// Predicted bounds after next call to ApplyMotion().
@@ -62,15 +62,15 @@ namespace Ae.Engine.KinematicBody
         /// <summary>
         /// Predicted render location after next call to ApplyMotion().
         /// </summary>
-        public SiVector RenderLocation => PredictedLocation - RenderWindowPosition;
+        public AeVector RenderLocation => PredictedLocation - RenderWindowPosition;
 
-        public PredictedKinematicBody(SpriteInteractive sprite, SiVector renderWindowPosition, float epoch)
+        public PredictedKinematicBody(SpriteInteractive sprite, AeVector renderWindowPosition, float epoch)
         {
             RenderWindowPosition = renderWindowPosition;
 
             Sprite = sprite;
 
-            PredictedDirection = new SiVector(sprite.Orientation.RadiansSigned + sprite.RotationSpeed * epoch);
+            PredictedDirection = new AeVector(sprite.Orientation.RadiansSigned + sprite.RotationSpeed * epoch);
             PredictedLocation = sprite.Location + (sprite.MovementVector * epoch);
         }
 
@@ -89,22 +89,22 @@ namespace Ae.Engine.KinematicBody
         /// <param name="otherObject"></param>
         /// <returns></returns>
         public bool IntersectsSAT(PredictedKinematicBody otherObject)
-            => SiSeparatingAxisTheorem.IntersectsRotated(Bounds, PredictedDirection.RadiansSigned,
+            => AeSeparatingAxisTheorem.IntersectsRotated(Bounds, PredictedDirection.RadiansSigned,
                 otherObject.Bounds, otherObject.PredictedDirection.RadiansSigned);
 
         public RectangleF GetOverlapRectangleSAT(PredictedKinematicBody otherObject)
-            => SiSeparatingAxisTheorem.GetOverlapRectangle(Bounds, PredictedDirection.RadiansSigned,
+            => AeSeparatingAxisTheorem.GetOverlapRectangle(Bounds, PredictedDirection.RadiansSigned,
                 otherObject.Bounds, otherObject.PredictedDirection.RadiansSigned);
 
         public RectangleF GetIntersectionBoundingBox(PredictedKinematicBody otherObject)
-            => SiSutherlandHodgmanPolygonIntersection.GetIntersectionBoundingBox(Bounds, PredictedDirection.RadiansSigned,
+            => AeSutherlandHodgmanPolygonIntersection.GetIntersectionBoundingBox(Bounds, PredictedDirection.RadiansSigned,
                 otherObject.Bounds, otherObject.PredictedDirection.RadiansSigned);
 
         public PointF[] GetIntersectedPolygon(PredictedKinematicBody otherObject)
-            => SiSutherlandHodgmanPolygonIntersection.GetIntersectedPolygon(Bounds, PredictedDirection.RadiansSigned,
+            => AeSutherlandHodgmanPolygonIntersection.GetIntersectedPolygon(Bounds, PredictedDirection.RadiansSigned,
             otherObject.Bounds, otherObject.PredictedDirection.RadiansSigned);
 
         public PointF[] GetRotatedRectangleCorners()
-            => SiSeparatingAxisTheorem.GetRotatedRectangleCorners(Bounds, PredictedDirection.RadiansSigned).ToArray();
+            => AeSeparatingAxisTheorem.GetRotatedRectangleCorners(Bounds, PredictedDirection.RadiansSigned).ToArray();
     }
 }

@@ -1,9 +1,9 @@
-﻿using NTDLS.Helpers;
-using SharpDX.Mathematics.Interop;
-using Ae.Engine.Menu._Superclass;
+﻿using Ae.Engine.Menu._Superclass;
 using Ae.Engine.Sprite._Superclass.TextBlock;
 using Ae.Library.Mathematics;
 using Ae.Rendering;
+using NTDLS.Helpers;
+using SharpDX.Mathematics.Interop;
 using System.Linq;
 
 namespace Ae.Engine.Menu
@@ -16,7 +16,7 @@ namespace Ae.Engine.Menu
     {
         private readonly SpriteTextBlock _boxTitle;
 
-        public MenuJoinMultiplayer(SiEngine engine)
+        public MenuJoinMultiplayer(AeEngine engine)
             : base(engine)
         {
             engine.CommsManager.EnsureNotNull();
@@ -26,22 +26,22 @@ namespace Ae.Engine.Menu
             float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
-            var itemTitle = AddTitleItem(new SiVector(offsetX, offsetY), "Join Multiplayer");
+            var itemTitle = AddTitleItem(new AeVector(offsetX, offsetY), "Join Multiplayer");
             itemTitle.X -= itemTitle.Size.Width / 2;
             offsetY += itemTitle.Size.Height + 60;
 
-            var menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "GO_BACK", " Go Back ");
+            var menuItem = AddSelectableItem(new AeVector(offsetX, offsetY), "GO_BACK", " Go Back ");
             menuItem.Selected = true;
             menuItem.X -= menuItem.Size.Width / 2;
             offsetY += menuItem.Size.Height + 5;
 
             CenterHorizontally([
-                    AddSelectableItem(new SiVector(offsetX, offsetY), "PAGE_PREV", " Previous Page "),
-                    AddSelectableItem(new SiVector(offsetX, offsetY), "PAGE_NEXT", " Next Page ")
+                    AddSelectableItem(new AeVector(offsetX, offsetY), "PAGE_PREV", " Previous Page "),
+                    AddSelectableItem(new AeVector(offsetX, offsetY), "PAGE_NEXT", " Next Page ")
                 ], offsetY, 5);
             offsetY += menuItem.Size.Height + 30;
 
-            _boxTitle = AddTextBlock(new SiVector(offsetX, offsetY), "Lobbies");
+            _boxTitle = AddTextBlock(new AeVector(offsetX, offsetY), "Lobbies");
             _boxTitle.X = (_engine.Display.TotalCanvasSize.Width / 2) - (_boxTitle.Size.Width / 2);
             offsetY += _boxTitle.Size.Height + 20;
 
@@ -62,7 +62,7 @@ namespace Ae.Engine.Menu
 
             foreach (var lobby in dbg /*lobbies.Collection*/)
             {
-                menuItem = AddSelectableItem(new SiVector(offsetX, offsetY), "LOBBY_ITEM", $" {lobby.Name} ({lobby.CurrentPlayers}/{lobby.MaxPlayers}) ");
+                menuItem = AddSelectableItem(new AeVector(offsetX, offsetY), "LOBBY_ITEM", $" {lobby.Name} ({lobby.CurrentPlayers}/{lobby.MaxPlayers}) ");
                 menuItem.UserData = lobby;
                 menuItem.X -= menuItem.Size.Width / 2;
                 offsetY += menuItem.Size.Height + 5;
@@ -71,8 +71,8 @@ namespace Ae.Engine.Menu
             offsetY += 25;
 
             CenterHorizontally([
-                    AddSelectableItem(new SiVector(offsetX, offsetY), "PAGE_PREV", " Previous Page "),
-                    AddSelectableItem(new SiVector(offsetX, offsetY), "PAGE_NEXT", " Next Page ")
+                    AddSelectableItem(new AeVector(offsetX, offsetY), "PAGE_PREV", " Previous Page "),
+                    AddSelectableItem(new AeVector(offsetX, offsetY), "PAGE_NEXT", " Next Page ")
                 ], offsetY, 5);
             offsetY += menuItem.Size.Height + 5;
 

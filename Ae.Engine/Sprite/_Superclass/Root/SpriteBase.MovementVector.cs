@@ -26,27 +26,27 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public void RecalculateMovementVectorFromAngle(SiVector angle) => MovementVector = MakeMovementVectorFromAngle(angle);
+        public void RecalculateMovementVectorFromAngle(AeVector angle) => MovementVector = MakeMovementVectorFromAngle(angle);
 
         /// <summary>
         /// Returns the movement vector in the direction of the sprite taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public SiVector MakeMovementVectorFromOrientation() => Orientation * Speed * Throttle;
+        public AeVector MakeMovementVectorFromOrientation() => Orientation * Speed * Throttle;
 
         /// <summary>
         /// Returns the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public SiVector MakeMovementVectorFromAngle(float angleInRadians) => new SiVector(angleInRadians) * Speed * Throttle;
+        public AeVector MakeMovementVectorFromAngle(float angleInRadians) => new AeVector(angleInRadians) * Speed * Throttle;
 
         /// <summary>
         /// Returns the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public SiVector MakeMovementVectorFromAngle(SiVector angle) => angle.Normalize() * Speed * Throttle;
+        public AeVector MakeMovementVectorFromAngle(AeVector angle) => angle.Normalize() * Speed * Throttle;
     }
 }

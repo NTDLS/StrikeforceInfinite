@@ -17,12 +17,12 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         private readonly Lock _lock = new();
 
 
-        public StarSpriteTickController(SiEngine engine, SpriteManager manager)
+        public StarSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }
 
-        public void AddRandomStarAt(SiVector position)
+        public void AddRandomStarAt(AeVector position)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Star");
 
@@ -32,7 +32,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             });
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
+        public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
             if (Math.Abs(cameraDisplacement.X) > 1 || Math.Abs(cameraDisplacement.Y) > 1)
             {
@@ -42,40 +42,40 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
                 {
                     if (cameraDisplacement.X > 0)
                     {
-                        if (SiRandom.PercentChance(20))
+                        if (AeRandom.PercentChance(20))
                         {
-                            int x = SiRandom.Between(Engine.Display.TotalCanvasSize.Width - (int)cameraDisplacement.X, Engine.Display.TotalCanvasSize.Width);
-                            int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
-                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
+                            int x = AeRandom.Between(Engine.Display.TotalCanvasSize.Width - (int)cameraDisplacement.X, Engine.Display.TotalCanvasSize.Width);
+                            int y = AeRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
+                            AddRandomStarAt(new AeVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
 
                     }
                     else if (cameraDisplacement.X < 0)
                     {
-                        if (SiRandom.PercentChance(20))
+                        if (AeRandom.PercentChance(20))
                         {
-                            int x = SiRandom.Between(0, (int)-cameraDisplacement.X);
-                            int y = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
-                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
+                            int x = AeRandom.Between(0, (int)-cameraDisplacement.X);
+                            int y = AeRandom.Between(0, Engine.Display.TotalCanvasSize.Height);
+                            AddRandomStarAt(new AeVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
 
                     }
                     if (cameraDisplacement.Y > 0)
                     {
-                        if (SiRandom.PercentChance(20))
+                        if (AeRandom.PercentChance(20))
                         {
-                            int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
-                            int y = SiRandom.Between(Engine.Display.TotalCanvasSize.Height - (int)cameraDisplacement.Y, Engine.Display.TotalCanvasSize.Height);
-                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
+                            int x = AeRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
+                            int y = AeRandom.Between(Engine.Display.TotalCanvasSize.Height - (int)cameraDisplacement.Y, Engine.Display.TotalCanvasSize.Height);
+                            AddRandomStarAt(new AeVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
                     }
                     else if (cameraDisplacement.Y < 0)
                     {
-                        if (SiRandom.PercentChance(20))
+                        if (AeRandom.PercentChance(20))
                         {
-                            int x = SiRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
-                            int y = SiRandom.Between(0, (int)-cameraDisplacement.Y);
-                            AddRandomStarAt(new SiVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
+                            int x = AeRandom.Between(0, Engine.Display.TotalCanvasSize.Width);
+                            int y = AeRandom.Between(0, (int)-cameraDisplacement.Y);
+                            AddRandomStarAt(new AeVector(Engine.Display.CameraPosition.X + x, Engine.Display.CameraPosition.Y + y));
                         }
                     }
                 }

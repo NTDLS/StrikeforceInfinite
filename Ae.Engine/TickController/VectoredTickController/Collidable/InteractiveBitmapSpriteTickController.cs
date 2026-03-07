@@ -11,12 +11,12 @@ namespace Ae.Engine.TickController.VectoredTickController.Collidable
     public class InteractiveBitmapSpriteTickController
         : VectoredCollidableTickControllerBase<SpriteInteractiveBitmap>
     {
-        public InteractiveBitmapSpriteTickController(SiEngine engine, SpriteManager manager)
+        public InteractiveBitmapSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
+        public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
             foreach (var sprite in Visible())
             {

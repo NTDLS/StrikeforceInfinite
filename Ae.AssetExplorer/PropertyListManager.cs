@@ -4,20 +4,20 @@ using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Library;
 using Ae.Library.Metadata;
 using System.Reflection;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer
 {
     internal class PropertyListManager
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private readonly ListView _listView;
         private readonly Action<string, LoggingLevel?> _writeOutput;
         private readonly Action<SpriteBase, PropertyItem> _propertiesEdited;
         private SpriteBase? _lastSprite;
         private string? _lastAssetKey;
 
-        public PropertyListManager(ListView listView, SiEngine engine,
+        public PropertyListManager(ListView listView, AeEngine engine,
             Action<string, LoggingLevel?> writeOutput,
             Action<SpriteBase, PropertyItem> propertiesEdited)
         {
@@ -75,10 +75,10 @@ namespace Ae.AssetExplorer
             try
             {
                 var result = MessageBox.Show($"Are you sure you want to clear the value of '{item.PropertyName}'?",
-                    SiConstants.FriendlyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    AeConstants.FriendlyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result != DialogResult.Yes) return;
 
-                SiReflection.SetPropertyValue(item.MetaData, item.PropertyName, null);
+                AeReflection.SetPropertyValue(item.MetaData, item.PropertyName, null);
                 _engine.Assets.WriteAssetMetadata(_lastAssetKey!, item.MetaData);
                 _propertiesEdited(_lastSprite!, item);
                 PopulateProperties(_lastAssetKey, _lastSprite);
@@ -191,7 +191,7 @@ namespace Ae.AssetExplorer
                         }
                 }
 
-                SiReflection.SetPropertyValue(selectedItem.MetaData, selectedItem.PropertyName, newValue);
+                AeReflection.SetPropertyValue(selectedItem.MetaData, selectedItem.PropertyName, newValue);
 
                 _engine.Assets.WriteAssetMetadata(_lastAssetKey, selectedItem.MetaData);
 

@@ -1,8 +1,8 @@
-﻿using SharpDX.Direct2D1;
-using SharpDX.DirectWrite;
-using Ae.Engine.Menu._Superclass;
+﻿using Ae.Engine.Menu._Superclass;
 using Ae.Library.Mathematics;
-using static Ae.Library.SiConstants;
+using SharpDX.Direct2D1;
+using SharpDX.DirectWrite;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.TextBlock
 {
@@ -38,7 +38,7 @@ namespace Ae.Engine.Sprite._Superclass.TextBlock
 
         public SiMenuItemType ItemType { get; set; }
 
-        public SpriteMenuItem(SiEngine engine, MenuBase menu, TextFormat format, SolidColorBrush color, SiVector location)
+        public SpriteMenuItem(AeEngine engine, MenuBase menu, TextFormat format, SolidColorBrush color, AeVector location)
             : base(engine, format, color, location, true)
         {
             ItemType = SiMenuItemType.Undefined;

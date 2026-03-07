@@ -1,8 +1,8 @@
-﻿using NTDLS.DatagramMessaging;
-using NTDLS.ReliableMessaging;
-using Ae.Engine;
+﻿using Ae.Engine;
 using Ae.MpServer.MessageHandlers;
-using static Ae.Library.SiConstants;
+using NTDLS.DatagramMessaging;
+using NTDLS.ReliableMessaging;
+using static Ae.Library.AeConstants;
 
 namespace Ae.MpServer
 {
@@ -13,7 +13,7 @@ namespace Ae.MpServer
         internal SessionManager Sessions { get; private set; }
         internal LobbyManager Lobbies { get; private set; }
         internal EngineManager Engines { get; private set; }
-        internal SiEngine SharedEngine { get; private set; } = new(SiEngineExecutionMode.SharedEngineContent);
+        internal AeEngine SharedEngine { get; private set; } = new(SiEngineExecutionMode.SharedEngineContent);
 
         private readonly int _listenPort = 42719;
 

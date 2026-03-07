@@ -12,7 +12,7 @@ namespace Ae.Engine.Sprite.Enemy.Debug
     /// <summary>
     /// Debugging enemy unit - a scary sight to see.
     /// </summary>
-    internal class SpriteEnemyDebug(SiEngine engine, string assetKey)
+    internal class SpriteEnemyDebug(AeEngine engine, string assetKey)
         : SpriteEnemy(engine, assetKey)
     {
         private SpriteAttachment? _thrusterLeft;
@@ -20,7 +20,7 @@ namespace Ae.Engine.Sprite.Enemy.Debug
 
         public override void OnMaterialized()
         {
-            Orientation.Degrees = SiRandom.Between(0, 359);
+            Orientation.Degrees = AeRandom.Between(0, 359);
 
             AddAIController(new AILogisticsHostileEngagement(Engine, this, [Engine.Player.Sprite]));
 
@@ -51,24 +51,24 @@ namespace Ae.Engine.Sprite.Enemy.Debug
             }
         }
 
-        public override void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
-            Throttle = SiMath.Damp(Throttle, TargetThrottle, 0.01f, epoch);
+            Throttle = AeMath.Damp(Throttle, TargetThrottle, 0.01f, epoch);
 
-            var offset = Orientation * new SiVector(40f, 40f);
+            var offset = Orientation * new AeVector(40f, 40f);
 
             if (_thrusterLeft?.IsDeadOrExploded == true)
             {
-                Engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+                Engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, AeRenderingUtility.GetRandomHotColor(), new Size(1, 1));
             }
             if (_thrusterRight?.IsDeadOrExploded == true)
             {
-                Engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, SiRenderingUtility.GetRandomHotColor(), new Size(1, 1));
+                Engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, AeRenderingUtility.GetRandomHotColor(), new Size(1, 1));
             }
 
             if (HullHealth <= Metadata.Hull / 2)
             {
-                Engine.Sprites.Particles.ParticleBlastAt(this, SiRandom.Between(0, 1));
+                Engine.Sprites.Particles.ParticleBlastAt(this, AeRandom.Between(0, 1));
             }
 
             base.ApplyMotion(epoch, cameraDisplacement);

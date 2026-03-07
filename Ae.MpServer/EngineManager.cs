@@ -1,19 +1,19 @@
-﻿using NTDLS.Semaphore;
-using Ae.Engine;
+﻿using Ae.Engine;
 using Ae.MpClientToServerComms;
+using NTDLS.Semaphore;
 using System.Diagnostics.CodeAnalysis;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.MpServer
 {
     internal class EngineManager(ServerInstance mpServerInstance)
     {
         //Dictionary of LobbyId to EngineCore
-        private readonly OptimisticCriticalResource<Dictionary<Guid, SiEngine>> _collection = new();
+        private readonly OptimisticCriticalResource<Dictionary<Guid, AeEngine>> _collection = new();
 
-        public SiEngine Create(ManagedLobby lobby)
+        public AeEngine Create(ManagedLobby lobby)
         {
-            var engine = new SiEngine(lobby, mpServerInstance.SharedEngine, SiEngineExecutionMode.ServerHost);
+            var engine = new AeEngine(lobby, mpServerInstance.SharedEngine, SiEngineExecutionMode.ServerHost);
 
             _collection.Write(o =>
             {
@@ -24,7 +24,7 @@ namespace Ae.MpServer
             return engine;
         }
 
-        public bool TryGet(Guid lobbyId, [NotNullWhen(true)] out SiEngine? engine)
+        public bool TryGet(Guid lobbyId, [NotNullWhen(true)] out AeEngine? engine)
         {
             engine = _collection.Read(o =>
             {
@@ -34,7 +34,7 @@ namespace Ae.MpServer
             return engine != null;
         }
 
-        public SiEngine? Get(Guid lobbyId)
+        public AeEngine? Get(Guid lobbyId)
         {
             return _collection.Read(o =>
             {

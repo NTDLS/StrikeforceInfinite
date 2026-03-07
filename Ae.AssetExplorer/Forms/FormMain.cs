@@ -1,5 +1,3 @@
-using NTDLS.Helpers;
-using NTDLS.WinFormsHelpers;
 using Ae.AssetExplorer.Controls;
 using Ae.AssetExplorer.Forms;
 using Ae.Engine;
@@ -7,13 +5,15 @@ using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Animation;
 using Ae.Library;
 using Ae.Library.ExtensionMethods;
-using static Ae.Library.SiConstants;
+using NTDLS.Helpers;
+using NTDLS.WinFormsHelpers;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer
 {
     public partial class FormMain : Form
     {
-        private readonly SiEngine _engine;
+        private readonly AeEngine _engine;
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
         private readonly PropertyListManager _propertListManager;
@@ -30,7 +30,7 @@ namespace Ae.AssetExplorer
 
             pictureBoxPreview.MouseWheel += PictureBoxPreview_MouseWheel;
 
-            _engine = new SiEngine(pictureBoxPreview, SiConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
+            _engine = new AeEngine(pictureBoxPreview, AeConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
             _engine.Display.ZoomOverride = 0.1f; // Start zoomed out to show the whole sprite.
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
 
@@ -77,7 +77,7 @@ namespace Ae.AssetExplorer
             }
         }
 
-        private void EngineCore_OnInitializationComplete(SiEngine engine)
+        private void EngineCore_OnInitializationComplete(AeEngine engine)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace Ae.AssetExplorer
                 {
                     _firstShown = false;
 
-                    using var progressForm = new ProgressForm(SiConstants.FriendlyName, "Initializing engine...");
+                    using var progressForm = new ProgressForm(AeConstants.FriendlyName, "Initializing engine...");
 
                     progressForm.Execute(() =>
                     {
@@ -142,7 +142,7 @@ namespace Ae.AssetExplorer
         /// A tree node was double-clicked.
         /// </summary>
         /// <param name="node"></param>
-        private void LoadSelectedTreeNode(SiTreeNode node)
+        private void LoadSelectedTreeNode(AeTreeNode node)
         {
             try
             {
@@ -158,7 +158,7 @@ namespace Ae.AssetExplorer
         /// A tab page was selected.
         /// </summary>
         /// <param name="tab"></param>
-        private void TabSelected(SiTabPage tab)
+        private void TabSelected(AeTabPage tab)
         {
             try
             {

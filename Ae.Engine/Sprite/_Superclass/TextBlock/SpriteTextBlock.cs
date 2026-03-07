@@ -1,10 +1,10 @@
-﻿using SharpDX.Direct2D1;
+﻿using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Library.Mathematics;
+using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
-using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Library.Mathematics;
 using System.Drawing;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.TextBlock
 {
@@ -40,12 +40,12 @@ namespace Ae.Engine.Sprite._Superclass.TextBlock
 
         #endregion
 
-        public SpriteTextBlock(SiEngine engine, TextFormat format, SolidColorBrush color, SiVector location, bool isFixedPosition)
+        public SpriteTextBlock(AeEngine engine, TextFormat format, SolidColorBrush color, AeVector location, bool isFixedPosition)
             : base(engine, null)
         {
             RenderScaleOrder = SiRenderScaleOrder.PostScale;
             IsFixedPosition = isFixedPosition;
-            Location = new SiVector(location);
+            Location = new AeVector(location);
             Color = color;
 
             Format = format;

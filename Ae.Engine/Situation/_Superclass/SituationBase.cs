@@ -1,7 +1,7 @@
 ﻿using Ae.Engine.Level._Superclass;
 using Ae.Library;
 using System.Collections.Generic;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Situation._Superclass
 {
@@ -10,8 +10,8 @@ namespace Ae.Engine.Situation._Superclass
     /// </summary>
     public class SituationBase
     {
-        protected SiEngine _engine;
-        protected List<SiDefermentEvent> Events = new();
+        protected AeEngine _engine;
+        protected List<AeDefermentEvent> Events = new();
 
         public LevelBase? CurrentLevel { get; protected set; }
         private int _currentLevelIndex = 0;
@@ -22,7 +22,7 @@ namespace Ae.Engine.Situation._Superclass
 
         public List<LevelBase> Levels { get; protected set; } = new();
 
-        public SituationBase(SiEngine engine, string name, string description)
+        public SituationBase(AeEngine engine, string name, string description)
         {
             _engine = engine;
             Name = name;

@@ -1,26 +1,26 @@
-﻿using SharpDX;
-using Ae.Engine.Manager;
+﻿using Ae.Engine.Manager;
 using Ae.Engine.Sprite._Superclass;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.TickController._Superclass;
 using Ae.Library;
 using Ae.Library.Mathematics;
 using Ae.Rendering;
+using SharpDX;
 using System;
 using System.Drawing;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class ParticleSpriteTickController
         : VectoredTickControllerBase<Sprite._Superclass.SpriteParticle>
     {
-        public ParticleSpriteTickController(SiEngine engine, SpriteManager manager)
+        public ParticleSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
+        public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
             foreach (var particle in Visible())
             {
@@ -29,11 +29,11 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public void AddAt(SiVector location, Color4 color, int count, Size? size = null)
+        public void AddAt(AeVector location, Color4 color, int count, Size? size = null)
         {
             for (int i = 0; i < count; i++)
             {
-                AddAt(location + SiRandom.Between(-20, 20), color, size);
+                AddAt(location + AeRandom.Between(-20, 20), color, size);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         {
             for (int i = 0; i < count; i++)
             {
-                AddAt(sprite.Location + SiRandom.Between(-20, 20), color, size);
+                AddAt(sprite.Location + AeRandom.Between(-20, 20), color, size);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
-        public SpriteParticle AddAt(SiVector location, Color4 color, Size? size = null)
+        public SpriteParticle AddAt(AeVector location, Color4 color, Size? size = null)
         {
             var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1), color)
             {
@@ -62,7 +62,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
-        public SpriteParticle AddAt(SiVector location, Size? size = null)
+        public SpriteParticle AddAt(AeVector location, Size? size = null)
         {
             var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1))
             {
@@ -82,19 +82,19 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// </summary>
         /// <param name="maxParticleCount"></param>
         /// <param name="at"></param>
-        public void ParticleBlastAt(SiVector location, int maxParticleCount)
+        public void ParticleBlastAt(AeVector location, int maxParticleCount)
         {
-            for (int i = 0; i < SiRandom.Between(maxParticleCount / 2, maxParticleCount); i++)
+            for (int i = 0; i < AeRandom.Between(maxParticleCount / 2, maxParticleCount); i++)
             {
-                var particle = AddAt(location, new Size(SiRandom.Between(1, 2), SiRandom.Between(1, 2)));
+                var particle = AddAt(location, new Size(AeRandom.Between(1, 2), AeRandom.Between(1, 2)));
                 particle.Shape = ParticleShape.FilledEllipse;
                 particle.Pattern = ParticleColorType.Solid;
                 //particle.GradientStartColor = SiRenderingUtility.GetRandomHotColor();
                 //particle.GradientEndColor = SiRenderingUtility.GetRandomHotColor();
-                particle.Color = SiRenderingUtility.GetRandomHotColor();
+                particle.Color = AeRenderingUtility.GetRandomHotColor();
                 particle.CleanupMode = ParticleCleanupMode.FadeToBlack;
-                particle.FadeToBlackReductionAmount = SiRandom.Between(0.001f, 0.01f);
-                particle.Speed *= SiRandom.Between(1, 3.5f);
+                particle.FadeToBlackReductionAmount = AeRandom.Between(0.001f, 0.01f);
+                particle.Speed *= AeRandom.Between(1, 3.5f);
                 particle.VectorType = ParticleVectorType.Default;
             }
         }
@@ -118,7 +118,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// <param name="centerBias">Controls how tightly particles cluster around the center direction. A value of 1 emits particles uniformly
         /// within the cone; values greater than 1 bias particles more toward the center.</param>
         public void EmitConeAt(
-            SiVector nozzleWorldPos,
+            AeVector nozzleWorldPos,
             float centerDirectionDeg,   // direction the particles should travel
             float spreadDeg,            // half-angle of cone
             int count,
@@ -132,8 +132,8 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             for (int i = 0; i < count; i++)
             {
                 // Bias the angle toward 0 (centerline).
-                float t = (float)SiRandom.Between(0, 10000) / 10000f;  // 0..1
-                float signed = (float)SiRandom.Between(-10000, 10000) / 10000f; // -1..1
+                float t = (float)AeRandom.Between(0, 10000) / 10000f;  // 0..1
+                float signed = (float)AeRandom.Between(-10000, 10000) / 10000f; // -1..1
 
                 // bias: raise to power -> more weight near 0
                 float biased = MathF.Sign(signed) * MathF.Pow(MathF.Abs(signed), centerBias);
@@ -144,26 +144,26 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 
                 p.IsVisible = true;
                 p.VectorType = ParticleVectorType.FollowOrientation;
-                p.Orientation.Degrees = SiMath.WrapDegreesUnsigned(angle);
-                p.Speed = SiRandom.Between(minSpeed, maxSpeed);
+                p.Orientation.Degrees = AeMath.WrapDegreesUnsigned(angle);
+                p.Speed = AeRandom.Between(minSpeed, maxSpeed);
                 p.Shape = ParticleShape.FilledEllipse;
                 p.Pattern = ParticleColorType.Solid;
                 p.CleanupMode = ParticleCleanupMode.FadeToBlack;
-                p.FadeToBlackReductionAmount = SiRandom.Between(0.01f, 0.02f);
-                p.RotationSpeed = SiRandom.Between(-250f, 250f);
+                p.FadeToBlackReductionAmount = AeRandom.Between(0.01f, 0.02f);
+                p.RotationSpeed = AeRandom.Between(-250f, 250f);
             }
         }
 
         public void ParticleCloud(int particleCount, SpriteBase at)
             => ParticleCloud(particleCount, at.Location);
 
-        public void ParticleCloud(int particleCount, SiVector location)
+        public void ParticleCloud(int particleCount, AeVector location)
         {
             for (int i = 0; i < particleCount; i++)
             {
-                var particle = AddAt(location, SiRenderingUtility.GetRandomHotColor(), new Size(5, 5));
+                var particle = AddAt(location, AeRenderingUtility.GetRandomHotColor(), new Size(5, 5));
 
-                switch (SiRandom.Between(1, 3))
+                switch (AeRandom.Between(1, 3))
                 {
                     case 1:
                         particle.Shape = ParticleShape.Triangle;
@@ -178,10 +178,10 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 
                 particle.CleanupMode = ParticleCleanupMode.FadeToBlack;
                 particle.FadeToBlackReductionAmount = 0.001f;
-                particle.RotationSpeed = SiRandom.Between(-25f, 25f);
+                particle.RotationSpeed = AeRandom.Between(-25f, 25f);
                 particle.VectorType = ParticleVectorType.FollowOrientation;
-                particle.Orientation.Degrees = SiRandom.Between(0.0f, 359.0f);
-                particle.Speed = SiRandom.Between(20, 350f);
+                particle.Orientation.Degrees = AeRandom.Between(0.0f, 359.0f);
+                particle.Speed = AeRandom.Between(20, 350f);
             }
         }
     }

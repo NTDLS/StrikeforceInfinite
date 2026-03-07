@@ -63,9 +63,9 @@ namespace Ae.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SiSplash {
+        internal static System.Drawing.Bitmap AeSplash {
             get {
-                object obj = ResourceManager.GetObject("SiSplash", resourceCulture);
+                object obj = ResourceManager.GetObject("AeSplash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

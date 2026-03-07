@@ -10,7 +10,7 @@ namespace Ae.Engine.Situation
     internal class SituationDebuggingGalore
         : SituationBase
     {
-        public SituationDebuggingGalore(SiEngine engine)
+        public SituationDebuggingGalore(AeEngine engine)
             : base(engine,
                   "Debugging Galore",
                   "The situation is dire and the explosions here typically\r\n"

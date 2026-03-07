@@ -11,8 +11,8 @@ namespace Ae.Engine.Sprite._Superclass.Munition
     internal class SpriteProjectileMunition
         : SpriteMunition
     {
-        public SpriteProjectileMunition(SiEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
-             SpriteInteractive? lockedTarget, SiVector location)
+        public SpriteProjectileMunition(AeEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
+             SpriteInteractive? lockedTarget, AeVector location)
             : base(engine, weapon, firedFrom, assetKey, location)
         {
         }

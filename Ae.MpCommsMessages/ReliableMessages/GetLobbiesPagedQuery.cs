@@ -1,5 +1,5 @@
-﻿using NTDLS.ReliableMessaging;
-using Ae.MpCommsMessages.Models;
+﻿using Ae.MpCommsMessages.Models;
+using NTDLS.ReliableMessaging;
 
 namespace Ae.MpCommsMessages.ReliableMessages
 {

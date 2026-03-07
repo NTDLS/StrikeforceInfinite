@@ -16,22 +16,22 @@ namespace Ae.Engine.Sprite._Superclass._Root
     public partial class SpriteBase
         : ISprite
     {
-        protected SiEngine Engine { get; private set; }
+        protected AeEngine Engine { get; private set; }
 
         public SharpDX.Direct2D1.Bitmap? SpriteBitmap { get; private set; }
         private bool _readyForDeletion;
-        private SiVector _location = new();
+        private AeVector _location = new();
         private Size _size;
 
         private AssetMetadata? _metadata = null;
         public AssetMetadata Metadata => _metadata ?? throw new NullReferenceException();
 
-        public SpriteBase(SiEngine engine, string? assetKey)
+        public SpriteBase(AeEngine engine, string? assetKey)
         {
             Engine = engine;
 
             IsHighlighted = Engine.Settings.HighlightAllSprites;
-            Orientation = SiVector.One();
+            Orientation = AeVector.One();
 
             SetImageAndLoadMetadata(assetKey);
         }
@@ -52,14 +52,14 @@ namespace Ae.Engine.Sprite._Superclass._Root
 
             _metadata = asset.Metadata;
 
-            if (SiConstants.ImageTypes.Contains(asset.BaseType, StringComparer.OrdinalIgnoreCase))
+            if (AeConstants.ImageTypes.Contains(asset.BaseType, StringComparer.OrdinalIgnoreCase))
             {
                 SpriteBitmap = Engine.Assets.GetBitmap(assetKey);
                 _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
             }
 
             // Set standard variables here:
-            Speed = SiRandom.Between(Metadata.Speed, 0);
+            Speed = AeRandom.Between(Metadata.Speed, 0);
             Throttle = Metadata.Throttle ?? 1; //We assume a throttle of 100% becasuse this is a factor of speed - I dont want to require throttle when speed is specified.
             MaxThrottle = Metadata.MaxThrottle ?? 0;
 
@@ -77,13 +77,13 @@ namespace Ae.Engine.Sprite._Superclass._Root
                 Metadata.Attachments?.ForEach(attachment =>
                 {
                     if (attachment.AssetKey == null) throw new InvalidOperationException("AssetKey cannot be null");
-                    var locationRelativeToOwner = new SiVector(attachment.AttachmentPosition?.X ?? 0, attachment.AttachmentPosition?.Y ?? 0);
+                    var locationRelativeToOwner = new AeVector(attachment.AttachmentPosition?.X ?? 0, attachment.AttachmentPosition?.Y ?? 0);
                     interactive.AttachOfType(attachment.AssetKey, locationRelativeToOwner, (sprite) =>
                     {
                         //We take the orientation and position type of the attachment from the attachment section in the parent metadata if it is specified,
                         //   otherwise we use the default values set in the SpriteAttachment class.
-                        sprite.AttachmentOrientationType = attachment.AttachmentOrientationType ?? SiConstants.AttachmentOrientationType.Independent;
-                        sprite.AttachmentPositionType = attachment.AttachmentPositionType ?? SiConstants.AttachmentPositionType.Independent;
+                        sprite.AttachmentOrientationType = attachment.AttachmentOrientationType ?? AeConstants.AttachmentOrientationType.Independent;
+                        sprite.AttachmentPositionType = attachment.AttachmentPositionType ?? AeConstants.AttachmentPositionType.Independent;
                     });
                 });
             }
@@ -157,7 +157,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
         /// Moves the sprite based on its movement vector and the epoch.
         /// </summary>
         /// <param name="cameraDisplacement"></param>
-        public virtual void ApplyMotion(float epoch, SiVector cameraDisplacement)
+        public virtual void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             //Perform any auto-rotation.
             Orientation.Radians += RotationSpeed * epoch;

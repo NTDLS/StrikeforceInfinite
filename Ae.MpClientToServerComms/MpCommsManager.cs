@@ -1,7 +1,7 @@
-﻿using NTDLS.DatagramMessaging;
-using NTDLS.ReliableMessaging;
-using Ae.MpCommsMessages.DatagramMessages;
+﻿using Ae.MpCommsMessages.DatagramMessages;
 using Ae.MpCommsMessages.ReliableMessages;
+using NTDLS.DatagramMessaging;
+using NTDLS.ReliableMessaging;
 
 namespace Ae.MpClientToServerComms
 {

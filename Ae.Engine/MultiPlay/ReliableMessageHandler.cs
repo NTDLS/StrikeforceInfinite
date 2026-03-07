@@ -2,7 +2,7 @@
 
 namespace Ae.Engine.MultiPlay
 {
-    internal class ReliableMessageHandler(SiEngine engine)
+    internal class ReliableMessageHandler(AeEngine engine)
         : IRmMessageHandler
     {
     }

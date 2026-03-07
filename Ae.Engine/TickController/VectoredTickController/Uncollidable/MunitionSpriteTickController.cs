@@ -1,5 +1,4 @@
-﻿using NTDLS.DelegateThreadPooling;
-using Ae.Engine.Manager;
+﻿using Ae.Engine.Manager;
 using Ae.Engine.Sprite._Superclass;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Interactive;
@@ -7,10 +6,11 @@ using Ae.Engine.Sprite._Superclass.Munition;
 using Ae.Engine.TickController._Superclass;
 using Ae.Library;
 using Ae.Library.Mathematics;
+using NTDLS.DelegateThreadPooling;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
@@ -35,7 +35,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 
         private readonly DelegateThreadPool _munitionTraversalThreadPool;
 
-        public MunitionSpriteTickController(SiEngine engine, SpriteManager manager)
+        public MunitionSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
             _munitionTraversalThreadPool = new(new DelegateThreadPoolConfiguration()
@@ -50,7 +50,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             };
         }
 
-        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
+        public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
             var munitions = VisibleOfType<SpriteMunition>();
             if (munitions.Count() != 0)
@@ -73,7 +73,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
                         //Filter the hit candidates down to just those that are in the general area of the munition's movement this tick,
                         //  so we don't have to do expensive collision checks against objects that are nowhere near the munition.
                         var filteredCandidates = hitCandidates.Where(o
-                            => SiAxisAlignedBoundingBox.AabbOverlaps(munition.SweptAabbForMotion(epoch), o.GetAabbMinMaxRotated())).ToArray();
+                            => AeAxisAlignedBoundingBox.AabbOverlaps(munition.SweptAabbForMotion(epoch), o.GetAabbMinMaxRotated())).ToArray();
 
                         threadPoolTracker.Enqueue(() => //Enqueue an item into the thread pool.
                         {
@@ -94,7 +94,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
                 }
 
                 //Wait on all enqueued threads to complete.
-                if (SiUtility.TryAndIgnore(() => threadPoolTracker.WaitForCompletion()) == false)
+                if (AeUtility.TryAndIgnore(() => threadPoolTracker.WaitForCompletion()) == false)
                 {
                     return;
                 }
@@ -120,7 +120,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             SpriteManager.Insert(obj);
         }
 
-        public void Add(SpriteWeapon weapon, SiVector? location = null)
+        public void Add(SpriteWeapon weapon, AeVector? location = null)
         {
             var obj = weapon.CreateMunition(location);
             SpriteManager.Insert(obj);
@@ -133,7 +133,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// <param name="lockedTarget"></param>
         /// <param name="xyOffset"></param>
         /// <returns></returns>
-        public void AddLockedOnTo(SpriteWeapon weapon, SpriteInteractive lockedTarget, SiVector? location = null)
+        public void AddLockedOnTo(SpriteWeapon weapon, SpriteInteractive lockedTarget, AeVector? location = null)
         {
             var obj = weapon.CreateMunition(location, lockedTarget);
             SpriteManager.Insert(obj);

@@ -1,14 +1,14 @@
-﻿using NTDLS.Helpers;
-using Ae.Audio;
+﻿using Ae.Audio;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Animation;
 using Ae.Engine.Sprite._Superclass.Munition;
 using Ae.Library;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
+using NTDLS.Helpers;
 using System;
 using System.Linq;
-using static Ae.Library.SiConstants;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Interactive
 {
@@ -21,19 +21,19 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
     {
         public readonly string BoostResourceName = "SpritePlayerBase:Boost";
 
-        public SiAudioClip? AmmoLowSound { get; private set; }
-        public SiAudioClip? AmmoEmptySound { get; private set; }
-        public SiAudioClip? ShipEngineRoarSound { get; private set; }
-        public SiAudioClip? ShipEngineIdleSound { get; private set; }
-        public SiAudioClip? AllSystemsGoSound { get; private set; }
-        public SiAudioClip? ShieldFailSound { get; private set; }
-        public SiAudioClip? ShieldDownSound { get; private set; }
-        public SiAudioClip? ShieldMaxSound { get; private set; }
-        public SiAudioClip? ShieldNominalSound { get; private set; }
-        public SiAudioClip? SystemsFailingSound { get; private set; }
-        public SiAudioClip? HullBreachedSound { get; private set; }
-        public SiAudioClip? IntegrityLowSound { get; private set; }
-        public SiAudioClip? ShipEngineBoostSound { get; private set; }
+        public AeAudioClip? AmmoLowSound { get; private set; }
+        public AeAudioClip? AmmoEmptySound { get; private set; }
+        public AeAudioClip? ShipEngineRoarSound { get; private set; }
+        public AeAudioClip? ShipEngineIdleSound { get; private set; }
+        public AeAudioClip? AllSystemsGoSound { get; private set; }
+        public AeAudioClip? ShieldFailSound { get; private set; }
+        public AeAudioClip? ShieldDownSound { get; private set; }
+        public AeAudioClip? ShieldMaxSound { get; private set; }
+        public AeAudioClip? ShieldNominalSound { get; private set; }
+        public AeAudioClip? SystemsFailingSound { get; private set; }
+        public AeAudioClip? HullBreachedSound { get; private set; }
+        public AeAudioClip? IntegrityLowSound { get; private set; }
+        public AeAudioClip? ShipEngineBoostSound { get; private set; }
         public int MaxHullHealth { get; set; }
         public int MaxShieldPoints { get; set; }
         public SpriteAnimation? ThrusterAnimation { get; private set; }
@@ -41,12 +41,12 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         public SpriteWeapon? PrimaryWeapon { get; private set; }
         public SpriteWeapon? SelectedSecondaryWeapon { get; private set; }
 
-        public SpritePlayer(SiEngine engine)
+        public SpritePlayer(AeEngine engine)
             : base(engine, (string?)null)
         {
         }
 
-        public SpritePlayer(SiEngine engine, string assetKey)
+        public SpritePlayer(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             OnHit += SpritePlayer_OnHit;
@@ -66,7 +66,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
             ShipEngineIdleSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Idle");
             ShipEngineBoostSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Boost");
 
-            Orientation = SiVector.One();
+            Orientation = AeVector.One();
             Throttle = 0;
 
             RenewableResources.Create(BoostResourceName, Engine.Settings.MaxPlayerBoostAmount,
@@ -175,7 +175,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
 
         private void UpdateThrustAnimationPositions()
         {
-            var pointBehind = (Orientation * -1) * new SiVector(40, 40);
+            var pointBehind = (Orientation * -1) * new AeVector(40, 40);
 
             if (ThrusterAnimation != null)
             {
@@ -205,7 +205,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
             }
         }
 
-        public override bool TryMunitionHit(SpriteMunition munition, SiVector hitTestPosition)
+        public override bool TryMunitionHit(SpriteMunition munition, AeVector hitTestPosition)
         {
             if (munition.FiredFromType == SiFiredFromType.Enemy)
             {
@@ -248,7 +248,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
 
             var className = (string.IsNullOrEmpty(asset.ControllerName) ? asset.Metadata.Class : asset.ControllerName)
                 ?? throw new Exception($"The sprite {assetKey} does not have a class or controller defined in its metadata.");
-            var type = SiReflection.GetTypeByName(className);
+            var type = AeReflection.GetTypeByName(className);
 
             PrimaryWeapon = (SpriteWeapon)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
             PrimaryWeapon.MunitionQuantity = munitionCount;
