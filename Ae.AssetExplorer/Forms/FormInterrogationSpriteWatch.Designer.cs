@@ -31,11 +31,11 @@ namespace Ae.AssetExplorer.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormInterrogationSpriteWatch));
-            splitContainerBody = new System.Windows.Forms.SplitContainer();
+            splitContainerBody = new SplitContainer();
             listViewVariables = new BufferedListView();
-            columnHeaderName = new System.Windows.Forms.ColumnHeader();
-            columnHeaderValue = new System.Windows.Forms.ColumnHeader();
-            richTexLog = new System.Windows.Forms.RichTextBox();
+            columnHeaderName = new ColumnHeader();
+            columnHeaderValue = new ColumnHeader();
+            richTexLog = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)splitContainerBody).BeginInit();
             splitContainerBody.Panel1.SuspendLayout();
             splitContainerBody.Panel2.SuspendLayout();
@@ -44,8 +44,8 @@ namespace Ae.AssetExplorer.Forms
             // 
             // splitContainerBody
             // 
-            splitContainerBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainerBody.Location = new System.Drawing.Point(0, 0);
+            splitContainerBody.Dock = DockStyle.Fill;
+            splitContainerBody.Location = new Point(0, 0);
             splitContainerBody.Name = "splitContainerBody";
             // 
             // splitContainerBody.Panel1
@@ -55,21 +55,21 @@ namespace Ae.AssetExplorer.Forms
             // splitContainerBody.Panel2
             // 
             splitContainerBody.Panel2.Controls.Add(richTexLog);
-            splitContainerBody.Size = new System.Drawing.Size(659, 563);
+            splitContainerBody.Size = new Size(659, 563);
             splitContainerBody.SplitterDistance = 400;
             splitContainerBody.TabIndex = 1;
             // 
             // listViewVariables
             // 
-            listViewVariables.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeaderName, columnHeaderValue });
-            listViewVariables.Dock = System.Windows.Forms.DockStyle.Fill;
+            listViewVariables.Columns.AddRange(new ColumnHeader[] { columnHeaderName, columnHeaderValue });
+            listViewVariables.Dock = DockStyle.Fill;
             listViewVariables.GridLines = true;
-            listViewVariables.Location = new System.Drawing.Point(0, 0);
+            listViewVariables.Location = new Point(0, 0);
             listViewVariables.Name = "listViewVariables";
-            listViewVariables.Size = new System.Drawing.Size(400, 563);
+            listViewVariables.Size = new Size(400, 563);
             listViewVariables.TabIndex = 0;
             listViewVariables.UseCompatibleStateImageBehavior = false;
-            listViewVariables.View = System.Windows.Forms.View.Details;
+            listViewVariables.View = View.Details;
             // 
             // columnHeaderName
             // 
@@ -83,20 +83,20 @@ namespace Ae.AssetExplorer.Forms
             // 
             // richTexLog
             // 
-            richTexLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            richTexLog.Location = new System.Drawing.Point(0, 0);
+            richTexLog.Dock = DockStyle.Fill;
+            richTexLog.Location = new Point(0, 0);
             richTexLog.Name = "richTexLog";
-            richTexLog.Size = new System.Drawing.Size(255, 563);
+            richTexLog.Size = new Size(255, 563);
             richTexLog.TabIndex = 0;
             richTexLog.Text = "";
             // 
             // FormInterrogationSpriteWatch
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(659, 563);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(659, 563);
             Controls.Add(splitContainerBody);
-            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormInterrogationSpriteWatch";
             Text = "Axis Engine : Sprite Watch";
             splitContainerBody.Panel1.ResumeLayout(false);

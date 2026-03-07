@@ -38,7 +38,7 @@ namespace Ae.Client
             // 
             // buttonSettings
             // 
-            buttonSettings.Location = new System.Drawing.Point(288, 391);
+            buttonSettings.Location = new System.Drawing.Point(273, 223);
             buttonSettings.Name = "buttonSettings";
             buttonSettings.Size = new System.Drawing.Size(75, 23);
             buttonSettings.TabIndex = 2;
@@ -48,7 +48,7 @@ namespace Ae.Client
             // 
             // buttonStart
             // 
-            buttonStart.Location = new System.Drawing.Point(411, 391);
+            buttonStart.Location = new System.Drawing.Point(396, 223);
             buttonStart.Name = "buttonStart";
             buttonStart.Size = new System.Drawing.Size(75, 23);
             buttonStart.TabIndex = 0;
@@ -58,7 +58,7 @@ namespace Ae.Client
             // 
             // buttonExit
             // 
-            buttonExit.Location = new System.Drawing.Point(165, 391);
+            buttonExit.Location = new System.Drawing.Point(150, 223);
             buttonExit.Name = "buttonExit";
             buttonExit.Size = new System.Drawing.Size(75, 23);
             buttonExit.TabIndex = 1;
@@ -71,7 +71,7 @@ namespace Ae.Client
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackgroundImage = (System.Drawing.Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new System.Drawing.Size(650, 448);
+            ClientSize = new System.Drawing.Size(637, 249);
             ControlBox = false;
             Controls.Add(buttonSettings);
             Controls.Add(buttonStart);

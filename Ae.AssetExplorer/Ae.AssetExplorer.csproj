@@ -6,10 +6,15 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>AeIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Samples\CSharpTextSample.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="AeIcon.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormInterrogation));
-            splitContainerBody = new System.Windows.Forms.SplitContainer();
-            splitContainer1 = new System.Windows.Forms.SplitContainer();
-            richTextBoxOutput = new System.Windows.Forms.RichTextBox();
-            listViewCommands = new System.Windows.Forms.ListView();
-            columnHeaderName = new System.Windows.Forms.ColumnHeader();
-            columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
-            textBoxCommand = new System.Windows.Forms.TextBox();
-            buttonExecute = new System.Windows.Forms.Button();
+            splitContainerBody = new SplitContainer();
+            splitContainer1 = new SplitContainer();
+            richTextBoxOutput = new RichTextBox();
+            listViewCommands = new ListView();
+            columnHeaderName = new ColumnHeader();
+            columnHeaderDescription = new ColumnHeader();
+            textBoxCommand = new TextBox();
+            buttonExecute = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainerBody).BeginInit();
             splitContainerBody.Panel1.SuspendLayout();
             splitContainerBody.Panel2.SuspendLayout();
@@ -49,12 +49,12 @@
             // 
             // splitContainerBody
             // 
-            splitContainerBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainerBody.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            splitContainerBody.Dock = DockStyle.Fill;
+            splitContainerBody.FixedPanel = FixedPanel.Panel2;
             splitContainerBody.IsSplitterFixed = true;
-            splitContainerBody.Location = new System.Drawing.Point(0, 0);
+            splitContainerBody.Location = new Point(0, 0);
             splitContainerBody.Name = "splitContainerBody";
-            splitContainerBody.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            splitContainerBody.Orientation = Orientation.Horizontal;
             // 
             // splitContainerBody.Panel1
             // 
@@ -64,14 +64,14 @@
             // 
             splitContainerBody.Panel2.Controls.Add(textBoxCommand);
             splitContainerBody.Panel2.Controls.Add(buttonExecute);
-            splitContainerBody.Size = new System.Drawing.Size(1039, 563);
+            splitContainerBody.Size = new Size(1039, 563);
             splitContainerBody.SplitterDistance = 532;
             splitContainerBody.TabIndex = 0;
             // 
             // splitContainer1
             // 
-            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainer1.Location = new System.Drawing.Point(0, 0);
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -81,34 +81,34 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(listViewCommands);
-            splitContainer1.Size = new System.Drawing.Size(1039, 532);
+            splitContainer1.Size = new Size(1039, 532);
             splitContainer1.SplitterDistance = 683;
             splitContainer1.TabIndex = 1;
             // 
             // richTextBoxOutput
             // 
-            richTextBoxOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            richTextBoxOutput.Location = new System.Drawing.Point(0, 0);
+            richTextBoxOutput.Dock = DockStyle.Fill;
+            richTextBoxOutput.Location = new Point(0, 0);
             richTextBoxOutput.Name = "richTextBoxOutput";
-            richTextBoxOutput.Size = new System.Drawing.Size(683, 532);
+            richTextBoxOutput.Size = new Size(683, 532);
             richTextBoxOutput.TabIndex = 0;
             richTextBoxOutput.Text = "";
             // 
             // listViewCommands
             // 
-            listViewCommands.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            listViewCommands.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeaderName, columnHeaderDescription });
-            listViewCommands.Dock = System.Windows.Forms.DockStyle.Fill;
+            listViewCommands.Activation = ItemActivation.OneClick;
+            listViewCommands.Columns.AddRange(new ColumnHeader[] { columnHeaderName, columnHeaderDescription });
+            listViewCommands.Dock = DockStyle.Fill;
             listViewCommands.FullRowSelect = true;
             listViewCommands.GridLines = true;
             listViewCommands.HideSelection = true;
-            listViewCommands.Location = new System.Drawing.Point(0, 0);
+            listViewCommands.Location = new Point(0, 0);
             listViewCommands.Name = "listViewCommands";
             listViewCommands.ShowItemToolTips = true;
-            listViewCommands.Size = new System.Drawing.Size(352, 532);
+            listViewCommands.Size = new Size(352, 532);
             listViewCommands.TabIndex = 0;
             listViewCommands.UseCompatibleStateImageBehavior = false;
-            listViewCommands.View = System.Windows.Forms.View.Details;
+            listViewCommands.View = View.Details;
             // 
             // columnHeaderName
             // 
@@ -123,18 +123,18 @@
             // textBoxCommand
             // 
             textBoxCommand.AcceptsTab = true;
-            textBoxCommand.Dock = System.Windows.Forms.DockStyle.Fill;
-            textBoxCommand.Location = new System.Drawing.Point(0, 0);
+            textBoxCommand.Dock = DockStyle.Fill;
+            textBoxCommand.Location = new Point(0, 0);
             textBoxCommand.Name = "textBoxCommand";
-            textBoxCommand.Size = new System.Drawing.Size(964, 23);
+            textBoxCommand.Size = new Size(964, 23);
             textBoxCommand.TabIndex = 2;
             // 
             // buttonExecute
             // 
-            buttonExecute.Dock = System.Windows.Forms.DockStyle.Right;
-            buttonExecute.Location = new System.Drawing.Point(964, 0);
+            buttonExecute.Dock = DockStyle.Right;
+            buttonExecute.Location = new Point(964, 0);
             buttonExecute.Name = "buttonExecute";
-            buttonExecute.Size = new System.Drawing.Size(75, 27);
+            buttonExecute.Size = new Size(75, 27);
             buttonExecute.TabIndex = 1;
             buttonExecute.Text = "Execute";
             buttonExecute.UseVisualStyleBackColor = true;
@@ -142,11 +142,11 @@
             // 
             // FormInterrogation
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1039, 563);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1039, 563);
             Controls.Add(splitContainerBody);
-            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormInterrogation";
             Text = "Axis Engine : Interrogation";
             Load += FormInterrogation_Load;

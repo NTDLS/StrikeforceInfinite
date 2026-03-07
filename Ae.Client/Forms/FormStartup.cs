@@ -47,13 +47,13 @@ namespace Ae.Client
             TransparencyKey = Color.FromArgb(12, 10, 12);
             BackColor = TransparencyKey;
 
-            buttonExit.Top = Height - (buttonExit.Height + 25);
-            buttonSettings.Top = Height - (buttonSettings.Height + 25);
-            buttonStart.Top = Height - (buttonStart.Height + 25);
+            //buttonExit.Top = Height - (buttonExit.Height + 25);
+            //buttonSettings.Top = Height - (buttonSettings.Height + 25);
+            //buttonStart.Top = Height - (buttonStart.Height + 25);
 
-            buttonSettings.Left = (Width / 2) - (buttonSettings.Width / 2);
-            buttonExit.Left = buttonSettings.Left - (buttonExit.Width + 25);
-            buttonStart.Left = buttonSettings.Left + (buttonStart.Width + 25);
+            //buttonSettings.Left = (Width / 2) - (buttonSettings.Width / 2);
+            //buttonExit.Left = buttonSettings.Left - (buttonExit.Width + 25);
+            //buttonStart.Left = buttonSettings.Left + (buttonStart.Width + 25);
 
             MouseDown += new MouseEventHandler(Form_MouseDown);
             Shown += FormStartup_Shown;
