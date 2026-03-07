@@ -1,0 +1,45 @@
+﻿using Ae.Engine.Manager;
+using Ae.Engine.Sprite._Superclass.Interactive;
+using Ae.Engine.TickController._Superclass;
+using Ae.Library;
+using Ae.Library.Mathematics;
+using System.Linq;
+
+namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
+{
+    public class AttachmentSpriteTickController
+        : VectoredTickControllerBase<SpriteAttachment>
+    {
+        public AttachmentSpriteTickController(SiEngine engine, SpriteManager manager)
+            : base(engine, manager)
+        {
+        }
+
+        public override void ExecuteWorldClockTick(float epoch, SiVector cameraDisplacement)
+        {
+            if (Engine.ExecutionMode == SiConstants.SiEngineExecutionMode.Edit)
+            {
+                return;
+            }
+
+            foreach (var sprite in Visible().Where(o => o.IsDeadOrExploded == false))
+            {
+                sprite.ApplyMotion(epoch, cameraDisplacement);
+                sprite.ApplyIntelligence(epoch, cameraDisplacement);
+
+                Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
+            }
+        }
+
+        public SpriteAttachment AddAttachment(string assetKey, SpriteInteractive owner, SiVector locationRelativeToOwner)
+        {
+            var sprite = Engine.Sprites.Add<SpriteAttachment>(assetKey, (o) =>
+            {
+                o.Z = owner.Z + 1; //We want to make sure these go on top of the parent.
+                o.OwnerUID = owner.UID;
+                o.LocationRelativeToOwner = locationRelativeToOwner.Clone();
+            });
+            return sprite;
+        }
+    }
+}

@@ -1,0 +1,10 @@
+﻿namespace Ae.Engine.Persistent
+{
+    public class PlayerStats
+    {
+        /// <summary>
+        /// Total number of "points" the player has accumulated.
+        /// </summary>
+        public int Bounty { get; set; }
+    }
+}

@@ -1,0 +1,87 @@
+﻿using Ae.Engine.Manager;
+using Ae.Engine.Sprite._Superclass;
+using Ae.Engine.Sprite._Superclass.TextBlock;
+using Ae.Engine.TickController._Superclass;
+using Ae.Library.Mathematics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Ae.Engine.TickController.UnvectoredTickController
+{
+    public class RadarPositionsSpriteTickController
+        : UnvectoredTickControllerBase<SpriteRadarPositionTextBlock>
+    {
+        private readonly SpriteManager _manager;
+
+        public RadarPositionsSpriteTickController(SiEngine engine, SpriteManager manager)
+            : base(engine)
+        {
+            _manager = manager;
+        }
+
+        public override void ExecuteWorldClockTick()
+        {
+            var overlappingIndicators = new Func<List<List<SpriteRadarPositionTextBlock>>>(() =>
+            {
+                var accountedFor = new HashSet<SpriteRadarPositionTextBlock>();
+                var groups = new List<List<SpriteRadarPositionTextBlock>>();
+                var radarTexts = Engine.Sprites.VisibleOfType<SpriteRadarPositionTextBlock>();
+
+                foreach (var parent in radarTexts)
+                {
+                    if (accountedFor.Contains(parent) == false)
+                    {
+                        var group = new List<SpriteRadarPositionTextBlock>();
+                        foreach (var child in radarTexts)
+                        {
+                            if (accountedFor.Contains(child) == false)
+                            {
+                                if (parent != child && parent.IntersectsAABB(child, new SiVector(100, 100)))
+                                {
+                                    group.Add(child);
+                                    accountedFor.Add(child);
+                                }
+                            }
+                        }
+                        if (group.Count > 0)
+                        {
+                            group.Add(parent);
+                            accountedFor.Add(parent);
+                            groups.Add(group);
+                        }
+                    }
+                }
+                return groups;
+            })();
+
+            if (overlappingIndicators.Count > 0)
+            {
+                foreach (var group in overlappingIndicators)
+                {
+                    var min = group.Min(o => o.DistanceValue);
+                    var max = group.Min(o => o.DistanceValue);
+
+                    foreach (var member in group)
+                    {
+                        member.IsVisible = false;
+                    }
+
+                    group[0].Text = min.ToString("#,#") + "-" + max.ToString("#,#");
+                    group[0].IsVisible = true;
+                }
+            }
+        }
+
+        #region Factories.
+
+        public SpriteRadarPositionIndicator Add()
+        {
+            var obj = new SpriteRadarPositionIndicator(Engine, "Sprites/Radar Indicator/16x16");
+            _manager.Insert(obj);
+            return obj;
+        }
+
+        #endregion
+    }
+}

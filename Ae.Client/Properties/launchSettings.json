@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Ae.Client": {
+      "commandName": "Project",
+      "commandLineArgs": "/nosplash"
+    }
+  }
+}

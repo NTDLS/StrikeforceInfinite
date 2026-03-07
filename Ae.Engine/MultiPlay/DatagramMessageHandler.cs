@@ -1,0 +1,50 @@
+﻿using NTDLS.DatagramMessaging;
+using Ae.MpCommsMessages.DatagramMessages.SpriteActions;
+using System;
+
+namespace Ae.Engine.MultiPlay
+{
+    internal class DatagramMessageHandler(SiEngine engine)
+        : IDmDatagramHandler
+    {
+        public void SiSpriteActionDelete(DmContext context, SiSpriteActionDelete payload)
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public void SiSpriteActionExplode(DmContext context, SiSpriteActionExplode payload)
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public void SiSpriteActionSpawn(DmContext context, SiSpriteActionSpawn payload)
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public void SiSpriteActionVector(DmContext context, SiSpriteActionMotion payload)
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+    }
+}
