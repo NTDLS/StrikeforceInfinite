@@ -10,7 +10,7 @@ namespace Si.Engine.Situation._Superclass
     /// </summary>
     public class SituationBase
     {
-        protected EngineCore _engine;
+        protected SiEngine _engine;
         protected List<SiDefermentEvent> Events = new();
 
         public LevelBase? CurrentLevel { get; protected set; }
@@ -22,7 +22,7 @@ namespace Si.Engine.Situation._Superclass
 
         public List<LevelBase> Levels { get; protected set; } = new();
 
-        public SituationBase(EngineCore engine, string name, string description)
+        public SituationBase(SiEngine engine, string name, string description)
         {
             _engine = engine;
             Name = name;

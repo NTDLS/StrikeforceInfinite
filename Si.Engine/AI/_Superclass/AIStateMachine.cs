@@ -15,7 +15,7 @@ namespace Si.Engine.AI._Superclass
         /// <summary>
         /// Reference to the engine core class.
         /// </summary>
-        public EngineCore Engine { get; private set; }
+        public SiEngine Engine { get; private set; }
 
         /// <summary>
         /// Reference to the sprite that is being controlled by this AI model.
@@ -58,7 +58,7 @@ namespace Si.Engine.AI._Superclass
         /// <param name="engine">Reference to the engine core class.</param>
         /// <param name="owner">Reference to the sprite that is being controlled by this AI model.</param>
         /// <param name="observedObject">Reference to the object that the sprite is observing (probably the player, but can be other objects).</param>
-        public AIStateMachine(EngineCore engine, SpriteInteractive owner, List<SpriteBase>? observedObjects = null)
+        public AIStateMachine(SiEngine engine, SpriteInteractive owner, List<SpriteBase>? observedObjects = null)
         {
             Engine = engine;
             Owner = owner;

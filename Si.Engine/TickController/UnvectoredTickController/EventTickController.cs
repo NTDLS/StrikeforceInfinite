@@ -7,7 +7,8 @@ using static Si.Library.SiDefermentEvent;
 
 namespace Si.Engine.TickController.UnvectoredTickController
 {
-    public class EventTickController : UnvectoredTickControllerBase<SiDefermentEvent>
+    public class EventTickController
+        : UnvectoredTickControllerBase<SiDefermentEvent>
     {
         private readonly PessimisticCriticalResource<List<SiDefermentEvent>> _collection = new();
 
@@ -18,7 +19,7 @@ namespace Si.Engine.TickController.UnvectoredTickController
         /// <param name="parameter">An object passed by the user code</param>
         public delegate void SiDefermentSimpleExecuteCallbackT<T>(T parameter);
 
-        public EventTickController(EngineCore engine)
+        public EventTickController(SiEngine engine)
             : base(engine)
         {
         }

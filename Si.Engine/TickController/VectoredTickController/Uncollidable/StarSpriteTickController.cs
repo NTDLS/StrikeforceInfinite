@@ -17,7 +17,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
         private readonly Lock _lock = new();
 
 
-        public StarSpriteTickController(EngineCore engine, SpriteManager manager)
+        public StarSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }

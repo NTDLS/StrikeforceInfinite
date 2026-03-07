@@ -1,6 +1,7 @@
 ﻿using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 using static Si.Library.SiConstants;
 
@@ -9,10 +10,11 @@ namespace Si.Engine.Sprite._Superclass.Munition
     /// <summary>
     /// Seeking munitions do not lock on to targets, but they will follow a target withing some defined parameters.
     /// </summary>
+    [AssetCategory("Munition - Seeking Type", "", true)]
     internal class SpriteSeekingMunition
         : SpriteMunition
     {
-        public SpriteSeekingMunition(EngineCore engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
+        public SpriteSeekingMunition(SiEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
              SpriteInteractive? lockedTarget, SiVector location)
             : base(engine, weapon, firedFrom, assetKey, location)
         {

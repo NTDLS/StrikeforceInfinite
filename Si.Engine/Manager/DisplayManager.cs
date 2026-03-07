@@ -13,7 +13,7 @@ namespace Si.Engine.Manager
     /// </summary>
     public class DisplayManager
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
 
         public SiFrameCounter FrameCounter { get; private set; } = new();
 
@@ -178,7 +178,7 @@ namespace Si.Engine.Manager
             }
         }
 
-        public DisplayManager(EngineCore engine, Control drawingSurface, Size? sizeOverride = null)
+        public DisplayManager(SiEngine engine, Control drawingSurface, Size? sizeOverride = null)
         {
             _engine = engine;
             DrawingSurface = drawingSurface;

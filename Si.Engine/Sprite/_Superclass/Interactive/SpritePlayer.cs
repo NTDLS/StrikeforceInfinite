@@ -5,6 +5,7 @@ using Si.Engine.Sprite._Superclass.Animation;
 using Si.Engine.Sprite._Superclass.Munition;
 using Si.Library;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 using System.Linq;
 using static Si.Library.SiConstants;
@@ -14,6 +15,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
     /// <summary>
     /// The player base is a sub-class of the ship base. It is only used by the Player and as a model for menu selections.
     /// </summary>
+    [AssetCategory("Bitmap", "", true)]
     public class SpritePlayer
         : SpriteInteractive
     {
@@ -39,12 +41,12 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         public SpriteWeapon? PrimaryWeapon { get; private set; }
         public SpriteWeapon? SelectedSecondaryWeapon { get; private set; }
 
-        public SpritePlayer(EngineCore engine)
+        public SpritePlayer(SiEngine engine)
             : base(engine, (string?)null)
         {
         }
 
-        public SpritePlayer(EngineCore engine, string assetKey)
+        public SpritePlayer(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             OnHit += SpritePlayer_OnHit;

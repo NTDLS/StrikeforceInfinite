@@ -9,11 +9,12 @@ using System.Linq;
 
 namespace Si.Engine.TickController.UnvectoredTickController
 {
-    public class RadarPositionsSpriteTickController : UnvectoredTickControllerBase<SpriteRadarPositionTextBlock>
+    public class RadarPositionsSpriteTickController
+        : UnvectoredTickControllerBase<SpriteRadarPositionTextBlock>
     {
         private readonly SpriteManager _manager;
 
-        public RadarPositionsSpriteTickController(EngineCore engine, SpriteManager manager)
+        public RadarPositionsSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine)
         {
             _manager = manager;

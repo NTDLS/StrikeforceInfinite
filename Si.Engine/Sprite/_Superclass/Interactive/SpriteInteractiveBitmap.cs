@@ -1,5 +1,6 @@
 ﻿using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using Si.Rendering;
 using System;
 using static Si.Library.SiConstants;
@@ -9,6 +10,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
     /// <summary>
     /// These are generic collidable, interactive bitmap sprites. They can take damage and even shoot back.
     /// </summary>
+    [AssetCategory("Interactive Bitmap", "", true)]
     public class SpriteInteractiveBitmap
         : SpriteInteractive
     {
@@ -29,12 +31,12 @@ namespace Si.Engine.Sprite._Superclass.Interactive
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteInteractiveBitmap(EngineCore engine, string assetKey)
+        public SpriteInteractiveBitmap(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
         }
 
-        public SpriteInteractiveBitmap(EngineCore engine, SharpDX.Direct2D1.Bitmap bitmap)
+        public SpriteInteractiveBitmap(SiEngine engine, SharpDX.Direct2D1.Bitmap bitmap)
             : base(engine, bitmap)
         {
         }

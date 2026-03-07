@@ -12,7 +12,7 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// <summary>
     /// Debugging enemy unit - a scary sight to see.
     /// </summary>
-    internal class SpriteEnemyDebug(EngineCore engine, string assetKey)
+    internal class SpriteEnemyDebug(SiEngine engine, string assetKey)
         : SpriteEnemy(engine, assetKey)
     {
         private SpriteAttachment? _thrusterLeft;

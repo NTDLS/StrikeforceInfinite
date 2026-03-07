@@ -7,7 +7,7 @@ namespace Si.Engine.TickController._Superclass
     /// </summary>
     public class PlayerSpriteTickControllerBase<T> : ITickController<T> where T : class
     {
-        public EngineCore Engine { get; private set; }
+        public SiEngine Engine { get; private set; }
 
         /// <summary>
         /// Moves the player and returns the direction and amount of movement which was applied.
@@ -15,7 +15,7 @@ namespace Si.Engine.TickController._Superclass
         /// <returns>Returns the direction and amount of movement that the player has moved in the current tick.</returns>
         public virtual SiVector ExecuteWorldClockTick(float epochTime) => new();
 
-        public PlayerSpriteTickControllerBase(EngineCore engine)
+        public PlayerSpriteTickControllerBase(SiEngine engine)
         {
             Engine = engine;
         }

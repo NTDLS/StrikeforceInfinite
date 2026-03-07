@@ -10,18 +10,18 @@ namespace Si.AssetExplorer
 {
     internal class PropertyListManager
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly ListView _listView;
         private readonly Action<string, LoggingLevel?> _writeOutput;
         private readonly Action<SpriteBase, PropertyItem> _propertiesEdited;
         private SpriteBase? _lastSprite;
         private string? _lastAssetKey;
 
-        public PropertyListManager(ListView listView, EngineCore engineCore,
+        public PropertyListManager(ListView listView, SiEngine engine,
             Action<string, LoggingLevel?> writeOutput,
             Action<SpriteBase, PropertyItem> propertiesEdited)
         {
-            _engine = engineCore;
+            _engine = engine;
             _listView = listView;
             _writeOutput = writeOutput;
             _propertiesEdited = propertiesEdited;

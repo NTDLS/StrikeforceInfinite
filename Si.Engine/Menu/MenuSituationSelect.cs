@@ -10,11 +10,12 @@ namespace Si.Engine.Menu
     /// <summary>
     /// The menu that is displayed at game start to allow the player to select a situation.
     /// </summary>
-    internal class MenuSituationSelect : MenuBase
+    internal class MenuSituationSelect
+        : MenuBase
     {
         private readonly SpriteMenuItem _situationBlurb;
 
-        public MenuSituationSelect(EngineCore engine)
+        public MenuSituationSelect(SiEngine engine)
             : base(engine)
         {
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();

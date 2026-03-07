@@ -51,7 +51,7 @@ namespace Si.Engine.AI.Logistics
         }
 
         public AILogisticsHostileEngagement2(
-            EngineCore engine,
+            SiEngine engine,
             SpriteShip owner,
             SpriteBase observedObject,
             ModelParameters parameters)

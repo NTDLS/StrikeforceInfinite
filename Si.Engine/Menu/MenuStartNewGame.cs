@@ -8,9 +8,10 @@ namespace Si.Engine.Menu
     /// The menu that is shows when the game is first started.
     /// Allows the player to select single player, join multiplayer or host multiplayer.
     /// </summary>
-    internal class MenuStartNewGame : MenuBase
+    internal class MenuStartNewGame
+        : MenuBase
     {
-        public MenuStartNewGame(EngineCore engine)
+        public MenuStartNewGame(SiEngine engine)
             : base(engine)
         {
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();

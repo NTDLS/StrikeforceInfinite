@@ -7,11 +7,11 @@
     public class UnvectoredTickControllerBase<T>
         : ITickController<T> where T : class
     {
-        public EngineCore Engine { get; private set; }
+        public SiEngine Engine { get; private set; }
 
         public virtual void ExecuteWorldClockTick() { }
 
-        public UnvectoredTickControllerBase(EngineCore engine)
+        public UnvectoredTickControllerBase(SiEngine engine)
         {
             Engine = engine;
         }

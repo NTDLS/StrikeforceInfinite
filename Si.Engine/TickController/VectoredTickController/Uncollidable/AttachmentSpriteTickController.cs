@@ -7,9 +7,10 @@ using System.Linq;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class AttachmentSpriteTickController : VectoredTickControllerBase<SpriteAttachment>
+    public class AttachmentSpriteTickController
+        : VectoredTickControllerBase<SpriteAttachment>
     {
-        public AttachmentSpriteTickController(EngineCore engine, SpriteManager manager)
+        public AttachmentSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }

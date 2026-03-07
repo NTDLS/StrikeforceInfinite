@@ -8,14 +8,15 @@ using System.Linq;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class TextBlocksSpriteTickController : VectoredTickControllerBase<SpriteTextBlock>
+    public class TextBlocksSpriteTickController
+        : VectoredTickControllerBase<SpriteTextBlock>
     {
         public SpriteTextBlock PlayerStatsText { get; private set; }
         public SpriteTextBlock DebugText { get; private set; }
         public SpriteTextBlock PausedText { get; private set; }
 
 
-        public TextBlocksSpriteTickController(EngineCore engine, SpriteManager manager)
+        public TextBlocksSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
             PlayerStatsText = Add(engine.Rendering.TextFormats.RealtimePlayerStats, engine.Rendering.Materials.Brushes.WhiteSmoke, new SiVector(5, 5), true);

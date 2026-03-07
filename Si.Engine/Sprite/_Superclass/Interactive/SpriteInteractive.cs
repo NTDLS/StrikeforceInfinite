@@ -2,11 +2,12 @@
 using NTDLS.Helpers;
 using SharpDX.Direct2D1;
 using Si.Engine.AI._Superclass;
+using Si.Engine.KinematicBody;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite._Superclass.Munition;
-using Si.Engine.Sprite.KinematicBody;
 using Si.Library;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
     /// <summary>
     /// A sprite that the player can see, probably shoot and destroy and might even shoot back.
     /// </summary>
+    [AssetCategory("Interactive", "", true)]
     public class SpriteInteractive
         : SpriteBase
     {
@@ -59,7 +61,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         /// </summary>
         /// <param name="engine"></param>
         /// <param name="assetKey"></param>
-        public SpriteInteractive(EngineCore engine, string? assetKey)
+        public SpriteInteractive(SiEngine engine, string? assetKey)
             : base(engine, assetKey)
         {
             Mass = SiRandom.Between(Metadata.Mass, 0);
@@ -71,7 +73,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
             }
         }
 
-        public SpriteInteractive(EngineCore engine, Bitmap bitmap)
+        public SpriteInteractive(SiEngine engine, Bitmap bitmap)
             : base(engine, null)
         {
             if (Engine.Assets.IsLoaded)

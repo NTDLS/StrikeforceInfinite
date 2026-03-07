@@ -1,5 +1,5 @@
-﻿using Si.Engine.Sprite._Superclass.Interactive;
-using Si.Engine.Sprite.KinematicBody;
+﻿using Si.Engine.KinematicBody;
+using Si.Engine.Sprite._Superclass.Interactive;
 using System.Collections.Generic;
 
 namespace Si.Engine.Manager
@@ -15,12 +15,12 @@ namespace Si.Engine.Manager
     /// </summary>
     public class CollisionManager
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         public Dictionary<string, OverlappingKinematicBodyPair> Detected { get; private set; } = new();
 
         public PredictedKinematicBody[] Collidables { get; private set; } = new PredictedKinematicBody[0];
 
-        public CollisionManager(EngineCore engine)
+        public CollisionManager(SiEngine engine)
         {
             _engine = engine;
         }

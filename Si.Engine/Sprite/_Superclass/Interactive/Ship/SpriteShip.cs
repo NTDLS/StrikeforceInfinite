@@ -1,6 +1,7 @@
 ﻿using Si.Engine.Sprite._Superclass.TextBlock;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +10,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive.Ship
     /// <summary>
     /// The ship base is a ship object that moves, can be hit, explodes and can be the subject of locking weapons.
     /// </summary>
+    [AssetCategory("Ship", "", true)]
     public class SpriteShip
         : SpriteInteractive
     {
@@ -16,7 +18,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive.Ship
         public SpriteRadarPositionIndicator? RadarPositionIndicator { get; protected set; }
         public SpriteRadarPositionTextBlock? RadarPositionText { get; protected set; }
 
-        public SpriteShip(EngineCore engine, string assetKey)
+        public SpriteShip(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
         }

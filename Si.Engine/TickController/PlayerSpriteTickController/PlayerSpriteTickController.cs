@@ -12,20 +12,21 @@ namespace Si.Engine.TickController.PlayerSpriteTickController
     /// <summary>
     /// This is the controller for the single local player.
     /// </summary>
-    public class PlayerSpriteTickController : PlayerSpriteTickControllerBase<SpritePlayer>
+    public class PlayerSpriteTickController
+        : PlayerSpriteTickControllerBase<SpritePlayer>
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly Stopwatch _inputDelay = new();
 
         public PlayerStats Stats { get; set; } = new(); //This should be saved.
         public SpritePlayer Sprite { get; set; }
 
-        public PlayerSpriteTickController(EngineCore engine)
+        public PlayerSpriteTickController(SiEngine engine)
             : base(engine)
         {
             Sprite = new SpritePlayer(engine); //We want to make sure this is never null.
 
-            engine.OnInitializationComplete += (EngineCore engine) =>
+            engine.OnInitializationComplete += (SiEngine engine) =>
             {
                 //This is where the player is created.
                 if (engine.ExecutionMode == SiEngineExecutionMode.Play)

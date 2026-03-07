@@ -1,13 +1,15 @@
 ﻿using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 
 namespace Si.Engine.Sprite._Superclass
 {
+    [AssetCategory("Skybox", "", true)]
     public class SpriteSkyBox
         : SpriteBase
     {
-        public SpriteSkyBox(EngineCore engine, string assetKey)
+        public SpriteSkyBox(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             //selectedImageIndex = SiRandom.Between(0, _imageCount - 1);

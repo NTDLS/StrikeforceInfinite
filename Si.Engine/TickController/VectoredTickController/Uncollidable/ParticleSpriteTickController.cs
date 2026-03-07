@@ -12,9 +12,10 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class ParticleSpriteTickController : VectoredTickControllerBase<Sprite._Superclass.SpriteParticle>
+    public class ParticleSpriteTickController
+        : VectoredTickControllerBase<Sprite._Superclass.SpriteParticle>
     {
-        public ParticleSpriteTickController(EngineCore engine, SpriteManager manager)
+        public ParticleSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }

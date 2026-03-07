@@ -1,13 +1,15 @@
 ﻿using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 
 namespace Si.Engine.Sprite._Superclass
 {
+    [AssetCategory("Star", "", true)]
     public class SpriteStar
         : SpriteBase
     {
-        public SpriteStar(EngineCore engine, string assetKey)
+        public SpriteStar(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             X = SiRandom.Between(0, engine.Display.TotalCanvasSize.Width);

@@ -8,7 +8,7 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
     public class DebugSpriteTickController
         : VectoredCollidableTickControllerBase<SpriteDebug>
     {
-        public DebugSpriteTickController(EngineCore engine, SpriteManager manager)
+        public DebugSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }

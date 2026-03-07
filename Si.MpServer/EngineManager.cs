@@ -9,11 +9,11 @@ namespace Si.MpServer
     internal class EngineManager(ServerInstance mpServerInstance)
     {
         //Dictionary of LobbyId to EngineCore
-        private readonly OptimisticCriticalResource<Dictionary<Guid, EngineCore>> _collection = new();
+        private readonly OptimisticCriticalResource<Dictionary<Guid, SiEngine>> _collection = new();
 
-        public EngineCore Create(ManagedLobby lobby)
+        public SiEngine Create(ManagedLobby lobby)
         {
-            var engine = new EngineCore(lobby, mpServerInstance.SharedEngine, SiEngineExecutionMode.ServerHost);
+            var engine = new SiEngine(lobby, mpServerInstance.SharedEngine, SiEngineExecutionMode.ServerHost);
 
             _collection.Write(o =>
             {
@@ -24,7 +24,7 @@ namespace Si.MpServer
             return engine;
         }
 
-        public bool TryGet(Guid lobbyId, [NotNullWhen(true)] out EngineCore? engine)
+        public bool TryGet(Guid lobbyId, [NotNullWhen(true)] out SiEngine? engine)
         {
             engine = _collection.Read(o =>
             {
@@ -34,7 +34,7 @@ namespace Si.MpServer
             return engine != null;
         }
 
-        public EngineCore? Get(Guid lobbyId)
+        public SiEngine? Get(Guid lobbyId)
         {
             return _collection.Read(o =>
             {

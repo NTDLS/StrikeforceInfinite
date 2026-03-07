@@ -7,9 +7,10 @@ using System;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class PowerupSpriteTickController : VectoredTickControllerBase<SpritePowerup>
+    public class PowerupSpriteTickController
+        : VectoredTickControllerBase<SpritePowerup>
     {
-        public PowerupSpriteTickController(EngineCore engine, SpriteManager manager)
+        public PowerupSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }

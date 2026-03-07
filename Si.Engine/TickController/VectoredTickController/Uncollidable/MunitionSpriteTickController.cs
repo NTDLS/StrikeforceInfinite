@@ -14,7 +14,8 @@ using static Si.Library.SiConstants;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class MunitionSpriteTickController : VectoredTickControllerBase<SpriteMunition>
+    public class MunitionSpriteTickController
+        : VectoredTickControllerBase<SpriteMunition>
     {
         #region Private Classes.
 
@@ -34,7 +35,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 
         private readonly DelegateThreadPool _munitionTraversalThreadPool;
 
-        public MunitionSpriteTickController(EngineCore engine, SpriteManager manager)
+        public MunitionSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
             _munitionTraversalThreadPool = new(new DelegateThreadPoolConfiguration()

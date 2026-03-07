@@ -13,7 +13,7 @@ namespace Si.AssetExplorer
 {
     public partial class FormMain : Form
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
         private readonly PropertyListManager _propertListManager;
@@ -30,7 +30,7 @@ namespace Si.AssetExplorer
 
             pictureBoxPreview.MouseWheel += PictureBoxPreview_MouseWheel;
 
-            _engine = new EngineCore(pictureBoxPreview, SiConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
+            _engine = new SiEngine(pictureBoxPreview, SiConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
             _engine.Display.ZoomOverride = 0.1f; // Start zoomed out to show the whole sprite.
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
 
@@ -77,7 +77,7 @@ namespace Si.AssetExplorer
             }
         }
 
-        private void EngineCore_OnInitializationComplete(EngineCore engine)
+        private void EngineCore_OnInitializationComplete(SiEngine engine)
         {
             try
             {

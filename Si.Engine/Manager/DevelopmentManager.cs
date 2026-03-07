@@ -74,7 +74,7 @@ namespace Si.Engine.Manager
             "Sprite-Visible|uid:Required:Numeric,state:Required:Boolean|Displays whether a given sprite is visible or not.",
         };
 
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly Stack<string> _commandStack = new();
         private readonly IInterrogationForm _interrogationForm;
 
@@ -82,7 +82,7 @@ namespace Si.Engine.Manager
         private readonly List<MethodInfo> _concreteFunctions;
         public bool IsVisible { get; private set; } = false;
 
-        public DevelopmentManager(EngineCore engine, IInterrogationForm interrogationForm)
+        public DevelopmentManager(SiEngine engine, IInterrogationForm interrogationForm)
         {
             _engine = engine;
             _interrogationForm = interrogationForm;

@@ -5,7 +5,7 @@ using Si.Library.Mathematics;
 using System.Drawing;
 using System.Linq;
 
-namespace Si.Engine.Sprite.KinematicBody
+namespace Si.Engine.KinematicBody
 {
     /// <summary>
     /// Contains the prediction of sprite location, bounds, velocity and direction after the up comming call to ApplyMotion()

@@ -7,9 +7,10 @@ using Si.Library.Mathematics;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class AnimationSpriteTickController : VectoredTickControllerBase<SpriteAnimation>
+    public class AnimationSpriteTickController
+        : VectoredTickControllerBase<SpriteAnimation>
     {
-        public AnimationSpriteTickController(EngineCore engine, SpriteManager manager)
+        public AnimationSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }

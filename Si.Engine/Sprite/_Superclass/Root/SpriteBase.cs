@@ -16,7 +16,7 @@ namespace Si.Engine.Sprite._Superclass._Root
     public partial class SpriteBase
         : ISprite
     {
-        protected EngineCore Engine { get; private set; }
+        protected SiEngine Engine { get; private set; }
 
         public SharpDX.Direct2D1.Bitmap? SpriteBitmap { get; private set; }
         private bool _readyForDeletion;
@@ -26,7 +26,7 @@ namespace Si.Engine.Sprite._Superclass._Root
         private AssetMetadata? _metadata = null;
         public AssetMetadata Metadata => _metadata ?? throw new NullReferenceException();
 
-        public SpriteBase(EngineCore engine, string? assetKey)
+        public SpriteBase(SiEngine engine, string? assetKey)
         {
             Engine = engine;
 

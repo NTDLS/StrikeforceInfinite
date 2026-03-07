@@ -10,10 +10,10 @@ namespace Si.AssetExplorer
     {
         public TabControl TabControl { get; private set; }
         private readonly Action<SiTabPage> _tabSelected;
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private SiTabPage? _lastSelectedTab; //Just so that we dont keep reloading the same tab on selection.
 
-        public TabManager(EngineCore engine, TabControl tabControl, Action<SiTabPage> tabSelected)
+        public TabManager(SiEngine engine, TabControl tabControl, Action<SiTabPage> tabSelected)
         {
             _tabSelected = tabSelected;
             TabControl = tabControl;

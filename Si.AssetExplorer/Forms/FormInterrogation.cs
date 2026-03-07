@@ -8,7 +8,7 @@ namespace Si.AssetExplorer.Forms
 {
     public partial class FormInterrogation : Form, IInterrogationForm
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly List<string> _commandHistory = new();
         private int _commandHistoryIndex = 0;
         private DateTime _lastTabKeyTimestamp = DateTime.UtcNow;
@@ -63,7 +63,7 @@ namespace Si.AssetExplorer.Forms
             textBoxCommand.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
-        internal FormInterrogation(EngineCore engine)
+        internal FormInterrogation(SiEngine engine)
         {
             InitializeComponent();
 
@@ -223,7 +223,7 @@ namespace Si.AssetExplorer.Forms
             richTextBoxOutput.ResumeLayout();
         }
 
-        public void StartWatch(EngineCore engine, ISprite sprite)
+        public void StartWatch(SiEngine engine, ISprite sprite)
         {
             Task.Run(() =>
             {

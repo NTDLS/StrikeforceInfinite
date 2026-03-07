@@ -18,7 +18,7 @@ namespace Si.Client
     {
         private readonly List<SpriteBase> highlightedSprites = new();
         private readonly ToolTip _interrogationTip = new();
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly bool _fullScreen = false;
 
         public FormRenderTarget()
@@ -27,7 +27,7 @@ namespace Si.Client
 
             var drawingSurface = new Control();
             Controls.Add(drawingSurface);
-            _engine = new EngineCore(drawingSurface, SiEngineExecutionMode.None);
+            _engine = new SiEngine(drawingSurface, SiEngineExecutionMode.None);
         }
 
         public FormRenderTarget(Screen screen)
@@ -36,7 +36,7 @@ namespace Si.Client
 
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
 
-            var settings = EngineCore.LoadSettings();
+            var settings = SiEngine.LoadSettings();
 
             if (settings.FullScreen)
             {
@@ -53,7 +53,7 @@ namespace Si.Client
             };
             Controls.Add(drawingSurface);
 
-            _engine = new EngineCore(drawingSurface, SiEngineExecutionMode.Play);
+            _engine = new SiEngine(drawingSurface, SiEngineExecutionMode.Play);
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
@@ -61,7 +61,7 @@ namespace Si.Client
             statusStripDebug.Visible = false;
 #endif
 
-            _engine.OnShutdown += (EngineCore sender) =>
+            _engine.OnShutdown += (SiEngine sender) =>
             {   //If the engine is stopped, close the main form.
                 Invoke((MethodInvoker)delegate
                 {

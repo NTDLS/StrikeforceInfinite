@@ -5,7 +5,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive.Ship
     public class SpriteDebug
         : SpriteShip
     {
-        public SpriteDebug(EngineCore engine, string assetKey)
+        public SpriteDebug(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             RecalculateMovementVectorFromOrientation();

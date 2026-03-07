@@ -8,7 +8,7 @@ namespace Si.Engine.Manager
     /// </summary>
     public class AudioManager
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
 
         public SiAudioClip? BackgroundMusicSound { get; private set; }
         public SiAudioClip? RadarBlipsSound { get; private set; }
@@ -16,11 +16,11 @@ namespace Si.Engine.Manager
         public SiAudioClip? LockedOnBlip { get; private set; }
         public SiAudioClip? Click { get; private set; }
 
-        public AudioManager(EngineCore engine)
+        public AudioManager(SiEngine engine)
         {
             _engine = engine;
 
-            engine.OnInitializationComplete += (EngineCore engine) =>
+            engine.OnInitializationComplete += (SiEngine engine) =>
             {
                 Click = _engine.Assets.GetAudio("Sounds/Other/Click");
                 DoorIsAjarSound = _engine.Assets.GetAudio("Sounds/Ship/Door Is Ajar");

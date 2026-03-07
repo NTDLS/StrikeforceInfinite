@@ -13,9 +13,9 @@ namespace Si.Engine.Menu._Superclass
     /// <summary>
     /// A menu instance. Allows for setting title text, adding items and managing selections.
     /// </summary>
-    public class MenuBase(EngineCore engine)
+    public class MenuBase(SiEngine engine)
     {
-        protected EngineCore _engine = engine;
+        protected SiEngine _engine = engine;
         private DateTime _lastInputHandled = DateTime.UtcNow;
 
         public List<SpriteMenuItem> Items { get; private set; } = new();

@@ -11,7 +11,8 @@ namespace Si.Engine.Menu
     /// <summary>
     /// The menu that is displayed at game start to allow the player to select a loadout.
     /// </summary>
-    internal class MenuSelectLoadout : MenuBase
+    internal class MenuSelectLoadout
+        : MenuBase
     {
         class SelectedSprite
         {
@@ -29,7 +30,7 @@ namespace Si.Engine.Menu
         private Timer _animationTimer;
         private SelectedSprite? _selectedSprite;
 
-        public MenuSelectLoadout(EngineCore engine)
+        public MenuSelectLoadout(SiEngine engine)
             : base(engine)
         {
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();

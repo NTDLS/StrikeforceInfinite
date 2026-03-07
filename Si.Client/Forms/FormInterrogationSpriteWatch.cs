@@ -11,11 +11,11 @@ namespace Si.Client.Forms
 {
     public partial class FormInterrogationSpriteWatch : Form
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly ISprite _sprite;
         private readonly Timer _timer = new();
 
-        internal FormInterrogationSpriteWatch(EngineCore engine, ISprite sprite)
+        internal FormInterrogationSpriteWatch(SiEngine engine, ISprite sprite)
         {
             InitializeComponent();
             _engine = engine;

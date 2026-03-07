@@ -8,11 +8,11 @@ namespace Si.AssetExplorer.Forms
 {
     public partial class FormInterrogationSpriteWatch : Form
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly ISprite _sprite;
         private readonly System.Windows.Forms.Timer _timer = new();
 
-        internal FormInterrogationSpriteWatch(EngineCore engine, ISprite sprite)
+        internal FormInterrogationSpriteWatch(SiEngine engine, ISprite sprite)
         {
             InitializeComponent();
             _engine = engine;

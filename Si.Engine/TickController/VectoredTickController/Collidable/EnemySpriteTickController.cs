@@ -8,9 +8,9 @@ namespace Si.Engine.TickController.VectoredTickController.Collidable
     public class EnemySpriteTickController
         : VectoredCollidableTickControllerBase<SpriteEnemy>
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
 
-        public EnemySpriteTickController(EngineCore engine, SpriteManager manager)
+        public EnemySpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
             _engine = engine;

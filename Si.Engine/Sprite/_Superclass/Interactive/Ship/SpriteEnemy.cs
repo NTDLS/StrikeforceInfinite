@@ -1,14 +1,16 @@
 ﻿using Si.Library.Mathematics;
+using Si.Library.Metadata;
 
 namespace Si.Engine.Sprite._Superclass.Interactive.Ship
 {
     /// <summary>
     /// The enemy base is a sub-class of the ship base. It is used by Peon and Boss enemies.
     /// </summary>
+    [AssetCategory("Enemy", "", true)]
     public class SpriteEnemy
         : SpriteShip
     {
-        public SpriteEnemy(EngineCore engine, string assetKey)
+        public SpriteEnemy(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             RecalculateMovementVectorFromOrientation();

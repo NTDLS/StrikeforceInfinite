@@ -5,12 +5,13 @@ using System.Linq;
 
 namespace Si.Engine.TickController.UnvectoredTickController
 {
-    public class SituationTickController : UnvectoredTickControllerBase<SituationBase>
+    public class SituationTickController
+        : UnvectoredTickControllerBase<SituationBase>
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         public SituationBase? CurrentSituation { get; private set; }
 
-        public SituationTickController(EngineCore engine)
+        public SituationTickController(SiEngine engine)
             : base(engine)
         {
             _engine = engine;

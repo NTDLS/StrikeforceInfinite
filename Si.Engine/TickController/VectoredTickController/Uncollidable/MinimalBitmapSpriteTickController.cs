@@ -11,7 +11,7 @@ namespace Si.Engine.TickController.VectoredTickController.Uncollidable
     public class MinimalBitmapSpriteTickController
         : VectoredCollidableTickControllerBase<SpriteMinimalBitmap>
     {
-        public MinimalBitmapSpriteTickController(EngineCore engine, SpriteManager manager)
+        public MinimalBitmapSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }

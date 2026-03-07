@@ -2,7 +2,7 @@
 
 namespace Si.Engine.MultiPlay
 {
-    internal class ReliableMessageHandler(EngineCore engineCore)
+    internal class ReliableMessageHandler(SiEngine engine)
         : IRmMessageHandler
     {
     }

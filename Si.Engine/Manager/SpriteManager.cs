@@ -1,13 +1,13 @@
 ﻿using Microsoft.CodeAnalysis;
 using NTDLS.Helpers;
 using SharpDX.Mathematics.Interop;
+using Si.Engine.KinematicBody;
 using Si.Engine.Menu;
 using Si.Engine.Sprite._Superclass;
 using Si.Engine.Sprite._Superclass._Root;
 using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Engine.Sprite._Superclass.Interactive.Ship;
 using Si.Engine.Sprite._Superclass.Munition;
-using Si.Engine.Sprite.KinematicBody;
 using Si.Engine.TickController.UnvectoredTickController;
 using Si.Engine.TickController.VectoredTickController.Collidable;
 using Si.Engine.TickController.VectoredTickController.Uncollidable;
@@ -31,7 +31,7 @@ namespace Si.Engine.Manager
         public delegate void CollectionAccessor(SpriteBase[] sprites);
         public delegate T CollectionAccessorT<T>(SpriteBase[] sprites);
 
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private SiVector? _radarScale;
         private SiVector? _radarOffset;
 
@@ -57,7 +57,7 @@ namespace Si.Engine.Manager
 
         #endregion
 
-        public SpriteManager(EngineCore engine)
+        public SpriteManager(SiEngine engine)
         {
             _engine = engine;
 

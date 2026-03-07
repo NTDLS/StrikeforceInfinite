@@ -8,7 +8,7 @@ namespace Si.Engine.Sprite.Enemy.Debug
     /// <summary>
     /// Debugging enemy unit - a scary sight to see.
     /// </summary>
-    internal class SpriteEnemyParticlePlay(EngineCore engine, string assetKey)
+    internal class SpriteEnemyParticlePlay(SiEngine engine, string assetKey)
         : SpriteEnemy(engine, assetKey)
     {
         private SpriteParticle? _particle1;

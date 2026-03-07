@@ -7,9 +7,10 @@ namespace Si.Engine.Menu
     /// <summary>
     //// The menu is used to set the player name and create a lobby to host.
     /// </summary>
-    internal class MenuHostMultiplayer : MenuBase
+    internal class MenuHostMultiplayer
+        : MenuBase
     {
-        public MenuHostMultiplayer(EngineCore engine)
+        public MenuHostMultiplayer(SiEngine engine)
             : base(engine)
         {
             var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();

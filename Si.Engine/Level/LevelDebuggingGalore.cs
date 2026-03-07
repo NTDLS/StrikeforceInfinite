@@ -13,9 +13,10 @@ namespace Si.Engine.Level
     /// Levels are contained inside Situations. Each level contains a set of waves that are progressed. 
     /// This level is for debugging only.
     /// </summary>
-    internal class LevelDebuggingGalore : LevelBase
+    internal class LevelDebuggingGalore
+        : LevelBase
     {
-        public LevelDebuggingGalore(EngineCore engine)
+        public LevelDebuggingGalore(SiEngine engine)
             : base(engine,
                   "Debugging Galore",
                     "The situation is dire. Explosions here can cause\r\n"

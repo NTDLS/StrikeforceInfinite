@@ -25,12 +25,12 @@ namespace Si.Engine.Manager
         public const string AssetPackagePath = "Si.Assets.db";
 #endif
         public bool IsLoaded { get; private set; }
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly Dictionary<string, AssetContainer> _collection = new();
         private readonly SqliteManagedFactory _assetsDatabase = new($"Data Source={AssetPackagePath}");
         private readonly SiCache _cache = new(SiCache.CacheExpirationScheme.Sliding, TimeSpan.FromSeconds(600));
 
-        public AssetManager(EngineCore engine)
+        public AssetManager(SiEngine engine)
         {
             _engine = engine;
         }

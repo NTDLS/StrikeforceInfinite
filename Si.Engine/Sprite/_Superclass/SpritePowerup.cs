@@ -1,5 +1,6 @@
 ﻿using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 
 namespace Si.Engine.Sprite._Superclass
@@ -7,6 +8,7 @@ namespace Si.Engine.Sprite._Superclass
     /// <summary>
     /// Represents a "power-up" that the player can pick up to gain some ability / stat-improvement.
     /// </summary>
+    [AssetCategory("Powerup", "", true)]
     public class SpritePowerup
         : SpriteBase
     {
@@ -28,7 +30,7 @@ namespace Si.Engine.Sprite._Superclass
             }
         }
 
-        public SpritePowerup(EngineCore engine, string assetKey)
+        public SpritePowerup(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             RadarDotSize = new SiVector(4, 4);

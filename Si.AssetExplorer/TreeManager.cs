@@ -10,15 +10,15 @@ namespace Si.AssetExplorer
     internal class TreeManager
     {
         public readonly DoubleBufferedTreeView _treeView;
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         public readonly Action<string, LoggingLevel?> _writeOutput;
         public readonly Action<SiTreeNode> _loadSelectedTreeNode;
 
-        public TreeManager(DoubleBufferedTreeView treeView, EngineCore engineCore,
+        public TreeManager(DoubleBufferedTreeView treeView, SiEngine engine,
             Action<string, LoggingLevel?> writeOutput,
             Action<SiTreeNode> loadSelectedTreeNode)
         {
-            _engine = engineCore;
+            _engine = engine;
             _treeView = treeView;
             _writeOutput = writeOutput;
             _loadSelectedTreeNode = loadSelectedTreeNode;

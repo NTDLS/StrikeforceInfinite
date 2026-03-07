@@ -5,12 +5,14 @@ using Si.Engine.Sprite._Superclass._Root;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using Si.Rendering;
 using System.Drawing;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite._Superclass
 {
+    [AssetCategory("Particle", "", true)]
     public class SpriteParticle
         : SpriteBase
     {
@@ -45,7 +47,7 @@ namespace Si.Engine.Sprite._Superclass
         /// </summary>
         public Color4 GradientEndColor { get; set; }
 
-        public SpriteParticle(EngineCore engine, SiVector location, Size size, Color4? color = null)
+        public SpriteParticle(SiEngine engine, SiVector location, Size size, Color4? color = null)
             : base(engine, null)
         {
             SetSize(size);

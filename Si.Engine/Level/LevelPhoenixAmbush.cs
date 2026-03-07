@@ -8,9 +8,10 @@ namespace Si.Engine.Level
     /// <summary>
     /// Levels are contained inside Situations. Each level contains a set of waves that are progressed. 
     /// </summary>
-    internal class LevelPhoenixAmbush : LevelBase
+    internal class LevelPhoenixAmbush
+        : LevelBase
     {
-        public LevelPhoenixAmbush(EngineCore engine)
+        public LevelPhoenixAmbush(SiEngine engine)
             : base(engine,
                   "Phoenix Ambush",
                   "We're safe now - or are we? Its an AMBUSH!"

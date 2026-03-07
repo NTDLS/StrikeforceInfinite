@@ -17,7 +17,7 @@ namespace Si.Engine.Manager
     /// </summary>
     public class InputManager
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private readonly Dictionary<SiPlayerKey, float> _playerKeyStates = new();
         private bool _collectDetailedKeyInformation = false;
         private readonly Dictionary<Key, bool> _allKeyStates = new();
@@ -47,7 +47,7 @@ namespace Si.Engine.Manager
         //Controller controller;
         //Gamepad gamepad;
 
-        public InputManager(EngineCore engine)
+        public InputManager(SiEngine engine)
         {
             _engine = engine;
 

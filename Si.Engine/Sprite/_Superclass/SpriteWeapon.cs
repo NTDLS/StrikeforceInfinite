@@ -7,6 +7,7 @@ using Si.Engine.Sprite._Superclass.Munition;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Si.Engine.Sprite._Superclass
     /// <summary>
     /// A weapon is a "device" that fires a "munition" (_MunitionBase). It must be owned by another sprite.
     /// </summary>
+    [AssetCategory("Weapon", "", true)]
     public class SpriteWeapon
         : SpriteBase
     {
@@ -35,7 +37,7 @@ namespace Si.Engine.Sprite._Superclass
         public int MunitionsFired { get; set; }
         public int MunitionQuantity { get; set; }
 
-        public SpriteWeapon(EngineCore engine, SpriteBase owner, string? assetKey)
+        public SpriteWeapon(SiEngine engine, SpriteBase owner, string? assetKey)
             : base(engine, assetKey)
         {
             Owner = owner;

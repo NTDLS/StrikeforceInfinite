@@ -23,7 +23,7 @@ namespace Si.Client
         {
             trackBarResolution.Scroll += TrackBarResolution_Scroll;
 
-            var settings = EngineCore.LoadSettings();
+            var settings = SiEngine.LoadSettings();
 
             checkBoxFineTuneFrameRate.Checked = settings.FineTuneFramerate;
             checkBoxPlayMusic.Checked = settings.PlayMusic;
@@ -137,7 +137,7 @@ namespace Si.Client
         {
             try
             {
-                var settings = EngineCore.LoadSettings();
+                var settings = SiEngine.LoadSettings();
 
                 settings.FineTuneFramerate = checkBoxFineTuneFrameRate.Checked;
                 settings.PlayMusic = checkBoxPlayMusic.Checked;
@@ -169,7 +169,7 @@ namespace Si.Client
 
                 settings.GraphicsAdapterId = graphicsAdapter.DeviceId;
 
-                EngineCore.SaveSettings(settings);
+                SiEngine.SaveSettings(settings);
                 Close();
             }
             catch (Exception ex)

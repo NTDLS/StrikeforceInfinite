@@ -8,7 +8,7 @@ namespace Si.AssetExplorer.Forms
     public partial class FormPropertySpritePicker
         : Form
     {
-        private readonly EngineCore? _engine;
+        private readonly SiEngine? _engine;
         private readonly bool _multiSelect;
         public List<string> Value => _selectedAssetKeys;
         private List<string> _selectedAssetKeys = new List<string>();
@@ -18,7 +18,7 @@ namespace Si.AssetExplorer.Forms
             InitializeComponent();
         }
 
-        public FormPropertySpritePicker(EngineCore engine, PropertyItem propertyItem, bool multiSelect)
+        public FormPropertySpritePicker(SiEngine engine, PropertyItem propertyItem, bool multiSelect)
         {
             InitializeComponent();
             _engine = engine;

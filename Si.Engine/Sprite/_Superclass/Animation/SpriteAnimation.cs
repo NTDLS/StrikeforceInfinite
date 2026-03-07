@@ -4,12 +4,14 @@ using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 using Si.Library;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 using System.Drawing;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite._Superclass.Animation
 {
+    [AssetCategory("Animation", "", true)]
     public class SpriteAnimation
         : SpriteMinimalBitmap
     {
@@ -25,7 +27,7 @@ namespace Si.Engine.Sprite._Superclass.Animation
         public SiAnimationPlayMode PlayMode { get; set; }
         public float FramesPerSecond { get; private set; } = 1;
 
-        public SpriteAnimation(EngineCore engine, string assetKey)
+        public SpriteAnimation(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
             Location = SiVector.Zero();

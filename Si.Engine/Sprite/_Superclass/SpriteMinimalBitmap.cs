@@ -1,6 +1,7 @@
 ﻿using Si.Engine.Sprite._Superclass._Root;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using Si.Rendering;
 using System;
 using static Si.Library.SiConstants;
@@ -10,6 +11,7 @@ namespace Si.Engine.Sprite._Superclass
     /// <summary>
     /// These are just minimal non-collidable, non interactive, generic bitmap sprites.
     /// </summary>
+    [AssetCategory("Bitmap", "", true)]
     public class SpriteMinimalBitmap
         : SpriteBase
     {
@@ -30,12 +32,12 @@ namespace Si.Engine.Sprite._Superclass
 
         public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
 
-        public SpriteMinimalBitmap(EngineCore engine, string assetKey)
+        public SpriteMinimalBitmap(SiEngine engine, string assetKey)
             : base(engine, assetKey)
         {
         }
 
-        public SpriteMinimalBitmap(EngineCore engine, SharpDX.Direct2D1.Bitmap bitmap)
+        public SpriteMinimalBitmap(SiEngine engine, SharpDX.Direct2D1.Bitmap bitmap)
             : base(engine, null)
         {
             SetBitmap(bitmap);

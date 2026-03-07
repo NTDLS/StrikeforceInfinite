@@ -1,9 +1,11 @@
 ﻿using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 using static Si.Library.SiConstants;
 
 namespace Si.Engine.Sprite._Superclass.Interactive
 {
+    [AssetCategory("Attachment", "", true)]
     public class SpriteAttachment
         : SpriteInteractive
     {
@@ -21,7 +23,7 @@ namespace Si.Engine.Sprite._Superclass.Interactive
         /// </summary>
         public AttachmentPositionType AttachmentPositionType { get; set; }
 
-        public SpriteAttachment(EngineCore engine, string? assetKey)
+        public SpriteAttachment(SiEngine engine, string? assetKey)
             : base(engine, assetKey)
         {
             AssetKey = assetKey;

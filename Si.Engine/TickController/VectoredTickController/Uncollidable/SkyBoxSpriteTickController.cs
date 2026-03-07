@@ -5,9 +5,10 @@ using Si.Library.Mathematics;
 
 namespace Si.Engine.TickController.VectoredTickController.Uncollidable
 {
-    public class SkyBoxSpriteTickController : VectoredTickControllerBase<SpriteSkyBox>
+    public class SkyBoxSpriteTickController
+        : VectoredTickControllerBase<SpriteSkyBox>
     {
-        public SkyBoxSpriteTickController(EngineCore engine, SpriteManager manager)
+        public SkyBoxSpriteTickController(SiEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }

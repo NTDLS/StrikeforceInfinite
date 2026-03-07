@@ -4,7 +4,7 @@ using System;
 
 namespace Si.Engine.MultiPlay
 {
-    internal class DatagramMessageHandler(EngineCore engineCore)
+    internal class DatagramMessageHandler(SiEngine engine)
         : IDmDatagramHandler
     {
         public void SiSpriteActionDelete(DmContext context, SiSpriteActionDelete payload)

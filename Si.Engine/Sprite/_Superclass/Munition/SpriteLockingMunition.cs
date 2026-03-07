@@ -1,6 +1,7 @@
 ﻿using Si.Engine.Sprite._Superclass.Interactive;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using System;
 
 namespace Si.Engine.Sprite._Superclass.Munition
@@ -8,12 +9,13 @@ namespace Si.Engine.Sprite._Superclass.Munition
     /// <summary>
     /// Guided munitions need to be locked onto a target before they are fired. They will adjust heading within given parameters to hit the locked target.
     /// </summary>
+    [AssetCategory("Munition - Locking Type", "", true)]
     internal class SpriteLockingMunition
         : SpriteMunition
     {
         public SpriteInteractive? LockedTarget { get; private set; }
 
-        public SpriteLockingMunition(EngineCore engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
+        public SpriteLockingMunition(SiEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey,
              SpriteInteractive? lockedTarget, SiVector location)
             : base(engine, weapon, firedFrom, assetKey, location)
         {

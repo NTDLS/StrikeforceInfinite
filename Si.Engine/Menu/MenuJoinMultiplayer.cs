@@ -11,11 +11,12 @@ namespace Si.Engine.Menu
     /// <summary>
     //// The menu is used to set the player name and select a lobby to join.
     /// </summary>
-    internal class MenuJoinMultiplayer : MenuBase
+    internal class MenuJoinMultiplayer
+        : MenuBase
     {
         private readonly SpriteTextBlock _boxTitle;
 
-        public MenuJoinMultiplayer(EngineCore engine)
+        public MenuJoinMultiplayer(SiEngine engine)
             : base(engine)
         {
             engine.CommsManager.EnsureNotNull();

@@ -4,6 +4,7 @@ using Si.Engine.Sprite._Superclass.Interactive.Ship;
 using Si.Library;
 using Si.Library.ExtensionMethods;
 using Si.Library.Mathematics;
+using Si.Library.Metadata;
 using Si.Rendering;
 using System;
 using static Si.Library.SiConstants;
@@ -13,6 +14,7 @@ namespace Si.Engine.Sprite._Superclass.Munition
     /// <summary>
     /// The munition base is the base for all bullets/projectiles/etc.
     /// </summary>
+    [AssetCategory("Munition", "", true)]
     public class SpriteMunition
         : SpriteBase
     {
@@ -32,7 +34,7 @@ namespace Si.Engine.Sprite._Superclass.Munition
         /// <param name="assetKey">The image for the munition.</param>
         /// <param name="location">The optional location for the munition to originate from (if not specified, we'll use the location of the firedFrom sprite).</param>
         /// <param name="angleDegrees">>The optional angle for the munition to travel on (if not specified, we'll use the angle of the firedFrom sprite).</param>
-        public SpriteMunition(EngineCore engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey, SiVector location, float? angleDegrees = null)
+        public SpriteMunition(SiEngine engine, SpriteWeapon weapon, SpriteInteractive firedFrom, string assetKey, SiVector location, float? angleDegrees = null)
             : base(engine, assetKey)
         {
             Weapon = weapon;

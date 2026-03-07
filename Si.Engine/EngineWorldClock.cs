@@ -15,9 +15,10 @@ namespace Si.Engine
     /// <summary>
     /// The world clock. Moves all objects forward in time, renders all objects and keeps the frame-counter in check.
     /// </summary>
-    internal class EngineWorldClock : IDisposable
+    internal class EngineWorldClock
+        : IDisposable
     {
-        private readonly EngineCore _engine;
+        private readonly SiEngine _engine;
         private bool _shutdown = false;
         private bool _isPaused = false;
         private readonly Thread _worldClockThread;
@@ -40,7 +41,7 @@ namespace Si.Engine
         private readonly List<TickControllerMethod> _vectoredTickControllers = new();
         private readonly List<TickControllerMethod> _unvectoredTickControllers = new();
 
-        public EngineWorldClock(EngineCore engine)
+        public EngineWorldClock(SiEngine engine)
         {
             _engine = engine;
             _worldClockThreadPool = new(new DelegateThreadPoolConfiguration()

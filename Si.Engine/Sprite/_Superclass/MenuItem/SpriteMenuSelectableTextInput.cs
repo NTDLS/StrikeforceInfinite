@@ -15,7 +15,7 @@ namespace Si.Engine.Sprite._Superclass.MenuItem
     {
         public int CharacterLimit { get; set; }
 
-        public SpriteMenuSelectableTextInput(EngineCore engine, MenuBase menu, TextFormat format, SolidColorBrush color, SiVector location, int characterLimit = 100)
+        public SpriteMenuSelectableTextInput(SiEngine engine, MenuBase menu, TextFormat format, SolidColorBrush color, SiVector location, int characterLimit = 100)
             : base(engine, menu, format, color, location)
         {
             ItemType = SiMenuItemType.SelectableTextInput;

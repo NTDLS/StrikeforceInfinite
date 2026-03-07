@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Si.Engine.Sprite.KinematicBody
+namespace Si.Engine.KinematicBody
 {
     /// <summary>
     /// Holds information about a pair of overlapping sprites.

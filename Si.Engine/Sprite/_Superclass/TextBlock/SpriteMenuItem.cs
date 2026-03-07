@@ -38,7 +38,7 @@ namespace Si.Engine.Sprite._Superclass.TextBlock
 
         public SiMenuItemType ItemType { get; set; }
 
-        public SpriteMenuItem(EngineCore engine, MenuBase menu, TextFormat format, SolidColorBrush color, SiVector location)
+        public SpriteMenuItem(SiEngine engine, MenuBase menu, TextFormat format, SolidColorBrush color, SiVector location)
             : base(engine, format, color, location, true)
         {
             ItemType = SiMenuItemType.Undefined;

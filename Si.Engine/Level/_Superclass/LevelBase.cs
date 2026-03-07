@@ -11,7 +11,7 @@ namespace Si.Engine.Level._Superclass
     /// </summary>
     public class LevelBase
     {
-        protected EngineCore _engine;
+        protected SiEngine _engine;
         protected List<SiDefermentEvent> Events = new();
 
         public Guid UID { get; private set; } = Guid.NewGuid();
@@ -21,7 +21,7 @@ namespace Si.Engine.Level._Superclass
         public int TotalWaves { get; set; } = 1;
         public SiLevelState State { get; protected set; } = SiLevelState.NotYetStarted;
 
-        public LevelBase(EngineCore engine, string name, string description)
+        public LevelBase(SiEngine engine, string name, string description)
         {
             _engine = engine;
             Name = name;
