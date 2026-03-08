@@ -65,9 +65,9 @@ namespace Ae.AssetExplorer
             return null;
         }
 
-        public AeTabPage AddTab(string assetKey)
+        public AeTabPage AddTab(AeTreeNode node)
         {
-            var existingTab = FindTabByFileName(assetKey);
+            var existingTab = FindTabByFileName(node.AssetKey);
             if (existingTab != null)
             {
                 TabControl.SelectedTab = existingTab;
@@ -75,13 +75,48 @@ namespace Ae.AssetExplorer
                 return existingTab;
             }
 
-            var asset = _engine.Assets.ReadAssetController(assetKey);
+            var textContent = string.Empty;
 
-            //TODO: We should probably determine the code type based on the asset's base type or metadata.
-            string codeText = asset.Controller ?? string.Empty;
-            var codeType = AeCodeType.CSharp; // Default to C# for now, but this should be determined dynamically.
+            var asset = _engine.Assets.GetAsset(node.AssetKey);
 
-            var tabPage = new AeTabPage(assetKey, codeText, codeType);
+            if (!AeConstants.BaseAssetTypes.TryGetValue(asset.BaseType, out var baseType))
+            {
+                throw new Exception("Unsupported asset type: " + asset.BaseType);
+            }
+
+            var codeType = AeCodeType.Text;
+
+            switch (baseType)
+            {
+                case AeBaseAssetType.Image:
+                    textContent = _engine.Assets.ReadAssetController(node.AssetKey);
+                    codeType = AeCodeType.CSharp;
+                    break;
+                case AeBaseAssetType.Text:
+                    textContent = asset.Object as string;
+                    switch (asset.BaseType.ToLower())
+                    {
+                        case "txt":
+                            codeType = AeCodeType.Text;
+                            break;
+                        case "json":
+                            codeType = AeCodeType.Text;
+                            break;
+                        case "xml":
+                            codeType = AeCodeType.XML;
+                            break;
+                    }
+                    break;
+                case AeBaseAssetType.Code:
+                    textContent = asset.Object as string;
+                    codeType = AeCodeType.CSharp;
+                    break;
+                case AeBaseAssetType.Sound:
+                    textContent = string.Empty; //TODO: We should probably have a different editor for sound assets, but for now we'll just show an empty editor.
+                    break;
+            }
+
+            var tabPage = new AeTabPage(node.AssetKey, textContent ?? string.Empty, codeType);
             TabControl.TabPages.Add(tabPage);
             TabControl.SelectedTab = tabPage;
             InvokeTabChanged(tabPage);

@@ -43,6 +43,10 @@ namespace Ae.AssetExplorer
             toolStrip1 = new ToolStrip();
             toolStripButtonSettings = new ToolStripButton();
             toolStripButtonDeveloperConsole = new ToolStripButton();
+            toolStripSeparator1 = new ToolStripSeparator();
+            toolStripButtonToggleAssets = new ToolStripButton();
+            toolStripButtonToggleOutput = new ToolStripButton();
+            toolStripButtonToggleProperties = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
@@ -184,7 +188,7 @@ namespace Ae.AssetExplorer
             // toolStrip1
             // 
             toolStrip1.Font = new Font("Segoe UI", 9F);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole, toolStripSeparator1, toolStripButtonToggleAssets, toolStripButtonToggleOutput, toolStripButtonToggleProperties });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 25);
@@ -212,6 +216,41 @@ namespace Ae.AssetExplorer
             toolStripButtonDeveloperConsole.Text = "Developer Console";
             toolStripButtonDeveloperConsole.ToolTipText = "Developer Console";
             toolStripButtonDeveloperConsole.Click += ToolStripButtonDeveloperConsole_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(6, 25);
+            // 
+            // toolStripButtonToggleAssets
+            // 
+            toolStripButtonToggleAssets.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonToggleAssets.Image = (Image)resources.GetObject("toolStripButtonToggleAssets.Image");
+            toolStripButtonToggleAssets.ImageTransparentColor = Color.Magenta;
+            toolStripButtonToggleAssets.Name = "toolStripButtonToggleAssets";
+            toolStripButtonToggleAssets.Size = new Size(23, 22);
+            toolStripButtonToggleAssets.Text = "Toggle Assets";
+            toolStripButtonToggleAssets.Click += ToolStripButtonToggleAssets_Click;
+            // 
+            // toolStripButtonToggleOutput
+            // 
+            toolStripButtonToggleOutput.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonToggleOutput.Image = (Image)resources.GetObject("toolStripButtonToggleOutput.Image");
+            toolStripButtonToggleOutput.ImageTransparentColor = Color.Magenta;
+            toolStripButtonToggleOutput.Name = "toolStripButtonToggleOutput";
+            toolStripButtonToggleOutput.Size = new Size(23, 22);
+            toolStripButtonToggleOutput.Text = "Toggle Output";
+            toolStripButtonToggleOutput.Click += ToolStripButtonToggleOutput_Click;
+            // 
+            // toolStripButtonToggleProperties
+            // 
+            toolStripButtonToggleProperties.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonToggleProperties.Image = (Image)resources.GetObject("toolStripButtonToggleProperties.Image");
+            toolStripButtonToggleProperties.ImageTransparentColor = Color.Magenta;
+            toolStripButtonToggleProperties.Name = "toolStripButtonToggleProperties";
+            toolStripButtonToggleProperties.Size = new Size(23, 22);
+            toolStripButtonToggleProperties.Text = "Toggle Properties";
+            toolStripButtonToggleProperties.Click += ToolStripButtonToggleProperties_Click;
             // 
             // FormMain
             // 
@@ -262,5 +301,9 @@ namespace Ae.AssetExplorer
         private ToolStripButton toolStripButtonSettings;
         private ToolStripButton toolStripButtonDeveloperConsole;
         private TabControl tabControlCode;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripButton toolStripButtonToggleAssets;
+        private ToolStripButton toolStripButtonToggleOutput;
+        private ToolStripButton toolStripButtonToggleProperties;
     }
 }

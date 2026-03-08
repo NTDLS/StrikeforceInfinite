@@ -14,15 +14,15 @@ namespace Ae.Library
         public const int MinimumCompressionRatio = 1;
         public static readonly string[] ImageTypes = ["png", "bmp"];
 
-        public static readonly Dictionary<string, AeBaseTypeCategory> BaseAssetTypes = new()
+        public static readonly Dictionary<string, AeBaseAssetType> BaseAssetTypes = new()
         {
-            ["png"] = AeBaseTypeCategory.Image,
-            ["txt"] = AeBaseTypeCategory.Text,
-            ["wav"] = AeBaseTypeCategory.Sound,
-            ["cs"] = AeBaseTypeCategory.Code,
-            ["json"] = AeBaseTypeCategory.Text,
-            ["xml"] = AeBaseTypeCategory.Text,
-            ["txt"] = AeBaseTypeCategory.Text
+            ["png"] = AeBaseAssetType.Image,
+            ["txt"] = AeBaseAssetType.Text,
+            ["wav"] = AeBaseAssetType.Sound,
+            ["cs"] = AeBaseAssetType.Code,
+            ["json"] = AeBaseAssetType.Text,
+            ["xml"] = AeBaseAssetType.Text,
+            ["txt"] = AeBaseAssetType.Text
         };
 
         public static string GetSupportedOpenFileFilterString()
@@ -64,7 +64,7 @@ namespace Ae.Library
             }
         }
 
-        public enum AeBaseTypeCategory
+        public enum AeBaseAssetType
         {
             Text,
             Code,

@@ -350,9 +350,9 @@ namespace Ae.Engine.Manager
         /// <summary>
         /// Used to read the C# controller for the asset because we do not store it in memory in an uncompiled form.
         /// </summary>
-        public AssetDatabaseModel ReadAssetController(string assetKey)
+        public string ReadAssetController(string assetKey)
         {
-            return _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Key, BaseType, Controller FROM Assets WHERE Key = @Key",
+            return _assetsDatabase.QueryFirst<string>("SELECT Controller FROM Assets WHERE Key = @Key",
                 new { Key = assetKey });
         }
 

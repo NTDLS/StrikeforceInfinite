@@ -59,6 +59,9 @@ namespace Ae.AssetExplorer.Controls
             : this(parent, codeType)
         {
             Text = text;
+
+            ApplyEditorSettings();
+            TextHasChanged = false;
         }
 
         public AeCodeEditor(Control parent, AeCodeType codeType)
@@ -90,6 +93,7 @@ namespace Ae.AssetExplorer.Controls
 
             parent.Controls.Add(this);
 
+            ApplyEditorSettings();
             TextHasChanged = false;
         }
 

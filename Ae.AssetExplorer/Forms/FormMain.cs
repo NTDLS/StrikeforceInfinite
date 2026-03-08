@@ -152,7 +152,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                _tabManager.AddTab(node.AssetKey);
+                _tabManager.AddTab(node);
             }
             catch (Exception ex)
             {
@@ -227,7 +227,7 @@ namespace Ae.AssetExplorer
             richTextBoxOutput.ScrollToCaret();
         }
 
-        #region Tooklstrip buttons
+        #region Toolstrip buttons
 
         private void ToolStripButtonSettings_Click(object sender, EventArgs e)
         {
@@ -243,9 +243,16 @@ namespace Ae.AssetExplorer
         }
 
         private void ToolStripButtonDeveloperConsole_Click(object sender, EventArgs e)
-        {
-            _engine.Development?.EnsureVisibility();
-        }
+            => _engine.Development?.EnsureVisibility();
+
+        private void ToolStripButtonToggleAssets_Click(object sender, EventArgs e)
+            => splitContainerLeft.Panel1Collapsed = !splitContainerLeft.Panel1Collapsed;
+
+        private void ToolStripButtonToggleOutput_Click(object sender, EventArgs e)
+            => splitContainerBottom.Panel2Collapsed = !splitContainerBottom.Panel2Collapsed;
+
+        private void ToolStripButtonToggleProperties_Click(object sender, EventArgs e)
+            => splitContainerRight.Panel2Collapsed = !splitContainerRight.Panel2Collapsed;
 
         #endregion
     }
