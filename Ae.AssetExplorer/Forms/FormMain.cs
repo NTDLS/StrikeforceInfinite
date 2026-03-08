@@ -16,7 +16,7 @@ namespace Ae.AssetExplorer
         private readonly AeEngine _engine;
         private bool _firstShown = true;
         private readonly TreeManager _treeManager;
-        private readonly PropertyListManager _propertListManager;
+        private readonly PropertyListManager _propertyListManager;
         private readonly TabManager _tabManager;
 
         public FormMain()
@@ -35,7 +35,7 @@ namespace Ae.AssetExplorer
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
 
             _treeManager = new TreeManager(treeViewAssets, _engine, WriteOutput, LoadSelectedTreeNode);
-            _propertListManager = new PropertyListManager(listViewProperties, _engine, WriteOutput, PropertiesEdited);
+            _propertyListManager = new PropertyListManager(listViewProperties, _engine, WriteOutput, PropertiesEdited);
             _tabManager = new TabManager(_engine, tabControlCode, TabSelected);
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
@@ -188,7 +188,7 @@ namespace Ae.AssetExplorer
                         o.Throttle = 0;
                     });
 
-                    _propertListManager.PopulateProperties(tab.AssetKey, sprite);
+                    _propertyListManager.PopulateProperties(tab.AssetKey, sprite);
                 });
             }
             catch (Exception ex)
