@@ -195,6 +195,8 @@ namespace Ae.Engine.Manager
             switch (model.BaseType)
             {
                 case "json":
+                case "cs":
+                case "xml":
                 case "txt":
                     {
                         var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, AeConstants.JsonSerializerOptions)
@@ -204,7 +206,6 @@ namespace Ae.Engine.Manager
                         return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }
                 case "png":
-                case "jpg":
                 case "bmp":
                     {
                         var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, AeConstants.JsonSerializerOptions)

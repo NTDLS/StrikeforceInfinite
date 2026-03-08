@@ -86,7 +86,7 @@
             Opacity = 0.95D;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Property Edit";
+            Text = "Create Asset";
             ResumeLayout(false);
             PerformLayout();
         }

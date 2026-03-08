@@ -1,5 +1,6 @@
 ﻿using Ae.AssetExplorer.Controls;
 using Ae.AssetExplorer.Forms;
+using Ae.AssetExplorer.Properties;
 using Ae.Engine;
 using Ae.Library;
 using System.Text;
@@ -48,12 +49,12 @@ namespace Ae.AssetExplorer
                     else if (node.NodeType == AeTreeNodeType.Folder)
                     {
                         var createMenu = new ToolStripMenuItem("Create");
-                        createMenu.DropDownItems.Add("Folder", null, (s, e) => CreateFolder(node));
+                        createMenu.DropDownItems.Add("Folder", Resources.AssetTypeFolder, (s, e) => CreateFolder(node));
                         menu.Items.Add(new ToolStripSeparator());
-                        createMenu.DropDownItems.Add("Text file", null, (s, e) => CreateFile(node, "txt"));
-                        createMenu.DropDownItems.Add("JSON file", null, (s, e) => CreateFile(node, "json"));
-                        createMenu.DropDownItems.Add("XML file", null, (s, e) => CreateFile(node, "xml"));
-                        createMenu.DropDownItems.Add("Code file", null, (s, e) => CreateFile(node, "cs"));
+                        createMenu.DropDownItems.Add("Text file", Resources.AssetTypeText, (s, e) => CreateFile(node, "txt"));
+                        createMenu.DropDownItems.Add("JSON file", Resources.AssetTypeJson, (s, e) => CreateFile(node, "json"));
+                        createMenu.DropDownItems.Add("XML file", Resources.AssetTypeXml, (s, e) => CreateFile(node, "xml"));
+                        createMenu.DropDownItems.Add("Code file", Resources.AssetTypeCode, (s, e) => CreateFile(node, "cs"));
                         //menu.Items.Add(new ToolStripSeparator());
                         //createMenu.DropDownItems.Add("Sprite", null, (s, e) => CreateFile(node, "cs"));
                         menu.Items.Add(createMenu);
@@ -281,7 +282,10 @@ namespace Ae.AssetExplorer
                             displayName = Path.GetFileNameWithoutExtension(part);
                         }
 
-                        var newNode = new AeTreeNode(part, displayName, asset.Key, nodeType);
+                        var newNode = new AeTreeNode(part, displayName,
+                            nodeType == AeTreeNodeType.Folder ? part : asset.Key, // For folders, the asset key is the path part. For assets, it's the full asset key.
+                            nodeType);
+
                         workingLevel.Add(newNode);
                         workingLevel = newNode.Nodes;
 
