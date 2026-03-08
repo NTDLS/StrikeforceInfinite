@@ -100,8 +100,11 @@ namespace Ae.AssetExplorer
             {
                 if (_firstShown)
                 {
-                    var formStartup = new FormStartup();
-                    formStartup.ShowDialog();
+                    if (!Program.NoSplash)
+                    {
+                        var formStartup = new FormStartup();
+                        formStartup.ShowDialog();
+                    }
 
                     _firstShown = false;
 

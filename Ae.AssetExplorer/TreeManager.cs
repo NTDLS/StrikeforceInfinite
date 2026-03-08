@@ -2,6 +2,7 @@
 using Ae.AssetExplorer.Forms;
 using Ae.Engine;
 using Ae.Library;
+using System.Text;
 using System.Text.Json;
 using Talkster.Client.Controls;
 
@@ -129,13 +130,7 @@ namespace Ae.AssetExplorer
                 using var dialog = new OpenFileDialog
                 {
                     Title = "Select File",
-                    Filter =
-                    "Supported Files (*.wav;*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.txt;*.json)|*.wav;*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.txt;*.json|" +
-                    "Wave Audio (*.wav)|*.wav|" +
-                    "Images (*.png;*.jpg;*.jpeg;*.bmp;*.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|" +
-                    "Text Files (*.txt)|*.txt|" +
-                    "JSON Files (*.json)|*.json|" +
-                    "All Files (*.*)|*.*",
+                    Filter = AeConstants.GetSupportedOpenFileFilterString(),
                     Multiselect = false
                 };
 

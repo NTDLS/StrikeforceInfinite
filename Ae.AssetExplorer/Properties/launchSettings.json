@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Ae.AssetExplorer": {
+      "commandName": "Project",
+      "commandLineArgs": "/NoSplash"
+    }
+  }
+}

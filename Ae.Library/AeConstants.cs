@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Net.NetworkInformation;
+using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Ae.Library
@@ -10,7 +12,33 @@ namespace Ae.Library
         public const string MultiplayServerAddress = "127.0.0.1";
         public const int MultiplayServerTCPPort = 6785;
         public const int MinimumCompressionRatio = 1;
-        public static readonly string[] ImageTypes = ["png", "jpg", "jpeg", "bmp"];
+        public static readonly string[] ImageTypes = ["png", "bmp"];
+
+        public static readonly Dictionary<string, AeBaseTypeCategory> BaseAssetTypes = new()
+        {
+            ["png"] = AeBaseTypeCategory.Image,
+            ["txt"] = AeBaseTypeCategory.Text,
+            ["wav"] = AeBaseTypeCategory.Sound,
+            ["cs"] = AeBaseTypeCategory.Code,
+            ["json"] = AeBaseTypeCategory.Text,
+            ["xml"] = AeBaseTypeCategory.Text,
+            ["txt"] = AeBaseTypeCategory.Text
+        };
+
+        public static string GetSupportedOpenFileFilterString()
+        {
+            var filter = new StringBuilder();
+
+            foreach (var assetTypes in AeConstants.BaseAssetTypes.GroupBy(o => o.Value))
+            {
+                filter.Append($"{assetTypes.Key.ToString()} files");
+                filter.Append(" (" + string.Join(", ", assetTypes.Select(t => $"*.{t.Key}")) + ")|");
+                filter.Append(string.Join(";", assetTypes.Select(t => $"*.{t.Key}")) + "|");
+            }
+            filter.Append("All Files (*.*)|*.*");
+
+            return filter.ToString();
+        }
 
         private static JsonSerializerOptions? _JsonSerializationOptions;
         public static JsonSerializerOptions JsonSerializerOptions
@@ -34,6 +62,14 @@ namespace Ae.Library
                 }
                 return _JsonSerializationOptions;
             }
+        }
+
+        public enum AeBaseTypeCategory
+        {
+            Text,
+            Code,
+            Sound,
+            Image
         }
 
         public enum AeCodeType

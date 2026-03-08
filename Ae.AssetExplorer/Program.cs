@@ -2,17 +2,21 @@ namespace Ae.AssetExplorer
 {
     internal static class Program
     {
+        public static bool NoSplash { get; private set; }
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string []args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ApplicationConfiguration.Initialize();
 
-            var mutex = new Mutex(true, Constants.AppName, out var createdNewMutex);
+            NoSplash = args.Any(o => o.Equals("/nosplash", StringComparison.InvariantCultureIgnoreCase));
+
+                using var mutex = new Mutex(true, Constants.AppName, out var createdNewMutex);
             if (!createdNewMutex)
             {
                 MessageBox.Show("Another instance is already running.", Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
