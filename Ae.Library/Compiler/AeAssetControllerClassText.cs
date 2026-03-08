@@ -16,7 +16,7 @@
 
         private static Dictionary<string, ConstructorSignatures> ConstructorSignaturesByBaseClass = new()
         {
-            { "SpriteWeapon", new ConstructorSignatures("EngineCore engine, SpriteBase owner, string assetKey", "engine, owner, assetKey") },
+            { "SpriteWeapon", new ConstructorSignatures("AeEngine engine, SpriteBase owner, string assetKey", "engine, owner, assetKey") },
         };
 
         public static string Get(string baseClassName, string assetControllerClassName, string controllerCode)
@@ -24,7 +24,7 @@
             if (ConstructorSignaturesByBaseClass.TryGetValue(baseClassName, out var constructorSignatures) == false)
             {
                 //Default constructor signature if the base class is not found in the dictionary.
-                constructorSignatures = new("EngineCore engine, string assetKey", "engine, assetKey");
+                constructorSignatures = new("AeEngine engine, string assetKey", "engine, assetKey");
             }
 
             return @$"
@@ -46,13 +46,13 @@
                 using Ae.Library.Mathematics;
                 using Ae.Library;
                 using Ae.Rendering;
-                using static Ae.Library.SiConstants;
+                using static Ae.Library.AeConstants;
                 using System.Drawing;
                 using System.Linq;
                 using System;
 
                 public class {assetControllerClassName}({constructorSignatures.Signature})
-                    : {baseClassName}({constructorSignatures.Parameters}), Ae.Library.Compiler.ISiRuntimeCompiled
+                    : {baseClassName}({constructorSignatures.Parameters}), Ae.Library.Compiler.IAeRuntimeCompiled
                 {{
                     public string GetControllerName() => ""{assetControllerClassName}"";
 

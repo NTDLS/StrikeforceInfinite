@@ -222,6 +222,7 @@ namespace Ae.AssetExplorer
             Controls.Add(toolStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Asset Manager";
             splitContainerLeft.Panel1.ResumeLayout(false);
             splitContainerLeft.Panel2.ResumeLayout(false);

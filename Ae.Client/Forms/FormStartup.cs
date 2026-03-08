@@ -2,11 +2,13 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Ae.Client
 {
-    public partial class FormStartup : Form
+    public partial class FormStartup
+        : Form
     {
         internal class NativeMethods
         {
@@ -27,82 +29,71 @@ namespace Ae.Client
             InitializeComponent();
             CurrentScreen = Screen.FromPoint(Cursor.Position);
             this.CenterFormOnScreen(CurrentScreen);
-        }
 
-        private void FormStartup_Load(object sender, EventArgs e)
-        {
-            AcceptButton = buttonStart;
-            CancelButton = buttonExit;
-
-            buttonStart.Focus();
-
-            TopMost = false;
             if (BackgroundImage != null)
             {
                 Width = BackgroundImage.Width;
                 Height = BackgroundImage.Height;
             }
+
+            AcceptButton = buttonStart;
+            CancelButton = buttonExit;
+
+            buttonStart.Visible = false;
+            buttonExit.Visible = false;
+            buttonSettings.Visible = false;
+            TopMost = false;
             StartPosition = FormStartPosition.CenterScreen;
             Opacity = 0;
+            // Set a unique color as the transparency key to make the form's background transparent.
             TransparencyKey = Color.FromArgb(12, 10, 12);
             BackColor = TransparencyKey;
 
-            //buttonExit.Top = Height - (buttonExit.Height + 25);
-            //buttonSettings.Top = Height - (buttonSettings.Height + 25);
-            //buttonStart.Top = Height - (buttonStart.Height + 25);
-
-            //buttonSettings.Left = (Width / 2) - (buttonSettings.Width / 2);
-            //buttonExit.Left = buttonSettings.Left - (buttonExit.Width + 25);
-            //buttonStart.Left = buttonSettings.Left + (buttonStart.Width + 25);
-
-            MouseDown += new MouseEventHandler(Form_MouseDown);
-            Shown += FormStartup_Shown;
-            Move += FormStartup_Move;
-
-            var timer = new Timer()
+            MouseDown += (object? sender, MouseEventArgs e) =>
             {
-                Enabled = true,
-                Interval = 1,
-            };
-
-            timer.Tick += (object? sender, EventArgs e) =>
-            {
-                Opacity += 0.05;
-                if (Opacity >= 1)
+                //Allow dragging the form by clicking anywhere on it.
+                if (e.Button == MouseButtons.Left)
                 {
-                    timer.Stop();
+                    NativeMethods.ReleaseCapture();
+                    NativeMethods.SendMessage(this.Handle, NativeMethods.WM_NCLBUTTONDOWN, (IntPtr)NativeMethods.HTCAPTION, IntPtr.Zero);
                 }
             };
 
-            timer.Start();
-        }
+            Move += (object? sender, EventArgs e) => CurrentScreen = this.GetCurrentScreen();
 
-        private void FormStartup_Move(object? sender, EventArgs e)
-        {
-            CurrentScreen = this.GetCurrentScreen();
-        }
-
-        private void FormStartup_Shown(object? sender, EventArgs e)
-        {
-            try
-            {
-                /*
-                using (var player = new SoundPlayer(@"..\..\..\Assets\Splash.wav"))
+            Shown += (object? sender, EventArgs e) =>
                 {
-                    player.Play();
-                }
-                */
-            }
-            catch { }
-        }
+                    var timer = new Timer()
+                    {
+                        Enabled = true,
+                        Interval = 10,
+                    };
 
-        private void Form_MouseDown(object? sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                NativeMethods.ReleaseCapture();
-                NativeMethods.SendMessage(this.Handle, NativeMethods.WM_NCLBUTTONDOWN, (IntPtr)NativeMethods.HTCAPTION, IntPtr.Zero);
-            }
+                    timer.Tick += (object? sender, EventArgs e) =>
+                    {
+                        Opacity += 0.05;
+                        if (Opacity >= 1)
+                        {
+                            Task.Delay(1000).ContinueWith(_ =>
+                            {
+                                if (!IsDisposed)
+                                {
+                                    Invoke(new Action(() =>
+                                    {
+                                        buttonStart.Visible = true;
+                                        buttonExit.Visible = true;
+                                        buttonSettings.Visible = true;
+                                        buttonStart.Focus();
+                                    }));
+                                }
+                            });
+
+                            timer.Stop();
+                        }
+                    };
+
+                    timer.Start();
+                };
         }
 
         private void ButtonExit_Click(object? sender, EventArgs e)

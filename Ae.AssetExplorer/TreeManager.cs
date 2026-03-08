@@ -37,14 +37,14 @@ namespace Ae.AssetExplorer
 
                     var menu = new ContextMenuStrip();
 
-                    if (node.NodeType == SiTreeNodeType.Asset)
+                    if (node.NodeType == AeTreeNodeType.Asset)
                     {
                         menu.Items.Add("Replace", null, (s, e) => ReplaceAsset(node));
                         menu.Items.Add("Export", null, (s, e) => ExportAsset(node, false));
                         menu.Items.Add("Export with Metadata", null, (s, e) => ExportAsset(node, true));
                         menu.Items.Add("Delete", null, (s, e) => DeleteAsset(node));
                     }
-                    else if (node.NodeType == SiTreeNodeType.Folder)
+                    else if (node.NodeType == AeTreeNodeType.Folder)
                     {
                         menu.Items.Add("Create Folder", null, (s, e) => CreateFolder(node));
                     }
@@ -71,7 +71,7 @@ namespace Ae.AssetExplorer
                 }
                 var newAssetKey = $"{node.AssetKey}/{newFolderName}".Trim('/');
 
-                var newNode = new AeTreeNode(newFolderName, newFolderName, newAssetKey, SiTreeNodeType.Folder);
+                var newNode = new AeTreeNode(newFolderName, newFolderName, newAssetKey, AeTreeNodeType.Folder);
                 node.Nodes.Add(newNode);
                 node.Expand();
                 _treeView.SelectedNode = newNode;
@@ -156,7 +156,7 @@ namespace Ae.AssetExplorer
             try
             {
                 var node = e.Node as AeTreeNode ?? throw new InvalidOperationException("Expected SiTreeNode type.");
-                if (node.NodeType == SiTreeNodeType.Asset)
+                if (node.NodeType == AeTreeNodeType.Asset)
                 {
                     _loadSelectedTreeNode(node);
                 }
@@ -243,11 +243,11 @@ namespace Ae.AssetExplorer
                     }
                     else
                     {
-                        var nodeType = depthCounter == parts.Length - 1 ? SiTreeNodeType.Asset : SiTreeNodeType.Folder;
+                        var nodeType = depthCounter == parts.Length - 1 ? AeTreeNodeType.Asset : AeTreeNodeType.Folder;
 
                         var displayName = part;
 
-                        if (nodeType == SiTreeNodeType.Asset)
+                        if (nodeType == AeTreeNodeType.Asset)
                         {
                             displayName = Path.GetFileNameWithoutExtension(part);
                         }

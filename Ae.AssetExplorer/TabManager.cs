@@ -79,7 +79,7 @@ namespace Ae.AssetExplorer
 
             //TODO: We should probably determine the code type based on the asset's base type or metadata.
             string codeText = asset.Controller ?? string.Empty;
-            var codeType = SiCodeType.CSharp; // Default to C# for now, but this should be determined dynamically.
+            var codeType = AeCodeType.CSharp; // Default to C# for now, but this should be determined dynamically.
 
             var tabPage = new AeTabPage(assetKey, codeText, codeType);
             TabControl.TabPages.Add(tabPage);

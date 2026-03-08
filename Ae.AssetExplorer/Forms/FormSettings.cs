@@ -25,7 +25,7 @@ namespace Ae.AssetExplorer.Forms
 
             var sampleText = EmbeddedResource.Load("Samples/CSharpTextSample.txt");
 
-            _fontSampleTextbox = new AeCodeEditor(panelFontSampleParent, SiCodeType.CSharp, sampleText);
+            _fontSampleTextbox = new AeCodeEditor(panelFontSampleParent, AeCodeType.CSharp, sampleText);
 
             foreach (var font in FontFamily.Families)
             {

@@ -125,11 +125,11 @@ namespace Ae.AssetExplorer.Forms
                     }
                     else
                     {
-                        var nodeType = depthCounter == parts.Length - 1 ? SiTreeNodeType.Asset : SiTreeNodeType.Folder;
+                        var nodeType = depthCounter == parts.Length - 1 ? AeTreeNodeType.Asset : AeTreeNodeType.Folder;
 
                         var displayName = part;
 
-                        if (nodeType == SiTreeNodeType.Asset)
+                        if (nodeType == AeTreeNodeType.Asset)
                         {
                             displayName = Path.GetFileNameWithoutExtension(part);
                         }
@@ -138,7 +138,7 @@ namespace Ae.AssetExplorer.Forms
                         workingLevel.Add(newNode);
                         workingLevel = newNode.Nodes;
 
-                        if (nodeType == SiTreeNodeType.Asset)
+                        if (nodeType == AeTreeNodeType.Asset)
                         {
                             newNode.Checked = selectedAssetKeys.Contains(asset.Key);
                         }

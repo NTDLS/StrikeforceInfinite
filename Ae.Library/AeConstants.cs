@@ -36,7 +36,7 @@ namespace Ae.Library
             }
         }
 
-        public enum SiCodeType
+        public enum AeCodeType
         {
             Text,
             CSharp,

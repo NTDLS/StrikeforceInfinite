@@ -9,7 +9,7 @@ namespace Ae.AssetExplorer.Controls
 
         public string AssetKey { get; private set; }
 
-        public AeTabPage(string assetKey, string codeText, SiCodeType codeType)
+        public AeTabPage(string assetKey, string codeText, AeCodeType codeType)
         {
             Text = assetKey.Split('/').Last();
             AssetKey = assetKey;

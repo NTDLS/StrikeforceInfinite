@@ -23,7 +23,7 @@
         Error
     }
 
-    public enum SiTreeNodeType
+    public enum AeTreeNodeType
     {
         Undefined,
         Folder,

@@ -55,13 +55,13 @@ namespace Ae.AssetExplorer.Controls
 
         #endregion
 
-        public AeCodeEditor(Control parent, SiCodeType codeType, string text)
+        public AeCodeEditor(Control parent, AeCodeType codeType, string text)
             : this(parent, codeType)
         {
             Text = text;
         }
 
-        public AeCodeEditor(Control parent, SiCodeType codeType)
+        public AeCodeEditor(Control parent, AeCodeType codeType)
         {
             Editor = new TextEditor();
 
@@ -72,10 +72,10 @@ namespace Ae.AssetExplorer.Controls
 
             var highlighterText = codeType switch
             {
-                SiCodeType.CSharp => EmbeddedResource.Load("Highlighters/SiCSharpHighlighter.xshd"),
-                SiCodeType.JSON => EmbeddedResource.Load("Highlighters/SiJsonHighlighter.xshd"),
-                SiCodeType.MarkDown => EmbeddedResource.Load("Highlighters/SiMarkDownHighlighter.xshd"),
-                SiCodeType.XML => EmbeddedResource.Load("Highlighters/SiXmlHighlighter.xshd"),
+                AeCodeType.CSharp => EmbeddedResource.Load("Highlighters/AeCSharpHighlighter.xshd"),
+                AeCodeType.JSON => EmbeddedResource.Load("Highlighters/AeJsonHighlighter.xshd"),
+                AeCodeType.MarkDown => EmbeddedResource.Load("Highlighters/AeMarkDownHighlighter.xshd"),
+                AeCodeType.XML => EmbeddedResource.Load("Highlighters/AeXmlHighlighter.xshd"),
                 _ => null
             };
 
