@@ -1,6 +1,6 @@
 ﻿namespace Ae.AssetExplorer.Forms
 {
-    partial class FormCreateFolder
+    partial class FormGetNewAssetName
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCreateFolder));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGetNewAssetName));
             buttonCancel = new Button();
             buttonCreate = new Button();
-            textBoxFolderName = new TextBox();
-            labelFolderName = new Label();
+            textBoxAssetName = new TextBox();
+            labelAssetName = new Label();
             SuspendLayout();
             // 
             // buttonCancel
@@ -53,36 +53,36 @@
             buttonCreate.Text = "Create";
             buttonCreate.Click += ButtonCreate_Click;
             // 
-            // textBoxFolderName
+            // textBoxAssetName
             // 
-            textBoxFolderName.Location = new Point(12, 27);
-            textBoxFolderName.Name = "textBoxFolderName";
-            textBoxFolderName.Size = new Size(344, 23);
-            textBoxFolderName.TabIndex = 1;
+            textBoxAssetName.Location = new Point(12, 27);
+            textBoxAssetName.Name = "textBoxAssetName";
+            textBoxAssetName.Size = new Size(344, 23);
+            textBoxAssetName.TabIndex = 1;
             // 
-            // labelFolderName
+            // labelAssetName
             // 
-            labelFolderName.AutoSize = true;
-            labelFolderName.Location = new Point(12, 9);
-            labelFolderName.Name = "labelFolderName";
-            labelFolderName.Size = new Size(102, 15);
-            labelFolderName.TabIndex = 0;
-            labelFolderName.Text = "New Folder Name";
+            labelAssetName.AutoSize = true;
+            labelAssetName.Location = new Point(12, 9);
+            labelAssetName.Name = "labelAssetName";
+            labelAssetName.Size = new Size(97, 15);
+            labelAssetName.TabIndex = 0;
+            labelAssetName.Text = "New Asset Name";
             // 
-            // FormCreateFolder
+            // FormGetNewAssetName
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(368, 95);
-            Controls.Add(labelFolderName);
-            Controls.Add(textBoxFolderName);
+            Controls.Add(labelAssetName);
+            Controls.Add(textBoxAssetName);
             Controls.Add(buttonCancel);
             Controls.Add(buttonCreate);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "FormCreateFolder";
+            Name = "FormGetNewAssetName";
             Opacity = 0.95D;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
@@ -94,7 +94,7 @@
         #endregion
         private Button buttonCancel;
         private Button buttonCreate;
-        private TextBox textBoxFolderName;
-        private Label labelFolderName;
+        private TextBox textBoxAssetName;
+        private Label labelAssetName;
     }
 }

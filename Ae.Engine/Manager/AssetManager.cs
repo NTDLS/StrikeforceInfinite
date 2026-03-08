@@ -232,13 +232,16 @@ namespace Ae.Engine.Manager
         /// Writes an asset to the database. This is really only intended for use in the editor.
         /// It will overwrite any existing asset with the same key and refreshes the asset in the collection.
         /// </summary>
-        public void WriteEmptyAsset(string assetKey, string baseType, AssetMetadata metadata)
+        public void WriteEmptyAsset(string assetKey, string baseType)
         {
             _cache.Clear();
 
             _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 
-            metadata.AssetKey = assetKey;
+            var metadata = new AssetMetadata()
+            {
+                AssetKey = assetKey
+            };
 
             _assetsDatabase.Execute("INSERT INTO Assets (Key, BaseType, Bytes, Metadata)"
                 + "VALUES (@Key, @BaseType, @Bytes, @Metadata)",
@@ -246,7 +249,7 @@ namespace Ae.Engine.Manager
                 {
                     Key = assetKey,
                     Bytes = Array.Empty<byte>(),
-                    Metadata = JsonSerializer.Serialize(new AssetMetadata(), AeConstants.JsonSerializerOptions),
+                    Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
                     BaseType = baseType.ToLower()
                 });
 

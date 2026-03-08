@@ -42,6 +42,7 @@
     <Compile Update="Controls\BufferedListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="Forms\FormGetNewAssetName.cs" />
     <Compile Update="Forms\FormInterrogation.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -71,22 +71,26 @@ namespace Ae.AssetExplorer
         }
         private void CreateFile(AeTreeNode node, string assetBaseType)
         {
-            using var form = new FormCreateFolder();
+            using var form = new FormGetNewAssetName();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                var newFolderName = form.FolderName;
-                if (string.IsNullOrWhiteSpace(newFolderName))
-                {
-                    WriteOutput("Folder name cannot be empty.", LoggingLevel.Warning);
-                    return;
-                }
-                var newAssetKey = $"{node.AssetKey}/{newFolderName}".Trim('/');
+                var newAssetKey = $"{node.AssetKey}/{form.AssetName}".Trim('/');
 
-                var newNode = new AeTreeNode(newFolderName, newFolderName, newAssetKey, AeTreeNodeType.Folder);
+                _engine.Assets.WriteEmptyAsset(newAssetKey, assetBaseType);
+
+                var asset = _engine.Assets.GetAsset(newAssetKey);
+
+                UpsertTreeNodesPath(asset);
+
+
+                var newNode = new AeTreeNode(form.AssetName, form.AssetName, newAssetKey, AeTreeNodeType.Asset);
                 node.Nodes.Add(newNode);
                 node.Expand();
                 _treeView.SelectedNode = newNode;
             }
+
+            //WriteEmptyAsset
+
         }
 
         private void CreateFolder(AeTreeNode node)
@@ -94,15 +98,9 @@ namespace Ae.AssetExplorer
             using var form = new FormCreateFolder();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                var newFolderName = form.FolderName;
-                if (string.IsNullOrWhiteSpace(newFolderName))
-                {
-                    WriteOutput("Folder name cannot be empty.", LoggingLevel.Warning);
-                    return;
-                }
-                var newAssetKey = $"{node.AssetKey}/{newFolderName}".Trim('/');
+                var newAssetKey = $"{node.AssetKey}/{form.FolderName}".Trim('/');
 
-                var newNode = new AeTreeNode(newFolderName, newFolderName, newAssetKey, AeTreeNodeType.Folder);
+                var newNode = new AeTreeNode(form.FolderName, form.FolderName, newAssetKey, AeTreeNodeType.Folder);
                 node.Nodes.Add(newNode);
                 node.Expand();
                 _treeView.SelectedNode = newNode;

@@ -1,13 +1,14 @@
 ﻿using Ae.Library;
+using System.Xml.Linq;
 
 namespace Ae.AssetExplorer.Forms
 {
-    public partial class FormCreateFolder
+    public partial class FormGetNewAssetName
         : Form
     {
-        public string FolderName => textBoxFolderName.Text.Trim();
+        public string AssetName => textBoxAssetName.Text.Trim();
 
-        public FormCreateFolder()
+        public FormGetNewAssetName()
         {
             InitializeComponent();
             AcceptButton = buttonCreate;
@@ -16,15 +17,15 @@ namespace Ae.AssetExplorer.Forms
 
         private void ButtonCreate_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBoxFolderName.Text.Trim()))
+            if (string.IsNullOrWhiteSpace(textBoxAssetName.Text.Trim()))
             {
-                MessageBox.Show("Folder name cannot be empty.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Asset name cannot be empty.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (textBoxFolderName.Text.Trim().IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            if (textBoxAssetName.Text.Trim().IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
             {
-                MessageBox.Show("Folder name contains invalid characters.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Asset name contains invalid characters.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
