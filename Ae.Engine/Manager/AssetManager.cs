@@ -120,7 +120,7 @@ namespace Ae.Engine.Manager
             });
             var threadPoolTracker = dtp.CreateChildPool();
 
-            var models = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets");
+            var models = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Controller, Bytes, Metadata FROM Assets");
 
             int statusIndex = 0;
             float statusEntryCount = models.Count();
@@ -199,8 +199,7 @@ namespace Ae.Engine.Manager
                     {
                         var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, AeConstants.JsonSerializerOptions)
                            ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
-                        var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
-                        var obj = Encoding.UTF8.GetString(bytes);
+                        var obj = Encoding.UTF8.GetString(model.Bytes);
 
                         return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }
@@ -210,8 +209,7 @@ namespace Ae.Engine.Manager
                     {
                         var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, AeConstants.JsonSerializerOptions)
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
-                        var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
-                        using var stream = new MemoryStream(bytes);
+                        using var stream = new MemoryStream(model.Bytes);
                         var obj = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
 
                         return new AssetContainer(model.Key, model.BaseType, metaData, obj);
@@ -220,8 +218,7 @@ namespace Ae.Engine.Manager
                     {
                         var metaData = JsonSerializer.Deserialize<AssetMetadata>(model.Metadata, AeConstants.JsonSerializerOptions)
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
-                        var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
-                        using var stream = new MemoryStream(bytes);
+                        using var stream = new MemoryStream(model.Bytes);
                         var obj = new AeAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
 
                         return new AssetContainer(model.Key, model.BaseType, metaData, obj);
@@ -235,30 +232,48 @@ namespace Ae.Engine.Manager
         /// Writes an asset to the database. This is really only intended for use in the editor.
         /// It will overwrite any existing asset with the same key and refreshes the asset in the collection.
         /// </summary>
-        public void WriteAsset(string assetKey, string filePath, AssetMetadata metadata)
+        public void WriteEmptyAsset(string assetKey, string baseType, AssetMetadata metadata)
         {
             _cache.Clear();
-            long originalSize = new FileInfo(filePath).Length;
-
-            var originalFileBytes = File.ReadAllBytes(filePath);
-            var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
-            long compressedSize = compressedBytes.Length;
-
-            double ratio = originalSize == 0
-                ? 0
-                : 100.0 * (originalSize - compressedSize) / originalSize;
 
             _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 
             metadata.AssetKey = assetKey;
 
-            _assetsDatabase.Execute("INSERT INTO Assets (Key, BaseType, Bytes, IsCompressed, Metadata)"
-                + "VALUES (@Key, @BaseType, @Bytes, @IsCompressed, @Metadata)",
+            _assetsDatabase.Execute("INSERT INTO Assets (Key, BaseType, Bytes, Metadata)"
+                + "VALUES (@Key, @BaseType, @Bytes, @Metadata)",
                 new
                 {
                     Key = assetKey,
-                    Bytes = ratio >= AeConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
-                    IsCompressed = ratio >= AeConstants.MinimumCompressionRatio ? true : false,
+                    Bytes = Array.Empty<byte>(),
+                    Metadata = JsonSerializer.Serialize(new AssetMetadata(), AeConstants.JsonSerializerOptions),
+                    BaseType = baseType.ToLower()
+                });
+
+            RefreshAssetIntoCollection(assetKey);
+        }
+
+        /// <summary>
+        /// Writes an asset to the database. This is really only intended for use in the editor.
+        /// It will overwrite any existing asset with the same key and refreshes the asset in the collection.
+        /// </summary>
+        public void WriteAssetFromFile(string assetKey, string filePath, AssetMetadata metadata)
+        {
+            _cache.Clear();
+
+            var originalFileBytes = File.ReadAllBytes(filePath);
+            var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+
+            _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
+
+            metadata.AssetKey = assetKey;
+
+            _assetsDatabase.Execute("INSERT INTO Assets (Key, BaseType, Bytes, Metadata)"
+                + "VALUES (@Key, @BaseType, @Bytes, @Metadata)",
+                new
+                {
+                    Key = assetKey,
+                    Bytes = originalFileBytes,
                     Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
                     BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
                 });
@@ -296,22 +311,14 @@ namespace Ae.Engine.Manager
         public void WriteAssetBytes(string assetKey, string filePath)
         {
             _cache.Clear();
-            long originalSize = new FileInfo(filePath).Length;
 
             var originalFileBytes = File.ReadAllBytes(filePath);
-            var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
-            long compressedSize = compressedBytes.Length;
 
-            double ratio = originalSize == 0
-                ? 0
-                : 100.0 * (originalSize - compressedSize) / originalSize;
-
-            _assetsDatabase.Execute("UPDATE Assets SET BaseType = @BaseType, Bytes = @Bytes, IsCompressed = @IsCompressed WHERE Key = @Key",
+            _assetsDatabase.Execute("UPDATE Assets SET BaseType = @BaseType, Bytes = @Bytes WHERE Key = @Key",
                 new
                 {
                     Key = assetKey,
-                    Bytes = ratio >= AeConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
-                    IsCompressed = ratio >= AeConstants.MinimumCompressionRatio ? true : false,
+                    Bytes = originalFileBytes,
                     BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
                 });
 
@@ -324,7 +331,7 @@ namespace Ae.Engine.Manager
         /// <param name="assetKey"></param>
         public void RefreshAssetIntoCollection(string assetKey)
         {
-            var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM Assets WHERE Key = @Key",
+            var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, Metadata FROM Assets WHERE Key = @Key",
                 new { Key = assetKey });
 
             var asset = DeserializeAssetContainer(model);
@@ -341,10 +348,8 @@ namespace Ae.Engine.Manager
         /// </summary>
         public byte[] ReadAssetBytes(string assetKey)
         {
-            var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Bytes, IsCompressed FROM Assets WHERE Key = @Key",
+            return _assetsDatabase.QueryFirst<byte[]>("SELECT Bytes FROM Assets WHERE Key = @Key",
                 new { Key = assetKey });
-
-            return model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
         }
 
         /// <summary>

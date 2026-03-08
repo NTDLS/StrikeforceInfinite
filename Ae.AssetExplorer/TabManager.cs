@@ -146,6 +146,15 @@ namespace Ae.AssetExplorer
             }
         }
 
+        public bool CloseCurrentTab()
+        {
+            if (TabControl.SelectedTab is AeTabPage tabPage)
+            {
+                return CloseTab(tabPage);
+            }
+            return false;
+        }
+
         public bool CloseTab(AeTabPage tabPage)
         {
             if (tabPage.Editor.TextHasChanged)

@@ -47,6 +47,10 @@ namespace Ae.AssetExplorer
             toolStripButtonToggleAssets = new ToolStripButton();
             toolStripButtonToggleOutput = new ToolStripButton();
             toolStripButtonToggleProperties = new ToolStripButton();
+            toolStripButtonSave = new ToolStripButton();
+            toolStripButtonClose = new ToolStripButton();
+            toolStripButtonSaveAll = new ToolStripButton();
+            toolStripSeparator2 = new ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
@@ -188,7 +192,7 @@ namespace Ae.AssetExplorer
             // toolStrip1
             // 
             toolStrip1.Font = new Font("Segoe UI", 9F);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole, toolStripSeparator1, toolStripButtonToggleAssets, toolStripButtonToggleOutput, toolStripButtonToggleProperties });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole, toolStripSeparator1, toolStripButtonSave, toolStripButtonSaveAll, toolStripButtonClose, toolStripSeparator2, toolStripButtonToggleAssets, toolStripButtonToggleOutput, toolStripButtonToggleProperties });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 25);
@@ -252,6 +256,41 @@ namespace Ae.AssetExplorer
             toolStripButtonToggleProperties.Text = "Toggle Properties";
             toolStripButtonToggleProperties.Click += ToolStripButtonToggleProperties_Click;
             // 
+            // toolStripButtonSave
+            // 
+            toolStripButtonSave.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonSave.Image = (Image)resources.GetObject("toolStripButtonSave.Image");
+            toolStripButtonSave.ImageTransparentColor = Color.Magenta;
+            toolStripButtonSave.Name = "toolStripButtonSave";
+            toolStripButtonSave.Size = new Size(23, 22);
+            toolStripButtonSave.Text = "Save";
+            toolStripButtonSave.Click += ToolStripButtonSave_Click;
+            // 
+            // toolStripButtonClose
+            // 
+            toolStripButtonClose.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonClose.Image = (Image)resources.GetObject("toolStripButtonClose.Image");
+            toolStripButtonClose.ImageTransparentColor = Color.Magenta;
+            toolStripButtonClose.Name = "toolStripButtonClose";
+            toolStripButtonClose.Size = new Size(23, 22);
+            toolStripButtonClose.Text = "Close";
+            toolStripButtonClose.Click += ToolStripButtonClose_Click;
+            // 
+            // toolStripButtonSaveAll
+            // 
+            toolStripButtonSaveAll.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonSaveAll.Image = (Image)resources.GetObject("toolStripButtonSaveAll.Image");
+            toolStripButtonSaveAll.ImageTransparentColor = Color.Magenta;
+            toolStripButtonSaveAll.Name = "toolStripButtonSaveAll";
+            toolStripButtonSaveAll.Size = new Size(23, 22);
+            toolStripButtonSaveAll.Text = "Save All";
+            toolStripButtonSaveAll.Click += ToolStripButtonSaveAll_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 25);
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -305,5 +344,9 @@ namespace Ae.AssetExplorer
         private ToolStripButton toolStripButtonToggleAssets;
         private ToolStripButton toolStripButtonToggleOutput;
         private ToolStripButton toolStripButtonToggleProperties;
+        private ToolStripButton toolStripButtonSave;
+        private ToolStripButton toolStripButtonSaveAll;
+        private ToolStripButton toolStripButtonClose;
+        private ToolStripSeparator toolStripSeparator2;
     }
 }

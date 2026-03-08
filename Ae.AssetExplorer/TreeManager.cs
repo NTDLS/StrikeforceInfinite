@@ -47,7 +47,18 @@ namespace Ae.AssetExplorer
                     }
                     else if (node.NodeType == AeTreeNodeType.Folder)
                     {
-                        menu.Items.Add("Create Folder", null, (s, e) => CreateFolder(node));
+                        menu.Items.Add("Create", null, (s, e) => CreateFolder(node));
+
+                        var createMenu = new ToolStripMenuItem("Create");
+                        createMenu.DropDownItems.Add("Folder", null, (s, e) => CreateFolder(node));
+                        menu.Items.Add(new ToolStripSeparator());
+                        createMenu.DropDownItems.Add("Text file", null, (s, e) => CreateFile(node, "txt"));
+                        createMenu.DropDownItems.Add("JSON file", null, (s, e) => CreateFile(node, "json"));
+                        createMenu.DropDownItems.Add("XML file", null, (s, e) => CreateFile(node, "xml"));
+                        createMenu.DropDownItems.Add("Code file", null, (s, e) => CreateFile(node, "cs"));
+                        //menu.Items.Add(new ToolStripSeparator());
+                        //createMenu.DropDownItems.Add("Sprite", null, (s, e) => CreateFile(node, "cs"));
+                        menu.Items.Add(createMenu);
                     }
 
                     menu.Show(_treeView, e.Location);
@@ -56,6 +67,25 @@ namespace Ae.AssetExplorer
             catch (Exception ex)
             {
                 _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
+        }
+        private void CreateFile(AeTreeNode node, string assetBaseType)
+        {
+            using var form = new FormCreateFolder();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                var newFolderName = form.FolderName;
+                if (string.IsNullOrWhiteSpace(newFolderName))
+                {
+                    WriteOutput("Folder name cannot be empty.", LoggingLevel.Warning);
+                    return;
+                }
+                var newAssetKey = $"{node.AssetKey}/{newFolderName}".Trim('/');
+
+                var newNode = new AeTreeNode(newFolderName, newFolderName, newAssetKey, AeTreeNodeType.Folder);
+                node.Nodes.Add(newNode);
+                node.Expand();
+                _treeView.SelectedNode = newNode;
             }
         }
 

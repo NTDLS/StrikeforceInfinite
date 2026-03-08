@@ -254,6 +254,18 @@ namespace Ae.AssetExplorer
         private void ToolStripButtonToggleProperties_Click(object sender, EventArgs e)
             => splitContainerRight.Panel2Collapsed = !splitContainerRight.Panel2Collapsed;
 
+        private void ToolStripButtonSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonSaveAll_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void ToolStripButtonClose_Click(object sender, EventArgs e)
+            => _tabManager.CloseCurrentTab();
+
         #endregion
     }
 }

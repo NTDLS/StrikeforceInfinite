@@ -19,12 +19,9 @@ namespace Ae.AssetPacker
             //Files and paths that contain "@" are ignored because they effectively "Commented out" assets.
             //Files and paths that contain "#" are "internal" assets that we pack but do not show to the user in the editor.
 
-            var assetRoot = @"C:\NTDLS\StrikeforceInfinite\Assets";
+            var assetRoot = @"C:\NTDLS\AxisEngine\Assets";
             var assetPaths = Directory.GetFiles(assetRoot, "*.*", SearchOption.AllDirectories)
                 .Where(o => o.Contains("@") == false && Path.GetExtension(o) != ".meta").ToList();
-
-            long originalTotalSize = 0;
-            long compressedTotalSize = 0;
 
             sqliteDb.Execute("DELETE FROM Assets");
 
@@ -35,18 +32,9 @@ namespace Ae.AssetPacker
                 var relativePath = Path.GetRelativePath(assetRoot, directory);
 
                 var assetKey = $"{relativePath}\\{fileName}".Replace("\\", "/").Replace("//", "/");
-                long originalSize = new FileInfo(fullAssetPath).Length;
-                originalTotalSize += originalSize;
 
                 var originalFileBytes = File.ReadAllBytes(fullAssetPath);
                 var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
-
-                long compressedSize = compressedBytes.Length;
-                compressedTotalSize += compressedSize;
-
-                double ratio = originalSize == 0
-                    ? 0
-                    : 100.0 * (originalSize - compressedSize) / originalSize;
 
                 var metadataJson = File.ReadAllText($"{fullAssetPath}.meta");
 
@@ -57,27 +45,19 @@ namespace Ae.AssetPacker
                 {
                     metadata.AssetKey = assetKey;
 
-                    sqliteDb.Execute("INSERT INTO Assets (Key, BaseType, Bytes, IsCompressed, Metadata)"
-                        + "VALUES (@Key, @BaseType, @Bytes, @IsCompressed, @Metadata)",
+                    sqliteDb.Execute("INSERT INTO Assets (Key, BaseType, Bytes, Metadata)"
+                        + "VALUES (@Key, @BaseType, @Bytes, @Metadata)",
                         new
                         {
                             Key = assetKey,
-                            Bytes = ratio >= AeConstants.MinimumCompressionRatio ? compressedBytes : originalFileBytes,
-                            IsCompressed = ratio >= AeConstants.MinimumCompressionRatio ? true : false,
+                            Bytes = originalFileBytes,
                             Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
                             BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower()
                         });
 
-                    Console.WriteLine($"[{assetKey}], OriginalSz: {originalSize:n0}, CompressedSz: {compressedBytes.Length:n0} ({ratio:n2}%)");
+                    Console.WriteLine($"[{assetKey}]");
                 }
             }
-
-            double totalRatio = originalTotalSize == 0
-                ? 0
-                : 100.0 * (originalTotalSize - compressedTotalSize) / originalTotalSize;
-
-
-            Console.WriteLine($"Original Total Sz: {originalTotalSize:n0} CompressedSz: {compressedTotalSize:n0} ({totalRatio:n2}%)");
         }
     }
 }
