@@ -47,8 +47,6 @@ namespace Ae.AssetExplorer
                     }
                     else if (node.NodeType == AeTreeNodeType.Folder)
                     {
-                        menu.Items.Add("Create", null, (s, e) => CreateFolder(node));
-
                         var createMenu = new ToolStripMenuItem("Create");
                         createMenu.DropDownItems.Add("Folder", null, (s, e) => CreateFolder(node));
                         menu.Items.Add(new ToolStripSeparator());
@@ -71,39 +69,45 @@ namespace Ae.AssetExplorer
         }
         private void CreateFile(AeTreeNode node, string assetBaseType)
         {
-            using var form = new FormGetNewAssetName();
-            if (form.ShowDialog() == DialogResult.OK)
+            try
             {
-                var newAssetKey = $"{node.AssetKey}/{form.AssetName}".Trim('/');
+                using var form = new FormGetNewAssetName();
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    var newAssetKey = $"{node.AssetKey}/{form.AssetName}".Trim('/');
 
-                _engine.Assets.WriteEmptyAsset(newAssetKey, assetBaseType);
+                    _engine.Assets.WriteEmptyAsset(newAssetKey, assetBaseType);
 
-                var asset = _engine.Assets.GetAsset(newAssetKey);
+                    var asset = _engine.Assets.GetAsset(newAssetKey);
 
-                UpsertTreeNodesPath(asset);
-
-
-                var newNode = new AeTreeNode(form.AssetName, form.AssetName, newAssetKey, AeTreeNodeType.Asset);
-                node.Nodes.Add(newNode);
-                node.Expand();
-                _treeView.SelectedNode = newNode;
+                    var newNode = UpsertTreeNodesPath(asset);
+                    _treeView.SelectedNode = newNode;
+                }
             }
-
-            //WriteEmptyAsset
-
+            catch (Exception ex)
+            {
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+            }
         }
 
         private void CreateFolder(AeTreeNode node)
         {
-            using var form = new FormCreateFolder();
-            if (form.ShowDialog() == DialogResult.OK)
+            try
             {
-                var newAssetKey = $"{node.AssetKey}/{form.FolderName}".Trim('/');
+                using var form = new FormCreateFolder();
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    var newAssetKey = $"{node.AssetKey}/{form.FolderName}".Trim('/');
 
-                var newNode = new AeTreeNode(form.FolderName, form.FolderName, newAssetKey, AeTreeNodeType.Folder);
-                node.Nodes.Add(newNode);
-                node.Expand();
-                _treeView.SelectedNode = newNode;
+                    var newNode = new AeTreeNode(form.FolderName, form.FolderName, newAssetKey, AeTreeNodeType.Folder);
+                    node.Nodes.Add(newNode);
+                    node.Expand();
+                    _treeView.SelectedNode = newNode;
+                }
+            }
+            catch (Exception ex)
+            {
+                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
             }
         }
 
@@ -241,14 +245,14 @@ namespace Ae.AssetExplorer
             }
         }
 
-        private void UpsertTreeNodesPath(AssetContainer asset)
+        private AeTreeNode? UpsertTreeNodesPath(AssetContainer asset)
         {
             try
             {
                 if (_treeView.InvokeRequired)
                 {
-                    _treeView.Invoke(new Action<AssetContainer>(UpsertTreeNodesPath), asset);
-                    return;
+                    _treeView.Invoke(new Func<AssetContainer, AeTreeNode?>(UpsertTreeNodesPath), asset);
+                    return null;
                 }
 
                 var parts = asset.Key.Split(['\\', '/'], StringSplitOptions.RemoveEmptyEntries);
@@ -256,6 +260,8 @@ namespace Ae.AssetExplorer
                 TreeNodeCollection workingLevel = _treeView.Nodes;
 
                 int depthCounter = 0;
+
+                AeTreeNode? lastNodeCreated = null;
 
                 foreach (var part in parts)
                 {
@@ -278,15 +284,20 @@ namespace Ae.AssetExplorer
                         var newNode = new AeTreeNode(part, displayName, asset.Key, nodeType);
                         workingLevel.Add(newNode);
                         workingLevel = newNode.Nodes;
+
+                        lastNodeCreated = newNode;
                     }
 
                     depthCounter++;
                 }
+
+                return lastNodeCreated;
             }
             catch (Exception ex)
             {
                 _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
             }
+            return null;
         }
     }
 }

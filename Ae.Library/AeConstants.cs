@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -17,7 +16,6 @@ namespace Ae.Library
         public static readonly Dictionary<string, AeBaseAssetType> BaseAssetTypes = new()
         {
             ["png"] = AeBaseAssetType.Image,
-            ["txt"] = AeBaseAssetType.Text,
             ["wav"] = AeBaseAssetType.Sound,
             ["cs"] = AeBaseAssetType.Code,
             ["json"] = AeBaseAssetType.Text,
