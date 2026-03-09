@@ -1,5 +1,4 @@
 ﻿using Ae.Library;
-using System.Xml.Linq;
 
 namespace Ae.AssetExplorer.Forms
 {

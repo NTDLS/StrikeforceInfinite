@@ -3,13 +3,14 @@ using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using System;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Munition
 {
     /// <summary>
     /// Guided munitions need to be locked onto a target before they are fired. They will adjust heading within given parameters to hit the locked target.
     /// </summary>
-    [AssetCategory("Munition - Locking Type", "", true)]
+    [AssetClass("Munition - Locking Type", "", AeBaseAssetType.Image, true)]
     internal class SpriteLockingMunition
         : SpriteMunition
     {

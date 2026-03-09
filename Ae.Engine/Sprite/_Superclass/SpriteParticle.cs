@@ -12,7 +12,7 @@ using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass
 {
-    [AssetCategory("Particle", "", true)]
+    [AssetClass("Particle", "", AeBaseAssetType.Image, true)]
     public class SpriteParticle
         : SpriteBase
     {

@@ -108,5 +108,10 @@ namespace Ae.AssetExplorer.Controls
             Editor.FontSize = Settings.Instance.EditorFontSize;
             Editor.WordWrap = Settings.Instance.EditorWordWrap;
         }
+
+        public void SetUnmodified()
+        {
+            TextHasChanged = false;
+        }
     }
 }

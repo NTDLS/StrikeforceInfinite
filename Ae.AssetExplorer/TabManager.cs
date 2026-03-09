@@ -93,7 +93,7 @@ namespace Ae.AssetExplorer
                     codeType = AeCodeType.CSharp;
                     break;
                 case AeBaseAssetType.Text:
-                    textContent = asset.Object as string;
+                    textContent = asset.Object as string; //Text assets are stored as strings, so we can just cast the object to a string.
                     switch (asset.BaseType.ToLower())
                     {
                         case "txt":
@@ -108,7 +108,7 @@ namespace Ae.AssetExplorer
                     }
                     break;
                 case AeBaseAssetType.Code:
-                    textContent = asset.Object as string;
+                    textContent = asset.Object as string; //Code assets are stored as strings, so we can just cast the object to a string.
                     codeType = AeCodeType.CSharp;
                     break;
                 case AeBaseAssetType.Sound:
@@ -116,7 +116,7 @@ namespace Ae.AssetExplorer
                     break;
             }
 
-            var tabPage = new AeTabPage(node.AssetKey, textContent ?? string.Empty, codeType);
+            var tabPage = new AeTabPage(node.AssetKey, textContent ?? string.Empty, baseType, codeType);
             TabControl.TabPages.Add(tabPage);
             TabControl.SelectedTab = tabPage;
             InvokeTabChanged(tabPage);
@@ -133,6 +133,39 @@ namespace Ae.AssetExplorer
                 }
             }
             return null;
+        }
+
+        public bool SaveCurrentTab()
+        {
+            if (TabControl.SelectedTab is AeTabPage tabPage)
+            {
+                return SaveTab(tabPage);
+            }
+            return false;
+        }
+
+        public bool SaveTab(AeTabPage tabPage)
+        {
+            switch (tabPage.BaseType)
+            {
+                case AeBaseAssetType.Image:
+                    //Images are sprites, and when we edit those we are editing their controller - not their bytes.
+                    _engine.Assets.WriteAssetControllerFromText(tabPage.AssetKey, tabPage.Editor.Text);
+                    tabPage.Editor.SetUnmodified();
+                    break;
+                case AeBaseAssetType.Text:
+                case AeBaseAssetType.Code:
+                    //Text type assets are written to the bytes as that is their native type.
+                    _engine.Assets.WriteAssetBytesFromText(tabPage.AssetKey, tabPage.Editor.Text);
+                    tabPage.Editor.SetUnmodified();
+                    break;
+                case AeBaseAssetType.Sound:
+                    break;
+                default:
+                    throw new Exception("Unsupported asset type: " + tabPage.BaseType);
+            }
+
+            return true;
         }
 
         public void CloseAllTabs()
@@ -159,14 +192,24 @@ namespace Ae.AssetExplorer
         {
             if (tabPage.Editor.TextHasChanged)
             {
-                if (MessageBox.Show($"The file '{tabPage.AssetKey}' has unsaved changes. Save before closing?",
-                    AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Question) != DialogResult.OK)
+                var saveAnswer = MessageBox.Show($"Save '{tabPage.AssetKey}' before closing?",
+                    AeConstants.FriendlyName, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (saveAnswer == DialogResult.Cancel)
                 {
                     return false;
                 }
-
-                //TODO: Save the changes here:
-                //_engine....
+                else if (saveAnswer == DialogResult.Yes)
+                {
+                    if (!SaveTab(tabPage))
+                    {
+                        return false;
+                    }
+                }
+                else if (saveAnswer == DialogResult.No)
+                {
+                    //Continue to close.
+                }
             }
 
             TabControl.TabPages.Remove(tabPage);

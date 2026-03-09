@@ -11,7 +11,7 @@ namespace Ae.Engine.Sprite._Superclass
     /// <summary>
     /// These are just minimal non-collidable, non interactive, generic bitmap sprites.
     /// </summary>
-    [AssetCategory("Bitmap", "", true)]
+    [AssetClass("Bitmap", "", AeBaseAssetType.Image, true)]
     public class SpriteMinimalBitmap
         : SpriteBase
     {

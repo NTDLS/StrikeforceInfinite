@@ -9,10 +9,13 @@ namespace Ae.AssetExplorer.Controls
 
         public string AssetKey { get; private set; }
 
-        public AeTabPage(string assetKey, string codeText, AeCodeType codeType)
+        public AeBaseAssetType BaseType { get; private set; }
+
+        public AeTabPage(string assetKey, string codeText, AeBaseAssetType baseType, AeCodeType codeType)
         {
             Text = assetKey.Split('/').Last();
             AssetKey = assetKey;
+            BaseType = baseType;
             Editor = new AeCodeEditor(this, codeType, codeText);
         }
     }

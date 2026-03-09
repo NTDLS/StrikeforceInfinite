@@ -1,4 +1,5 @@
-﻿using Ae.Engine.AI.Logistics;
+﻿using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite._Superclass.Animation;
 using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Library;
@@ -15,65 +16,108 @@ namespace Ae.Engine.Sprite.Enemy.Debug
     internal class SpriteEnemyDebug(AeEngine engine, string assetKey)
         : SpriteEnemy(engine, assetKey)
     {
-        private SpriteAttachment? _thrusterLeft;
-        private SpriteAttachment? _thrusterRight;
+        private SpriteAnimation? _thrusterAnimation;
+        private SpriteAnimation? _boosterAnimation;
 
         public override void OnMaterialized()
         {
-            Orientation.Degrees = AeRandom.Between(0, 359);
-
-            AddAIController(new AILogisticsHostileEngagement(Engine, this, [Engine.Player.Sprite]));
-
-            SetCurrentAIController<AILogisticsHostileEngagement>();
-
-            _thrusterLeft = Attachments.Single(o => o.AssetKey == "Sprites/Enemy/Boss/Devastator/Jet.Left");
-            _thrusterRight = Attachments.Single(o => o.AssetKey == "Sprites/Enemy/Boss/Devastator/Jet.Right");
-
             RecalculateMovementVectorFromOrientation();
+
+            OnVisibilityChanged += EnemyBase_OnVisibilityChanged;
+
+            _thrusterAnimation = Engine.Sprites.Animations.Add("Sprites/Animation/ThrustStandard32x32", (o) =>
+            {
+                o.Location = Location;
+                o.Orientation = Orientation;
+                o.IsVisible = true;
+                o.OwnerUID = UID;
+            });
+
+            _boosterAnimation = Engine.Sprites.Animations.Add("Sprites/Animation/ThrustBoost32x32", (o) =>
+            {
+                o.Location = Location;
+                o.Orientation = Orientation;
+                o.IsVisible = true;
+                o.OwnerUID = UID;
+            });
+
+            UpdateThrustAnimationPositions();
+
+            //AddAIController(new AILogisticsHostileEngagement(Engine, this, [Engine.Player.Sprite]));
+            //SetCurrentAIController<AILogisticsHostileEngagement>();
+            base.OnMaterialized();
         }
 
-        private float TargetThrottle
+        public override void LocationChanged() => UpdateThrustAnimationPositions();
+
+        private void UpdateThrustAnimationPositions()
         {
-            get
+            var pointBehind = (Orientation * -1) * new AeVector(20, 20);
+
+            if (_thrusterAnimation != null && _thrusterAnimation.IsVisible)
             {
-                if (_thrusterLeft?.IsDeadOrExploded == true && _thrusterRight?.IsDeadOrExploded == true)
+                _thrusterAnimation.Orientation = Orientation;
+                _thrusterAnimation.Location = Location + pointBehind;
+            }
+            if (_boosterAnimation != null && _boosterAnimation.IsVisible)
+            {
+                _boosterAnimation.Orientation = Orientation;
+                _boosterAnimation.Location = Location + pointBehind;
+            }
+        }
+
+        private void EnemyBase_OnVisibilityChanged(SpriteBase sender)
+        {
+            _thrusterAnimation?.IsVisible = false;
+            _boosterAnimation?.IsVisible = false;
+        }
+
+        public override void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
+        {
+            base.ApplyIntelligence(epoch, cameraDisplacement);
+            ApplyWeaponsLogic();
+        }
+
+        private void ApplyWeaponsLogic()
+        {
+            var playersIAmPointingAt = GetPointingAtOf(Engine.Sprites.AllVisiblePlayers, 2.0f);
+            if (playersIAmPointingAt.Any())
+            {
+                var closestDistance = ClosestDistanceOf(playersIAmPointingAt);
+
+                if (closestDistance < 1000)
                 {
-                    return 0.05f; // idle drift
-                }
-                else if (_thrusterLeft?.IsDeadOrExploded == true || _thrusterRight?.IsDeadOrExploded == true)
-                {
-                    return 0.5f;  // limp mode
-                }
-                else
-                {
-                    return 1.0f;  // full thrust
+                    if (closestDistance > 500 && HasWeaponAndAmmo("Sprites/Weapon/Vulcan Cannon"))
+                    {
+                        FireWeapon("Sprites/Weapon/Vulcan Cannon");
+                    }
+                    else if (closestDistance > 0 && HasWeaponAndAmmo("Sprites/Weapon/Dual Vulcan Cannon"))
+                    {
+                        FireWeapon("Sprites/Weapon/Dual Vulcan Cannon");
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// Moves the sprite based on its thrust/boost (velocity).
+        /// </summary>
+        /// <param name="cameraDisplacement"></param>
         public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
-            Throttle = AeMath.Damp(Throttle, TargetThrottle, 0.01f, epoch);
-
-            var offset = Orientation * new AeVector(40f, 40f);
-
-            if (_thrusterLeft?.IsDeadOrExploded == true)
-            {
-                Engine.Sprites.Particles.EmitConeAt(_thrusterLeft.CalculatedLocation + offset, _thrusterLeft.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, AeRenderingUtility.GetRandomHotColor(), new Size(1, 1));
-            }
-            if (_thrusterRight?.IsDeadOrExploded == true)
-            {
-                Engine.Sprites.Particles.EmitConeAt(_thrusterRight.CalculatedLocation + offset, _thrusterRight.CalculatedOrientation.Degrees, 15f, 2, 150f, 250f, AeRenderingUtility.GetRandomHotColor(), new Size(1, 1));
-            }
-
-            if (HullHealth <= Metadata.Hull / 2)
-            {
-                Engine.Sprites.Particles.ParticleBlastAt(this, AeRandom.Between(0, 1));
-            }
-
             base.ApplyMotion(epoch, cameraDisplacement);
+
+            _thrusterAnimation?.IsVisible = MovementVector.Sum() > 0;
+            _boosterAnimation?.IsVisible = Throttle > 1;
         }
 
+        public override void Cleanup()
+        {
+            _thrusterAnimation?.QueueForDelete();
+            _boosterAnimation?.QueueForDelete();
+
+            base.Cleanup();
+        }
 
     }
 }

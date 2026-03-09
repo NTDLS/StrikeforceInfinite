@@ -5,6 +5,7 @@ using Ae.Engine;
 using Ae.Library;
 using System.Text.Json;
 using Talkster.Client.Controls;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer
 {
@@ -12,8 +13,9 @@ namespace Ae.AssetExplorer
     {
         private readonly DoubleBufferedTreeView _treeView;
         private readonly AeEngine _engine;
-        private readonly Action<string, LoggingLevel?> _writeOutput;
+        private readonly Action<string, AeLoggingLevel?> _writeOutput;
         private readonly Action<AeTreeNode> _loadSelectedTreeNode;
+        private readonly AeTreeNode _rootNode;
 
         private readonly Dictionary<string, Image> AssetTypeImages = new()
         {
@@ -26,7 +28,7 @@ namespace Ae.AssetExplorer
         };
 
         public TreeManager(DoubleBufferedTreeView treeView, AeEngine engine,
-            Action<string, LoggingLevel?> writeOutput,
+            Action<string, AeLoggingLevel?> writeOutput,
             Action<AeTreeNode> loadSelectedTreeNode)
         {
             _engine = engine;
@@ -48,6 +50,13 @@ namespace Ae.AssetExplorer
             {
                 _treeView.ImageList.Images.Add(item.Key, item.Value);
             }
+
+            _rootNode = new AeTreeNode("Assets", "Assets", "", AeTreeNodeType.Folder)
+            {
+                ImageKey = "folder",
+                SelectedImageKey = "folder"
+            };
+            _treeView.Nodes.Add(_rootNode);
         }
 
         private void TreeView_NodeMouseClick(object? sender, TreeNodeMouseClickEventArgs e)
@@ -86,7 +95,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
         private void CreateFile(AeTreeNode node, string assetBaseType)
@@ -108,7 +117,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -129,7 +138,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -173,7 +182,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -190,13 +199,13 @@ namespace Ae.AssetExplorer
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    _engine.Assets.WriteAssetBytes(node.AssetKey, dialog.FileName);
+                    _engine.Assets.WriteAssetBytesFromFile(node.AssetKey, dialog.FileName);
                     _loadSelectedTreeNode(node);
                 }
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -212,58 +221,37 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
-        private void WriteOutput(string text, LoggingLevel? color = null)
+        private void WriteOutput(string text, AeLoggingLevel? color = null)
             => _writeOutput(text, color);
 
         public void Repopulate()
         {
             try
             {
-                WriteOutput("Populating assets.", LoggingLevel.Verbose);
+                WriteOutput("Populating assets.", AeLoggingLevel.Verbose);
 
                 //Files and paths that contain "#" are for internal purposes and should not be shown in the editor.
                 var assets = _engine.Assets.GetAssets()
                     .Where(o => o.Key.Contains('#') == false).ToList();
 
-                WriteOutput($"Enumerating {assets.Count:n0} assets.", LoggingLevel.Verbose);
+                WriteOutput($"Enumerating {assets.Count:n0} assets.", AeLoggingLevel.Verbose);
 
                 foreach (var asset in assets)
                 {
                     UpsertTreeNodesPath(asset);
                 }
 
-                WriteOutput($"Assets enumeration complete.", LoggingLevel.Verbose);
+                WriteOutput($"Assets enumeration complete.", AeLoggingLevel.Verbose);
 
-                ExpandRootNodes();
+                _treeView.Invoke(() => _rootNode.Expand());
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
-            }
-        }
-
-        private void ExpandRootNodes()
-        {
-            try
-            {
-                if (_treeView.InvokeRequired)
-                {
-                    _treeView.Invoke(new Action(ExpandRootNodes));
-                    return;
-                }
-
-                foreach (AeTreeNode node in _treeView.Nodes)
-                {
-                    node.Expand();
-                }
-            }
-            catch (Exception ex)
-            {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -279,7 +267,7 @@ namespace Ae.AssetExplorer
 
                 var parts = asset.Key.Split(['\\', '/'], StringSplitOptions.RemoveEmptyEntries);
 
-                TreeNodeCollection workingLevel = _treeView.Nodes;
+                TreeNodeCollection workingLevel = _rootNode.Nodes;
 
                 int depthCounter = 0;
 
@@ -339,7 +327,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
             return null;
         }

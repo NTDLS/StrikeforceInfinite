@@ -1,12 +1,13 @@
 ﻿using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Interactive.Ship
 {
     /// <summary>
     /// The enemy base is a sub-class of the ship base. It is used by Peon and Boss enemies.
     /// </summary>
-    [AssetCategory("Enemy", "", true)]
+    [AssetClass("Enemy", "", AeBaseAssetType.Image, true)]
     public class SpriteEnemy
         : SpriteShip
     {

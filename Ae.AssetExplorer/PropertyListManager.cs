@@ -12,13 +12,13 @@ namespace Ae.AssetExplorer
     {
         private readonly AeEngine _engine;
         private readonly ListView _listView;
-        private readonly Action<string, LoggingLevel?> _writeOutput;
+        private readonly Action<string, AeLoggingLevel?> _writeOutput;
         private readonly Action<SpriteBase, PropertyItem> _propertiesEdited;
         private SpriteBase? _lastSprite;
         private string? _lastAssetKey;
 
         public PropertyListManager(ListView listView, AeEngine engine,
-            Action<string, LoggingLevel?> writeOutput,
+            Action<string, AeLoggingLevel?> writeOutput,
             Action<SpriteBase, PropertyItem> propertiesEdited)
         {
             _engine = engine;
@@ -61,7 +61,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -105,6 +105,13 @@ namespace Ae.AssetExplorer
                 {
                     case PropertyEditorType.Readonly:
                         return;
+                    case PropertyEditorType.Class:
+                        {
+                            using var form = new FormPropertyClassPicker(selectedItem);
+                            if (form.ShowDialog() != DialogResult.OK) return;
+                            newValue = form.Value;
+                            break;
+                        }
                     case PropertyEditorType.String:
                         {
                             using var form = new FormPropertyString(selectedItem);
@@ -203,7 +210,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -286,7 +293,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
     }

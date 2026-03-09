@@ -10,7 +10,7 @@ namespace Ae.Engine.Sprite._Superclass.Munition
     /// <summary>
     /// Seeking munitions do not lock on to targets, but they will follow a target withing some defined parameters.
     /// </summary>
-    [AssetCategory("Munition - Seeking Type", "", true)]
+    [AssetClass("Munition - Seeking Type", "", AeBaseAssetType.Image, true)]
     internal class SpriteSeekingMunition
         : SpriteMunition
     {

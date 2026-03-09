@@ -1,11 +1,4 @@
-﻿using Ae.Library;
-using Ae.Library.Metadata;
-using NTDLS.Helpers;
-using NTDLS.SqliteDapperWrapper;
-using System.IO.Compression;
-using System.Text.Json;
-
-namespace Ae.AssetPacker
+﻿namespace Ae.AssetPacker
 {
     /// <summary>
     /// Used to pack a directory of assets into the database file. This really shouldn't be used anymore.

@@ -14,7 +14,7 @@ namespace Ae.Engine.Sprite._Superclass.Munition
     /// <summary>
     /// The munition base is the base for all bullets/projectiles/etc.
     /// </summary>
-    [AssetCategory("Munition", "", true)]
+    [AssetClass("Munition", "", AeBaseAssetType.Image, true)]
     public class SpriteMunition
         : SpriteBase
     {

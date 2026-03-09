@@ -23,7 +23,7 @@ namespace Ae.AssetExplorer
         {
             InitializeComponent();
 
-            WriteOutput("Instanciating EngineCore.", LoggingLevel.Verbose);
+            WriteOutput("Instanciating EngineCore.", AeLoggingLevel.Verbose);
 
             pictureBoxPreview.Parent.EnsureNotNull().Resize += Parent_Resize;
             Parent_Resize(null, new());
@@ -73,7 +73,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                WriteOutput("Engine initialization complete.", LoggingLevel.Verbose);
+                WriteOutput("Engine initialization complete.", AeLoggingLevel.Verbose);
 
                 _engine.Sprites.QueueAllForDeletion();
                 _engine.Sprites.HardDeleteAllQueuedDeletions();
@@ -90,7 +90,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -112,7 +112,7 @@ namespace Ae.AssetExplorer
 
                     progressForm.Execute(() =>
                     {
-                        WriteOutput("Initializing engine.", LoggingLevel.Verbose);
+                        WriteOutput("Initializing engine.", AeLoggingLevel.Verbose);
 
                         progressForm.SeProgressStyle(ProgressBarStyle.Continuous);
                         progressForm.SetProgressMinimum(0);
@@ -124,13 +124,13 @@ namespace Ae.AssetExplorer
                             progressForm.SetProgressValue((int)progress);
                         }
 
-                        _engine.StartEngine(EngineStartupProgressCallback);
+                        _engine.StartEngine(EngineStartupProgressCallback, WriteOutput);
                     });
                 }
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -156,7 +156,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -173,7 +173,7 @@ namespace Ae.AssetExplorer
                     _engine.Sprites.QueueAllForDeletion();
                     _engine.Sprites.HardDeleteAllQueuedDeletions();
 
-                    var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, (o) =>
+                    var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, WriteOutput, (o) =>
                     {
                         if (o is SpriteAnimation spriteAnimation)
                         {
@@ -193,24 +193,24 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
-        private void WriteOutput(string text, LoggingLevel? loggingLevel)
+        private void WriteOutput(string text, AeLoggingLevel? loggingLevel)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<string, LoggingLevel?>(WriteOutput), text, loggingLevel);
+                Invoke(new Action<string, AeLoggingLevel?>(WriteOutput), text, loggingLevel);
                 return;
             }
 
             var color = loggingLevel switch
             {
-                LoggingLevel.Verbose => AssetExplorerColors.Verbose,
-                LoggingLevel.Information => AssetExplorerColors.Information,
-                LoggingLevel.Warning => AssetExplorerColors.Warning,
-                LoggingLevel.Error => AssetExplorerColors.Error,
+                AeLoggingLevel.Verbose => AssetExplorerColors.Verbose,
+                AeLoggingLevel.Information => AssetExplorerColors.Information,
+                AeLoggingLevel.Warning => AssetExplorerColors.Warning,
+                AeLoggingLevel.Error => AssetExplorerColors.Error,
                 _ => AssetExplorerColors.Default
             };
 
@@ -238,7 +238,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -256,7 +256,7 @@ namespace Ae.AssetExplorer
 
         private void ToolStripButtonSave_Click(object sender, EventArgs e)
         {
-
+            _tabManager.SaveCurrentTab();
         }
 
         private void ToolStripButtonSaveAll_Click(object sender, EventArgs e)

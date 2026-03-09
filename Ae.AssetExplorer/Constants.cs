@@ -14,15 +14,6 @@
         public static readonly Color Error = Color.DarkRed;
     }
 
-    public enum LoggingLevel
-    {
-        Default,
-        Verbose,
-        Information,
-        Warning,
-        Error
-    }
-
     public enum AeTreeNodeType
     {
         Undefined,

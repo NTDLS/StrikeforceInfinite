@@ -8,7 +8,7 @@ namespace Ae.AssetExplorer
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string []args)
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -16,7 +16,7 @@ namespace Ae.AssetExplorer
 
             NoSplash = args.Any(o => o.Equals("/nosplash", StringComparison.InvariantCultureIgnoreCase));
 
-                using var mutex = new Mutex(true, Constants.AppName, out var createdNewMutex);
+            using var mutex = new Mutex(true, Constants.AppName, out var createdNewMutex);
             if (!createdNewMutex)
             {
                 MessageBox.Show("Another instance is already running.", Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);

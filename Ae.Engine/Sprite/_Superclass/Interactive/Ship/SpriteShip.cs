@@ -4,13 +4,14 @@ using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using System;
 using System.Collections.Generic;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Interactive.Ship
 {
     /// <summary>
     /// The ship base is a ship object that moves, can be hit, explodes and can be the subject of locking weapons.
     /// </summary>
-    [AssetCategory("Ship", "", true)]
+    [AssetClass("Ship", "", AeBaseAssetType.Image, true)]
     public class SpriteShip
         : SpriteInteractive
     {

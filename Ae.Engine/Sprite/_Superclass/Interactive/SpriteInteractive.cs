@@ -1,4 +1,4 @@
-﻿using Ae.Engine.AI._Superclass;
+﻿using Ae.Engine.AI;
 using Ae.Engine.KinematicBody;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Munition;
@@ -18,7 +18,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
     /// <summary>
     /// A sprite that the player can see, probably shoot and destroy and might even shoot back.
     /// </summary>
-    [AssetCategory("Interactive", "", true)]
+    [AssetClass("Interactive", "", AeBaseAssetType.Image, true)]
     public class SpriteInteractive
         : SpriteBase
     {
@@ -90,8 +90,13 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
         public IAIController? CurrentAIController { get; set; }
         private readonly Dictionary<Type, IAIController> _aiControllers = new();
 
-        public void AddAIController(IAIController controller)
-            => _aiControllers.Add(controller.GetType(), controller);
+        public void AddAIController(string aiControllerName)
+        {
+            //var aiControllers = AeReflection.GetSubClassesOf<IAIController>();
+
+            throw new NotImplementedException();
+        }
+        //=> _aiControllers.Add(controller.GetType(), controller);
 
         public void ClearAIControllers()
         {

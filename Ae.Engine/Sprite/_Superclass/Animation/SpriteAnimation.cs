@@ -11,7 +11,7 @@ using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Animation
 {
-    [AssetCategory("Animation", "", true)]
+    [AssetClass("Animation", "", AeBaseAssetType.Image, true)]
     public class SpriteAnimation
         : SpriteMinimalBitmap
     {

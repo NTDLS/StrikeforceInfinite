@@ -1,13 +1,14 @@
 ﻿using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Munition
 {
     /// <summary>
     /// Projectile munitions just go straight - these are physical bullets that have no power of their own once fired.
     /// </summary>
-    [AssetCategory("Munition - Projectile Type", "", true)]
+    [AssetClass("Munition - Projectile Type", "", AeBaseAssetType.Image, true)]
     internal class SpriteProjectileMunition
         : SpriteMunition
     {

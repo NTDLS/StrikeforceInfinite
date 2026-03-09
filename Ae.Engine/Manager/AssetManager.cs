@@ -1,5 +1,4 @@
-﻿
-using Ae.Audio;
+﻿using Ae.Audio;
 using Ae.Library;
 using Ae.Library.Compiler;
 using Ae.Library.Metadata;
@@ -10,10 +9,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Manager
 {
@@ -110,7 +109,7 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public void LoadAllAssets(Action<string, float>? progressCallback)
+        public void LoadAllAssets(Action<string, float>? progressCallback, Action<string, AeLoggingLevel?>? writeOutput = null)
         {
             progressCallback?.Invoke("Loading assets...", 0);
 
@@ -130,20 +129,74 @@ namespace Ae.Engine.Manager
             {
                 threadPoolTracker.Enqueue(() =>
                 {
-                    var assetContainer = DeserializeAssetContainer(model);
-
-                    if (!string.IsNullOrWhiteSpace(model.Controller)
-                        && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
-                        && !string.IsNullOrWhiteSpace(assetContainer.Metadata.AssetKey))
+                    if (AeConstants.BaseAssetTypes.TryGetValue(model.BaseType, out var baseType) == false)
                     {
-                        var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_').Replace(' ', '_');
+                        if (writeOutput != null)
+                        {
+                            writeOutput($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}", AeLoggingLevel.Error);
+                        }
+                        else throw new Exception($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}");
+                    }
+
+                    //AeAssetCodeClassText
+                    var assetContainer = DeserializeAssetContainer(model);
+                    if (string.IsNullOrEmpty(assetContainer.Metadata.AssetKey))
+                    {
+                        if (writeOutput != null)
+                        {
+                            writeOutput($"Asset metadata for asset with key: {model.Key} does not contain an AssetKey.", AeLoggingLevel.Error);
+                            return;
+                        }
+                        else throw new Exception($"Asset metadata for asset with key: {model.Key} does not contain an AssetKey.");
+                    }
+
+                    if (baseType == AeConstants.AeBaseAssetType.Image && !string.IsNullOrWhiteSpace(model.Controller))
+                    {
+
+                        //Compile sprite controller.
+                        var assetClassName = $"AeAssetController_{model.BaseType}" + assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_').Replace(' ', '_');
 
                         var classCode = AeAssetControllerClassText.Get(assetContainer.Metadata.Class, assetClassName, model.Controller);
 
-                        AeRuntimeCompiler.CompileToAssembly(classCode);
+                        try
+                        {
+                            AeRuntimeCompiler.CompileToAssembly(classCode);
+                            //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
+                            AeReflection.GetTypeByName(assetClassName);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (writeOutput != null)
+                            {
+                                writeOutput($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}", AeLoggingLevel.Error);
+                            }
+                            else throw new Exception($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}");
+                        }
 
-                        //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
-                        AeReflection.GetTypeByName(assetClassName);
+                        assetContainer.ControllerName = assetClassName;
+                    }
+                    else if (baseType == AeConstants.AeBaseAssetType.Code)
+                    {
+                        var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_').Replace(' ', '_');
+
+                        var objectText = Encoding.UTF8.GetString(model.Bytes);
+
+                        var classCode = AeAssetCodeClassText.Get(assetContainer.Metadata.Class, assetClassName, objectText);
+
+                        try
+                        {
+                            AeRuntimeCompiler.CompileToAssembly(classCode);
+                            //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
+                            AeReflection.GetTypeByName(assetClassName);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (writeOutput != null)
+                            {
+                                writeOutput($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}", AeLoggingLevel.Error);
+                            }
+                            else throw new Exception($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}");
+                        }
 
                         assetContainer.ControllerName = assetClassName;
                     }
@@ -262,6 +315,16 @@ namespace Ae.Engine.Manager
             RefreshAssetIntoCollection(assetKey);
         }
 
+        private byte[] CompressAsset(byte[] bytes, string baseType)
+        {
+            if (baseType == "cs" || baseType == "txt" || baseType == "json" || baseType == "xml")
+            {
+                //Just for the sake of easy database editing, we do not compress text based assets.
+                return bytes;
+            }
+            return CompressionHelper.Compress(bytes, CompressionLevel.SmallestSize);
+        }
+
         /// <summary>
         /// Writes an asset to the database. This is really only intended for use in the editor.
         /// It will overwrite any existing asset with the same key and refreshes the asset in the collection.
@@ -270,8 +333,10 @@ namespace Ae.Engine.Manager
         {
             _cache.Clear();
 
+            var baseType = Path.GetExtension(filePath).Trim('.').ToLower();
+
             var originalFileBytes = File.ReadAllBytes(filePath);
-            var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+            var compressedBytes = CompressAsset(originalFileBytes, baseType);
             _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
 
             metadata.AssetKey = assetKey;
@@ -284,7 +349,7 @@ namespace Ae.Engine.Manager
                     Bytes = originalFileBytes.Length > compressedBytes.Length ? compressedBytes : originalFileBytes,
                     IsCompressed = originalFileBytes.Length > compressedBytes.Length,
                     Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
-                    BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
+                    BaseType = baseType
                 });
 
             RefreshAssetIntoCollection(assetKey);
@@ -317,12 +382,13 @@ namespace Ae.Engine.Manager
         /// </summary>
         /// <param name="assetKey"></param>
         /// <param name="filePath"></param>
-        public void WriteAssetBytes(string assetKey, string filePath)
+        public void WriteAssetBytesFromFile(string assetKey, string filePath)
         {
             _cache.Clear();
 
             var originalFileBytes = File.ReadAllBytes(filePath);
-            var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+            var baseType = Path.GetExtension(filePath).Trim('.').ToLower();
+            var compressedBytes = CompressAsset(originalFileBytes, baseType);
 
             _assetsDatabase.Execute("UPDATE Assets SET BaseType = @BaseType, Bytes = @Bytes, IsCompressed = @IsCompressed WHERE Key = @Key",
                 new
@@ -330,7 +396,47 @@ namespace Ae.Engine.Manager
                     Key = assetKey,
                     Bytes = originalFileBytes.Length > compressedBytes.Length ? compressedBytes : originalFileBytes,
                     IsCompressed = originalFileBytes.Length > compressedBytes.Length,
-                    BaseType = Path.GetExtension(filePath).Trim('.').ToLower()
+                    BaseType = baseType
+                });
+
+            RefreshAssetIntoCollection(assetKey);
+        }
+
+        /// <summary>
+        /// Writes an assets bytes for a text asset such as (text, code, json, xml, etc.) to the database and refreshes the asset in the collection.
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <param name="controllerText"></param>
+        public void WriteAssetControllerFromText(string assetKey, string controllerText)
+        {
+            _cache.Clear();
+
+            _assetsDatabase.Execute("UPDATE Assets SET Controller = @Controller, IsCompressed = @IsCompressed WHERE Key = @Key",
+                new
+                {
+                    Key = assetKey,
+                    Controller = controllerText,
+                    IsCompressed = false
+                });
+
+            RefreshAssetIntoCollection(assetKey);
+        }
+
+        /// <summary>
+        /// Writes an assets bytes for a text asset such as (text, code, json, xml, etc.) to the database and refreshes the asset in the collection.
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <param name="objectText"></param>
+        public void WriteAssetBytesFromText(string assetKey, string objectText)
+        {
+            _cache.Clear();
+
+            _assetsDatabase.Execute("UPDATE Assets SET Bytes = @Bytes, IsCompressed = @IsCompressed WHERE Key = @Key",
+                new
+                {
+                    Key = assetKey,
+                    Bytes = Encoding.UTF8.GetBytes(objectText),
+                    IsCompressed = false
                 });
 
             RefreshAssetIntoCollection(assetKey);

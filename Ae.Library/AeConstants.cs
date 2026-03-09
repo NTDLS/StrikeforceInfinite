@@ -62,6 +62,15 @@ namespace Ae.Library
             }
         }
 
+        public enum AeLoggingLevel
+        {
+            Default,
+            Verbose,
+            Information,
+            Warning,
+            Error
+        }
+
         public enum AeBaseAssetType
         {
             Text,
@@ -104,6 +113,10 @@ namespace Ae.Library
             RangeInt,
             RangeFloat,
             Vector,
+            /// <summary>
+            /// Can pick a class from the enumerated list of that have the AssetClassAttribute.
+            /// </summary>
+            Class,
             /// <summary>
             /// Values from an enum type will be displayed as options.
             /// </summary>

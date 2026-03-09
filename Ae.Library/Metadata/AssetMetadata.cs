@@ -14,8 +14,8 @@ namespace Ae.Library.Metadata
         [AssetMetadata("Loop Sound", "Indicates whether the sound should loop when played.", PropertyEditorGroup.Audio, PropertyEditorType.Boolean)]
         public bool? LoopSound { get; set; }
 
-        [AssetMetadata("Class", "The class of the sprite which will be used to control the sprite.", PropertyEditorGroup.Base, PropertyEditorType.String)]
-        public string? @Class { get; set; }
+        [AssetMetadata("Class", "The class of the sprite which will be used to control the sprite.", PropertyEditorGroup.Base, PropertyEditorType.Class)]
+        public string? Class { get; set; }
 
         [AssetMetadata("Name", "The name of the sprite, used for identification and display purposes.", PropertyEditorGroup.Base, PropertyEditorType.String)]
         public string? Name { get; set; }

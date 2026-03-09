@@ -5,7 +5,7 @@ using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass.Interactive
 {
-    [AssetCategory("Attachment", "", true)]
+    [AssetClass("Attachment", "", AeBaseAssetType.Image, true)]
     public class SpriteAttachment
         : SpriteInteractive
     {

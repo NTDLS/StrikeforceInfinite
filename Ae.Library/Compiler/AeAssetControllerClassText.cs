@@ -14,25 +14,25 @@
             }
         }
 
-        private static Dictionary<string, ConstructorSignatures> ConstructorSignaturesByBaseClass = new()
+        private readonly static Dictionary<string, ConstructorSignatures> ConstructorSignaturesByBaseClass = new()
         {
             { "SpriteWeapon", new ConstructorSignatures("AeEngine engine, SpriteBase owner, string assetKey", "engine, owner, assetKey") },
         };
 
-        public static string Get(string baseClassName, string assetControllerClassName, string controllerCode)
+        public static string Get(string? baseClassName, string assetControllerClassName, string controllerCode)
         {
-            if (ConstructorSignaturesByBaseClass.TryGetValue(baseClassName, out var constructorSignatures) == false)
+            if (ConstructorSignaturesByBaseClass.TryGetValue(baseClassName ?? string.Empty, out var constructorSignatures) == false)
             {
                 //Default constructor signature if the base class is not found in the dictionary.
                 constructorSignatures = new("AeEngine engine, string assetKey", "engine, assetKey");
             }
 
             return @$"
+                using System.Collections.Generic;
                 using NTDLS.Helpers;
                 using SharpDX.Direct2D1;
                 using SharpDX.Mathematics.Interop;
                 using SharpDX;
-                using Ae.Engine.AI.Logistics;
                 using Ae.Engine.Sprite._Superclass.Animation;
                 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
                 using Ae.Engine.Sprite._Superclass.Interactive;
@@ -49,9 +49,10 @@
                 using static Ae.Library.AeConstants;
                 using System.Drawing;
                 using System.Linq;
-                using System;
+                using Ae.Engine.AI;
+                using System;" + Environment.NewLine
 
-                public class {assetControllerClassName}({constructorSignatures.Signature})
+                + $@"public class {assetControllerClassName}({constructorSignatures.Signature})
                     : {baseClassName}({constructorSignatures.Parameters}), Ae.Library.Compiler.IAeRuntimeCompiled
                 {{
                     public string GetControllerName() => ""{assetControllerClassName}"";

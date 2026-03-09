@@ -125,62 +125,73 @@ namespace Ae.Engine.Manager
             return sprite;
         }
 
-        public SpriteBase EditorAdd(string assetKey, Action<SpriteBase>? initializationProc = null)
+        public SpriteBase EditorAdd(string assetKey, Action<string, AeLoggingLevel?> writeOutput, Action<SpriteBase>? initializationProc = null)
         {
             if (_engine.ExecutionMode != AeConstants.SiEngineExecutionMode.Edit)
             {
                 throw new Exception("EditorAdd can only be used in Editor mode.");
             }
 
-            var metadata = _engine.Assets.GetMetadata(assetKey)
-                 ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
-
-            string className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
-
-            var classType = AeReflection.GetTypeByName(className);
-
-            var firstConstructor = classType.GetConstructors().First();
-
-            List<dynamic?> constructorParams = new();
-
-            var parameters = firstConstructor.GetParameters();
-
-            foreach (var parameter in parameters)
+            try
             {
-                switch (parameter.Name)
+                var metadata = _engine.Assets.GetMetadata(assetKey)
+                     ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
+
+                var className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
+                var classType = AeReflection.GetTypeByName(className);
+
+                if (typeof(SpriteBase).IsAssignableFrom(classType))
                 {
-                    case "engine":
-                        constructorParams.Add(_engine);
-                        break;
-                    case "assetKey":
-                        constructorParams.Add(assetKey);
-                        break;
-                    case "firedFrom":
-                        constructorParams.Add(new SpriteEnemy(_engine, "Sprites/#Internal/Ghost"));
-                        break;
-                    case "owner":
-                        constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
-                        break;
-                    case "weapon":
-                        constructorParams.Add(new SpriteWeapon(_engine, new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
-                        break;
-                    case "lockedTarget":
-                        constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
-                        break;
-                    case "location":
-                        constructorParams.Add(AeVector.Zero());
-                        break;
-                    default:
-                        throw new Exception($"Constructor parameter {parameter.Name} for {classType.Name} is not handled.");
+                    //We only add assets to the sprite collection that are actually sprites.
+
+                    var firstConstructor = classType.GetConstructors().First();
+                    var parameters = firstConstructor.GetParameters();
+
+                    List<dynamic?> constructorParams = new();
+
+                    foreach (var parameter in parameters)
+                    {
+                        switch (parameter.Name)
+                        {
+                            case "engine":
+                                constructorParams.Add(_engine);
+                                break;
+                            case "assetKey":
+                                constructorParams.Add(assetKey);
+                                break;
+                            case "firedFrom":
+                                constructorParams.Add(new SpriteEnemy(_engine, "Sprites/#Internal/Ghost"));
+                                break;
+                            case "owner":
+                                constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
+                                break;
+                            case "weapon":
+                                constructorParams.Add(new SpriteWeapon(_engine, new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
+                                break;
+                            case "lockedTarget":
+                                constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
+                                break;
+                            case "location":
+                                constructorParams.Add(AeVector.Zero());
+                                break;
+                            default:
+                                throw new Exception($"Constructor parameter {parameter.Name} for {classType.Name} is not handled.");
+                        }
+                    }
+
+                    var sprite = (SpriteBase)Activator.CreateInstance(classType, constructorParams.ToArray()).EnsureNotNull();
+                    initializationProc?.Invoke(sprite);
+
+                    Insert(sprite);
+                    return sprite;
                 }
             }
+            catch (Exception ex)
+            {
+                writeOutput($"Error creating sprite with asset key {assetKey}: {ex.Message}", AeLoggingLevel.Error);
+            }
 
-            var sprite = (SpriteBase)Activator.CreateInstance(classType, constructorParams.ToArray()).EnsureNotNull();
-            initializationProc?.Invoke(sprite);
-
-            initializationProc?.Invoke(sprite);
-            Insert(sprite);
-            return sprite;
+            return new SpriteBase(_engine, assetKey);
         }
 
         public SpriteBase Add(string assetKey, Action<SpriteBase>? initializationProc = null)

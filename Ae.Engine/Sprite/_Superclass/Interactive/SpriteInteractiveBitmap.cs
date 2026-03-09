@@ -10,7 +10,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
     /// <summary>
     /// These are generic collidable, interactive bitmap sprites. They can take damage and even shoot back.
     /// </summary>
-    [AssetCategory("Interactive Bitmap", "", true)]
+    [AssetClass("Interactive Bitmap", "", AeBaseAssetType.Image, true)]
     public class SpriteInteractiveBitmap
         : SpriteInteractive
     {

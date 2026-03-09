@@ -2,13 +2,14 @@
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using System;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass
 {
     /// <summary>
     /// Represents a "power-up" that the player can pick up to gain some ability / stat-improvement.
     /// </summary>
-    [AssetCategory("Powerup", "", true)]
+    [AssetClass("Powerup", "", AeBaseAssetType.Image, true)]
     public class SpritePowerup
         : SpriteBase
     {

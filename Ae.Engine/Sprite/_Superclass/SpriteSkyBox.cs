@@ -2,10 +2,11 @@
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using System;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass
 {
-    [AssetCategory("Skybox", "", true)]
+    [AssetClass("Skybox", "", AeBaseAssetType.Image, true)]
     public class SpriteSkyBox
         : SpriteBase
     {

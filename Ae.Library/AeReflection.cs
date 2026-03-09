@@ -1,6 +1,7 @@
 ﻿using NTDLS.Helpers;
 using NTDLS.Semaphore;
 using System.Reflection;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Library
 {
@@ -157,17 +158,28 @@ namespace Ae.Library
         /// <summary>
         // Caches all types that inherit from T;
         /// </summary>
-        public static void BuildReflectionCacheOfType<T>(Action<string, float>? progressCallback)
+        public static void BuildReflectionCacheOfType<T>(Action<string, float>? progressCallback, Action<string, AeLoggingLevel?>? writeOutput = null)
         {
             foreach (var item in GetSubClassesOf<T>())
             {
-                _ = AeReflection.GetTypeByName(item.Name);
+                try
+                {
+                    _ = AeReflection.GetTypeByName(item.Name);
+                }
+                catch (Exception ex)
+                {
+                    if (writeOutput != null)
+                    {
+                        writeOutput?.Invoke($"Failed to cache type {item.Name}: {ex.Message}", AeLoggingLevel.Error);
+                    }
+                    else throw;
+                }
             }
-        }
 
-        //public static T? CreateInstanceOf<T>(object[] constructorArgs)
-        //{
-        //    return (T?)Activator.CreateInstance(typeof(T), constructorArgs);
-        //}
+            //public static T? CreateInstanceOf<T>(object[] constructorArgs)
+            //{
+            //    return (T?)Activator.CreateInstance(typeof(T), constructorArgs);
+            //}
+        }
     }
 }

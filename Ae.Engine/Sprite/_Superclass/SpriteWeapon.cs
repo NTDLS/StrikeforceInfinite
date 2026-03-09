@@ -18,7 +18,7 @@ namespace Ae.Engine.Sprite._Superclass
     /// <summary>
     /// A weapon is a "device" that fires a "munition" (_MunitionBase). It must be owned by another sprite.
     /// </summary>
-    [AssetCategory("Weapon", "", true)]
+    [AssetClass("Weapon", "", AeBaseAssetType.Image, true)]
     public class SpriteWeapon
         : SpriteBase
     {

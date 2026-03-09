@@ -2,10 +2,11 @@
 using Ae.Library;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.Sprite._Superclass
 {
-    [AssetCategory("Star", "", true)]
+    [AssetClass("Star", "", AeBaseAssetType.Image, true)]
     public class SpriteStar
         : SpriteBase
     {

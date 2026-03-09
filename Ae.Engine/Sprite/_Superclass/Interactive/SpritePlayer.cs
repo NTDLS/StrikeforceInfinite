@@ -15,7 +15,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
     /// <summary>
     /// The player base is a sub-class of the ship base. It is only used by the Player and as a model for menu selections.
     /// </summary>
-    [AssetCategory("Bitmap", "", true)]
+    [AssetClass("Bitmap", "", AeBaseAssetType.Image, true)]
     public class SpritePlayer
         : SpriteInteractive
     {
