@@ -14,6 +14,7 @@ namespace Ae.AssetPacker
     {
         static void Main(string[] args)
         {
+            /*
             var sqliteDb = new SqliteManagedFactory("Data Source=../../../../Installer/Ae.Assets.db");
 
             //Files and paths that contain "@" are ignored because they effectively "Commented out" assets.
@@ -50,7 +51,8 @@ namespace Ae.AssetPacker
                         new
                         {
                             Key = assetKey,
-                            Bytes = originalFileBytes,
+                    Bytes = originalFileBytes.Length > compressedBytes.Length ? compressedBytes : originalFileBytes,
+                    IsCompressed = originalFileBytes.Length > compressedBytes.Length,
                             Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
                             BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower()
                         });
@@ -58,6 +60,7 @@ namespace Ae.AssetPacker
                     Console.WriteLine($"[{assetKey}]");
                 }
             }
+            */
         }
     }
 }
