@@ -8,7 +8,7 @@
  DefaultDirName                  = {commonpf}\NetworkDLS\Axis Engine
  DefaultGroupName                = NetworkDLS\Axis Engine
  UninstallDisplayIcon            = {app}\Ae.Client.exe
- SetupIconFile                   = ../@Resources\StrikeforceInfinite.ico
+ SetupIconFile                   = ..\@Art\Branding\AeIcon.ico
  PrivilegesRequired              = admin
  Uninstallable                   = Yes
  Compression                     = ZIP/9
@@ -30,7 +30,7 @@
  
 [Files]
  Source: "publish\*.*";                DestDir: "{app}"; Components: Client; Flags: IgnoreVersion; 
- Source: "Ae.Assets.rez";              DestDir: "{app}"; Components: Assets; Flags: IgnoreVersion recursesubdirs;
+ Source: "Ae.Assets.db";               DestDir: "{app}"; Components: Assets; Flags: IgnoreVersion recursesubdirs;
 
  Source: "Fonts\Digital-7 (Mono).ttf"; DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Digital-7 Mono";  Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\Digital-7.ttf";        DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "digital-7";       Flags: onlyifdoesntexist uninsneveruninstall
@@ -40,8 +40,8 @@
  Source: "Fonts\visitor1.ttf";         DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Visitor TT1 BRK"; Flags: onlyifdoesntexist uninsneveruninstall
 
 [Registry]
- Root: HKLM; Subkey: "Software\NetworkDLS\Axis Engine"; ValueType: STRING;ValueName: "CommonAssetPath"; ValueData:"{app}\Assets";                      Flags: CreateValueIfDoesntExist;
- Root: HKLM; Subkey: "Software\NetworkDLS\Axis Engine"; ValueType: STRING;ValueName: "UserAssetPath";   ValueData:"{userappdata}\StrikeforceInfinite"; Flags: CreateValueIfDoesntExist;
+ Root: HKLM; Subkey: "Software\NetworkDLS\Axis Engine"; ValueType: STRING;ValueName: "CommonAssetPath"; ValueData:"{app}\Assets";           Flags: CreateValueIfDoesntExist;
+ Root: HKLM; Subkey: "Software\NetworkDLS\Axis Engine"; ValueType: STRING;ValueName: "UserAssetPath";   ValueData:"{userappdata}\AeEngine"; Flags: CreateValueIfDoesntExist;
 
 [Icons]
  Name: "{group}\Axis Engine"; Filename: "{app}\Ae.Client.exe"; Components: Client;

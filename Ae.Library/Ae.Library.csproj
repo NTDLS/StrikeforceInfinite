@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Title>StrikeforceInfinite.Shared</Title>
+    <Title>Ae.Library</Title>
     <Company>NetworkDLS</Company>
     <Copyright>Copyright © 2026 NetworkDLS</Copyright>
     <AssemblyVersion>0.0.37</AssemblyVersion>
