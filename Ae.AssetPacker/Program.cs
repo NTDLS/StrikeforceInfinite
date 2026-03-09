@@ -13,7 +13,6 @@ namespace Ae.AssetPacker
     /// </summary>
     internal class Program
     {
-
         static void Main(string[] args)
         {
             #region Parse command line arguments.
@@ -28,7 +27,7 @@ namespace Ae.AssetPacker
                 Description = "Unpacks the assets from the database into a directory."
             };
 
-            var pathOption = new Option<string>("-o")
+            var pathOption = new Option<string>("-d")
             {
                 Description = "Source or destination path for pack/unpack operation."
             };
