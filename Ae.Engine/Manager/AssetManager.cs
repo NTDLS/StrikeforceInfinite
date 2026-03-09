@@ -342,7 +342,7 @@ namespace Ae.Engine.Manager
         /// <param name="assetKey"></param>
         public void RefreshAssetIntoCollection(string assetKey)
         {
-            var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, Metadata FROM Assets WHERE Key = @Key",
+            var model = _assetsDatabase.QueryFirst<AssetDatabaseModel>("SELECT Key, BaseType, Bytes, IsCompressed, Metadata FROM Assets WHERE Key = @Key",
                 new { Key = assetKey });
 
             var asset = DeserializeAssetContainer(model);
