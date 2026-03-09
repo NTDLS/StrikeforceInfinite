@@ -93,9 +93,29 @@ namespace Ae.AssetExplorer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AssetTypeImage {
+            get {
+                object obj = ResourceManager.GetObject("AssetTypeImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AssetTypeJson {
             get {
                 object obj = ResourceManager.GetObject("AssetTypeJson", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AssetTypeSound {
+            get {
+                object obj = ResourceManager.GetObject("AssetTypeSound", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

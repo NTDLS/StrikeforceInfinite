@@ -3,7 +3,6 @@ using Ae.AssetExplorer.Forms;
 using Ae.AssetExplorer.Properties;
 using Ae.Engine;
 using Ae.Library;
-using System.Text;
 using System.Text.Json;
 using Talkster.Client.Controls;
 
@@ -11,10 +10,20 @@ namespace Ae.AssetExplorer
 {
     internal class TreeManager
     {
-        public readonly DoubleBufferedTreeView _treeView;
+        private readonly DoubleBufferedTreeView _treeView;
         private readonly AeEngine _engine;
-        public readonly Action<string, LoggingLevel?> _writeOutput;
-        public readonly Action<AeTreeNode> _loadSelectedTreeNode;
+        private readonly Action<string, LoggingLevel?> _writeOutput;
+        private readonly Action<AeTreeNode> _loadSelectedTreeNode;
+
+        private readonly Dictionary<string, Image> AssetTypeImages = new()
+        {
+            ["png"] = Resources.AssetTypeImage,
+            ["wav"] = Resources.AssetTypeSound,
+            ["cs"] = Resources.AssetTypeCode,
+            ["json"] = Resources.AssetTypeJson,
+            ["xml"] = Resources.AssetTypeXml,
+            ["txt"] = Resources.AssetTypeText
+        };
 
         public TreeManager(DoubleBufferedTreeView treeView, AeEngine engine,
             Action<string, LoggingLevel?> writeOutput,
@@ -27,6 +36,18 @@ namespace Ae.AssetExplorer
 
             _treeView.NodeMouseDoubleClick += TreeView_NodeMouseDoubleClick;
             _treeView.NodeMouseClick += TreeView_NodeMouseClick;
+
+            _treeView.ImageList = new ImageList()
+            {
+                ColorDepth = ColorDepth.Depth32Bit
+            };
+
+            _treeView.ImageList.Images.Add("folder", Resources.AssetTypeFolder);
+            _treeView.ImageList.Images.Add("generic", Resources.AssetTypeGeneric);
+            foreach (var item in AssetTypeImages)
+            {
+                _treeView.ImageList.Images.Add(item.Key, item.Value);
+            }
         }
 
         private void TreeView_NodeMouseClick(object? sender, TreeNodeMouseClickEventArgs e)
@@ -286,6 +307,25 @@ namespace Ae.AssetExplorer
                             nodeType == AeTreeNodeType.Folder ? part : asset.Key, // For folders, the asset key is the path part. For assets, it's the full asset key.
                             nodeType);
 
+                        switch (nodeType)
+                        {
+                            case AeTreeNodeType.Folder:
+                                newNode.ImageKey = "folder";
+                                break;
+                            case AeTreeNodeType.Asset:
+                                if (AssetTypeImages.ContainsKey(asset.BaseType))
+                                {
+                                    //If we have a specific image for this asset type, use it.
+                                    newNode.ImageKey = asset.BaseType;
+                                }
+                                else
+                                {
+                                    newNode.ImageKey = "generic";
+                                }
+                                break;
+                        }
+
+                        newNode.SelectedImageKey = newNode.ImageKey;
                         workingLevel.Add(newNode);
                         workingLevel = newNode.Nodes;
 
