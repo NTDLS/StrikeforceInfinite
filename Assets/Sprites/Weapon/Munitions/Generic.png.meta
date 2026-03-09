@@ -1,8 +1,15 @@
 {
-  "Class": "ProjectileMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Generic",
+  "Class": "SpriteProjectileMunition",
   "Name": "Generic",
   "Description": "",
-  "Damage": {"Min":1,"Max":1},
-  "Speed": {"Min":800,"Max":800},
-  "AngleVarianceDegrees": 8
+  "Speed": {
+    "Min": 800,
+    "Max": 800
+  },
+  "AngleVarianceDegrees": 8,
+  "Damage": {
+    "Min": 1,
+    "Max": 1
+  }
 }

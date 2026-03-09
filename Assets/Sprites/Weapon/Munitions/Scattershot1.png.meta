@@ -1,8 +1,15 @@
 {
-  "Class": "ProjectileMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Scattershot1",
+  "Class": "SpriteProjectileMunition",
   "Name": "Scattershot",
   "Description": "",
-  "Damage": {"Min":1,"Max":1},
-  "Speed": {"Min":940,"Max":960},
-  "AngleVarianceDegrees": 8
+  "Speed": {
+    "Min": 940,
+    "Max": 960
+  },
+  "AngleVarianceDegrees": 8,
+  "Damage": {
+    "Min": 1,
+    "Max": 1
+  }
 }

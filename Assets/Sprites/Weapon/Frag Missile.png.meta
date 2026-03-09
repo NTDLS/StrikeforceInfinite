@@ -1,10 +1,12 @@
 {
-  "Class": "WeaponFragMissile",
+  "AssetKey": "Sprites/Weapon/Frag Missile",
+  "Class": "SpriteWeapon",
   "Name": "Frag Missile",
   "Description": "",
-  "SoundAssetKey": "Sounds/Weapons/Frag Missile",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Frag Missile"],
-  "SoundVolumne": 0.4,
   "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Frag Missile"
+  ],
+  "SoundAssetKey": "Sounds/Weapons/Frag Missile",
   "FireDelayMilliseconds": 250
 }

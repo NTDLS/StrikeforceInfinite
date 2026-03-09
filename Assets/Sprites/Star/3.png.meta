@@ -1,6 +1,10 @@
 {
+  "AssetKey": "Sprites/Star/3",
   "Class": "SpriteStar",
-  "Speed": {"Min":10,"Max":30},
+  "Speed": {
+    "Min": 10,
+    "Max": 30
+  },
   "MunitionDetection": false,
   "CollisionDetection": false
 }

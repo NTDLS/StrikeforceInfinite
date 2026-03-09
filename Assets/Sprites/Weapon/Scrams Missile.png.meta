@@ -1,14 +1,16 @@
 {
-  "Class": "WeaponScramsMissile",
+  "AssetKey": "Sprites/Weapon/Scrams Missile",
+  "Class": "SpriteWeapon",
   "Name": "Scrams Missile",
   "Description": "",
+  "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Scrams Missile"
+  ],
   "SoundAssetKey": "Sounds/Weapons/Scrams Missile",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Scrams Missile"],
-  "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 500,
-  "MinLockDistance": 50,
-  "MaxLockDistance": 1500,
-  "MaxLocks": 8,
   "MaxLockOnAngle": 50,
-  "MunitionCount": 65535
+  "MaxLocks": 8,
+  "MinLockDistance": 50,
+  "MaxLockDistance": 1500
 }

@@ -1,11 +1,12 @@
 {
-  "Class": "WeaponDualVulcanCannon",
+  "AssetKey": "Sprites/Weapon/Dual Vulcan Cannon",
+  "Class": "SpriteWeapon",
   "Name": "Dual Vulcan Cannon",
   "Description": "",
-  "SoundAssetKey": "Sounds/Weapons/Dual Vulcan Cannon",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Dual Vulcan Cannon"],
-  "SoundVolumne": 0.4,
   "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Dual Vulcan Cannon"
+  ],
+  "SoundAssetKey": "Sounds/Weapons/Dual Vulcan Cannon",
   "FireDelayMilliseconds": 25
-}  
- 
+}

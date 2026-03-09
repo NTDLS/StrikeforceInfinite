@@ -1,13 +1,18 @@
 {
-  "Class": "LockingMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Scuttle Missile",
+  "Class": "SpriteLockingMunition",
   "Name": "Scuttle Missile Missile",
   "Description": "",
-  
-  "Damage": {"Min":8,"Max":12},
-  "Speed": {"Min":740,"Max":760},
+  "Speed": {
+    "Min": 740,
+    "Max": 760
+  },
+  "Damage": {
+    "Min": 8,
+    "Max": 12
+  },
   "ExplodesOnImpact": true,
-   
-  "SeekingEscapeDistance": 500,
   "SeekingEscapeAngleDegrees": 90,
+  "SeekingEscapeDistance": 500,
   "SeekingRotationRateDegrees": 45
 }

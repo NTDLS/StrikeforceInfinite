@@ -1,7 +1,11 @@
 {
-  "Class": "SpriteEnemyMinnow",
+  "AssetKey": "Sprites/Enemy/Peon/Minnow",
+  "Class": "SpriteEnemy",
   "Description": "",
-  "Speed": {"Min":200,"Max":300},
+  "Speed": {
+    "Min": 200,
+    "Max": 300
+  },
   "MaxThrottle": 1.5,
   "Hull": 20,
   "Shields": 10,
@@ -9,5 +13,5 @@
   "WeaponAssetKeys": [
     "Sprites/Weapon/Vulcan Cannon",
     "Sprites/Weapon/Dual Vulcan Cannon"
-	]
+  ]
 }

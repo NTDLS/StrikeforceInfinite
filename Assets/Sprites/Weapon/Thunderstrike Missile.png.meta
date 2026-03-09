@@ -1,10 +1,12 @@
 {
-  "Class": "WeaponThunderstrikeMissile",
+  "AssetKey": "Sprites/Weapon/Thunderstrike Missile",
+  "Class": "SpriteWeapon",
   "Name": "Thunderstrike Missile",
   "Description": "",
-  "SoundAssetKey": "Sounds/Weapons/Thunderstrike Missile",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Thunderstrike Missile"],
-  "SoundVolumne": 0.4,
   "MunitionCount": 65535,
-  "FireDelayMilliseconds": 250   
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Thunderstrike Missile"
+  ],
+  "SoundAssetKey": "Sounds/Weapons/Thunderstrike Missile",
+  "FireDelayMilliseconds": 250
 }

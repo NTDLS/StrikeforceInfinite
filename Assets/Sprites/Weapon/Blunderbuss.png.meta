@@ -1,10 +1,12 @@
 {
-  "Class": "WeaponBlunderbuss",
+  "AssetKey": "Sprites/Weapon/Blunderbuss",
+  "Class": "SpriteWeapon",
   "Name": "Blunderbuss",
   "Description": "",
-  "SoundAssetKey": "Sounds/Weapons/Blunderbuss",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Blunderbuss"],
-  "SoundVolumne": 0.4,
   "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Blunderbuss"
+  ],
+  "SoundAssetKey": "Sounds/Weapons/Blunderbuss",
   "FireDelayMilliseconds": 250
 }

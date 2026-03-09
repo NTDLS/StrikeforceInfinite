@@ -1,8 +1,11 @@
 {
+  "AssetKey": "Sprites/Animation/Explode/Medium Fire Explosions/5",
   "Class": "SpriteAnimation",
-  "FrameHeight": 256,
   "FrameWidth": 256,
-  "FramesPerSecond": {"Min":30,"Max":50},
-  "DeleteAfterPlay": "true",
+  "FrameHeight": 256,
+  "FramesPerSecond": {
+    "Min": 30,
+    "Max": 50
+  },
   "PlayMode": "DeleteAfterPlay"
 }

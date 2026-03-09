@@ -1,7 +1,14 @@
 {
-  "Speed": {"Min":0,"Max":0},
+  "AssetKey": "Sprites/Debug",
+  "Speed": {
+    "Min": 0,
+    "Max": 0
+  },
+  "Mass": {
+    "Min": 50,
+    "Max": 50
+  },
   "Hull": 1000,
-  "Mass": {"Min":50,"Max":50},
   "Bounty": 1000,
   "MunitionDetection": true,
   "CollisionDetection": true

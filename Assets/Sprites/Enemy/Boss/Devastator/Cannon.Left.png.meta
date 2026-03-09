@@ -1,8 +1,9 @@
 {
-  "Class": "SpriteEnemyBossDevastatorLeftCannon",
-  "MunitionDetection": true,
+  "AssetKey": "Sprites/Enemy/Boss/Devastator/Cannon.Left",
+  "Class": "SpriteAttachment",
   "Hull": 50,
+  "MunitionDetection": true,
   "WeaponAssetKeys": [
-	   "Sprites/Weapon/Vulcan Cannon"
-    ]
+    "Sprites/Weapon/Vulcan Cannon"
+  ]
 }

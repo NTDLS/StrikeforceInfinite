@@ -1,10 +1,12 @@
 {
-  "Class": "WeaponLancer",
+  "AssetKey": "Sprites/Weapon/Lancer",
+  "Class": "SpriteWeapon",
   "Name": "Lancer",
   "Description": "",
-  "SoundAssetKey": "Sounds/Weapons/Lancer",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Lancer"],
-  "SoundVolumne": 0.4,
   "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Lancer"
+  ],
+  "SoundAssetKey": "Sounds/Weapons/Lancer",
   "FireDelayMilliseconds": 100
 }

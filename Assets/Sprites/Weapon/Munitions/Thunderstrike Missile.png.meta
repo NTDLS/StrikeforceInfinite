@@ -1,12 +1,17 @@
 {
-  "Class": "SeekingMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Thunderstrike Missile",
+  "Class": "SpriteSeekingMunition",
   "Name": "Thunderstrike Missile",
   "Description": "",
-    
-  "Damage": {"Min":18,"Max":22},
-  "Speed": {"Min":940,"Max":960},
+  "Speed": {
+    "Min": 940,
+    "Max": 960
+  },
+  "Damage": {
+    "Min": 18,
+    "Max": 22
+  },
   "ExplodesOnImpact": true,
-  
   "SeekingEscapeAngleDegrees": 20,
   "SeekingEscapeDistance": 1000,
   "SeekingRotationRateDegrees": 45

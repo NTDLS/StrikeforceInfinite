@@ -1,8 +1,15 @@
 {
-  "Class": "ProjectileMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Blunderbuss",
+  "Class": "SpriteProjectileMunition",
   "Name": "Blunderbuss",
   "Description": "",
-  "Damage": {"Min":1,"Max":3},
-  "Speed": {"Min":1800,"Max":2100},
-  "AngleVarianceDegrees": 10.0
+  "Speed": {
+    "Min": 1800,
+    "Max": 2100
+  },
+  "AngleVarianceDegrees": 10,
+  "Damage": {
+    "Min": 1,
+    "Max": 3
+  }
 }

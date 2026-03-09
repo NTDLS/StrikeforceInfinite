@@ -1,10 +1,12 @@
 {
-  "Class": "WeaponPhotonTorpedo",
+  "AssetKey": "Sprites/Weapon/Photon Torpedo",
+  "Class": "SpriteWeapon",
   "Name": "Photon Torpedo",
   "Description": "",
-  "SoundAssetKey": "Sounds/Weapons/Photon Torpedo",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Photon Torpedo"],
-  "SoundVolumne": 0.4,
   "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Photon Torpedo"
+  ],
+  "SoundAssetKey": "Sounds/Weapons/Photon Torpedo",
   "FireDelayMilliseconds": 1000
 }

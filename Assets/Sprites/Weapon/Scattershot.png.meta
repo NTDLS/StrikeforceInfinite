@@ -1,15 +1,15 @@
 {
-  "Class": "WeaponScattershot",
+  "AssetKey": "Sprites/Weapon/Scattershot",
+  "Class": "SpriteWeapon",
   "Name": "Scattershot",
   "Description": "",
-  "SoundAssetKey": "Sounds/Weapons/Scattershot",
-  "MunitionAssetKeys": [
-	"Sprites/Weapon/Munitions/Scattershot0",
-	"Sprites/Weapon/Munitions/Scattershot1",
-	"Sprites/Weapon/Munitions/Scattershot2",
-	"Sprites/Weapon/Munitions/Scattershot3"
-  ],
-  "SoundVolumne": 0.2,
   "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Scattershot0",
+    "Sprites/Weapon/Munitions/Scattershot1",
+    "Sprites/Weapon/Munitions/Scattershot2",
+    "Sprites/Weapon/Munitions/Scattershot3"
+  ],
+  "SoundAssetKey": "Sounds/Weapons/Scattershot",
   "FireDelayMilliseconds": 25
 }

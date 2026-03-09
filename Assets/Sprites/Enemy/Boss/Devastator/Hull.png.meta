@@ -1,56 +1,84 @@
 {
-  "Class": "SpriteEnemyBossDevastator",
-  "Name":"Devastator",
+  "AssetKey": "Sprites/Enemy/Boss/Devastator/Hull",
+  "Class": "SpriteEnemy",
+  "Name": "Devastator",
   "Description": "TODO: Add a description",
-  "MunitionDetection": true,
-  "CollisionDetection": true,
-  "Speed": {"Min":150,"Max":200},
-  "Mass": {"Min":200,"Max":200},
+  "Speed": {
+    "Min": 150,
+    "Max": 200
+  },
+  "Mass": {
+    "Min": 200,
+    "Max": 200
+  },
   "Hull": 200,
   "Shields": 100,
   "Bounty": 50,
+  "MunitionDetection": true,
+  "CollisionDetection": true,
   "Attachments": [
     {
       "AssetKey": "Sprites/Enemy/Boss/Devastator/Cannon.Left",
-      "AttachmentPosition": {"X": 65,"Y": 8},
+      "AttachmentPosition": {
+        "X": 65,
+        "Y": 8
+      },
       "AttachmentOrientationType": "FixedToOwner",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
       "AssetKey": "Sprites/Enemy/Boss/Devastator/Cannon.Right",
-      "AttachmentPosition": { "X": 65, "Y": 75 },
+      "AttachmentPosition": {
+        "X": 65,
+        "Y": 75
+      },
       "AttachmentOrientationType": "FixedToOwner",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
       "AssetKey": "Sprites/Enemy/Boss/Devastator/Gun.Left",
-      "AttachmentPosition": { "X": 90, "Y": 20 },
+      "AttachmentPosition": {
+        "X": 90,
+        "Y": 20
+      },
       "AttachmentOrientationType": "FixedToOwner",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
       "AssetKey": "Sprites/Enemy/Boss/Devastator/Gun.Right",
-      "AttachmentPosition": { "X": 90, "Y": 63 },
+      "AttachmentPosition": {
+        "X": 90,
+        "Y": 63
+      },
       "AttachmentOrientationType": "FixedToOwner",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
       "AssetKey": "Sprites/Enemy/Boss/Devastator/Turret",
-      "AttachmentPosition": { "X": 35, "Y": 40 },
+      "AttachmentPosition": {
+        "X": 35,
+        "Y": 40
+      },
       "AttachmentOrientationType": "Independent",
       "AttachmentPositionType": "FixedToOwner"
     },
     {
       "AssetKey": "Sprites/Enemy/Boss/Devastator/Jet.Left",
-      "AttachmentPosition": { "X": -40, "Y": 24 },
+      "AttachmentPosition": {
+        "X": -40,
+        "Y": 24
+      },
       "AttachmentOrientationType": "FixedToOwner",
       "AttachmentPositionType": "FixedToOwner"
     },
-	{
+    {
       "AssetKey": "Sprites/Enemy/Boss/Devastator/Jet.Right",
-      "AttachmentPosition": {"X": -40, "Y": 57},
+      "AttachmentPosition": {
+        "X": -40,
+        "Y": 57
+      },
       "AttachmentOrientationType": "FixedToOwner",
       "AttachmentPositionType": "FixedToOwner"
     }
-  ]  
+  ]
 }

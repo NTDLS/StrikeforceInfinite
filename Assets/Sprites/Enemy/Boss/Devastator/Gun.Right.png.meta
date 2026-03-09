@@ -1,7 +1,8 @@
 {
-  "Class": "SpriteEnemyBossDevastatorRightGun",
-  "MunitionDetection": true,
+  "AssetKey": "Sprites/Enemy/Boss/Devastator/Gun.Right",
+  "Class": "SpriteAttachment",
   "Hull": 50,
+  "MunitionDetection": true,
   "WeaponAssetKeys": [
     "Sprites/Weapon/Lancer"
   ]

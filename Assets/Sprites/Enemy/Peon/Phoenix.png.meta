@@ -1,26 +1,34 @@
 {
-  "Class": "SpriteEnemyPhoenix",
+  "DynamicTypeName": "AeAssetController_pngSprites_Enemy_Peon_Phoenix",
+  "AssetKey": "Sprites/Enemy/Peon/Phoenix",
+  "Class": "SpriteEnemy",
   "Description": "",
-  "Speed": {"Min":200,"Max":300},
-  "MaxThrottle": 1.5,
-  "Hull": 20,
-  "MunitionDetection": true,
-
+  "AIControllers": [
+    "Classes/AI/AILogisticsOffScreenReentry",
+    "Classes/AI/AILogisticsHostileEngagement"
+  ],
+  "DefaultAIController": "Classes/AI/AILogisticsHostileEngagement",
   "ExplosionType": "Energy",
-  "FragmentOnExplode": true,
   "ParticleBlastOnExplodeAmount": {
     "Min": 200,
     "Max": 800
   },
+  "FragmentOnExplode": true,
   "ScreenShakeOnExplodeAmount": {
     "Min": 5,
     "Max": 500
   },
-  
+  "Speed": {
+    "Min": 200,
+    "Max": 300
+  },
+  "MaxThrottle": 1.5,
+  "Hull": 20,
   "Shields": 10,
   "Bounty": 10,
+  "MunitionDetection": true,
   "WeaponAssetKeys": [
     "Sprites/Weapon/Vulcan Cannon",
     "Sprites/Weapon/Dual Vulcan Cannon"
-	]
+  ]
 }

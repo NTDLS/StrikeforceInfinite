@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Ae.AssetPacker": {
+      "commandName": "Project",
+      "commandLineArgs": "-pack -db \"C:\\NTDLS\\AxisEngine\\Installer\\Ae.Assets.db\" -o \"C:\\NTDLS\\AxisEngine\\Assets\""
+    }
+  }
+}

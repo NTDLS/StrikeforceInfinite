@@ -1,7 +1,0 @@
-{
-  "FrameHeight": 241,
-  "FrameWidth": 241,
-  "FramesPerSecond": {"Min":30,"Max":30},
-  "DeleteAfterPlay": "false",
-  "PlayMode": "Infinite"
-}

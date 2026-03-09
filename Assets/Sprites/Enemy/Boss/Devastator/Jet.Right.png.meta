@@ -1,5 +1,6 @@
 {
-  "Class": "SpriteEnemyBossDevastatorRightJet",
-  "MunitionDetection": true,
-  "Hull": 50
+  "AssetKey": "Sprites/Enemy/Boss/Devastator/Jet.Right",
+  "Class": "SpriteAttachment",
+  "Hull": 50,
+  "MunitionDetection": true
 }

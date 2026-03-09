@@ -1,9 +1,16 @@
 {
-  "Class": "EnergyMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Lancer",
+  "Class": "SpriteEnergyMunition",
   "Name": "Lancer",
   "Description": "",
-  "Speed": {"Min":2180,"Max":2200},
-  "Damage": {"Min":12,"Max":16},
+  "Speed": {
+    "Min": 2180,
+    "Max": 2200
+  },
+  "AngleVarianceDegrees": 2,
   "FireDelayMilliseconds": 100,
-  "AngleVarianceDegrees": 2.0
+  "Damage": {
+    "Min": 12,
+    "Max": 16
+  }
 }

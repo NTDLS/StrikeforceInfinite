@@ -1,4 +1,5 @@
 {
-	"SoundVolume": 0.5,
-	"LoopSound": false
+  "AssetKey": "Sounds/Ship/Object Hit",
+  "SoundVolume": 0.5,
+  "LoopSound": false
 }

@@ -1,14 +1,16 @@
 {
-  "Class": "WeaponScuttleMissile",
+  "AssetKey": "Sprites/Weapon/Scuttle Missile",
+  "Class": "SpriteWeapon",
   "Name": "Scuttle Missile Missile",
   "Description": "",
+  "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Scuttle Missile"
+  ],
   "SoundAssetKey": "Sounds/Weapons/Scuttle Missile",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Scuttle Missile"],
-  "SoundVolumne": 0.4,
   "FireDelayMilliseconds": 1000,
-  "MinLockDistance": 100,
-  "MaxLockDistance": 600,
-  "MaxLocks": 2,
   "MaxLockOnAngle": 40,
-  "MunitionCount": 65535
+  "MaxLocks": 2,
+  "MinLockDistance": 100,
+  "MaxLockDistance": 600
 }

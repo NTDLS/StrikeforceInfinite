@@ -1,14 +1,18 @@
 {
-  "Class": "LockingMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Precision Frag Missile",
+  "Class": "SpriteLockingMunition",
   "Name": "Precision Frag Missile",
   "Description": "",
-    
-  "Damage": {"Min":5,"Max":10},
-  "Speed": {"Min":780,"Max":820},
-
+  "Speed": {
+    "Min": 780,
+    "Max": 820
+  },
+  "Damage": {
+    "Min": 5,
+    "Max": 10
+  },
   "ExplodesOnImpact": true,
-  
-  "SeekingEscapeDistance": 500,
   "SeekingEscapeAngleDegrees": 90,
+  "SeekingEscapeDistance": 500,
   "SeekingRotationRateDegrees": 40
 }

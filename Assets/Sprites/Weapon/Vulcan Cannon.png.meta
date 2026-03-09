@@ -1,10 +1,12 @@
 {
-  "Class": "WeaponVulcanCannon",
+  "AssetKey": "Sprites/Weapon/Vulcan Cannon",
+  "Class": "SpriteWeapon",
   "Name": "Vulcan Cannon",
   "Description": "",
-  "SoundAssetKey": "Sounds/Weapons/Vulcan Cannon",
-  "MunitionAssetKeys": ["Sprites/Weapon/Munitions/Vulcan Cannon"],
-  "SoundVolumne": 0.4,
   "MunitionCount": 65535,
+  "MunitionAssetKeys": [
+    "Sprites/Weapon/Munitions/Vulcan Cannon"
+  ],
+  "SoundAssetKey": "Sounds/Weapons/Vulcan Cannon",
   "FireDelayMilliseconds": 25
 }

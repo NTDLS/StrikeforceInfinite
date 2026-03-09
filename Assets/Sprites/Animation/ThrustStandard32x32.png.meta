@@ -1,8 +1,11 @@
 {
+  "AssetKey": "Sprites/Animation/ThrustStandard32x32",
   "Class": "SpriteAnimation",
-  "FrameHeight": 32,
   "FrameWidth": 32,
-  "FramesPerSecond": {"Min":100,"Max":100},
-  "DeleteAfterPlay": "false",
+  "FrameHeight": 32,
+  "FramesPerSecond": {
+    "Min": 100,
+    "Max": 100
+  },
   "PlayMode": "Infinite"
 }

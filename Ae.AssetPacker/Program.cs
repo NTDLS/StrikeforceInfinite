@@ -1,59 +1,188 @@
-﻿namespace Ae.AssetPacker
+﻿using Ae.Library;
+using Ae.Library.Metadata;
+using NTDLS.Helpers;
+using NTDLS.SqliteDapperWrapper;
+using System.CommandLine;
+using System.IO.Compression;
+using System.Text.Json;
+
+namespace Ae.AssetPacker
 {
     /// <summary>
-    /// Used to pack a directory of assets into the database file. This really shouldn't be used anymore.
+    /// Used to pack a directory of assets into the database file.
     /// </summary>
     internal class Program
     {
+
         static void Main(string[] args)
         {
-            /*
-            var sqliteDb = new SqliteManagedFactory("Data Source=../../../../Installer/Ae.Assets.db");
+            #region Parse command line arguments.
 
-            //Files and paths that contain "@" are ignored because they effectively "Commented out" assets.
-            //Files and paths that contain "#" are "internal" assets that we pack but do not show to the user in the editor.
-
-            var assetRoot = @"C:\NTDLS\AxisEngine\Assets";
-            var assetPaths = Directory.GetFiles(assetRoot, "*.*", SearchOption.AllDirectories)
-                .Where(o => o.Contains("@") == false && Path.GetExtension(o) != ".meta").ToList();
-
-            sqliteDb.Execute("DELETE FROM Assets");
-
-            foreach (var fullAssetPath in assetPaths)
+            var packOption = new Option<bool>("-pack")
             {
-                var directory = Path.GetDirectoryName(fullAssetPath).EnsureNotNull();
-                var fileName = Path.GetFileNameWithoutExtension(fullAssetPath);
-                var relativePath = Path.GetRelativePath(assetRoot, directory);
+                Description = "Pack the assets from a directory into a database."
+            };
 
-                var assetKey = $"{relativePath}\\{fileName}".Replace("\\", "/").Replace("//", "/");
+            var unpackOption = new Option<bool>("-unpack")
+            {
+                Description = "Unpacks the assets from the database into a directory."
+            };
 
-                var originalFileBytes = File.ReadAllBytes(fullAssetPath);
-                var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+            var pathOption = new Option<string>("-o")
+            {
+                Description = "Source or destination path for pack/unpack operation."
+            };
 
-                var metadataJson = File.ReadAllText($"{fullAssetPath}.meta");
+            var databaseOption = new Option<string>("-db")
+            {
+                Description = "Location of the database file to pack/unpack."
+            };
 
-                sqliteDb.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
+            var root = new RootCommand("Asset tool")
+            {
+                packOption,
+                unpackOption,
+                pathOption,
+                databaseOption
+            };
 
-                var metadata = JsonSerializer.Deserialize<AssetMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, AeConstants.JsonSerializerOptions);
-                if (metadata != null)
+            root.Validators.Add(result =>
+            {
+                bool pack = result.GetValue(packOption);
+                bool unpack = result.GetValue(unpackOption);
+                string? path = result.GetValue(pathOption);
+                string? db = result.GetValue(databaseOption);
+
+                if (!pack && !unpack)
                 {
-                    metadata.AssetKey = assetKey;
+                    result.AddError("Specify either -pack or -unpack.");
+                }
 
-                    sqliteDb.Execute("INSERT INTO Assets (Key, BaseType, Bytes, Metadata)"
-                        + "VALUES (@Key, @BaseType, @Bytes, @Metadata)",
-                        new
-                        {
-                            Key = assetKey,
-                    Bytes = originalFileBytes.Length > compressedBytes.Length ? compressedBytes : originalFileBytes,
-                    IsCompressed = originalFileBytes.Length > compressedBytes.Length,
-                            Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
-                            BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower()
-                        });
+                if (pack && unpack)
+                {
+                    result.AddError("Specify only one of -pack or -unpack, not both.");
+                }
 
-                    Console.WriteLine($"[{assetKey}]");
+                if ((pack || unpack) && string.IsNullOrWhiteSpace(path))
+                {
+                    result.AddError("-o is required when using -pack or -unpack.");
+                }
+
+                if ((pack || unpack) && string.IsNullOrWhiteSpace(db))
+                {
+                    result.AddError("-db is required when using -pack or -unpack.");
+                }
+            });
+
+            var parseResult = root.Parse(args);
+            if (parseResult.Errors.Count > 0)
+            {
+                foreach (var error in parseResult.Errors)
+                {
+                    Console.WriteLine(error.Message);
+                }
+                return;
+            }
+
+            #endregion
+
+            string? path = parseResult.GetValue(pathOption) ?? throw new ArgumentException("Path is required.");
+            string? databasePath = parseResult.GetValue(databaseOption) ?? throw new ArgumentException("databasePath is required.");
+
+            #region Unpack.
+
+            if (parseResult.GetValue(unpackOption))
+            {
+                var database = new SqliteManagedFactory($"Data Source={databasePath}");
+
+                var assets = database.Query<AssetDatabaseModel>(
+                    "SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets").ToList();
+
+                foreach (var asset in assets)
+                {
+                    Console.WriteLine($"[{asset.Key}]");
+
+                    Directory.CreateDirectory(Path.Combine(path, Path.GetDirectoryName(asset.Key) ?? string.Empty));
+
+                    if (asset.IsCompressed)
+                    {
+                        File.WriteAllBytes(Path.Combine(path, asset.Key + "." + asset.BaseType), CompressionHelper.Decompress(asset.Bytes));
+                    }
+                    else
+                    {
+                        File.WriteAllBytes(Path.Combine(path, asset.Key + "." + asset.BaseType), asset.Bytes);
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(asset.Metadata))
+                        File.WriteAllText(Path.Combine(path, asset.Key + "." + asset.BaseType + ".meta"), asset.Metadata);
+
+                    if (!string.IsNullOrWhiteSpace(asset.Controller))
+                        File.WriteAllText(Path.Combine(path, asset.Key + "." + asset.BaseType + ".code.cs"), asset.Controller);
                 }
             }
-            */
+
+            #endregion
+
+            #region Pack.
+
+            string ReadIfExists(string filePath)
+            {
+                return File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
+            }
+
+            if (parseResult.GetValue(packOption))
+            {
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
+
+                var database = new SqliteManagedFactory($"Data Source={databasePath}");
+
+                database.Execute("Scripts/CreateAssetsTable.sql");
+
+                var assetPaths = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories)
+                    .Where(o => !o.EndsWith(".meta") && !o.EndsWith(".code.cs")).ToList();
+
+                foreach (var fullAssetPath in assetPaths)
+                {
+                    var directory = Path.GetDirectoryName(fullAssetPath).EnsureNotNull();
+                    var fileName = Path.GetFileNameWithoutExtension(fullAssetPath);
+                    var relativePath = Path.GetRelativePath(path, directory);
+
+                    var assetKey = $"{relativePath}\\{fileName}".Replace("\\", "/").Replace("//", "/");
+
+                    var originalFileBytes = File.ReadAllBytes(fullAssetPath);
+                    var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+
+                    var metadataJson = ReadIfExists($"{fullAssetPath}.meta");
+                    var controllerText = ReadIfExists($"{fullAssetPath}.code.cs");
+
+                    database.Execute("DELETE FROM Assets WHERE Key = @Key", new { Key = assetKey });
+
+                    var metadata = JsonSerializer.Deserialize<AssetMetadata>(string.IsNullOrWhiteSpace(metadataJson) ? "{}" : metadataJson, AeConstants.JsonSerializerOptions);
+                    if (metadata != null)
+                    {
+                        metadata.AssetKey = assetKey;
+
+                        database.Execute("INSERT INTO Assets (Key, BaseType, Bytes, IsCompressed, Metadata, Controller)"
+                            + "VALUES (@Key, @BaseType, @Bytes, @IsCompressed, @Metadata, @Controller)",
+                            new
+                            {
+                                Key = assetKey,
+                                Bytes = originalFileBytes.Length > compressedBytes.Length ? compressedBytes : originalFileBytes,
+                                IsCompressed = originalFileBytes.Length > compressedBytes.Length,
+                                Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
+                                BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower(),
+                                Controller = controllerText
+                            });
+
+                        Console.WriteLine($"[{assetKey}]");
+                    }
+                }
+            }
+
+            #endregion
         }
     }
 }

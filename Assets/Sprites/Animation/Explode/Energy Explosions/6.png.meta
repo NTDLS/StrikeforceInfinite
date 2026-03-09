@@ -1,8 +1,11 @@
 {
+  "AssetKey": "Sprites/Animation/Explode/Energy Explosions/6",
   "Class": "SpriteAnimation",
-  "FrameHeight": 400,
   "FrameWidth": 400,
-  "FramesPerSecond": {"Min":30,"Max":50},
-  "DeleteAfterPlay": "true",
+  "FrameHeight": 400,
+  "FramesPerSecond": {
+    "Min": 30,
+    "Max": 50
+  },
   "PlayMode": "DeleteAfterPlay"
 }

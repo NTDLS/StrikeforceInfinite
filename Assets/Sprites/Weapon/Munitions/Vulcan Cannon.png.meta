@@ -1,8 +1,15 @@
 {
-  "Class": "ProjectileMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Vulcan Cannon",
+  "Class": "SpriteProjectileMunition",
   "Name": "Vulcan Cannon",
   "Description": "",
-  "Damage": {"Min":2,"Max":5},
-  "Speed": {"Min":1240,"Max":1260},
-  "AngleVarianceDegrees": 1.5
+  "Speed": {
+    "Min": 1240,
+    "Max": 1260
+  },
+  "AngleVarianceDegrees": 1.5,
+  "Damage": {
+    "Min": 2,
+    "Max": 5
+  }
 }

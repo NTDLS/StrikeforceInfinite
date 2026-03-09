@@ -1,0 +1,8 @@
+﻿CREATE TABLE "Assets" (
+	"Key"	TEXT NOT NULL UNIQUE COLLATE NOCASE,
+	"BaseType"	TEXT NOT NULL COLLATE NOCASE,
+	"Bytes"	BLOB,
+	"IsCompressed"	INTEGER NOT NULL,
+	"Metadata"	TEXT,
+	"Controller"	TEXT
+)

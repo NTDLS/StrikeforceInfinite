@@ -1,8 +1,15 @@
 {
+  "AssetKey": "Sprites/Asteroid/12",
   "Class": "SpriteInteractiveBitmap",
-  "Speed": {"Min":200,"Max":300},
+  "Speed": {
+    "Min": 200,
+    "Max": 300
+  },
+  "Mass": {
+    "Min": 800,
+    "Max": 1200
+  },
   "Hull": 100,
-  "Mass": {"Min":800,"Max":1200},
   "Bounty": 0,
   "MunitionDetection": true,
   "CollisionDetection": true

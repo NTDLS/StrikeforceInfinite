@@ -1,14 +1,18 @@
 {
-  "Class": "LockingMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Scrams Missile",
+  "Class": "SpriteLockingMunition",
   "Name": "Scrams Missile",
   "Description": "",
-  
-  "Damage": {"Min":3,"Max":5},
-  "Speed": {"Min":650,"Max":710},
-
+  "Speed": {
+    "Min": 650,
+    "Max": 710
+  },
+  "Damage": {
+    "Min": 3,
+    "Max": 5
+  },
   "ExplodesOnImpact": true,
-  
-  "SeekingEscapeDistance": 500,
   "SeekingEscapeAngleDegrees": 90,
+  "SeekingEscapeDistance": 500,
   "SeekingRotationRateDegrees": 60
 }

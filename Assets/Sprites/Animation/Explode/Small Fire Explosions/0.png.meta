@@ -1,8 +1,11 @@
 {
+  "AssetKey": "Sprites/Animation/Explode/Small Fire Explosions/0",
   "Class": "SpriteAnimation",
-  "FrameHeight": 66,
   "FrameWidth": 66,
-  "FramesPerSecond": {"Min":30,"Max":50},
-  "DeleteAfterPlay": "true",
+  "FrameHeight": 66,
+  "FramesPerSecond": {
+    "Min": 30,
+    "Max": 50
+  },
   "PlayMode": "DeleteAfterPlay"
 }

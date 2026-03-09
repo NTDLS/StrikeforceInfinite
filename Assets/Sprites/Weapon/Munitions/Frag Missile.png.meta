@@ -1,12 +1,17 @@
 {
-  "Class": "SeekingMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Frag Missile",
+  "Class": "SpriteSeekingMunition",
   "Name": "Frag Missile",
   "Description": "",
-
-  "Damage": {"Min":9,"Max":11},
-  "Speed": {"Min":680,"Max":720},
+  "Speed": {
+    "Min": 680,
+    "Max": 720
+  },
+  "Damage": {
+    "Min": 9,
+    "Max": 11
+  },
   "ExplodesOnImpact": true,
-  
   "SeekingEscapeAngleDegrees": 20,
   "SeekingEscapeDistance": 1000,
   "SeekingRotationRateDegrees": 45

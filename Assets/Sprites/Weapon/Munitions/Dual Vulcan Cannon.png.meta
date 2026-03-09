@@ -1,8 +1,15 @@
 {
-  "Class": "ProjectileMunitionBase",
+  "AssetKey": "Sprites/Weapon/Munitions/Dual Vulcan Cannon",
+  "Class": "SpriteProjectileMunition",
   "Name": "Dual Vulcan Cannon",
   "Description": "",
-  "Damage": {"Min":1,"Max":3},
-  "Speed": {"Min":1200,"Max":1300},
-  "AngleVarianceDegrees": 1.5
+  "Speed": {
+    "Min": 1200,
+    "Max": 1300
+  },
+  "AngleVarianceDegrees": 1.5,
+  "Damage": {
+    "Min": 1,
+    "Max": 3
+  }
 }

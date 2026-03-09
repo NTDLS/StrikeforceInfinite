@@ -1,14 +1,18 @@
 {
-  "Class": "SpriteEnemyDebug",
+  "AssetKey": "Sprites/Enemy/Debug/Hull",
+  "Class": "SpriteEnemy",
   "Description": "",
-  "Speed": {"Min":200,"Max":300},
+  "Speed": {
+    "Min": 200,
+    "Max": 300
+  },
   "MaxThrottle": 1.5,
   "Hull": 100000,
-  "MunitionDetection": true,
   "Shields": 10,
   "Bounty": 10,
+  "MunitionDetection": true,
   "WeaponAssetKeys": [
     "Sprites/Weapon/Vulcan Cannon",
     "Sprites/Weapon/Dual Vulcan Cannon"
-    ]
+  ]
 }

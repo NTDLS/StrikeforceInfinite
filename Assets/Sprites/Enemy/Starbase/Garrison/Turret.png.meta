@@ -1,9 +1,10 @@
 {
-  "Class": "SpriteEnemyStarbaseGarrisonTurret",
-  "MunitionDetection": true,
+  "AssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
+  "Class": "SpriteAttachment",
   "Hull": 200,
+  "MunitionDetection": true,
   "WeaponAssetKeys": [
-	"Sprites/Weapon/Dual Vulcan Cannon",
+    "Sprites/Weapon/Dual Vulcan Cannon",
     "Sprites/Weapon/Lancer",
     "Sprites/Weapon/Thunderstrike Missile"
   ]

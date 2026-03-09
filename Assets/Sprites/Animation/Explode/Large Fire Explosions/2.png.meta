@@ -1,8 +1,11 @@
 {
+  "AssetKey": "Sprites/Animation/Explode/Large Fire Explosions/2",
   "Class": "SpriteAnimation",
-  "FrameHeight": 512,
   "FrameWidth": 512,
-  "FramesPerSecond": {"Min":30,"Max":50},
-  "DeleteAfterPlay": "true",
+  "FrameHeight": 512,
+  "FramesPerSecond": {
+    "Min": 30,
+    "Max": 50
+  },
   "PlayMode": "DeleteAfterPlay"
 }
