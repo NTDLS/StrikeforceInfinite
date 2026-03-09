@@ -1,23 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <ApplicationIcon>AeIcon.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Title>Axis Engine</Title>
+		<Company>NetworkDLS</Company>
+		<Copyright>Copyright © 2026 NetworkDLS</Copyright>
+		<Version>0.0.37</Version>
+		<Authors>NetworkDLS</Authors>
 
-  <ItemGroup>
-    <Content Include="AeIcon.ico" />
-  </ItemGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<ApplicationIcon>AeIcon.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NTDLS.DatagramMessaging" Version="1.9.0" />
-    <PackageReference Include="NTDLS.ReliableMessaging" Version="3.2.13" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="AeIcon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Ae.MpCommsMessages\Ae.MpCommsMessages.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NTDLS.DatagramMessaging" Version="1.9.0" />
+		<PackageReference Include="NTDLS.ReliableMessaging" Version="3.2.13" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Ae.MpCommsMessages\Ae.MpCommsMessages.csproj" />
+	</ItemGroup>
 
 </Project>

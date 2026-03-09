@@ -44,13 +44,14 @@ namespace Ae.AssetExplorer
             toolStripButtonSettings = new ToolStripButton();
             toolStripButtonDeveloperConsole = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
+            toolStripButtonSave = new ToolStripButton();
+            toolStripButtonSaveAll = new ToolStripButton();
+            toolStripButtonClose = new ToolStripButton();
+            toolStripSeparator2 = new ToolStripSeparator();
             toolStripButtonToggleAssets = new ToolStripButton();
             toolStripButtonToggleOutput = new ToolStripButton();
             toolStripButtonToggleProperties = new ToolStripButton();
-            toolStripButtonSave = new ToolStripButton();
-            toolStripButtonClose = new ToolStripButton();
-            toolStripButtonSaveAll = new ToolStripButton();
-            toolStripSeparator2 = new ToolStripSeparator();
+            toolStripButtonAbout = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
@@ -142,11 +143,11 @@ namespace Ae.AssetExplorer
             splitContainerProperties.SplitterDistance = 168;
             splitContainerProperties.TabIndex = 0;
             // 
-            // pictureBoxPreview
+            // drawingSurface
             // 
             drawingSurface.BorderStyle = BorderStyle.FixedSingle;
             drawingSurface.Location = new Point(83, 28);
-            drawingSurface.Name = "pictureBoxPreview";
+            drawingSurface.Name = "drawingSurface";
             drawingSurface.Size = new Size(100, 100);
             drawingSurface.SizeMode = PictureBoxSizeMode.AutoSize;
             drawingSurface.TabIndex = 0;
@@ -192,7 +193,7 @@ namespace Ae.AssetExplorer
             // toolStrip1
             // 
             toolStrip1.Font = new Font("Segoe UI", 9F);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole, toolStripSeparator1, toolStripButtonSave, toolStripButtonSaveAll, toolStripButtonClose, toolStripSeparator2, toolStripButtonToggleAssets, toolStripButtonToggleOutput, toolStripButtonToggleProperties });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole, toolStripSeparator1, toolStripButtonSave, toolStripButtonSaveAll, toolStripButtonClose, toolStripSeparator2, toolStripButtonToggleAssets, toolStripButtonToggleOutput, toolStripButtonToggleProperties, toolStripButtonAbout });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 25);
@@ -226,6 +227,41 @@ namespace Ae.AssetExplorer
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(6, 25);
             // 
+            // toolStripButtonSave
+            // 
+            toolStripButtonSave.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonSave.Image = (Image)resources.GetObject("toolStripButtonSave.Image");
+            toolStripButtonSave.ImageTransparentColor = Color.Magenta;
+            toolStripButtonSave.Name = "toolStripButtonSave";
+            toolStripButtonSave.Size = new Size(23, 22);
+            toolStripButtonSave.Text = "Save";
+            toolStripButtonSave.Click += ToolStripButtonSave_Click;
+            // 
+            // toolStripButtonSaveAll
+            // 
+            toolStripButtonSaveAll.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonSaveAll.Image = (Image)resources.GetObject("toolStripButtonSaveAll.Image");
+            toolStripButtonSaveAll.ImageTransparentColor = Color.Magenta;
+            toolStripButtonSaveAll.Name = "toolStripButtonSaveAll";
+            toolStripButtonSaveAll.Size = new Size(23, 22);
+            toolStripButtonSaveAll.Text = "Save All";
+            toolStripButtonSaveAll.Click += ToolStripButtonSaveAll_Click;
+            // 
+            // toolStripButtonClose
+            // 
+            toolStripButtonClose.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonClose.Image = (Image)resources.GetObject("toolStripButtonClose.Image");
+            toolStripButtonClose.ImageTransparentColor = Color.Magenta;
+            toolStripButtonClose.Name = "toolStripButtonClose";
+            toolStripButtonClose.Size = new Size(23, 22);
+            toolStripButtonClose.Text = "Close";
+            toolStripButtonClose.Click += ToolStripButtonClose_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 25);
+            // 
             // toolStripButtonToggleAssets
             // 
             toolStripButtonToggleAssets.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -256,40 +292,15 @@ namespace Ae.AssetExplorer
             toolStripButtonToggleProperties.Text = "Toggle Properties";
             toolStripButtonToggleProperties.Click += ToolStripButtonToggleProperties_Click;
             // 
-            // toolStripButtonSave
+            // toolStripButtonAbout
             // 
-            toolStripButtonSave.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButtonSave.Image = (Image)resources.GetObject("toolStripButtonSave.Image");
-            toolStripButtonSave.ImageTransparentColor = Color.Magenta;
-            toolStripButtonSave.Name = "toolStripButtonSave";
-            toolStripButtonSave.Size = new Size(23, 22);
-            toolStripButtonSave.Text = "Save";
-            toolStripButtonSave.Click += ToolStripButtonSave_Click;
-            // 
-            // toolStripButtonClose
-            // 
-            toolStripButtonClose.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButtonClose.Image = (Image)resources.GetObject("toolStripButtonClose.Image");
-            toolStripButtonClose.ImageTransparentColor = Color.Magenta;
-            toolStripButtonClose.Name = "toolStripButtonClose";
-            toolStripButtonClose.Size = new Size(23, 22);
-            toolStripButtonClose.Text = "Close";
-            toolStripButtonClose.Click += ToolStripButtonClose_Click;
-            // 
-            // toolStripButtonSaveAll
-            // 
-            toolStripButtonSaveAll.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButtonSaveAll.Image = (Image)resources.GetObject("toolStripButtonSaveAll.Image");
-            toolStripButtonSaveAll.ImageTransparentColor = Color.Magenta;
-            toolStripButtonSaveAll.Name = "toolStripButtonSaveAll";
-            toolStripButtonSaveAll.Size = new Size(23, 22);
-            toolStripButtonSaveAll.Text = "Save All";
-            toolStripButtonSaveAll.Click += ToolStripButtonSaveAll_Click;
-            // 
-            // toolStripSeparator2
-            // 
-            toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(6, 25);
+            toolStripButtonAbout.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonAbout.Image = (Image)resources.GetObject("toolStripButtonAbout.Image");
+            toolStripButtonAbout.ImageTransparentColor = Color.Magenta;
+            toolStripButtonAbout.Name = "toolStripButtonAbout";
+            toolStripButtonAbout.Size = new Size(23, 22);
+            toolStripButtonAbout.Text = "About";
+            toolStripButtonAbout.Click += toolStripButtonAbout_Click;
             // 
             // FormMain
             // 
@@ -348,5 +359,6 @@ namespace Ae.AssetExplorer
         private ToolStripButton toolStripButtonSaveAll;
         private ToolStripButton toolStripButtonClose;
         private ToolStripSeparator toolStripSeparator2;
+        private ToolStripButton toolStripButtonAbout;
     }
 }

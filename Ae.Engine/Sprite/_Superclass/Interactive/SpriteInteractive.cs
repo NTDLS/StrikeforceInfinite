@@ -8,7 +8,6 @@ using Ae.Library.Metadata;
 using Microsoft.CodeAnalysis;
 using NTDLS.Helpers;
 using SharpDX.Direct2D1;
-using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;

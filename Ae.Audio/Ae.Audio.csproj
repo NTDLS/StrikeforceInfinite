@@ -1,19 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>AeIcon.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Title>Axis Engine</Title>
+		<Company>NetworkDLS</Company>
+		<Copyright>Copyright © 2026 NetworkDLS</Copyright>
+		<Version>0.0.37</Version>
+		<Authors>NetworkDLS</Authors>
 
-  <ItemGroup>
-    <Content Include="AeIcon.ico" />
-  </ItemGroup>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<ApplicationIcon>AeIcon.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="SharpDX.XAudio2" Version="4.2.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="AeIcon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="SharpDX.XAudio2" Version="4.2.0" />
+	</ItemGroup>
 
 </Project>

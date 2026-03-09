@@ -1,11 +1,7 @@
 ﻿using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Animation;
-using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
-using Ae.Library;
 using Ae.Library.Mathematics;
-using Ae.Rendering;
-using System.Drawing;
 using System.Linq;
 
 namespace Ae.Engine.Sprite.Enemy.Debug

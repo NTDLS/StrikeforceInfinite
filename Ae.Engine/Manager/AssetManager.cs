@@ -120,7 +120,11 @@ namespace Ae.Engine.Manager
             });
             var threadPoolTracker = dtp.CreateChildPool();
 
-            var models = _assetsDatabase.Query<AssetDatabaseModel>("SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets");
+            var models = _assetsDatabase.Query<AssetDatabaseModel>(
+                "SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets WHERE BaseType = 'cs'").ToList();
+
+            models.AddRange(_assetsDatabase.Query<AssetDatabaseModel>(
+                "SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets WHERE BaseType != 'cs'"));
 
             int statusIndex = 0;
             float statusEntryCount = models.Count();

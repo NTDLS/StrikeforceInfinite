@@ -1,105 +1,111 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>AeIcon.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Title>Axis Engine</Title>
+		<Company>NetworkDLS</Company>
+		<Copyright>Copyright © 2026 NetworkDLS</Copyright>
+		<Version>0.0.37</Version>
+		<Authors>NetworkDLS</Authors>
 
-  <ItemGroup>
-    <None Remove="Samples\CSharpTextSample.txt" />
-  </ItemGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<ApplicationIcon>AeIcon.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="AeIcon.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Samples\CSharpTextSample.txt" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Highlighters\AeCSharpHighlighter.xshd" />
-    <EmbeddedResource Include="Highlighters\AeJsonHighlighter.xshd" />
-    <EmbeddedResource Include="Highlighters\AeMarkDownHighlighter.xshd" />
-    <EmbeddedResource Include="Highlighters\AeXmlHighlighter.xshd" />
-    <EmbeddedResource Include="Samples\CSharpTextSample.txt" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="AeIcon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.3.1.120" />
-    <PackageReference Include="NTDLS.Persistence" Version="1.3.1" />
-    <PackageReference Include="NTDLS.WinFormsHelpers" Version="1.3.13" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Highlighters\AeCSharpHighlighter.xshd" />
+		<EmbeddedResource Include="Highlighters\AeJsonHighlighter.xshd" />
+		<EmbeddedResource Include="Highlighters\AeMarkDownHighlighter.xshd" />
+		<EmbeddedResource Include="Highlighters\AeXmlHighlighter.xshd" />
+		<EmbeddedResource Include="Samples\CSharpTextSample.txt" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Ae.Engine\Ae.Engine.csproj" />
-    <ProjectReference Include="..\Ae.Library\Ae.Library.csproj" />
-    <ProjectReference Include="..\Ae.Rendering\Ae.Rendering.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AvalonEdit" Version="6.3.1.120" />
+		<PackageReference Include="NTDLS.Persistence" Version="1.3.1" />
+		<PackageReference Include="NTDLS.WinFormsHelpers" Version="1.3.13" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Controls\BufferedListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Forms\FormGetNewAssetName.cs" />
-    <Compile Update="Forms\FormInterrogation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormInterrogationSpriteWatch.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormCreateFolder.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyBoolean.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyClassPicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyPicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyEnum.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyRangeInt.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertySpritePicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyRangeFloat.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyVector.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyString.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyText.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormPropertyInteger.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\FormStartup.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Ae.Engine\Ae.Engine.csproj" />
+		<ProjectReference Include="..\Ae.Library\Ae.Library.csproj" />
+		<ProjectReference Include="..\Ae.Rendering\Ae.Rendering.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Controls\BufferedListView.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Forms\FormGetNewAssetName.cs" />
+		<Compile Update="Forms\FormInterrogation.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormInterrogationSpriteWatch.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormCreateFolder.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyBoolean.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyClassPicker.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyPicker.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyEnum.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyRangeInt.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertySpritePicker.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyRangeFloat.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyVector.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyString.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyText.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormPropertyInteger.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\FormStartup.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>

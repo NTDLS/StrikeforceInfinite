@@ -98,6 +98,27 @@ namespace Ae.AssetExplorer
                 _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
+
+        /// <summary>
+        /// Used to get the folder path for a given node by recursively traversing up the tree and concatenating the asset keys.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        private string GetNodeAssetDirectory(AeTreeNode? node)
+        {
+            List<string> parts = new List<string>();
+
+            while (node != null)
+            {
+                parts.Add(node.AssetKey);
+                node = node.Parent as AeTreeNode;
+            }
+
+            parts.Reverse();
+            return string.Join('/', parts.Where(p => string.IsNullOrEmpty(p) == false));
+        }
+
+
         private void CreateFile(AeTreeNode node, string assetBaseType)
         {
             try
@@ -105,7 +126,7 @@ namespace Ae.AssetExplorer
                 using var form = new FormGetNewAssetName();
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    var newAssetKey = $"{node.AssetKey}/{form.AssetName}".Trim('/');
+                    var newAssetKey = $"{GetNodeAssetDirectory(node)}/{form.AssetName}".Trim('/');
 
                     _engine.Assets.WriteEmptyAsset(newAssetKey, assetBaseType);
 
@@ -128,7 +149,7 @@ namespace Ae.AssetExplorer
                 using var form = new FormCreateFolder();
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    var newAssetKey = $"{node.AssetKey}/{form.FolderName}".Trim('/');
+                    var newAssetKey = $"{GetNodeAssetDirectory(node)}/{form.FolderName}".Trim('/');
 
                     var newNode = new AeTreeNode(form.FolderName, form.FolderName, newAssetKey, AeTreeNodeType.Folder);
                     node.Nodes.Add(newNode);

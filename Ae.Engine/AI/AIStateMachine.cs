@@ -1,9 +1,7 @@
-﻿using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Engine.Sprite._Superclass.Interactive;
+﻿using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
 using System;
-using System.Collections.Generic;
 using static Ae.Library.AeConstants;
 
 namespace Ae.Engine.AI
@@ -26,12 +24,6 @@ namespace Ae.Engine.AI
         /// Reference to the sprite that is being controlled by this AI model.
         /// </summary>
         public SpriteInteractive Owner { get; private set; }
-
-        /// <summary>
-        /// Collection of objects that the sprite is observing.
-        /// Probably want to set these on OnMaterialized().
-        /// </summary>
-        public List<SpriteBase> ObservedObjects { get; private set; } = [];
 
         /// <summary>
         /// The current state that the AI is in.

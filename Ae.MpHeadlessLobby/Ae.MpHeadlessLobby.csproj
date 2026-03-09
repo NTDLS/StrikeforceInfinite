@@ -1,24 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <ApplicationIcon>AeIcon.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Title>Axis Engine</Title>
+		<Company>NetworkDLS</Company>
+		<Copyright>Copyright © 2026 NetworkDLS</Copyright>
+		<Version>0.0.37</Version>
+		<Authors>NetworkDLS</Authors>
+		
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<ApplicationIcon>AeIcon.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="AeIcon.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="AeIcon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NTDLS.DatagramMessaging" Version="1.9.0" />
-    <PackageReference Include="NTDLS.ReliableMessaging" Version="3.2.13" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NTDLS.DatagramMessaging" Version="1.9.0" />
+		<PackageReference Include="NTDLS.ReliableMessaging" Version="3.2.13" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Ae.MpClientToServerComms\Ae.MpClientToServerComms.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Ae.MpClientToServerComms\Ae.MpClientToServerComms.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -180,8 +180,11 @@ namespace Ae.AssetExplorer
             {
                 WriteOutput("Engine initialization complete.", AeLoggingLevel.Verbose);
 
-                _engine.Sprites.QueueAllForDeletion();
-                _engine.Sprites.HardDeleteAllQueuedDeletions();
+                engine.Events.Once(() =>
+                {
+                    _engine.Sprites.QueueAllForDeletion();
+                    _engine.Sprites.HardDeleteAllQueuedDeletions();
+                });
 
                 _treeManager.Repopulate();
             }
@@ -364,5 +367,11 @@ namespace Ae.AssetExplorer
             => _tabManager.CloseCurrentTab();
 
         #endregion
+
+        private void toolStripButtonAbout_Click(object sender, EventArgs e)
+        {
+            using var formAbout = new FormAbout();
+            formAbout.ShowDialog();
+        }
     }
 }
