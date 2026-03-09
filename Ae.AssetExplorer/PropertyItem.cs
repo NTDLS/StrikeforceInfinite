@@ -55,7 +55,6 @@ namespace Ae.AssetExplorer
                 return null;
             }
 
-
             if (value is float f)
                 return string.Format(CultureInfo.InvariantCulture, "{0:#,##0.#####}", f);
             else if (value is double d)
@@ -82,7 +81,10 @@ namespace Ae.AssetExplorer
                 return asset.AssetKey;
             else if (value is List<AssetMetadata> assets)
                 return string.Join(", ", assets.Select(o => o.AssetKey?.Split('/')?.Last()).ToList());
-            //return string.Join(", ", assets.Select(o => o.AssetKey?.Split('/')?.Last()).ToList());
+            else if (value is List<string> stringList)
+                return string.Join(", ", stringList);
+            else if (value is string[] stringsArray)
+                return string.Join(", ", stringsArray);
 
             return value?.ToString();
         }

@@ -186,14 +186,14 @@ namespace Ae.AssetExplorer
                         {
                             using var form = new FormPropertySpritePicker(_engine, selectedItem, true);
                             if (form.ShowDialog() != DialogResult.OK) return;
-                            newValue = form.Value;
+                            newValue = form.Value.ToArray();
                             break;
                         }
                     case PropertyEditorType.SingleSpritePicker:
                         {
                             using var form = new FormPropertySpritePicker(_engine, selectedItem, false);
                             if (form.ShowDialog() != DialogResult.OK) return;
-                            newValue = form.Value;
+                            newValue = form.Value.FirstOrDefault();
                             break;
                         }
                 }
@@ -216,15 +216,15 @@ namespace Ae.AssetExplorer
 
         private void SelectRowByPropertyName(string propertyName)
         {
-            var selectedBrforeRepop = _listView.Items
+            var selectedBeforePop = _listView.Items
                 .Cast<PropertyItem>()
                 .FirstOrDefault(i => i.PropertyName == propertyName);
 
-            if (selectedBrforeRepop != null)
+            if (selectedBeforePop != null)
             {
-                selectedBrforeRepop.Selected = true;
-                selectedBrforeRepop.EnsureVisible();
-                selectedBrforeRepop.Focused = true;
+                selectedBeforePop.Selected = true;
+                selectedBeforePop.EnsureVisible();
+                selectedBeforePop.Focused = true;
             }
         }
 

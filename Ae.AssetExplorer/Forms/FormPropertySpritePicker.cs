@@ -46,6 +46,30 @@ namespace Ae.AssetExplorer.Forms
                     }
                 }
             }
+            else if (propertyItem.WorkingValue is string assetKey && assetKey != null)
+            {
+                selectedAssetKeys.Add(assetKey);
+            }
+            else if (propertyItem.WorkingValue is string[] assetsKeys)
+            {
+                foreach (var selectedAssetKey in assetsKeys)
+                {
+                    if (selectedAssetKey != null)
+                    {
+                        selectedAssetKeys.Add(selectedAssetKey);
+                    }
+                }
+            }
+            else if (propertyItem.WorkingValue is List<string> assetsKeysList)
+            {
+                foreach (var selectedAssetKey in assetsKeysList)
+                {
+                    if (selectedAssetKey != null)
+                    {
+                        selectedAssetKeys.Add(selectedAssetKey);
+                    }
+                }
+            }
 
             Repopulate(selectedAssetKeys);
 

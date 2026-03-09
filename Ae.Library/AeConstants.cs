@@ -99,6 +99,7 @@ namespace Ae.Library
             Animation,
             Weapons,
             Munitions,
+            AI,
             Audio
         }
 

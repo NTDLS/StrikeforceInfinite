@@ -26,6 +26,12 @@ namespace Ae.Library.Metadata
         [AssetMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.", PropertyEditorGroup.Attachment, PropertyEditorType.Vector)]
         public AeVector? AttachmentPosition { get; set; }
 
+        [AssetMetadata("AI Controllers", "The AI controller classes that will be available to this sprite.", PropertyEditorGroup.AI, PropertyEditorType.MultipleSpritePicker)]
+        public string[]? AIControllers { get; set; }
+
+        [AssetMetadata("Default AI Controller", "The default AI controller class for the sprite.", PropertyEditorGroup.AI, PropertyEditorType.SingleSpritePicker)]
+        public string? DefaultAIController { get; set; }
+
         #region InteractiveSpriteMetadata
 
         [AssetMetadata("Orientation Type", "Determines how the attached sprite orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.", PropertyEditorGroup.Attachment, PropertyEditorType.Enum, enumType: typeof(AttachmentOrientationType))]
