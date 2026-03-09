@@ -36,7 +36,7 @@ namespace Ae.AssetExplorer
             splitContainerRight = new SplitContainer();
             tabControlCode = new TabControl();
             splitContainerProperties = new SplitContainer();
-            pictureBoxPreview = new PictureBox();
+            drawingSurface = new PictureBox();
             listViewProperties = new ListView();
             splitContainerBottom = new SplitContainer();
             richTextBoxOutput = new RichTextBox();
@@ -63,7 +63,7 @@ namespace Ae.AssetExplorer
             splitContainerProperties.Panel1.SuspendLayout();
             splitContainerProperties.Panel2.SuspendLayout();
             splitContainerProperties.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxPreview).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)drawingSurface).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainerBottom).BeginInit();
             splitContainerBottom.Panel1.SuspendLayout();
             splitContainerBottom.Panel2.SuspendLayout();
@@ -133,7 +133,7 @@ namespace Ae.AssetExplorer
             // 
             // splitContainerProperties.Panel1
             // 
-            splitContainerProperties.Panel1.Controls.Add(pictureBoxPreview);
+            splitContainerProperties.Panel1.Controls.Add(drawingSurface);
             // 
             // splitContainerProperties.Panel2
             // 
@@ -144,13 +144,13 @@ namespace Ae.AssetExplorer
             // 
             // pictureBoxPreview
             // 
-            pictureBoxPreview.BorderStyle = BorderStyle.FixedSingle;
-            pictureBoxPreview.Location = new Point(83, 28);
-            pictureBoxPreview.Name = "pictureBoxPreview";
-            pictureBoxPreview.Size = new Size(100, 100);
-            pictureBoxPreview.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBoxPreview.TabIndex = 0;
-            pictureBoxPreview.TabStop = false;
+            drawingSurface.BorderStyle = BorderStyle.FixedSingle;
+            drawingSurface.Location = new Point(83, 28);
+            drawingSurface.Name = "pictureBoxPreview";
+            drawingSurface.Size = new Size(100, 100);
+            drawingSurface.SizeMode = PictureBoxSizeMode.AutoSize;
+            drawingSurface.TabIndex = 0;
+            drawingSurface.TabStop = false;
             // 
             // listViewProperties
             // 
@@ -315,7 +315,7 @@ namespace Ae.AssetExplorer
             splitContainerProperties.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerProperties).EndInit();
             splitContainerProperties.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBoxPreview).EndInit();
+            ((System.ComponentModel.ISupportInitialize)drawingSurface).EndInit();
             splitContainerBottom.Panel1.ResumeLayout(false);
             splitContainerBottom.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerBottom).EndInit();
@@ -333,7 +333,7 @@ namespace Ae.AssetExplorer
         private SplitContainer splitContainerRight;
         private SplitContainer splitContainerBottom;
         private SplitContainer splitContainerProperties;
-        private PictureBox pictureBoxPreview;
+        private PictureBox drawingSurface;
         private ListView listViewProperties;
         private RichTextBox richTextBoxOutput;
         private ToolStrip toolStrip1;

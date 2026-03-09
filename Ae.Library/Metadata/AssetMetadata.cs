@@ -5,10 +5,15 @@ namespace Ae.Library.Metadata
 {
     public class AssetMetadata
     {
+        /// <summary>
+        /// The name of the type that was dynamically compiled for this asset.
+        /// </summary>
+        public string? DynamicTypeName { get; set; }
+
         [AssetMetadata("Asset Key", "The asset key of attachment sprite.", PropertyEditorGroup.Base, PropertyEditorType.Readonly)]
         public string? AssetKey { get; set; }
 
-        [AssetMetadata("Sound Volume", "Volumne of the sound expressed in percentages.", PropertyEditorGroup.Audio, PropertyEditorType.Float, minValue: 0, maxValue: 1)]
+        [AssetMetadata("Sound Volume", "Volume of the sound expressed in percentages.", PropertyEditorGroup.Audio, PropertyEditorType.Float, minValue: 0, maxValue: 1)]
         public float? SoundVolume { get; set; }
 
         [AssetMetadata("Loop Sound", "Indicates whether the sound should loop when played.", PropertyEditorGroup.Audio, PropertyEditorType.Boolean)]
@@ -66,7 +71,7 @@ namespace Ae.Library.Metadata
         /// A higher mass will make the sprite more resistant to acceleration and deceleration,
         /// while a lower mass will make it more agile but also more susceptible to external forces.
         /// 
-        /// Mass == 0 is infinite mass, it cannot be moved by ineterial forces.
+        /// Mass == 0 is infinite mass, it cannot be moved by inertial forces.
         /// </summary>
         [AssetMetadata("Mass", "The mass of the sprite, which affects its resistance to acceleration and deceleration in physics calculations when munition detection is enabled. A higher mass makes the sprite more resistant to external forces, while a lower mass makes it more agile but also more susceptible to being moved by such forces. A mass of 0 is considered infinite mass, meaning the sprite cannot be moved by inertial forces.", PropertyEditorGroup.Momentum, PropertyEditorType.RangeFloat)]
         public AeRange<float>? Mass { get; set; }

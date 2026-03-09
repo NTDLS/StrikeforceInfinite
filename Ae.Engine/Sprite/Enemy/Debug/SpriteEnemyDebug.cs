@@ -21,6 +21,8 @@ namespace Ae.Engine.Sprite.Enemy.Debug
 
         public override void OnMaterialized()
         {
+
+
             RecalculateMovementVectorFromOrientation();
 
             OnVisibilityChanged += EnemyBase_OnVisibilityChanged;

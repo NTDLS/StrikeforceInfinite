@@ -29,6 +29,7 @@ namespace Ae.Engine.AI
 
         /// <summary>
         /// Collection of objects that the sprite is observing.
+        /// Probably want to set these on OnMaterialized().
         /// </summary>
         public List<SpriteBase> ObservedObjects { get; private set; } = [];
 
@@ -67,11 +68,10 @@ namespace Ae.Engine.AI
         /// <param name="engine">Reference to the engine core class.</param>
         /// <param name="owner">Reference to the sprite that is being controlled by this AI model.</param>
         /// <param name="observedObject">Reference to the object that the sprite is observing (probably the player, but can be other objects).</param>
-        public AIStateMachine(AeEngine engine, SpriteInteractive owner, List<SpriteBase>? observedObjects = null)
+        public AIStateMachine(AeEngine engine, SpriteInteractive owner)
         {
             Engine = engine;
             Owner = owner;
-            ObservedObjects = observedObjects ?? [];
             OnMaterialized();
         }
 

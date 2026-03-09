@@ -152,17 +152,16 @@ namespace Ae.Engine.Manager
 
                     if (baseType == AeConstants.AeBaseAssetType.Image && !string.IsNullOrWhiteSpace(model.Controller))
                     {
-
                         //Compile sprite controller.
-                        var assetClassName = $"AeAssetController_{model.BaseType}" + assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_').Replace(' ', '_');
+                        assetContainer.Metadata.DynamicTypeName = $"AeAssetController_{model.BaseType}" + AeRuntimeCompiler.AssetKeyToClassName(assetContainer.Metadata.AssetKey);
 
-                        var classCode = AeAssetControllerClassText.Get(assetContainer.Metadata.Class, assetClassName, model.Controller);
+                        var classCode = AeAssetControllerClassText.Get(assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, model.Controller);
 
                         try
                         {
                             AeRuntimeCompiler.CompileToAssembly(classCode);
                             //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
-                            AeReflection.GetTypeByName(assetClassName);
+                            AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);
                         }
                         catch (Exception ex)
                         {
@@ -173,21 +172,21 @@ namespace Ae.Engine.Manager
                             else throw new Exception($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}");
                         }
 
-                        assetContainer.ControllerName = assetClassName;
+                        assetContainer.ControllerName = assetContainer.Metadata.DynamicTypeName;
                     }
                     else if (baseType == AeConstants.AeBaseAssetType.Code)
                     {
-                        var assetClassName = assetContainer.Metadata.AssetKey.Replace('/', '_').Replace('.', '_').Replace(' ', '_');
+                        //Compile user code.
+                        assetContainer.Metadata.DynamicTypeName = AeRuntimeCompiler.AssetKeyToClassName(assetContainer.Metadata.AssetKey);
 
                         var objectText = Encoding.UTF8.GetString(model.Bytes);
-
-                        var classCode = AeAssetCodeClassText.Get(assetContainer.Metadata.Class, assetClassName, objectText);
+                        var classCode = AeAssetCodeClassText.Get(assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, objectText);
 
                         try
                         {
                             AeRuntimeCompiler.CompileToAssembly(classCode);
                             //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
-                            AeReflection.GetTypeByName(assetClassName);
+                            AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);
                         }
                         catch (Exception ex)
                         {
@@ -197,8 +196,6 @@ namespace Ae.Engine.Manager
                             }
                             else throw new Exception($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}");
                         }
-
-                        assetContainer.ControllerName = assetClassName;
                     }
 
                     lock (_collection)

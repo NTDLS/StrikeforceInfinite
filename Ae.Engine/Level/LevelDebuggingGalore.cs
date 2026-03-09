@@ -71,10 +71,12 @@ namespace Ae.Engine.Level
         {
             _engine.Sprites.Enemies.Add("Sprites/Enemy/Peon/Phoenix");
 
+            /*
             _engine.Sprites.Enemies.Add("Sprites/Enemy/Boss/Devastator/Hull", (sprite) =>
             {
                 sprite.Location = _engine.Display.RandomOnScreenLocation();
             });
+            */
 
             /*
             _engine.Sprites.Enemies.Add("Sprites/Enemy/Starbase/Garrison/Hull", (sprite)=>

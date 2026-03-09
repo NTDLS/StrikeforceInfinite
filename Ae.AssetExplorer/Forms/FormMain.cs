@@ -25,12 +25,12 @@ namespace Ae.AssetExplorer
 
             WriteOutput("Instanciating EngineCore.", AeLoggingLevel.Verbose);
 
-            pictureBoxPreview.Parent.EnsureNotNull().Resize += Parent_Resize;
+            drawingSurface.Parent.EnsureNotNull().Resize += Parent_Resize;
             Parent_Resize(null, new());
 
-            pictureBoxPreview.MouseWheel += PictureBoxPreview_MouseWheel;
+            drawingSurface.MouseWheel += PictureBoxPreview_MouseWheel;
 
-            _engine = new AeEngine(pictureBoxPreview, AeConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
+            _engine = new AeEngine(drawingSurface, AeConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
             _engine.Display.ZoomOverride = 0.1f; // Start zoomed out to show the whole sprite.
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
 
@@ -41,6 +41,7 @@ namespace Ae.AssetExplorer
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
             Shown += FormMain_Shown;
+            drawingSurface.MouseDown += DrawingSurface_MouseDown;
         }
 
         private void PictureBoxPreview_MouseWheel(object? sender, MouseEventArgs e)
@@ -53,22 +54,118 @@ namespace Ae.AssetExplorer
             _engine.Display.ZoomOverride = zoom.IsNearZero() ? null : zoom;
         }
 
+        #region Debug interactions.
+
+        private void DrawingSurface_MouseDown(object? sender, MouseEventArgs e)
+        {
+            List<SpriteBase>? sprites = null;
+
+            _engine.Invoke(() =>
+            {
+                sprites = _engine.Sprites.All().ToList();
+            }).Wait();
+
+            if (sprites?.Count > 0)
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    var menu = new ContextMenuStrip();
+
+                    var watchMenu = new ToolStripMenuItem("Watch");
+                    watchMenu.DropDownItemClicked += WatchMenu_ItemClicked;
+                    menu.Items.Add(watchMenu);
+                    foreach (var sprite in sprites)
+                    {
+                        var label = $"UID: {sprite.UID}, Type: {sprite.GetType().Name}";
+                        if (!string.IsNullOrEmpty(sprite.SpriteTag))
+                        {
+                            label += $", Tag: {sprite.SpriteTag}";
+                        }
+
+                        watchMenu.DropDownItems.Add(label).Tag = sprite;
+                    }
+
+                    var inspectMenu = new ToolStripMenuItem("Inspect");
+                    inspectMenu.DropDownItemClicked += InspectMenu_ItemClicked;
+                    menu.Items.Add(inspectMenu);
+                    foreach (var sprite in sprites)
+                    {
+                        var label = $"UID: {sprite.UID}, Type: {sprite.GetType().Name}";
+                        if (!string.IsNullOrEmpty(sprite.SpriteTag))
+                        {
+                            label += $", Tag: {sprite.SpriteTag}";
+                        }
+
+                        inspectMenu.DropDownItems.Add(label).Tag = sprite;
+                    }
+
+                    var deleteMenu = new ToolStripMenuItem("Delete");
+                    deleteMenu.DropDownItemClicked += DeleteMenu_ItemClicked;
+                    menu.Items.Add(deleteMenu);
+                    foreach (var sprite in sprites)
+                    {
+                        var label = $"UID: {sprite.UID}, Type: {sprite.GetType().Name}";
+                        if (!string.IsNullOrEmpty(sprite.SpriteTag))
+                        {
+                            label += $", Tag: {sprite.SpriteTag}";
+                        }
+
+                        deleteMenu.DropDownItems.Add(label).Tag = sprite;
+                    }
+
+                    var location = new Point((int)e.X + 10, (int)e.Y);
+                    menu.Show(_engine.Display.DrawingSurface, location);
+                }
+            }
+        }
+
+        private void InspectMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
+        {
+            (sender as ToolStripDropDown)?.Close();
+            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+
+            _engine.Development?.EnsureVisibility();
+            _engine.Development?.EnqueueCommand($"Sprite-Inspect {sprite.UID}");
+        }
+
+        private void WatchMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
+        {
+            (sender as ToolStripDropDown)?.Close();
+            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+
+            Task.Run(() =>
+            {
+                using var form = new FormInterrogationSpriteWatch(_engine, sprite);
+                form.ShowDialog();
+            });
+        }
+
+        private void DeleteMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
+        {
+            (sender as ToolStripDropDown)?.Close();
+            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+
+            sprite.QueueForDelete();
+        }
+
+        #endregion
+
         private void Parent_Resize(object? sender, EventArgs e)
         {
             try
             {
-                pictureBoxPreview.Parent.EnsureNotNull();
+                drawingSurface.Parent.EnsureNotNull();
 
                 int margin = 6;
-                var boxSize = Math.Min(pictureBoxPreview.Parent.Width, pictureBoxPreview.Parent.Height) - margin;
+                var boxSize = Math.Min(drawingSurface.Parent.Width, drawingSurface.Parent.Height) - margin;
 
                 if (boxSize > 10)
                 {
-                    pictureBoxPreview.Width = boxSize;
-                    pictureBoxPreview.Height = boxSize;
+                    drawingSurface.Width = boxSize;
+                    drawingSurface.Height = boxSize;
 
-                    pictureBoxPreview.Left = (pictureBoxPreview.Parent.Width / 2) - (pictureBoxPreview.Width / 2);
-                    pictureBoxPreview.Top = (pictureBoxPreview.Parent.Height / 2) - (pictureBoxPreview.Height / 2);
+                    drawingSurface.Left = (drawingSurface.Parent.Width / 2) - (drawingSurface.Width / 2);
+                    drawingSurface.Top = (drawingSurface.Parent.Height / 2) - (drawingSurface.Height / 2);
                 }
             }
             catch (Exception ex)

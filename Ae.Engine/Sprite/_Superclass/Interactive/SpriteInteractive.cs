@@ -8,6 +8,7 @@ using Ae.Library.Metadata;
 using Microsoft.CodeAnalysis;
 using NTDLS.Helpers;
 using SharpDX.Direct2D1;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +72,7 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
                 _lockedOnImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked On");
                 _lockedOnSoftImage = Engine.Assets.GetBitmap("Sprites/Weapon/Locking/Locked Soft");
             }
+            SetupAIControllers();
         }
 
         public SpriteInteractive(AeEngine engine, Bitmap bitmap)
@@ -83,33 +85,69 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
             }
 
             SetBitmap(bitmap);
+            SetupAIControllers();
         }
 
         #region Artificial Intelligence.
 
-        public IAIController? CurrentAIController { get; set; }
-        private readonly Dictionary<Type, IAIController> _aiControllers = new();
+        /// <summary>
+        /// The current AI controller that is controlling the sprite's ApplyIntelligence() behavior, this can be switched at any time to change the sprite's behavior.
+        /// </summary>
+        public IAIController? CurrentAIController { get; private set; }
 
-        public void AddAIController(string aiControllerName)
+        /// <summary>
+        /// Dictionary of AI controller AssetKeys and their instances.
+        /// </summary>
+        private readonly Dictionary<string, IAIController> _aiControllers = new();
+
+        public void SetupAIControllers()
         {
-            //var aiControllers = AeReflection.GetSubClassesOf<IAIController>();
+            if (Metadata.AIControllers != null)
+            {
+                foreach (var aiControllerAssetKey in Metadata.AIControllers)
+                {
+                    var aiControllerMetadata = Engine.Assets.GetMetadata(aiControllerAssetKey);
 
-            throw new NotImplementedException();
+                    var aiControllerType = AeReflection.GetTypeByName(aiControllerMetadata.DynamicTypeName ??
+                        throw new Exception($"The AI controller '{aiControllerAssetKey}' does not have a DynamicTypeName defined in its metadata."));
+
+                    var aiController = Activator.CreateInstance(aiControllerType, [Engine, this]) as IAIController
+                        ?? throw new Exception($"The AI controller class '{aiControllerAssetKey}' could not be instantiated for sprite '{Metadata.AssetKey}'.");
+
+                    _aiControllers.Add(aiControllerAssetKey, aiController);
+                }
+
+                //If a default AI controller is specified, set it as the current controller.
+                if (string.IsNullOrEmpty(Metadata.DefaultAIController) == false)
+                {
+                    SetCurrentAIController(Metadata.DefaultAIController);
+                }
+            }
         }
-        //=> _aiControllers.Add(controller.GetType(), controller);
 
+        /// <summary>
+        /// Sets the current AI controller for the sprite based on the specified asset key.
+        /// </summary>
+        /// <param name="aiControllerAssetKey">The asset key of the AI controller to set as the current controller. This key must correspond to an existing
+        /// AI controllers AssetKey in the collection.</param>
+        /// <exception cref="Exception">Thrown if the AI controller specified by <paramref name="aiControllerAssetKey"/> does not exist for the
+        /// current sprite.</exception>
+        public void SetCurrentAIController(string aiControllerAssetKey)
+        {
+            if (!_aiControllers.TryGetValue(aiControllerAssetKey, out var aiController) && aiController != null)
+            {
+                throw new Exception($"The AI controller '{aiControllerAssetKey}' does not exist for sprite '{Metadata.AssetKey}'.");
+            }
+            CurrentAIController = aiController;
+        }
+
+        /// <summary>
+        /// Clears all AI controllers and clears the currently selected AI controller.
+        /// </summary>
         public void ClearAIControllers()
         {
             _aiControllers.Clear();
             CurrentAIController = null;
-        }
-
-        public IAIController GetAIController<T>() where T : IAIController
-            => _aiControllers[typeof(T)];
-
-        public void SetCurrentAIController<T>() where T : IAIController
-        {
-            CurrentAIController = GetAIController<T>();
         }
 
         #endregion

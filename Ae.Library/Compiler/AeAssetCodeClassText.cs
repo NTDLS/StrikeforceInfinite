@@ -16,7 +16,7 @@
 
         private readonly static Dictionary<string, ConstructorSignatures> ConstructorSignaturesByBaseClass = new()
         {
-            { "AIStateMachine", new ConstructorSignatures("AeEngine engine, SpriteInteractive owner, List<SpriteBase> ? observedObjects = null", "engine, owner, observedObjects") },
+            { "AIStateMachine", new ConstructorSignatures("AeEngine engine, SpriteInteractive owner", "engine, owner") },
         };
 
         public static string Get(string? baseClassName, string assetControllerClassName, string controllerCode)
