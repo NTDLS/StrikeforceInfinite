@@ -16,7 +16,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Compiler\Templates\DynamicCompileImports.cs" />
+	  <Compile Remove="Compiler\Templates\SimpleClassWithBase.cs" />
+	  <Compile Remove="Compiler\Templates\SimpleClassWithoutBase.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="AeIcon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithoutBase.cs" />
+	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithBase.cs" />
+	  <EmbeddedResource Include="Compiler\Templates\DynamicCompileImports.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

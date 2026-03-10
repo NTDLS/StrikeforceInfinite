@@ -133,7 +133,7 @@ namespace Ae.Engine.Manager
             {
                 threadPoolTracker.Enqueue(() =>
                 {
-                    if (AeConstants.BaseAssetTypes.TryGetValue(model.BaseType, out var baseType) == false)
+                    if (BaseAssetTypes.TryGetValue(model.BaseType, out var baseType) == false)
                     {
                         if (writeOutput != null)
                         {
@@ -154,41 +154,33 @@ namespace Ae.Engine.Manager
                         else throw new Exception($"Asset metadata for asset with key: {model.Key} does not contain an AssetKey.");
                     }
 
-                    if (baseType == AeConstants.AeBaseAssetType.Image && !string.IsNullOrWhiteSpace(model.Controller))
+                    string? assetDynamicCode = null;
+
+                    if (model.Key.Contains("Sprites/Weapon/Vulcan Cannon"))
                     {
-                        //Compile sprite controller.
-                        assetContainer.Metadata.DynamicTypeName = $"AeAssetController_{model.BaseType}" + AeRuntimeCompiler.AssetKeyToClassName(assetContainer.Metadata.AssetKey);
-
-                        var classCode = AeAssetControllerClassText.Get(assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, model.Controller);
-
-                        try
-                        {
-                            AeRuntimeCompiler.CompileToAssembly(classCode);
-                            //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
-                            AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (writeOutput != null)
-                            {
-                                writeOutput($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}", AeLoggingLevel.Error);
-                            }
-                            else throw new Exception($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}");
-                        }
-
-                        assetContainer.ControllerName = assetContainer.Metadata.DynamicTypeName;
                     }
-                    else if (baseType == AeConstants.AeBaseAssetType.Code)
-                    {
-                        //Compile user code.
-                        assetContainer.Metadata.DynamicTypeName = AeRuntimeCompiler.AssetKeyToClassName(assetContainer.Metadata.AssetKey);
 
-                        var objectText = Encoding.UTF8.GetString(model.Bytes);
-                        var classCode = AeAssetCodeClassText.Get(assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, objectText);
+
+                    if (baseType == AeBaseAssetType.Image && !string.IsNullOrWhiteSpace(model.Controller))
+                    {
+                        //"Sprite" asset code is in the Class field.
+                        assetDynamicCode = model.Controller;
+                    }
+                    else if (baseType == AeBaseAssetType.Code)
+                    {
+                        //"Code" asset type code is in the Bytes field.
+                        assetDynamicCode = Encoding.UTF8.GetString(model.Bytes);
+                    }
+
+                    if (assetDynamicCode != null)
+                    {
+                        //Compile user code for asset.
+                        var fullAssetDynamicCode = AeAssetCodeClassBuilder.Get(assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, assetDynamicCode);
 
                         try
                         {
-                            AeRuntimeCompiler.CompileToAssembly(classCode);
+                            AeRuntimeCompiler.CompileToAssembly(fullAssetDynamicCode);
+
                             //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
                             AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);
                         }

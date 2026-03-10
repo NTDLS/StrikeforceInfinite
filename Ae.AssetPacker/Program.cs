@@ -9,7 +9,8 @@ using System.Text.Json;
 namespace Ae.AssetPacker
 {
     /// <summary>
-    /// Used to pack a directory of assets into the database file.
+    /// Used to pack a directory of assets into the database file or unpack a database file into a directory of assets.
+    /// This is a simple command line tool that can be used in build scripts or manually to manage the assets in the database.
     /// </summary>
     internal class Program
     {
@@ -151,8 +152,9 @@ namespace Ae.AssetPacker
 
                     var assetKey = $"{relativePath}\\{fileName}".Replace("\\", "/").Replace("//", "/");
 
+                    var baseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower();
                     var originalFileBytes = File.ReadAllBytes(fullAssetPath);
-                    var compressedBytes = CompressionHelper.Compress(originalFileBytes, CompressionLevel.SmallestSize);
+                    var compressedBytes = CompressAsset(originalFileBytes, baseType);
 
                     var metadataJson = ReadIfExists($"{fullAssetPath}.meta");
                     var controllerText = ReadIfExists($"{fullAssetPath}.code.cs");
@@ -172,7 +174,7 @@ namespace Ae.AssetPacker
                                 Bytes = originalFileBytes.Length > compressedBytes.Length ? compressedBytes : originalFileBytes,
                                 IsCompressed = originalFileBytes.Length > compressedBytes.Length,
                                 Metadata = JsonSerializer.Serialize(metadata, AeConstants.JsonSerializerOptions),
-                                BaseType = Path.GetExtension(fullAssetPath).Trim('.').ToLower(),
+                                BaseType = baseType,
                                 Controller = controllerText
                             });
 
@@ -182,6 +184,16 @@ namespace Ae.AssetPacker
             }
 
             #endregion
+        }
+
+        static byte[] CompressAsset(byte[] bytes, string baseType)
+        {
+            if (baseType == "cs" || baseType == "txt" || baseType == "json" || baseType == "xml")
+            {
+                //Just for the sake of easy database editing, we do not compress text based assets.
+                return bytes;
+            }
+            return CompressionHelper.Compress(bytes, CompressionLevel.SmallestSize);
         }
     }
 }

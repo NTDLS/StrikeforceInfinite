@@ -1,4 +1,6 @@
-﻿using Ae.Library.Mathematics;
+﻿using Ae.Library.Compiler;
+using Ae.Library.Mathematics;
+using System.Text.Json.Serialization;
 using static Ae.Library.AeConstants;
 
 namespace Ae.Library.Metadata
@@ -8,7 +10,9 @@ namespace Ae.Library.Metadata
         /// <summary>
         /// The name of the type that was dynamically compiled for this asset.
         /// </summary>
-        public string? DynamicTypeName { get; set; }
+        [JsonIgnore]
+        public string DynamicTypeName => AeRuntimeCompiler.AssetKeyToClassName(AssetKey);
+
 
         [AssetMetadata("Asset Key", "The asset key of attachment sprite.", PropertyEditorGroup.Base, PropertyEditorType.Readonly)]
         public string? AssetKey { get; set; }

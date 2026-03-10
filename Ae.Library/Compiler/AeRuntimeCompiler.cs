@@ -6,9 +6,9 @@ namespace Ae.Library.Compiler
 {
     public static class AeRuntimeCompiler
     {
-        public static string AssetKeyToClassName(string assetKey)
+        public static string AssetKeyToClassName(string? assetKey)
         {
-            return assetKey.Replace('/', '_').Replace('.', '_').Replace(' ', '_');
+            return assetKey?.Replace('/', '_').Replace('.', '_').Replace(' ', '_') ?? string.Empty;
         }
 
         private static IEnumerable<MetadataReference> GetTrustedReferences()

@@ -2,6 +2,6 @@
 {
     public interface IAeRuntimeCompiled
     {
-        string GetControllerName();
+        string AeGetClassName();
     }
 }

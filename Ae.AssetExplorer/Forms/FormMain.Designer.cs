@@ -51,7 +51,9 @@ namespace Ae.AssetExplorer
             toolStripButtonToggleOutput = new ToolStripButton();
             toolStripButtonToggleProperties = new ToolStripButton();
             toolStripButtonAbout = new ToolStripButton();
+            treeViewAssets = new DoubleBufferedTreeView();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
+            splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
             splitContainerLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).BeginInit();
@@ -76,6 +78,10 @@ namespace Ae.AssetExplorer
             splitContainerLeft.FixedPanel = FixedPanel.Panel1;
             splitContainerLeft.Location = new Point(0, 0);
             splitContainerLeft.Name = "splitContainerLeft";
+            // 
+            // splitContainerLeft.Panel1
+            // 
+            splitContainerLeft.Panel1.Controls.Add(treeViewAssets);
             // 
             // splitContainerLeft.Panel2
             // 
@@ -288,6 +294,14 @@ namespace Ae.AssetExplorer
             toolStripButtonAbout.Text = "About";
             toolStripButtonAbout.Click += toolStripButtonAbout_Click;
             // 
+            // doubleBufferedTreeViewAssets
+            // 
+            treeViewAssets.Dock = DockStyle.Fill;
+            treeViewAssets.Location = new Point(0, 0);
+            treeViewAssets.Name = "doubleBufferedTreeViewAssets";
+            treeViewAssets.Size = new Size(273, 429);
+            treeViewAssets.TabIndex = 0;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -299,6 +313,7 @@ namespace Ae.AssetExplorer
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Asset Manager";
+            splitContainerLeft.Panel1.ResumeLayout(false);
             splitContainerLeft.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).EndInit();
             splitContainerLeft.ResumeLayout(false);
@@ -325,7 +340,6 @@ namespace Ae.AssetExplorer
         #endregion
 
         private SplitContainer splitContainerLeft;
-        private DoubleBufferedTreeView treeViewAssets;
         private SplitContainer splitContainerRight;
         private SplitContainer splitContainerBottom;
         private SplitContainer splitContainerProperties;
@@ -345,5 +359,6 @@ namespace Ae.AssetExplorer
         private ToolStripButton toolStripButtonClose;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripButton toolStripButtonAbout;
+        private DoubleBufferedTreeView treeViewAssets;
     }
 }
