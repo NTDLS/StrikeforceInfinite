@@ -16,7 +16,9 @@ using static Ae.Library.AeConstants;
 namespace Ae.Engine.Sprite._Superclass.Interactive
 {
     /// <summary>
-    /// A sprite that the player can see, probably shoot and destroy and might even shoot back.
+    /// A sprite that can have weapons, be controlled by an AI controller,
+    /// be the subject of a foreign weapons lock and be hit by munitions.
+    /// They can also be subject to collision detection and have a mass that affects how they respond to collisions.
     /// </summary>
     [AssetClass("Interactive", "", AeBaseAssetType.Image, true)]
     public class SpriteInteractive

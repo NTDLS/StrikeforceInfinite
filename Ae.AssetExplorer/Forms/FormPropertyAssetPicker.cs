@@ -24,6 +24,7 @@ namespace Ae.AssetExplorer.Forms
         public FormPropertyAssetPicker(AeEngine engine, Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem, bool multiSelect)
         {
             InitializeComponent();
+            _writeOutput = writeOutput;
             _engine = engine;
             _multiSelect = multiSelect;
             _requireAssignableFrom = propertyItem.Attributes?.RequireAssignableFrom;

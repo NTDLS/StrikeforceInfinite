@@ -15,7 +15,16 @@ namespace Ae.Engine.Metadata
         public int? MinLength { get; } = null;
         public Type? EnumType { get; } = null;
         public string[]? PickList { get; } = null;
-        //public Type[] ApplicipableTo { get; }
+
+        /// <summary>
+        /// Gets an array of types that this member is applicable to.
+        /// </summary>
+        /// <remarks>This property provides a list of types that can utilize the functionality defined by
+        /// this member. It is useful for determining the context in which this member can be effectively
+        /// 
+        /// NULL when there are no specific type restrictions, meaning that the member is applicable to all types.
+        /// applied.</remarks>
+        public Type[]? ApplicableTo { get; }
 
         /// <summary>
         /// When specified, indicates that the property value must be assignable from the specified type.
@@ -24,7 +33,7 @@ namespace Ae.Engine.Metadata
         public Type? RequireAssignableFrom { get; }
 
         public AssetMetadataAttribute(string friendlyName, string description, PropertyEditorGroup editorGroup, PropertyEditorType editorType,
-            /*Type[] applicableTo,*/ double maxValue = 0, double minValue = 0, int minLength = 0, Type? enumType = null, string[]? pickList = null, Type? requireAssignableFrom = null)
+            Type[]? applicableTo, double maxValue = 0, double minValue = 0, int minLength = 0, Type? enumType = null, string[]? pickList = null, Type? requireAssignableFrom = null)
         {
             FriendlyName = friendlyName;
             EditorGroup = editorGroup;
@@ -36,7 +45,7 @@ namespace Ae.Engine.Metadata
             EnumType = enumType;
             PickList = pickList;
             RequireAssignableFrom = requireAssignableFrom;
-            //ApplicipableTo = applicableTo;
+            ApplicableTo = applicableTo;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Ae.Audio;
-using Ae.Engine.Sprite._Superclass._Root;
+﻿using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Engine.Sprite._Superclass.Munition;
@@ -30,7 +29,6 @@ namespace Ae.Engine.Sprite._Superclass
         /// <summary>
         /// The sound that the weapon makes when firing.
         /// </summary>
-        public AeAudioClip? FireSound { get; private set; }
         public SpriteBase Owner { get; set; }
 
         public List<WeaponsLock> LockedTargets { get; set; } = new();
@@ -41,11 +39,6 @@ namespace Ae.Engine.Sprite._Superclass
             : base(engine, assetKey)
         {
             Owner = owner;
-
-            if (!string.IsNullOrEmpty(Metadata.SoundAssetKey))
-            {
-                FireSound = Engine.Assets.GetAudio(Metadata.SoundAssetKey, Metadata.SoundVolume ?? 0);
-            }
         }
 
         public class WeaponsLock
@@ -171,7 +164,7 @@ namespace Ae.Engine.Sprite._Superclass
             {
                 MunitionsFired++;
                 MunitionQuantity--;
-                FireSound?.Play();
+                Sounds?.OneOf()?.Play();
                 Engine.Sprites.Munitions.Add(this, location);
 
                 return true;
@@ -191,7 +184,7 @@ namespace Ae.Engine.Sprite._Superclass
             {
                 MunitionsFired++;
                 MunitionQuantity--;
-                FireSound?.Play();
+                Sounds?.OneOf()?.Play();
                 Engine.Sprites.Munitions.Add(this);
 
                 return true;

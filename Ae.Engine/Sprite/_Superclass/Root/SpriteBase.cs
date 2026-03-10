@@ -1,4 +1,5 @@
-﻿using Ae.Engine.Metadata;
+﻿using Ae.Audio;
+using Ae.Engine.Metadata;
 using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Library;
@@ -6,6 +7,7 @@ using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using Ae.Library.Sprite;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Ae.Engine.Sprite._Superclass._Root
@@ -17,6 +19,8 @@ namespace Ae.Engine.Sprite._Superclass._Root
         : ISprite
     {
         protected AeEngine Engine { get; private set; }
+
+        public List<AeAudioClip>? Sounds { get; private set; }
 
         public SharpDX.Direct2D1.Bitmap? SpriteBitmap { get; private set; }
         private bool _readyForDeletion;
@@ -57,6 +61,16 @@ namespace Ae.Engine.Sprite._Superclass._Root
                 SpriteBitmap = Engine.Assets.GetBitmap(assetKey);
                 _size = new Size((int)SpriteBitmap.Size.Width, (int)SpriteBitmap.Size.Height);
             }
+
+            if (Metadata.SoundAssetKeys != null)
+            {
+                Sounds = new List<AeAudioClip>();
+                foreach (var soundAssetKey in Metadata.SoundAssetKeys)
+                {
+                    Sounds.Add(Engine.Assets.GetAudio(soundAssetKey));
+                }
+            }
+
 
             // Set standard variables here:
             Speed = AeRandom.Between(Metadata.Speed, 0);

@@ -86,13 +86,13 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public AeAudioClip GetAudio(string assetKey, float? volume = null)
+        public AeAudioClip GetAudio(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
                 var audioClip = assetContainer.Object as AeAudioClip
                     ?? throw new FileNotFoundException($"Asset could not be converted to audio: {assetKey}");
-                audioClip.SetInitialVolume(volume ?? assetContainer.Metadata.SoundVolume ?? 1);
+                audioClip.SetInitialVolume(assetContainer.Metadata.SoundVolume ?? 1);
                 audioClip.SetLoopForever(assetContainer.Metadata.LoopSound ?? false);
                 return audioClip;
             }
