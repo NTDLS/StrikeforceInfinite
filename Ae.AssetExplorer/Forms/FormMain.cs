@@ -31,7 +31,7 @@ namespace Ae.AssetExplorer
 
             drawingSurface.MouseWheel += PictureBoxPreview_MouseWheel;
 
-            _engine = new AeEngine(drawingSurface, AeConstants.SiEngineExecutionMode.Edit, new Size(1000, 1000));
+            _engine = new AeEngine(drawingSurface, AeConstants.AeEngineExecutionMode.Edit, new Size(1000, 1000));
             _engine.Display.ZoomOverride = 0.1f; // Start zoomed out to show the whole sprite.
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
 
@@ -294,7 +294,7 @@ namespace Ae.AssetExplorer
                     {
                         if (o is AeSpriteAnimation spriteAnimation)
                         {
-                            spriteAnimation.PlayMode = SiAnimationPlayMode.Infinite;
+                            spriteAnimation.PlayMode = AeAnimationPlayMode.Infinite;
                         }
 
                         o.Orientation.Degrees = 0;

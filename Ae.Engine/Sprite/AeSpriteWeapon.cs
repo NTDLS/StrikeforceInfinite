@@ -45,7 +45,7 @@ namespace Ae.Engine.Sprite
         {
             public float Distance { get; set; }
             public AeSpriteInteractive Sprite { get; set; }
-            public SiWeaponsLockType LockType { get; set; }
+            public AeWeaponsLockType LockType { get; set; }
 
             public WeaponsLock(AeSpriteInteractive sprite, float distance)
             {
@@ -111,14 +111,14 @@ namespace Ae.Engine.Sprite
 
                 foreach (var hardLock in LockedTargets.Take(Metadata.MaxLocks ?? 0))
                 {
-                    hardLock.LockType = SiWeaponsLockType.Hard;
+                    hardLock.LockType = AeWeaponsLockType.Hard;
                     hardLock.Sprite.IsLockedOn = true;
                     hardLock.Sprite.IsLockedOnSoft = false;
                 }
 
                 foreach (var softLock in LockedTargets.Skip(Metadata.MaxLocks ?? 0))
                 {
-                    softLock.LockType = SiWeaponsLockType.Soft;
+                    softLock.LockType = AeWeaponsLockType.Soft;
                     softLock.Sprite.IsLockedOn = false;
                     softLock.Sprite.IsLockedOnSoft = true;
                 }
@@ -146,7 +146,7 @@ namespace Ae.Engine.Sprite
 
                         LockedTargets.Add(new WeaponsLock(Engine.Player.Sprite, Owner.DistanceTo(Engine.Player.Sprite))
                         {
-                            LockType = SiWeaponsLockType.Hard
+                            LockType = AeWeaponsLockType.Hard
                         });
                     }
                 }

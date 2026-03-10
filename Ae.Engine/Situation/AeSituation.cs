@@ -18,7 +18,7 @@ namespace Ae.Engine.Situation
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public SiSituationState State { get; protected set; } = SiSituationState.NotYetStarted;
+        public AeSituationState State { get; protected set; } = AeSituationState.NotYetStarted;
 
         public List<AeLevel> Levels { get; protected set; } = new();
 
@@ -27,7 +27,7 @@ namespace Ae.Engine.Situation
             _engine = engine;
             Name = name;
             Description = description;
-            State = SiSituationState.NotYetStarted;
+            State = AeSituationState.NotYetStarted;
         }
 
         public void End()
@@ -42,7 +42,7 @@ namespace Ae.Engine.Situation
                     }
                 }
 
-                State = SiSituationState.Ended;
+                State = AeSituationState.Ended;
 
                 CurrentLevel = null;
                 _currentLevelIndex = 0;
@@ -64,13 +64,13 @@ namespace Ae.Engine.Situation
                     CurrentLevel.Begin();
                     _currentLevelIndex++;
 
-                    State = SiSituationState.Started;
+                    State = AeSituationState.Started;
 
                     return true;
                 }
                 else
                 {
-                    State = SiSituationState.Ended;
+                    State = AeSituationState.Ended;
 
                     CurrentLevel = null;
                     return false;

@@ -27,9 +27,9 @@ namespace Ae.Engine.Sprite
         /// </summary>
         public float FadeToBlackReductionAmount { get; set; } = 0.01f;
 
-        public ParticleVectorType VectorType { get; set; } = ParticleVectorType.Default;
+        public AeParticleVectorType VectorType { get; set; } = AeParticleVectorType.Default;
 
-        public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
+        public AeParticleCleanupMode CleanupMode { get; set; } = AeParticleCleanupMode.None;
 
         public AeSpriteMinimalBitmap(AeEngine engine, string assetKey)
             : base(engine, assetKey)
@@ -46,14 +46,14 @@ namespace Ae.Engine.Sprite
         {
             Orientation.Degrees += RotationSpeed * epoch;
 
-            if (VectorType == ParticleVectorType.FollowOrientation)
+            if (VectorType == AeParticleVectorType.FollowOrientation)
             {
                 RecalculateMovementVectorFromAngle(Orientation.RadiansSigned);
             }
 
             base.ApplyMotion(epoch, cameraDisplacement);
 
-            if (CleanupMode == ParticleCleanupMode.FadeToBlack)
+            if (CleanupMode == AeParticleCleanupMode.FadeToBlack)
             {
                 throw new NotImplementedException();
                 /*
@@ -66,7 +66,7 @@ namespace Ae.Engine.Sprite
                 }
                 */
             }
-            else if (CleanupMode == ParticleCleanupMode.DistanceOffScreen)
+            else if (CleanupMode == AeParticleCleanupMode.DistanceOffScreen)
             {
                 if (Engine.Display.TotalCanvasBounds.Balloon(MaxDistance).IntersectsWith(RenderBounds) == false)
                 {

@@ -15,7 +15,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 
         public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
-            if (Engine.ExecutionMode == AeConstants.SiEngineExecutionMode.Edit)
+            if (Engine.ExecutionMode == AeConstants.AeEngineExecutionMode.Edit)
             {
                 return;
             }

@@ -18,7 +18,7 @@ namespace Ae.Engine.Sprite.MenuItem
         public AeSpriteMenuSelectableTextInput(AeEngine engine, AeMenu menu, TextFormat format, SolidColorBrush color, AeVector location, int characterLimit = 100)
             : base(engine, menu, format, color, location)
         {
-            ItemType = SiMenuItemType.SelectableTextInput;
+            ItemType = AeMenuItemType.SelectableTextInput;
             IsVisible = true;
             CharacterLimit = characterLimit;
         }

@@ -27,7 +27,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         {
             if (CurrentSituation?.CurrentLevel != null)
             {
-                if (CurrentSituation.CurrentLevel.State == AeConstants.SiLevelState.Ended)
+                if (CurrentSituation.CurrentLevel.State == AeConstants.AeLevelState.Ended)
                 {
                     AdvanceLevel();
                 }

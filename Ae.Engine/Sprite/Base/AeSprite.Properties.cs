@@ -137,7 +137,7 @@ namespace Ae.Engine.Sprite.Base
         /// Whether the sprite is rendered before speed based scaling.
         /// Note that pre-scaled sprite X,Y is the top, left of the natural screen bounds.
         /// </summary>
-        public SiRenderScaleOrder RenderScaleOrder { get; set; } = SiRenderScaleOrder.PreScale;
+        public AeRenderScaleOrder RenderScaleOrder { get; set; } = AeRenderScaleOrder.PreScale;
 
         /// <summary>
         /// The bounds of the sprite in the universe.

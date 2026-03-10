@@ -86,15 +86,15 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             for (int i = 0; i < AeRandom.Between(maxParticleCount / 2, maxParticleCount); i++)
             {
                 var particle = AddAt(location, new Size(AeRandom.Between(1, 2), AeRandom.Between(1, 2)));
-                particle.Shape = ParticleShape.FilledEllipse;
-                particle.Pattern = ParticleColorType.Solid;
+                particle.Shape = AeParticleShape.FilledEllipse;
+                particle.Pattern = AeParticleColorType.Solid;
                 //particle.GradientStartColor = SiRenderingUtility.GetRandomHotColor();
                 //particle.GradientEndColor = SiRenderingUtility.GetRandomHotColor();
                 particle.Color = AeRenderingUtility.GetRandomHotColor();
-                particle.CleanupMode = ParticleCleanupMode.FadeToBlack;
+                particle.CleanupMode = AeParticleCleanupMode.FadeToBlack;
                 particle.FadeToBlackReductionAmount = AeRandom.Between(0.001f, 0.01f);
                 particle.Speed *= AeRandom.Between(1, 3.5f);
-                particle.VectorType = ParticleVectorType.Default;
+                particle.VectorType = AeParticleVectorType.Default;
             }
         }
 
@@ -142,12 +142,12 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
                 var p = AddAt(nozzleWorldPos, color, size ?? new Size(2, 2));
 
                 p.IsVisible = true;
-                p.VectorType = ParticleVectorType.FollowOrientation;
+                p.VectorType = AeParticleVectorType.FollowOrientation;
                 p.Orientation.Degrees = AeMath.WrapDegreesUnsigned(angle);
                 p.Speed = AeRandom.Between(minSpeed, maxSpeed);
-                p.Shape = ParticleShape.FilledEllipse;
-                p.Pattern = ParticleColorType.Solid;
-                p.CleanupMode = ParticleCleanupMode.FadeToBlack;
+                p.Shape = AeParticleShape.FilledEllipse;
+                p.Pattern = AeParticleColorType.Solid;
+                p.CleanupMode = AeParticleCleanupMode.FadeToBlack;
                 p.FadeToBlackReductionAmount = AeRandom.Between(0.01f, 0.02f);
                 p.RotationSpeed = AeRandom.Between(-250f, 250f);
             }
@@ -165,20 +165,20 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
                 switch (AeRandom.Between(1, 3))
                 {
                     case 1:
-                        particle.Shape = ParticleShape.Triangle;
+                        particle.Shape = AeParticleShape.Triangle;
                         break;
                     case 2:
-                        particle.Shape = ParticleShape.FilledEllipse;
+                        particle.Shape = AeParticleShape.FilledEllipse;
                         break;
                     case 3:
-                        particle.Shape = ParticleShape.HollowEllipse;
+                        particle.Shape = AeParticleShape.HollowEllipse;
                         break;
                 }
 
-                particle.CleanupMode = ParticleCleanupMode.FadeToBlack;
+                particle.CleanupMode = AeParticleCleanupMode.FadeToBlack;
                 particle.FadeToBlackReductionAmount = 0.001f;
                 particle.RotationSpeed = AeRandom.Between(-25f, 25f);
-                particle.VectorType = ParticleVectorType.FollowOrientation;
+                particle.VectorType = AeParticleVectorType.FollowOrientation;
                 particle.Orientation.Degrees = AeRandom.Between(0.0f, 359.0f);
                 particle.Speed = AeRandom.Between(20, 350f);
             }

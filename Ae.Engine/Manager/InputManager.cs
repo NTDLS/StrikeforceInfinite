@@ -18,7 +18,7 @@ namespace Ae.Engine.Manager
     public class InputManager
     {
         private readonly AeEngine _engine;
-        private readonly Dictionary<SiPlayerKey, float> _playerKeyStates = new();
+        private readonly Dictionary<AePlayerKey, float> _playerKeyStates = new();
         private bool _collectDetailedKeyInformation = false;
         private readonly Dictionary<Key, bool> _allKeyStates = new();
 
@@ -91,7 +91,7 @@ namespace Ae.Engine.Manager
 
         public void Snapshot()
         {
-            if (_engine.ExecutionMode != SiEngineExecutionMode.Play)
+            if (_engine.ExecutionMode != AeEngineExecutionMode.Play)
             {
                 _playerKeyStates.Clear();
                 return;
@@ -127,57 +127,57 @@ namespace Ae.Engine.Manager
                 byte leftTrigger = gamepadState.Gamepad.LeftTrigger;
                 byte rightTrigger = gamepadState.Gamepad.RightTrigger;
 
-                _engine.Input.KeyStateChangedAmount(SiPlayerKey.StrafeLeft, keyboardState.IsPressed(Key.Left) ? 1 : leftThumbX < 0 ? leftThumbX : 0);
-                _engine.Input.KeyStateChangedAmount(SiPlayerKey.StrafeRight, keyboardState.IsPressed(Key.Right) ? 1 : leftThumbX > 0 ? leftThumbX : 0);
+                _engine.Input.KeyStateChangedAmount(AePlayerKey.StrafeLeft, keyboardState.IsPressed(Key.Left) ? 1 : leftThumbX < 0 ? leftThumbX : 0);
+                _engine.Input.KeyStateChangedAmount(AePlayerKey.StrafeRight, keyboardState.IsPressed(Key.Right) ? 1 : leftThumbX > 0 ? leftThumbX : 0);
 
-                _engine.Input.KeyStateChangedAmount(SiPlayerKey.Forward, keyboardState.IsPressed(Key.W) ? 1 : leftThumbY > 0 ? leftThumbY : 0);
-                _engine.Input.KeyStateChangedAmount(SiPlayerKey.Reverse, keyboardState.IsPressed(Key.S) ? 1 : leftThumbY < 0 ? leftThumbY : 0);
+                _engine.Input.KeyStateChangedAmount(AePlayerKey.Forward, keyboardState.IsPressed(Key.W) ? 1 : leftThumbY > 0 ? leftThumbY : 0);
+                _engine.Input.KeyStateChangedAmount(AePlayerKey.Reverse, keyboardState.IsPressed(Key.S) ? 1 : leftThumbY < 0 ? leftThumbY : 0);
 
-                _engine.Input.KeyStateChangedAmount(SiPlayerKey.RotateCounterClockwise, keyboardState.IsPressed(Key.A) ? 1 : rightThumbX < 0 ? rightThumbX : 0);
-                _engine.Input.KeyStateChangedAmount(SiPlayerKey.RotateClockwise, keyboardState.IsPressed(Key.D) ? 1 : rightThumbX > 0 ? rightThumbX : 0);
+                _engine.Input.KeyStateChangedAmount(AePlayerKey.RotateCounterClockwise, keyboardState.IsPressed(Key.A) ? 1 : rightThumbX < 0 ? rightThumbX : 0);
+                _engine.Input.KeyStateChangedAmount(AePlayerKey.RotateClockwise, keyboardState.IsPressed(Key.D) ? 1 : rightThumbX > 0 ? rightThumbX : 0);
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.SpeedBoost, keyboardState.IsPressed(Key.LeftShift) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.RightThumb));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.SpeedBoost, keyboardState.IsPressed(Key.LeftShift) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.RightThumb));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.SwitchWeaponLeft, keyboardState.IsPressed(Key.Q) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.LeftShoulder));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.SwitchWeaponRight, keyboardState.IsPressed(Key.E) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.RightShoulder));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.SwitchWeaponLeft, keyboardState.IsPressed(Key.Q) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.LeftShoulder));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.SwitchWeaponRight, keyboardState.IsPressed(Key.E) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.RightShoulder));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.PrimaryFire, keyboardState.IsPressed(Key.Space) || rightTrigger > 10);
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.SecondaryFire, keyboardState.IsPressed(Key.RightControl) || leftTrigger > 10);
+                _engine.Input.KeyStateChangedHard(AePlayerKey.PrimaryFire, keyboardState.IsPressed(Key.Space) || rightTrigger > 10);
+                _engine.Input.KeyStateChangedHard(AePlayerKey.SecondaryFire, keyboardState.IsPressed(Key.RightControl) || leftTrigger > 10);
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Left, keyboardState.IsPressed(Key.Left) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft) || leftThumbX < 0);
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Right, keyboardState.IsPressed(Key.Right) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight) || leftThumbX > 0);
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Up, keyboardState.IsPressed(Key.Up) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadUp) || rightThumbY > 0);
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Down, keyboardState.IsPressed(Key.Down) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadDown) || rightThumbY < 0);
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Left, keyboardState.IsPressed(Key.Left) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft) || leftThumbX < 0);
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Right, keyboardState.IsPressed(Key.Right) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight) || leftThumbX > 0);
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Up, keyboardState.IsPressed(Key.Up) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadUp) || rightThumbY > 0);
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Down, keyboardState.IsPressed(Key.Down) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadDown) || rightThumbY < 0);
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Enter, keyboardState.IsPressed(Key.Return) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.A));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Escape, keyboardState.IsPressed(Key.Escape) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.B));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Enter, keyboardState.IsPressed(Key.Return) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.A));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Escape, keyboardState.IsPressed(Key.Escape) || gamepadState.Gamepad.Buttons.HasFlag(GamepadButtonFlags.B));
             }
             else
             {
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.StrafeLeft, keyboardState.IsPressed(Key.Left));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.StrafeRight, keyboardState.IsPressed(Key.Right));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.StrafeLeft, keyboardState.IsPressed(Key.Left));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.StrafeRight, keyboardState.IsPressed(Key.Right));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Forward, keyboardState.IsPressed(Key.W));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Reverse, keyboardState.IsPressed(Key.S));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Forward, keyboardState.IsPressed(Key.W));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Reverse, keyboardState.IsPressed(Key.S));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.RotateCounterClockwise, keyboardState.IsPressed(Key.A));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.RotateClockwise, keyboardState.IsPressed(Key.D));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.RotateCounterClockwise, keyboardState.IsPressed(Key.A));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.RotateClockwise, keyboardState.IsPressed(Key.D));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.SpeedBoost, keyboardState.IsPressed(Key.LeftShift));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.SpeedBoost, keyboardState.IsPressed(Key.LeftShift));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.SwitchWeaponLeft, keyboardState.IsPressed(Key.Q));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.SwitchWeaponRight, keyboardState.IsPressed(Key.E));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.SwitchWeaponLeft, keyboardState.IsPressed(Key.Q));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.SwitchWeaponRight, keyboardState.IsPressed(Key.E));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.PrimaryFire, keyboardState.IsPressed(Key.Space));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.SecondaryFire, keyboardState.IsPressed(Key.RightControl));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.PrimaryFire, keyboardState.IsPressed(Key.Space));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.SecondaryFire, keyboardState.IsPressed(Key.RightControl));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Left, keyboardState.IsPressed(Key.Left));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Right, keyboardState.IsPressed(Key.Right));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Up, keyboardState.IsPressed(Key.Up));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Down, keyboardState.IsPressed(Key.Down));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Left, keyboardState.IsPressed(Key.Left));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Right, keyboardState.IsPressed(Key.Right));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Up, keyboardState.IsPressed(Key.Up));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Down, keyboardState.IsPressed(Key.Down));
 
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Enter, keyboardState.IsPressed(Key.Return));
-                _engine.Input.KeyStateChangedHard(SiPlayerKey.Escape, keyboardState.IsPressed(Key.Escape));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Enter, keyboardState.IsPressed(Key.Return));
+                _engine.Input.KeyStateChangedHard(AePlayerKey.Escape, keyboardState.IsPressed(Key.Escape));
             }
 
             //I believe that this information may be taxing to gather.
@@ -302,7 +302,7 @@ namespace Ae.Engine.Manager
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public float GetAnalogValue(SiPlayerKey key)
+        public float GetAnalogValue(AePlayerKey key)
         {
             if (_playerKeyStates.ContainsKey(key))
             {
@@ -317,7 +317,7 @@ namespace Ae.Engine.Manager
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public float GetAnalogAxisValue(SiPlayerKey negativeAxisKey, SiPlayerKey positiveAxisKey)
+        public float GetAnalogAxisValue(AePlayerKey negativeAxisKey, AePlayerKey positiveAxisKey)
         {
             _playerKeyStates.TryGetValue(positiveAxisKey, out var value1);
             if (value1 != 0)
@@ -334,7 +334,7 @@ namespace Ae.Engine.Manager
         /// <param name="key"></param>
         /// <returns></returns>
 
-        public bool IsKeyPressed(SiPlayerKey key)
+        public bool IsKeyPressed(AePlayerKey key)
         {
             if (_playerKeyStates.ContainsKey(key))
             {
@@ -349,7 +349,7 @@ namespace Ae.Engine.Manager
         /// </summary>
         /// <param name="key"></param>
         /// <param name="state"></param>
-        public void KeyStateChangedAmount(SiPlayerKey key, float amount)
+        public void KeyStateChangedAmount(AePlayerKey key, float amount)
         {
             if (_playerKeyStates.ContainsKey(key))
             {
@@ -366,7 +366,7 @@ namespace Ae.Engine.Manager
         /// </summary>
         /// <param name="key"></param>
         /// <param name="state"></param>
-        public void KeyStateChangedHard(SiPlayerKey key, bool state)
+        public void KeyStateChangedHard(AePlayerKey key, bool state)
         {
             if (_playerKeyStates.ContainsKey(key))
             {
@@ -397,7 +397,7 @@ namespace Ae.Engine.Manager
                     asteroid.Speed = AeRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.RotationSpeed = AeRandom.RandomSign(AeRandom.Between(1f, 360f).ToRadians());
                     asteroid.Throttle = 1;
-                    asteroid.VectorType = ParticleVectorType.Default;
+                    asteroid.VectorType = AeParticleVectorType.Default;
 
                     asteroid.RecalculateMovementVectorFromAngle(AeRandom.Variance(-45, 0.10f).ToRadians());
 

@@ -4,7 +4,7 @@ namespace Ae.Engine.Sprite.Base
 {
     public partial class AeSprite
     {
-        public delegate void HitEvent(AeSprite sender, SiDamageType damageType, int damageAmount);
+        public delegate void HitEvent(AeSprite sender, AeDamageType damageType, int damageAmount);
         public event HitEvent? OnHit;
 
         public delegate void QueuedForDeleteEvent(AeSprite sender);

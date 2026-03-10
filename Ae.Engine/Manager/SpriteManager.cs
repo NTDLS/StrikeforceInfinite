@@ -127,7 +127,7 @@ namespace Ae.Engine.Manager
 
         public AeSprite EditorAdd(string assetKey, WriteLogDelegate writeLog, Action<AeSprite>? initializationProc = null)
         {
-            if (_engine.ExecutionMode != AeConstants.SiEngineExecutionMode.Edit)
+            if (_engine.ExecutionMode != AeConstants.AeEngineExecutionMode.Edit)
             {
                 throw new Exception("EditorAdd can only be used in Editor mode.");
             }
@@ -390,7 +390,7 @@ namespace Ae.Engine.Manager
 
         public void RenderPostScaling(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
-            foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == SiRenderScaleOrder.PostScale).OrderBy(o => o.Z))
+            foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == AeRenderScaleOrder.PostScale).OrderBy(o => o.Z))
             {
                 sprite.Render(renderTarget, epoch);
             }
@@ -461,7 +461,7 @@ namespace Ae.Engine.Manager
         /// <returns></returns>
         public void RenderPreScaling(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
-            foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == SiRenderScaleOrder.PreScale).OrderBy(o => o.Z))
+            foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == AeRenderScaleOrder.PreScale).OrderBy(o => o.Z))
             {
                 if (sprite.IsWithinCurrentScaledScreenBounds)
                 {
@@ -496,10 +496,10 @@ namespace Ae.Engine.Manager
                 var fragment = _engine.Sprites.GenericBitmaps.Add(fragmentImage, (o) =>
                 {
                     o.Location = sprite.Location.Clone();
-                    o.CleanupMode = ParticleCleanupMode.DistanceOffScreen;
+                    o.CleanupMode = AeParticleCleanupMode.DistanceOffScreen;
                     o.FadeToBlackReductionAmount = AeRandom.Between(0.001f, 0.01f); //TODO: Can we implement this?
                     o.RotationSpeed = AeRandom.RandomSign(AeRandom.Between(45f, 180f).ToRadians());
-                    o.VectorType = ParticleVectorType.Default;
+                    o.VectorType = AeParticleVectorType.Default;
 
                     o.Orientation.Degrees = AeRandom.Between(0.0f, 359.0f);
                     o.Speed = AeRandom.Between(100, 350f);

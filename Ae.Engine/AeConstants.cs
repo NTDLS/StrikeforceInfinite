@@ -93,7 +93,7 @@ namespace Ae.Engine
             MarkDown
         }
 
-        public enum PropertyEditorGroup
+        public enum AePropertyEditorGroup
         {
             Base,
             Attachment,
@@ -108,7 +108,7 @@ namespace Ae.Engine
             Audio
         }
 
-        public enum PropertyEditorType
+        public enum AePropertyEditorType
         {
             Readonly,
             String,
@@ -141,7 +141,7 @@ namespace Ae.Engine
             SingleSpritePicker
         }
 
-        public static class Mass
+        public static class AeMass
         {
             public const float Minuscule = 0.1f;
             public const float Tiny = 1f;
@@ -151,14 +151,14 @@ namespace Ae.Engine
             public const float Huge = 10000f;
         }
 
-        public enum SimpleDirection
+        public enum AeRotationDirection
         {
             None,
             Clockwise,
             CounterClockwise
         }
 
-        public enum SiLogSeverity
+        public enum AeLogSeverity
         {
             Trace = 0, //Super-verbose, debug-like information.
             Verbose = 1, //General status messages.
@@ -169,7 +169,7 @@ namespace Ae.Engine
         /// <summary>
         /// Determines the behavior of a attachment sprite's position.
         /// </summary>
-        public enum AttachmentPositionType
+        public enum AeAttachmentPositionType
         {
             /// <summary>
             /// The attached sprite's position will automatically stay at a fixed position on the owner sprite, even when the owner moves and rotates.
@@ -183,7 +183,7 @@ namespace Ae.Engine
             Independent
         }
 
-        public enum ExplosionType
+        public enum AeExplosionType
         {
             MediumFire,
             LargeFire,
@@ -195,7 +195,7 @@ namespace Ae.Engine
         /// <summary>
         /// Determines the behavior of a attachment sprite's orientation.
         /// </summary>
-        public enum AttachmentOrientationType
+        public enum AeAttachmentOrientationType
         {
             /// <summary>
             /// The attached sprite should always face the direction of the owner sprite. Managed in ApplyMotion().
@@ -208,7 +208,7 @@ namespace Ae.Engine
             Independent
         }
 
-        public enum SiEngineExecutionMode
+        public enum AeEngineExecutionMode
         {
             None,
             Play,
@@ -223,21 +223,21 @@ namespace Ae.Engine
             SharedEngineContent
         }
 
-        public enum SiWeaponsLockType
+        public enum AeWeaponsLockType
         {
             None,
             Hard,
             Soft
         }
 
-        public enum ParticleCleanupMode
+        public enum AeParticleCleanupMode
         {
             None,
             FadeToBlack,
             DistanceOffScreen
         }
 
-        public enum ParticleShape
+        public enum AeParticleShape
         {
             FilledEllipse,
             HollowEllipse,
@@ -246,13 +246,13 @@ namespace Ae.Engine
             Triangle
         }
 
-        public enum ParticleColorType
+        public enum AeParticleColorType
         {
             Solid,
             Gradient
         }
 
-        public enum ParticleVectorType
+        public enum AeParticleVectorType
         {
             /// <summary>
             /// The sprite will travel in the direction determined by it's MovementVector.
@@ -264,7 +264,7 @@ namespace Ae.Engine
             FollowOrientation
         }
 
-        public enum SiRenderScaleOrder
+        public enum AeRenderScaleOrder
         {
             /// <summary>
             /// Render this sprite before scaling the screen based on speed (the sprite will be scaled).
@@ -276,21 +276,21 @@ namespace Ae.Engine
             PostScale
         }
 
-        public enum SiLevelState
+        public enum AeLevelState
         {
             NotYetStarted,
             Started,
             Ended
         }
 
-        public enum SiSituationState
+        public enum AeSituationState
         {
             NotYetStarted,
             Started,
             Ended
         }
 
-        public enum SiCardinalDirection
+        public enum AeCardinalDirection
         {
             None,
             North,
@@ -299,7 +299,7 @@ namespace Ae.Engine
             West
         }
 
-        public enum SiMenuItemType
+        public enum AeMenuItemType
         {
             Undefined,
             Title,
@@ -308,7 +308,7 @@ namespace Ae.Engine
             SelectableTextInput
         }
 
-        public enum SiAnimationPlayMode
+        public enum AeAnimationPlayMode
         {
             /// <summary>
             /// The animation will be played once and can be replayed by calling Play().
@@ -324,21 +324,21 @@ namespace Ae.Engine
             Infinite
         };
 
-        public enum SiDamageType
+        public enum AeDamageType
         {
             Unspecified,
             Shield,
             Hull
         }
 
-        public enum SiFiredFromType
+        public enum AeFiredFromType
         {
             Unspecified,
             Player,
             Enemy
         }
 
-        public enum SiPlayerKey
+        public enum AePlayerKey
         {
             SwitchWeaponLeft,
             SwitchWeaponRight,

@@ -19,7 +19,7 @@ namespace Ae.Engine.Level
         public string Description { get; set; }
         public int CurrentWave { get; set; } = 0;
         public int TotalWaves { get; set; } = 1;
-        public SiLevelState State { get; protected set; } = SiLevelState.NotYetStarted;
+        public AeLevelState State { get; protected set; } = AeLevelState.NotYetStarted;
 
         public AeLevel(AeEngine engine, string name, string description)
         {
@@ -31,12 +31,12 @@ namespace Ae.Engine.Level
         public virtual void End()
         {
             Events.ForEach(e => e.QueueForDeletion());
-            State = SiLevelState.Ended;
+            State = AeLevelState.Ended;
         }
 
         public virtual void Begin()
         {
-            State = SiLevelState.Started;
+            State = AeLevelState.Started;
         }
 
         protected AeDefermentEvent AddRecuringFireEvent(int milliseconds, SiDefermentExecuteCallback executeCallback)

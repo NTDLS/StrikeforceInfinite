@@ -17,7 +17,7 @@ namespace Ae.Engine.Sprite.Munition
     public class AeSpriteMunition
         : AeSprite
     {
-        public SiFiredFromType FiredFromType { get; private set; }
+        public AeFiredFromType FiredFromType { get; private set; }
         public AeSpriteWeapon Weapon { get; private set; }
         public DateTime CreatedDate { get; private set; } = DateTime.UtcNow;
         public float MillisecondsToLive { get; set; } = 4000;
@@ -60,11 +60,11 @@ namespace Ae.Engine.Sprite.Munition
 
             if (firedFrom is AeSpriteEnemy)
             {
-                FiredFromType = SiFiredFromType.Enemy;
+                FiredFromType = AeFiredFromType.Enemy;
             }
             else if (firedFrom is AeSpritePlayer)
             {
-                FiredFromType = SiFiredFromType.Player;
+                FiredFromType = AeFiredFromType.Player;
             }
             else
             {

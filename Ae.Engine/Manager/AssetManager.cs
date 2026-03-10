@@ -214,7 +214,7 @@ namespace Ae.Engine.Manager
                     {
                         try
                         {
-                            if(!AeRuntimeCompiler.CompileToAssembly(assetContainer.Metadata.AssetKey, assetCodeForCompilation, true, writeLog))
+                            if (!AeRuntimeCompiler.CompileToAssembly(assetContainer.Metadata.AssetKey, assetCodeForCompilation, true, writeLog))
                                 throw new Exception($"Failed to compile asset code for asset with key: {model.Key}. No assembly was returned from the compiler.");
 
                             //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.

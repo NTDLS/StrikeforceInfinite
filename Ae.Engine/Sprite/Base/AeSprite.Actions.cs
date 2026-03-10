@@ -57,7 +57,7 @@ namespace Ae.Engine.Sprite.Base
                 damage = damage > ShieldHealth ? ShieldHealth : damage; //No need to go negative with the damage.
                 ShieldHealth -= damage;
 
-                OnHit?.Invoke(this, SiDamageType.Shield, damage);
+                OnHit?.Invoke(this, AeDamageType.Shield, damage);
             }
             else
             {
@@ -65,7 +65,7 @@ namespace Ae.Engine.Sprite.Base
                 damage = damage > HullHealth ? HullHealth : damage; //No need to go negative with the damage.
                 HullHealth -= damage;
 
-                OnHit?.Invoke(this, SiDamageType.Hull, damage);
+                OnHit?.Invoke(this, AeDamageType.Hull, damage);
             }
         }
 

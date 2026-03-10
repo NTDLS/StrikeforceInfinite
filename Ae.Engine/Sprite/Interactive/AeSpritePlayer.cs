@@ -206,16 +206,16 @@ namespace Ae.Engine.Sprite.Interactive
 
         public override bool TryMunitionHit(AeSpriteMunition munition, AeVector hitTestPosition)
         {
-            if (munition.FiredFromType == SiFiredFromType.Enemy)
+            if (munition.FiredFromType == AeFiredFromType.Enemy)
             {
                 return IntersectsAabb(hitTestPosition);
             }
             return false;
         }
 
-        private void SpritePlayer_OnHit(AeSprite sender, SiDamageType damageType, int damageAmount)
+        private void SpritePlayer_OnHit(AeSprite sender, AeDamageType damageType, int damageAmount)
         {
-            if (damageType == SiDamageType.Shield)
+            if (damageType == AeDamageType.Shield)
             {
                 if (ShieldHealth == 0)
                 {

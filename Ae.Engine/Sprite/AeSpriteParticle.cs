@@ -27,10 +27,10 @@ namespace Ae.Engine.Sprite
         /// This should be expressed as a number between 0-1 with 0 being no reduction per frame and 1 being 100% reduction per frame.
         /// </summary>
         public float FadeToBlackReductionAmount { get; set; } = 0.01f;
-        public ParticleColorType Pattern { get; set; } = ParticleColorType.Solid;
-        public ParticleVectorType VectorType { get; set; } = ParticleVectorType.Default;
-        public ParticleShape Shape { get; set; } = ParticleShape.FilledEllipse;
-        public ParticleCleanupMode CleanupMode { get; set; } = ParticleCleanupMode.None;
+        public AeParticleColorType Pattern { get; set; } = AeParticleColorType.Solid;
+        public AeParticleVectorType VectorType { get; set; } = AeParticleVectorType.Default;
+        public AeParticleShape Shape { get; set; } = AeParticleShape.FilledEllipse;
+        public AeParticleCleanupMode CleanupMode { get; set; } = AeParticleCleanupMode.None;
 
         /// <summary>
         /// The color of the particle when ColorType == Color;
@@ -65,16 +65,16 @@ namespace Ae.Engine.Sprite
         {
             Orientation.Degrees += RotationSpeed * epoch;
 
-            if (VectorType == ParticleVectorType.FollowOrientation)
+            if (VectorType == AeParticleVectorType.FollowOrientation)
             {
                 RecalculateMovementVectorFromAngle(Orientation.RadiansSigned);
             }
 
             base.ApplyMotion(epoch, cameraDisplacement);
 
-            if (CleanupMode == ParticleCleanupMode.FadeToBlack)
+            if (CleanupMode == AeParticleCleanupMode.FadeToBlack)
             {
-                if (Pattern == ParticleColorType.Solid)
+                if (Pattern == AeParticleColorType.Solid)
                 {
                     Color *= 1 - (float)FadeToBlackReductionAmount; // Gradually darken the particle color.
 
@@ -84,7 +84,7 @@ namespace Ae.Engine.Sprite
                         QueueForDelete();
                     }
                 }
-                else if (Pattern == ParticleColorType.Gradient)
+                else if (Pattern == AeParticleColorType.Gradient)
                 {
                     GradientStartColor *= 1 - (float)FadeToBlackReductionAmount; // Gradually darken the particle color.
                     GradientEndColor *= 1 - (float)FadeToBlackReductionAmount; // Gradually darken the particle color.
@@ -97,7 +97,7 @@ namespace Ae.Engine.Sprite
                     }
                 }
             }
-            else if (CleanupMode == ParticleCleanupMode.DistanceOffScreen)
+            else if (CleanupMode == AeParticleCleanupMode.DistanceOffScreen)
             {
                 if (Engine.Display.TotalCanvasBounds.Balloon(MaxDistance).IntersectsWith(RenderBounds) == false)
                 {
@@ -112,33 +112,33 @@ namespace Ae.Engine.Sprite
             {
                 switch (Shape)
                 {
-                    case ParticleShape.FilledEllipse:
-                        if (Pattern == ParticleColorType.Solid)
+                    case AeParticleShape.FilledEllipse:
+                        if (Pattern == AeParticleColorType.Solid)
                         {
                             Engine.Rendering.DrawSolidEllipse(renderTarget,
                                 RenderLocation.X, RenderLocation.Y, Size.Width, Size.Height, Color, (float)Orientation.Degrees);
                         }
-                        else if (Pattern == ParticleColorType.Gradient)
+                        else if (Pattern == AeParticleColorType.Gradient)
                         {
                             Engine.Rendering.DrawGradientEllipse(renderTarget, RenderLocation.X, RenderLocation.Y,
                                 Size.Width, Size.Height, GradientStartColor, GradientEndColor, (float)Orientation.Degrees);
                         }
                         break;
-                    case ParticleShape.HollowEllipse:
+                    case AeParticleShape.HollowEllipse:
                         Engine.Rendering.DrawEllipse(renderTarget,
                             RenderLocation.X, RenderLocation.Y, Size.Width, Size.Height, Color, 1, (float)Orientation.Degrees);
                         break;
 
-                    case ParticleShape.FilledRectangle:
+                    case AeParticleShape.FilledRectangle:
                         {
                             var rect = new RawRectangleF(0, 0, Size.Width, Size.Height);
 
-                            if (Pattern == ParticleColorType.Solid)
+                            if (Pattern == AeParticleColorType.Solid)
                             {
                                 Engine.Rendering.DrawSolidRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
                                     RenderLocation.Y - Size.Height / 2, rect, Color, 0, (float)Orientation.Degrees);
                             }
-                            else if (Pattern == ParticleColorType.Gradient)
+                            else if (Pattern == AeParticleColorType.Gradient)
                             {
                                 Engine.Rendering.DrawGradientRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
                                     RenderLocation.Y - Size.Height / 2, rect, GradientStartColor, GradientEndColor, 0, (float)Orientation.Degrees);
@@ -146,7 +146,7 @@ namespace Ae.Engine.Sprite
                         }
                         break;
 
-                    case ParticleShape.HollowRectangle:
+                    case AeParticleShape.HollowRectangle:
                         {
                             var rect = new RawRectangleF(0, 0, Size.Width, Size.Height);
                             Engine.Rendering.DrawRectangle(renderTarget, RenderLocation.X - Size.Width / 2,
@@ -155,7 +155,7 @@ namespace Ae.Engine.Sprite
                         }
                         break;
 
-                    case ParticleShape.Triangle:
+                    case AeParticleShape.Triangle:
                         Engine.Rendering.DrawTriangle(renderTarget,
                             RenderLocation.X, RenderLocation.Y, Size.Width, Size.Height, Color, 1, (float)Orientation.Degrees);
                         break;

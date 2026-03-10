@@ -40,7 +40,7 @@ namespace Ae.Engine
 
         internal MpCommsManager? CommsManager { get; set; }
 
-        public SiEngineExecutionMode ExecutionMode { get; private set; }
+        public AeEngineExecutionMode ExecutionMode { get; private set; }
         public bool IsRunning { get; private set; } = false;
         public bool IsInitializing { get; private set; } = false;
 
@@ -136,11 +136,11 @@ namespace Ae.Engine
         /// the rendering and asset management, and then each game instance runs in server host mode and shares the
         /// rendering and asset management of the shared engine.
         /// </summary>
-        public AeEngine(SiEngineExecutionMode executionMode = SiEngineExecutionMode.SharedEngineContent)
+        public AeEngine(AeEngineExecutionMode executionMode = AeEngineExecutionMode.SharedEngineContent)
         {
             ExecutionMode = executionMode;
 
-            if (ExecutionMode != SiEngineExecutionMode.SharedEngineContent)
+            if (ExecutionMode != AeEngineExecutionMode.SharedEngineContent)
             {
                 throw new Exception("This constructor is only meant for shared engine content mode.");
             }
@@ -174,12 +174,12 @@ namespace Ae.Engine
         /// Initializes a new instance of the game engine for server host mode, which shares rendering and asset
         /// management with another instance of the engine (the "shared engine") that is running in shared engine content mode.
         /// </summary>
-        public AeEngine(ManagedLobby lobby, AeEngine sharedEngine, SiEngineExecutionMode executionMode)
+        public AeEngine(ManagedLobby lobby, AeEngine sharedEngine, AeEngineExecutionMode executionMode)
         {
             MultiplayLobby = lobby;
             ExecutionMode = executionMode;
 
-            if (ExecutionMode != SiEngineExecutionMode.ServerHost)
+            if (ExecutionMode != AeEngineExecutionMode.ServerHost)
             {
                 throw new Exception("This constructor is only meant for server host mode.");
             }
@@ -213,12 +213,12 @@ namespace Ae.Engine
         /// Initializes a new instance of the game engine.
         /// </summary>
         /// <param name="drawingSurface">The window that the game will be rendered to.</param>
-        public AeEngine(Control drawingSurface, SiEngineExecutionMode executionMode, Size? sizeOverride = null)
+        public AeEngine(Control drawingSurface, AeEngineExecutionMode executionMode, Size? sizeOverride = null)
         {
             ExecutionMode = executionMode;
 
-            if (ExecutionMode != SiEngineExecutionMode.Play
-                && ExecutionMode != SiEngineExecutionMode.Edit)
+            if (ExecutionMode != AeEngineExecutionMode.Play
+                && ExecutionMode != AeEngineExecutionMode.Edit)
             {
                 throw new Exception("This constructor is only meant for play and edit modes.");
             }
@@ -303,7 +303,7 @@ namespace Ae.Engine
 
                         o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Red);
 
-                        if (ExecutionMode == SiEngineExecutionMode.Play)
+                        if (ExecutionMode == AeEngineExecutionMode.Play)
                         {
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Black);
                         }
@@ -391,24 +391,24 @@ namespace Ae.Engine
             IsRunning = true;
             //Sprites.ResetPlayer();
 
-            if (ExecutionMode == SiEngineExecutionMode.Play
-                || ExecutionMode == SiEngineExecutionMode.Edit
-                || ExecutionMode == SiEngineExecutionMode.ServerHost)
+            if (ExecutionMode == AeEngineExecutionMode.Play
+                || ExecutionMode == AeEngineExecutionMode.Edit
+                || ExecutionMode == AeEngineExecutionMode.ServerHost)
             {
                 _worldClock?.Start();
             }
 
-            if (ExecutionMode == SiEngineExecutionMode.Play)
+            if (ExecutionMode == AeEngineExecutionMode.Play)
             {
                 IsInitializing = true;
 
                 HydrateCache(progressCallback, writeLog);
             }
-            else if (ExecutionMode == SiEngineExecutionMode.SharedEngineContent)
+            else if (ExecutionMode == AeEngineExecutionMode.SharedEngineContent)
             {
                 HydrateCache(progressCallback, writeLog);
             }
-            else if (ExecutionMode == SiEngineExecutionMode.Edit)
+            else if (ExecutionMode == AeEngineExecutionMode.Edit)
             {
                 HydrateCache(progressCallback, writeLog);
             }
@@ -417,7 +417,7 @@ namespace Ae.Engine
 
             IsInitializing = false;
 
-            if (ExecutionMode == SiEngineExecutionMode.Play)
+            if (ExecutionMode == AeEngineExecutionMode.Play)
             {
                 //Add initial stars.
                 for (int i = 0; i < Settings.InitialFrameStarCount; i++)

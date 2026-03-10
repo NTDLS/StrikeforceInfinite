@@ -13,7 +13,7 @@ namespace Ae.MpServer
         internal SessionManager Sessions { get; private set; }
         internal LobbyManager Lobbies { get; private set; }
         internal EngineManager Engines { get; private set; }
-        internal AeEngine SharedEngine { get; private set; } = new(SiEngineExecutionMode.SharedEngineContent);
+        internal AeEngine SharedEngine { get; private set; } = new(AeEngineExecutionMode.SharedEngineContent);
 
         private readonly int _listenPort = 42719;
 

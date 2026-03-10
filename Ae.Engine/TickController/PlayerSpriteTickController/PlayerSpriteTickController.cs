@@ -28,7 +28,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             engine.OnInitializationComplete += (AeEngine engine) =>
             {
                 //This is where the player is created.
-                if (engine.ExecutionMode == SiEngineExecutionMode.Play)
+                if (engine.ExecutionMode == AeEngineExecutionMode.Play)
                 {
                     Sprite = engine.Sprites.Add<AeSpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
                     {
@@ -71,7 +71,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
         /// <returns></returns>
         public override AeVector ExecuteWorldClockTick(float epoch)
         {
-            if (_engine.ExecutionMode == SiEngineExecutionMode.Edit)
+            if (_engine.ExecutionMode == AeEngineExecutionMode.Edit)
             {
                 //We dont want the player to move at all in edit mode, so just return a zero vector.
                 //Otherwise this can also cause micro-changes to the camera position.
@@ -85,7 +85,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             {
                 #region Weapons Selection and Fire.
 
-                if (Engine.Input.IsKeyPressed(SiPlayerKey.SwitchWeaponLeft))
+                if (Engine.Input.IsKeyPressed(AePlayerKey.SwitchWeaponLeft))
                 {
                     if (_inputDelay.ElapsedMilliseconds > 200)
                     {
@@ -93,7 +93,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
                         _inputDelay.Restart();
                     }
                 }
-                if (Engine.Input.IsKeyPressed(SiPlayerKey.SwitchWeaponRight))
+                if (Engine.Input.IsKeyPressed(AePlayerKey.SwitchWeaponRight))
                 {
                     if (_inputDelay.ElapsedMilliseconds > 200)
                     {
@@ -104,7 +104,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
 
                 Sprite.SelectedSecondaryWeapon?.ApplyIntelligence(epoch);
 
-                if (Engine.Input.IsKeyPressed(SiPlayerKey.PrimaryFire))
+                if (Engine.Input.IsKeyPressed(AePlayerKey.PrimaryFire))
                 {
                     if (Sprite.PrimaryWeapon != null && Sprite.PrimaryWeapon.Fire())
                     {
@@ -119,7 +119,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
                     }
                 }
 
-                if (Engine.Input.IsKeyPressed(SiPlayerKey.SecondaryFire))
+                if (Engine.Input.IsKeyPressed(AePlayerKey.SecondaryFire))
                 {
                     if (Sprite.SelectedSecondaryWeapon != null && Sprite.SelectedSecondaryWeapon.Fire())
                     {
@@ -149,7 +149,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
 
                 #region Forward and Reverse.
 
-                float targetForwardAmount = (Engine.Input.GetAnalogAxisValue(SiPlayerKey.Reverse, SiPlayerKey.Forward) / throttleCap).Clamp(-1, 1);
+                float targetForwardAmount = (Engine.Input.GetAnalogAxisValue(AePlayerKey.Reverse, AePlayerKey.Forward) / throttleCap).Clamp(-1, 1);
 
                 if (targetForwardAmount > throttleFloor)
                 {
@@ -186,7 +186,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
 
                 #region Forward Speed-Boost.
 
-                if (Engine.Input.IsKeyPressed(SiPlayerKey.SpeedBoost)
+                if (Engine.Input.IsKeyPressed(AePlayerKey.SpeedBoost)
                     && _forwardVelocity >= throttleFloor
                     && Sprite.RenewableResources.Observe(Sprite.BoostResourceName) > 0)
                 {
@@ -209,7 +209,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
 
                 #region Laterial Strafing.
 
-                float targetLateralAmount = (Engine.Input.GetAnalogAxisValue(SiPlayerKey.StrafeLeft, SiPlayerKey.StrafeRight) / throttleCap).Clamp(-1, 1);
+                float targetLateralAmount = (Engine.Input.GetAnalogAxisValue(AePlayerKey.StrafeLeft, AePlayerKey.StrafeRight) / throttleCap).Clamp(-1, 1);
 
                 if (targetLateralAmount >= throttleFloor) //Strafe right.
                 {
@@ -250,7 +250,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
 
                 #region Rotation.
 
-                float targetRotationDegrees = (Engine.Input.GetAnalogAxisValue(SiPlayerKey.RotateCounterClockwise, SiPlayerKey.RotateClockwise) / throttleCap).Clamp(-1, 1);
+                float targetRotationDegrees = (Engine.Input.GetAnalogAxisValue(AePlayerKey.RotateCounterClockwise, AePlayerKey.RotateClockwise) / throttleCap).Clamp(-1, 1);
 
                 Sprite.RotateOrientation(Engine.Settings.MaxPlayerRotationSpeedDegrees * targetRotationDegrees, epoch);
 
@@ -275,7 +275,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
                 {
                     Sprite.BoosterAnimation.IsVisible =
                         (targetForwardAmount >= throttleFloor)
-                        && Engine.Input.IsKeyPressed(SiPlayerKey.SpeedBoost)
+                        && Engine.Input.IsKeyPressed(AePlayerKey.SpeedBoost)
                         && _boostForwardVelocity > 0
                         && Sprite.RenewableResources.IsCoolingDown(Sprite.BoostResourceName) == false;
                 }

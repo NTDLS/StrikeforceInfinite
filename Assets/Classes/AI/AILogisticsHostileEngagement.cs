@@ -23,7 +23,7 @@ private class GotoRadiusOfObservedObject
     : AeAIStateHandler
 {
     private readonly AeAIStateMachine _stateMachine;
-    private SimpleDirection _rotateDirection;
+    private AeRotationDirection _rotateDirection;
     private float _rotationAngle = AeRandom.Variance(5, 0.10f);
     private readonly AeVector _targetLocation;
     private readonly AeSprite _targetPlayerSprite;
@@ -35,7 +35,7 @@ private class GotoRadiusOfObservedObject
         _targetLocation = _targetPlayerSprite.Location.RandomAtDistance(10, 50);
 
         var deltaAngle = stateMachine.Owner.HeadingAngleToInSignedDegrees(_targetLocation);
-        _rotateDirection = deltaAngle >= 0 ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+        _rotateDirection = deltaAngle >= 0 ? AeRotationDirection.Clockwise : AeRotationDirection.CounterClockwise;
     }
 
     public void Tick(float epoch)
@@ -87,7 +87,7 @@ private class SteadyOnCurrentPath
 
 #endregion
 
-private void Owner_OnHit(AeSprite sender, SiDamageType damageType, int damageAmount)
+private void Owner_OnHit(AeSprite sender, AeDamageType damageType, int damageAmount)
 {
     /*
     if (sender.HullHealth <= 10)

@@ -150,13 +150,13 @@ namespace Ae.Engine
                 _engine.Development?.ProcessCommand();
 
                 //We only render if we are in play or edit mode.
-                if (_engine.ExecutionMode == SiEngineExecutionMode.Play || _engine.ExecutionMode == SiEngineExecutionMode.Edit)
+                if (_engine.ExecutionMode == AeEngineExecutionMode.Play || _engine.ExecutionMode == AeEngineExecutionMode.Edit)
                 {
                     _engine.RenderEverything(elapsedEpochMilliseconds / 1000.0f);
                 }
 
                 //When running as a server host or VSync is disabled, we need to enforce the framerate ourselves.
-                if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost || _engine.Settings.VerticalSync == false)
+                if (_engine.ExecutionMode == AeEngineExecutionMode.ServerHost || _engine.Settings.VerticalSync == false)
                 {
                     var elapsedFrameTime = _engine.Display.FrameCounter.ElapsedMicroseconds;
 
@@ -175,7 +175,7 @@ namespace Ae.Engine
 
                 if (_isPaused) Thread.Yield();
 
-                if (_engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
+                if (_engine.ExecutionMode == AeEngineExecutionMode.ServerHost)
                 {
                     _engine.MultiplayLobby?.FlushActionBuffer();
                 }
@@ -268,7 +268,7 @@ namespace Ae.Engine
 
         private void UpdateStatusText(AeDefermentEvent sender, object? refObj)
         {
-            if (_engine.Situations?.CurrentSituation?.State == SiSituationState.Started)
+            if (_engine.Situations?.CurrentSituation?.State == AeSituationState.Started)
             {
                 //situation = $"{_engine.Situations.CurrentSituation.Name} (Wave {_engine.Situations.CurrentSituation.CurrentWave} of {_engine.Situations.CurrentSituation.TotalWaves})";
                 string situation = $"{_engine.Situations.CurrentSituation.Name}";

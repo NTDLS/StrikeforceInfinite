@@ -58,7 +58,7 @@ namespace Ae.Engine.Sprite.Base
                     float size;
                     RawColor4 color;
 
-                    if (munition.FiredFromType == SiFiredFromType.Enemy)
+                    if (munition.FiredFromType == AeFiredFromType.Enemy)
                     {
                         color = Engine.Rendering.Materials.Colors.Red;
                     }

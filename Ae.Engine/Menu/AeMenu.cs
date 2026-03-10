@@ -30,7 +30,7 @@ namespace Ae.Engine.Menu
 
         public List<AeSpriteMenuItem> VisibleSelectableItems() =>
             Items.Where(o => o.IsVisible == true
-            && (o.ItemType == SiMenuItemType.SelectableItem || o.ItemType == SiMenuItemType.SelectableTextInput)).ToList();
+            && (o.ItemType == AeMenuItemType.SelectableItem || o.ItemType == AeMenuItemType.SelectableTextInput)).ToList();
 
         #region Events.
 
@@ -104,7 +104,7 @@ namespace Ae.Engine.Menu
             var item = new AeSpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuTitle, _engine.Rendering.Materials.Brushes.Red, location)
             {
                 Text = text,
-                ItemType = SiMenuItemType.Title
+                ItemType = AeMenuItemType.Title
             };
             AddMenuItem(item);
             return item;
@@ -115,7 +115,7 @@ namespace Ae.Engine.Menu
             var item = new AeSpriteMenuItem(_engine, this, _engine.Rendering.TextFormats.MenuGeneral, _engine.Rendering.Materials.Brushes.Red, location)
             {
                 Text = text,
-                ItemType = SiMenuItemType.TextBlock
+                ItemType = AeMenuItemType.TextBlock
             };
             AddMenuItem(item);
             return item;
@@ -127,7 +127,7 @@ namespace Ae.Engine.Menu
             {
                 SpriteTag = key,
                 Text = text,
-                ItemType = SiMenuItemType.SelectableItem
+                ItemType = AeMenuItemType.SelectableItem
             };
             AddMenuItem(item);
             return item;
@@ -140,7 +140,7 @@ namespace Ae.Engine.Menu
                 SpriteTag = key,
                 Text = text,
                 CharacterLimit = characterLimit,
-                ItemType = SiMenuItemType.SelectableTextInput
+                ItemType = AeMenuItemType.SelectableTextInput
             };
             AddMenuItem(item);
             return item;
@@ -187,13 +187,13 @@ namespace Ae.Engine.Menu
                 return; //We have to keep the menus from going crazy.
             }
 
-            if (_engine.Input.IsKeyPressed(SiPlayerKey.Enter))
+            if (_engine.Input.IsKeyPressed(AePlayerKey.Enter))
             {
                 _engine.Audio.Click?.Play();
 
                 _lastInputHandled = DateTime.UtcNow;
 
-                var selectedItem = (from o in Items where o.ItemType == SiMenuItemType.SelectableItem && o.Selected == true select o).FirstOrDefault();
+                var selectedItem = (from o in Items where o.ItemType == AeMenuItemType.SelectableItem && o.Selected == true select o).FirstOrDefault();
                 if (selectedItem != null)
                 {
                     //Menu executions may block execution if run in the same thread. For example, the menu execution may be looking to remove all
@@ -209,7 +209,7 @@ namespace Ae.Engine.Menu
                     });
                 }
             }
-            else if (_engine.Input.IsKeyPressed(SiPlayerKey.Escape))
+            else if (_engine.Input.IsKeyPressed(AePlayerKey.Escape))
             {
                 _engine.Audio.Click?.Play();
 
@@ -228,8 +228,8 @@ namespace Ae.Engine.Menu
                 });
             }
 
-            if (_engine.Input.IsKeyPressed(SiPlayerKey.Right)
-                || _engine.Input.IsKeyPressed(SiPlayerKey.Down)
+            if (_engine.Input.IsKeyPressed(AePlayerKey.Right)
+                || _engine.Input.IsKeyPressed(AePlayerKey.Down)
                 //|| _engine.Input.IsKeyPressed(SiPlayerKey.Reverse)
                 //|| _engine.Input.IsKeyPressed(SiPlayerKey.RotateClockwise)
                 )
@@ -239,7 +239,7 @@ namespace Ae.Engine.Menu
                 int selectIndex = 0;
 
                 var items = (from o in Items
-                             where o.ItemType == SiMenuItemType.SelectableItem || o.ItemType == SiMenuItemType.SelectableTextInput
+                             where o.ItemType == AeMenuItemType.SelectableItem || o.ItemType == AeMenuItemType.SelectableTextInput
                              select o).ToList();
                 if (items != null && items.Count > 0)
                 {
@@ -248,7 +248,7 @@ namespace Ae.Engine.Menu
                     for (int i = 0; i < items.Count; i++)
                     {
                         var item = items[i];
-                        if (item.ItemType == SiMenuItemType.SelectableItem || item.ItemType == SiMenuItemType.SelectableTextInput)
+                        if (item.ItemType == AeMenuItemType.SelectableItem || item.ItemType == AeMenuItemType.SelectableTextInput)
                         {
                             if (item.Selected)
                             {
@@ -269,7 +269,7 @@ namespace Ae.Engine.Menu
                     if (selectIndex != previouslySelectedIndex)
                     {
                         var selectedItem = (from o in Items
-                                            where (o.ItemType == SiMenuItemType.SelectableItem || o.ItemType == SiMenuItemType.SelectableTextInput) && o.Selected == true
+                                            where (o.ItemType == AeMenuItemType.SelectableItem || o.ItemType == AeMenuItemType.SelectableTextInput) && o.Selected == true
                                             select o).FirstOrDefault();
                         if (selectedItem != null)
                         {
@@ -285,8 +285,8 @@ namespace Ae.Engine.Menu
                 }
             }
 
-            if (_engine.Input.IsKeyPressed(SiPlayerKey.Left)
-                || _engine.Input.IsKeyPressed(SiPlayerKey.Up)
+            if (_engine.Input.IsKeyPressed(AePlayerKey.Left)
+                || _engine.Input.IsKeyPressed(AePlayerKey.Up)
                 //|| _engine.Input.IsKeyPressed(SiPlayerKey.Forward)
                 //|| _engine.Input.IsKeyPressed(SiPlayerKey.RotateCounterClockwise)
                 )
@@ -296,7 +296,7 @@ namespace Ae.Engine.Menu
                 int selectIndex = 0;
 
                 var items = (from o in Items
-                             where o.ItemType == SiMenuItemType.SelectableItem || o.ItemType == SiMenuItemType.SelectableTextInput
+                             where o.ItemType == AeMenuItemType.SelectableItem || o.ItemType == AeMenuItemType.SelectableTextInput
                              select o).ToList();
                 if (items != null && items.Count > 0)
                 {
@@ -305,7 +305,7 @@ namespace Ae.Engine.Menu
                     for (int i = 0; i < items.Count; i++)
                     {
                         var item = items[i];
-                        if (item.ItemType == SiMenuItemType.SelectableItem || item.ItemType == SiMenuItemType.SelectableTextInput)
+                        if (item.ItemType == AeMenuItemType.SelectableItem || item.ItemType == AeMenuItemType.SelectableTextInput)
                         {
                             if (item.Selected)
                             {
@@ -326,7 +326,7 @@ namespace Ae.Engine.Menu
                     if (selectIndex != previouslySelectedIndex)
                     {
                         var selectedItem = (from o in Items
-                                            where (o.ItemType == SiMenuItemType.SelectableItem || o.ItemType == SiMenuItemType.SelectableTextInput) && o.Selected == true
+                                            where (o.ItemType == AeMenuItemType.SelectableItem || o.ItemType == AeMenuItemType.SelectableTextInput) && o.Selected == true
                                             select o).FirstOrDefault();
                         if (selectedItem != null)
                         {

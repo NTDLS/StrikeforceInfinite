@@ -10,7 +10,7 @@ private class ExitScreen(AeAIStateMachine stateMachine)
     : AeAIStateHandler
 {
     private int _lastHullHealth = stateMachine.Owner.HullHealth;
-    private SimpleDirection _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+    private AeRotationDirection _rotateDirection = AeRandom.FlipCoin() ? AeRotationDirection.Clockwise : AeRotationDirection.CounterClockwise;
     private float _rotationEpochs = 0;
     private float _rotationDegreesPerSec = 0;
 
@@ -26,7 +26,7 @@ private class ExitScreen(AeAIStateMachine stateMachine)
         {
             if (_rotationEpochs <= 0 && stateMachine.Owner.HullHealth < _lastHullHealth)
             {
-                _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+                _rotateDirection = AeRandom.FlipCoin() ? AeRotationDirection.Clockwise : AeRotationDirection.CounterClockwise;
                 _rotationEpochs = AeRandom.Between(1.0f, 2.0f);
                 _rotationDegreesPerSec = AeRandom.Between(20, 50);
             }
@@ -35,7 +35,7 @@ private class ExitScreen(AeAIStateMachine stateMachine)
             if (_rotationEpochs > 0)
             {
                 _rotationEpochs -= epoch;
-                if (_rotateDirection == SimpleDirection.Clockwise)
+                if (_rotateDirection == AeRotationDirection.Clockwise)
                     stateMachine.Owner.RotateMovementVector(_rotationDegreesPerSec, epoch);
                 else
                     stateMachine.Owner.RotateMovementVector(-_rotationDegreesPerSec, epoch);
@@ -50,7 +50,7 @@ private class ExitScreen(AeAIStateMachine stateMachine)
 private class RotateToCenterScene(AeAIStateMachine stateMachine)
     : AeAIStateHandler
 {
-    private readonly SimpleDirection _rotateDirection = AeRandom.FlipCoin() ? SimpleDirection.Clockwise : SimpleDirection.CounterClockwise;
+    private readonly AeRotationDirection _rotateDirection = AeRandom.FlipCoin() ? AeRotationDirection.Clockwise : AeRotationDirection.CounterClockwise;
     private readonly float _rotationDegreesPerSec = AeRandom.Between(20, 50);
 
     public void Tick(float epoch)
@@ -63,7 +63,7 @@ private class RotateToCenterScene(AeAIStateMachine stateMachine)
         {
             stateMachine.Owner.Throttle = AeMath.Damp(stateMachine.Owner.Throttle, 1.0f, 1.0f, epoch);
 
-            if (_rotateDirection == SimpleDirection.Clockwise)
+            if (_rotateDirection == AeRotationDirection.Clockwise)
                 stateMachine.Owner.RotateMovementVector(_rotationDegreesPerSec, epoch);
             else
                 stateMachine.Owner.RotateMovementVector(-_rotationDegreesPerSec, epoch);

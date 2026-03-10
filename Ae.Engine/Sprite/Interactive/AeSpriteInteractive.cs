@@ -279,19 +279,19 @@ namespace Ae.Engine.Sprite.Interactive
             {
                 switch (Metadata.ExplosionType)
                 {
-                    case ExplosionType.MediumFire:
+                    case AeExplosionType.MediumFire:
                         Engine.Sprites.Animations.AddRandomMediumFireExplosionAt(this);
                         break;
-                    case ExplosionType.LargeFire:
+                    case AeExplosionType.LargeFire:
                         Engine.Sprites.Animations.AddRandomLargeFireExplosionAt(this);
                         break;
-                    case ExplosionType.SmallFire:
+                    case AeExplosionType.SmallFire:
                         Engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);
                         break;
-                    case ExplosionType.MicroFire:
+                    case AeExplosionType.MicroFire:
                         Engine.Sprites.Animations.AddRandomMicroFireExplosionAt(this);
                         break;
-                    case ExplosionType.Energy:
+                    case AeExplosionType.Energy:
                         Engine.Sprites.Animations.AddRandomEnergyExplosionAt(this);
                         break;
                 }

@@ -11,7 +11,7 @@ namespace Ae.Engine.Sprite.TextBlock
         public AeSpriteRadarPositionTextBlock(AeEngine engine, TextFormat format, SolidColorBrush color, AeVector location)
             : base(engine, format, color, location, false)
         {
-            RenderScaleOrder = SiRenderScaleOrder.PreScale;
+            RenderScaleOrder = AeRenderScaleOrder.PreScale;
             IsVisible = false;
         }
 

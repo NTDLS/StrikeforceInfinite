@@ -29,17 +29,17 @@ namespace Ae.Engine.Sprite.Base
         ///     angle (with given tolerance) then recalculates Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
-        public bool RotateMovementVectorIfNotPointingAt(AeSprite obj, float rotationDegreesPerSecond, SimpleDirection simpleDirection, float varianceDegrees, float epoch)
+        public bool RotateMovementVectorIfNotPointingAt(AeSprite obj, float rotationDegreesPerSecond, AeRotationDirection simpleDirection, float varianceDegrees, float epoch)
         {
             var deltaAngle = this.HeadingAngleToInSignedDegrees(obj);
 
             if (Math.Abs(deltaAngle) > varianceDegrees)
             {
-                if (simpleDirection == SimpleDirection.CounterClockwise)
+                if (simpleDirection == AeRotationDirection.CounterClockwise)
                 {
                     RotateMovementVector(-rotationDegreesPerSecond, epoch);
                 }
-                else if (simpleDirection == SimpleDirection.Clockwise)
+                else if (simpleDirection == AeRotationDirection.Clockwise)
                 {
                     RotateMovementVector(rotationDegreesPerSecond, epoch);
                 }
@@ -56,17 +56,17 @@ namespace Ae.Engine.Sprite.Base
         /// angle (with given tolerance) then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
-        public bool RotateMovementVectorIfNotPointingAt(AeVector toLocation, float rotationAmountDegrees, SimpleDirection simpleDirection, float varianceDegrees, float epoch)
+        public bool RotateMovementVectorIfNotPointingAt(AeVector toLocation, float rotationAmountDegrees, AeRotationDirection simpleDirection, float varianceDegrees, float epoch)
         {
             var deltaAngle = this.HeadingAngleToInSignedDegrees(toLocation);
 
             if (Math.Abs(deltaAngle) > varianceDegrees)
             {
-                if (simpleDirection == SimpleDirection.CounterClockwise)
+                if (simpleDirection == AeRotationDirection.CounterClockwise)
                 {
                     RotateMovementVector(-rotationAmountDegrees, epoch);
                 }
-                else if (simpleDirection == SimpleDirection.Clockwise)
+                else if (simpleDirection == AeRotationDirection.Clockwise)
                 {
                     RotateMovementVector(+rotationAmountDegrees, epoch);
                 }
@@ -82,17 +82,17 @@ namespace Ae.Engine.Sprite.Base
         /// (with given tolerance) then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if object is already in the specified range.</returns>
-        public bool RotateMovementVectorIfNotPointingAt(float toDegrees, float rotationAmountDegrees, SimpleDirection simpleDirection, float tolerance, float epoch)
+        public bool RotateMovementVectorIfNotPointingAt(float toDegrees, float rotationAmountDegrees, AeRotationDirection simpleDirection, float tolerance, float epoch)
         {
             toDegrees = toDegrees.DenormalizeDegrees();
 
             if (Orientation.Degrees.IsBetween(toDegrees - tolerance, toDegrees + tolerance) == false)
             {
-                if (simpleDirection == SimpleDirection.CounterClockwise)
+                if (simpleDirection == AeRotationDirection.CounterClockwise)
                 {
                     RotateMovementVector(-rotationAmountDegrees, epoch);
                 }
-                else if (simpleDirection == SimpleDirection.Clockwise)
+                else if (simpleDirection == AeRotationDirection.Clockwise)
                 {
                     RotateMovementVector(+rotationAmountDegrees, epoch);
                 }
@@ -106,17 +106,17 @@ namespace Ae.Engine.Sprite.Base
         /// Rotates the objects movement vector by the given amount if it is pointing in the given direction then recalculates the Orientation.
         /// </summary>
         /// <returns>Returns TRUE if rotation occurs, returns FALSE if the object is not pointing in the given direction.
-        public bool RotateMovementVectorIfPointingAt(AeSprite obj, float rotationAmountDegrees, SimpleDirection simpleDirection, float varianceDegrees, float epoch)
+        public bool RotateMovementVectorIfPointingAt(AeSprite obj, float rotationAmountDegrees, AeRotationDirection simpleDirection, float varianceDegrees, float epoch)
         {
             var deltaAngle = this.HeadingAngleToInSignedDegrees(obj);
 
             if (deltaAngle.IsNotBetween(0, varianceDegrees))
             {
-                if (simpleDirection == SimpleDirection.CounterClockwise)
+                if (simpleDirection == AeRotationDirection.CounterClockwise)
                 {
                     RotateMovementVector(-rotationAmountDegrees, epoch);
                 }
-                else if (simpleDirection == SimpleDirection.Clockwise)
+                else if (simpleDirection == AeRotationDirection.Clockwise)
                 {
                     RotateMovementVector(+rotationAmountDegrees, epoch);
                 }

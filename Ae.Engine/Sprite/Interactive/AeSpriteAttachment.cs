@@ -16,12 +16,12 @@ namespace Ae.Engine.Sprite.Interactive
         /// <summary>
         /// Determines the behavior of a attachment sprite's orientation.
         /// </summary>
-        public AttachmentOrientationType AttachmentOrientationType { get; set; }
+        public AeAttachmentOrientationType AttachmentOrientationType { get; set; }
 
         /// <summary>
         /// Determines the behavior of a attachment sprite's position.
         /// </summary>
-        public AttachmentPositionType AttachmentPositionType { get; set; }
+        public AeAttachmentPositionType AttachmentPositionType { get; set; }
 
         public AeSpriteAttachment(AeEngine engine, string? assetKey)
             : base(engine, assetKey)
@@ -37,7 +37,7 @@ namespace Ae.Engine.Sprite.Interactive
         {
             get
             {
-                if (AttachmentPositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
+                if (AttachmentPositionType == AeAttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
                 {
                     // Since the attachment BaseLocation is relative to the top-left corner of the base sprite, we need
                     // to get the position relative to the center of the base sprite image so that we can rotate around that.
@@ -59,7 +59,7 @@ namespace Ae.Engine.Sprite.Interactive
         {
             get
             {
-                if (AttachmentOrientationType == AttachmentOrientationType.FixedToOwner)
+                if (AttachmentOrientationType == AeAttachmentOrientationType.FixedToOwner)
                 {
                     //Make sure the attachment faces forwards.
                     return RootOwner.Orientation.Clone();
@@ -70,12 +70,12 @@ namespace Ae.Engine.Sprite.Interactive
 
         public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
-            if (AttachmentPositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
+            if (AttachmentPositionType == AeAttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
             {
                 Location = CalculatedLocation;
             }
 
-            if (AttachmentOrientationType == AttachmentOrientationType.FixedToOwner)
+            if (AttachmentOrientationType == AeAttachmentOrientationType.FixedToOwner)
             {
                 Orientation = CalculatedOrientation;
             }

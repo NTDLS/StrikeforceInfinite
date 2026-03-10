@@ -6,18 +6,18 @@ namespace Ae.Engine.Exceptions
     public class AeExceptionBase
         : Exception
     {
-        public SiLogSeverity Severity { get; set; }
+        public AeLogSeverity Severity { get; set; }
 
         public AeExceptionBase()
         {
-            Severity = SiLogSeverity.Exception;
+            Severity = AeLogSeverity.Exception;
         }
 
         public AeExceptionBase(string? message)
             : base(message)
 
         {
-            Severity = SiLogSeverity.Exception;
+            Severity = AeLogSeverity.Exception;
         }
     }
 }

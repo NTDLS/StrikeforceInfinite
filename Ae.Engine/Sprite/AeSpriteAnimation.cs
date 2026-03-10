@@ -24,7 +24,7 @@ namespace Ae.Engine.Sprite
         private int _columns;
         private float _epochsSinceLastAdvancment = int.MaxValue;
 
-        public SiAnimationPlayMode PlayMode { get; set; }
+        public AeAnimationPlayMode PlayMode { get; set; }
         public float FramesPerSecond { get; private set; } = 1;
 
         public AeSpriteAnimation(AeEngine engine, string assetKey)
@@ -110,18 +110,18 @@ namespace Ae.Engine.Sprite
                     _isComplete = true;
                     switch (PlayMode)
                     {
-                        case SiAnimationPlayMode.DeleteAfterPlay:
+                        case AeAnimationPlayMode.DeleteAfterPlay:
                             //Delete the animation sprite.
                             QueueForDelete();
                             break;
-                        case SiAnimationPlayMode.Infinite:
+                        case AeAnimationPlayMode.Infinite:
                             //Reset the frame, but retain the _lastFrameChange.
                             _currentFrame = 0;
                             _currentColumn = 0;
                             _currentRow = 0;
                             _isComplete = false;
                             break;
-                        case SiAnimationPlayMode.Single:
+                        case AeAnimationPlayMode.Single:
                             //Nothing to do unless the player calls Play() again.
                             break;
                     }

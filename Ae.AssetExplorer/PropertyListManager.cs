@@ -104,93 +104,93 @@ namespace Ae.AssetExplorer
 
                 switch (selectedItem.Attributes?.EditorType)
                 {
-                    case PropertyEditorType.Readonly:
+                    case AePropertyEditorType.Readonly:
                         return;
-                    case PropertyEditorType.Class:
+                    case AePropertyEditorType.Class:
                         {
                             using var form = new FormPropertyClassPicker(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.String:
+                    case AePropertyEditorType.String:
                         {
                             using var form = new FormPropertyString(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.Text:
+                    case AePropertyEditorType.Text:
                         {
                             using var form = new FormPropertyText(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.Integer:
+                    case AePropertyEditorType.Integer:
                         {
                             using var form = new FormPropertyInteger(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.Float:
+                    case AePropertyEditorType.Float:
                         {
                             using var form = new FormPropertyFloat(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.Boolean:
+                    case AePropertyEditorType.Boolean:
                         {
                             using var form = new FormPropertyBoolean(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.RangeInt:
+                    case AePropertyEditorType.RangeInt:
                         {
                             using var form = new FormPropertyRangeInt(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.RangeFloat:
+                    case AePropertyEditorType.RangeFloat:
                         {
                             using var form = new FormPropertyRangeFloat(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.Vector:
+                    case AePropertyEditorType.Vector:
                         {
                             using var form = new FormPropertyVector(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.Enum:
+                    case AePropertyEditorType.Enum:
                         {
                             using var form = new FormPropertyEnum(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.Picker:
+                    case AePropertyEditorType.Picker:
                         {
                             using var form = new FormPropertyPicker(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
-                    case PropertyEditorType.MultipleSpritePicker:
+                    case AePropertyEditorType.MultipleSpritePicker:
                         {
                             using var form = new FormPropertyAssetPicker(_engine, _writeLog, selectedItem, true);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value.ToArray();
                             break;
                         }
-                    case PropertyEditorType.SingleSpritePicker:
+                    case AePropertyEditorType.SingleSpritePicker:
                         {
                             using var form = new FormPropertyAssetPicker(_engine, _writeLog, selectedItem, false);
                             if (form.ShowDialog() != DialogResult.OK) return;
@@ -269,7 +269,7 @@ namespace Ae.AssetExplorer
                 var groups = metadataAttributes.Select(o => o.Attributes?.EditorGroup).Distinct().ToList();
 
                 //Add the groups to the ListView and keep track of them in a dictionary for easy access when adding items.
-                var groupMap = new Dictionary<PropertyEditorGroup, ListViewGroup>();
+                var groupMap = new Dictionary<AePropertyEditorGroup, ListViewGroup>();
                 foreach (var group in groups)
                 {
                     if (group != null)

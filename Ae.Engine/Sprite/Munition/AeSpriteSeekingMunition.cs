@@ -22,7 +22,7 @@ namespace Ae.Engine.Sprite.Munition
 
         public override void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
-            if (FiredFromType == SiFiredFromType.Enemy)
+            if (FiredFromType == AeFiredFromType.Enemy)
             {
                 if (DistanceTo(Engine.Player.Sprite) < Metadata.SeekingEscapeDistance)
                 {
@@ -34,7 +34,7 @@ namespace Ae.Engine.Sprite.Munition
                     }
                 }
             }
-            else if (FiredFromType == SiFiredFromType.Player)
+            else if (FiredFromType == AeFiredFromType.Player)
             {
                 float? smallestAngle = null;
 

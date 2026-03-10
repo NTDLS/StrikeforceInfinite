@@ -95,8 +95,8 @@ namespace Ae.Engine.Sprite.Base
                     {
                         //We take the orientation and position type of the attachment from the attachment section in the parent metadata if it is specified,
                         //   otherwise we use the default values set in the SpriteAttachment class.
-                        sprite.AttachmentOrientationType = attachment.AttachmentOrientationType ?? AeConstants.AttachmentOrientationType.Independent;
-                        sprite.AttachmentPositionType = attachment.AttachmentPositionType ?? AeConstants.AttachmentPositionType.Independent;
+                        sprite.AttachmentOrientationType = attachment.AttachmentOrientationType ?? AeConstants.AeAttachmentOrientationType.Independent;
+                        sprite.AttachmentPositionType = attachment.AttachmentPositionType ?? AeConstants.AeAttachmentPositionType.Independent;
                     });
                 });
             }

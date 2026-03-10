@@ -13,7 +13,7 @@ namespace Ae.MpServer
 
         public AeEngine Create(ManagedLobby lobby)
         {
-            var engine = new AeEngine(lobby, mpServerInstance.SharedEngine, SiEngineExecutionMode.ServerHost);
+            var engine = new AeEngine(lobby, mpServerInstance.SharedEngine, AeEngineExecutionMode.ServerHost);
 
             _collection.Write(o =>
             {

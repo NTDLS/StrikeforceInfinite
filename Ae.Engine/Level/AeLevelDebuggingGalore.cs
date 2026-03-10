@@ -264,10 +264,10 @@ namespace Ae.Engine.Level
                     asteroid.Speed = AeRandom.Variance(asteroid.Speed, 0.20f);
                     asteroid.Throttle = 1;
                     asteroid.RotationSpeed = AeRandom.RandomSign(AeRandom.Between(1f, 360f).ToRadians());
-                    asteroid.Metadata.Mass = new AeRange<float>(Mass.Large);
+                    asteroid.Metadata.Mass = new AeRange<float>(AeMass.Large);
 
                     asteroid.RecalculateMovementVectorFromAngle(AeRandom.Between(1f, 360f).ToRadians());
-                    asteroid.VectorType = ParticleVectorType.Default;
+                    asteroid.VectorType = AeParticleVectorType.Default;
 
                     //asteroid.RotationSpeed = SiRandom.FlipCoin() ? SiRandom.Between(-1.5f, -0.4f) : SiRandom.Between(0.4f, 1.5f);
                     //asteroid.RotationSpeed = 0;

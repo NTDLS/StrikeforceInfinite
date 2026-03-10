@@ -27,7 +27,7 @@ namespace Ae.Client
 
             var drawingSurface = new Control();
             Controls.Add(drawingSurface);
-            _engine = new AeEngine(drawingSurface, SiEngineExecutionMode.None);
+            _engine = new AeEngine(drawingSurface, AeEngineExecutionMode.None);
         }
 
         public FormRenderTarget(Screen screen)
@@ -53,7 +53,7 @@ namespace Ae.Client
             };
             Controls.Add(drawingSurface);
 
-            _engine = new AeEngine(drawingSurface, SiEngineExecutionMode.Play);
+            _engine = new AeEngine(drawingSurface, AeEngineExecutionMode.Play);
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 

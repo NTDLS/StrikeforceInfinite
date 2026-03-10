@@ -66,7 +66,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
                 {
                     if (munition.IsDeadOrExploded == false)
                     {
-                        var hitCandidates = munition.FiredFromType == SiFiredFromType.Player ? objectsPlayerCanHit : objectsEnemyCanHit;
+                        var hitCandidates = munition.FiredFromType == AeFiredFromType.Player ? objectsPlayerCanHit : objectsEnemyCanHit;
 
                         //Filter the hit candidates down to just those that are in the general area of the munition's movement this tick,
                         //  so we don't have to do expensive collision checks against objects that are nowhere near the munition.

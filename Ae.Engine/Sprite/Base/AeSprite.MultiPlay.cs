@@ -11,7 +11,7 @@ namespace Ae.Engine.Sprite.Base
 
         public virtual AeSpriteActionMotion? GetMultiPlayActionVector()
         {
-            if (Engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
+            if (Engine.ExecutionMode == AeEngineExecutionMode.ServerHost)
             {
                 if ((DateTime.UtcNow - _lastMultiplaySpriteVectorUpdate).TotalMilliseconds >= 5)
                 {
@@ -35,7 +35,7 @@ namespace Ae.Engine.Sprite.Base
 
         public virtual AeSpriteActionSpawn? GetMultiPlayActionSpawn()
         {
-            if (Engine.ExecutionMode == SiEngineExecutionMode.ServerHost)
+            if (Engine.ExecutionMode == AeEngineExecutionMode.ServerHost)
             {
                 if ((DateTime.UtcNow - _lastMultiplaySpriteVectorUpdate).TotalMilliseconds >= 5)
                 {

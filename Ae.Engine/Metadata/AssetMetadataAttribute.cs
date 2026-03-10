@@ -8,8 +8,8 @@ namespace Ae.Engine.Metadata
     {
         public string FriendlyName { get; }
         public string Description { get; }
-        public PropertyEditorType EditorType { get; }
-        public PropertyEditorGroup EditorGroup { get; }
+        public AePropertyEditorType EditorType { get; }
+        public AePropertyEditorGroup EditorGroup { get; }
         public double? MaxValue { get; } = null;
         public double? MinValue { get; } = null;
         public int? MinLength { get; } = null;
@@ -32,7 +32,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         public Type? RequireAssignableFrom { get; }
 
-        public AssetMetadataAttribute(string friendlyName, string description, PropertyEditorGroup editorGroup, PropertyEditorType editorType,
+        public AssetMetadataAttribute(string friendlyName, string description, AePropertyEditorGroup editorGroup, AePropertyEditorType editorType,
             Type[]? applicableTo, double maxValue = 0, double minValue = 0, int minLength = 0, Type? enumType = null, string[]? pickList = null, Type? requireAssignableFrom = null)
         {
             FriendlyName = friendlyName;

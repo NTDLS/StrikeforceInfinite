@@ -43,7 +43,7 @@ namespace Ae.Engine.Sprite.TextBlock
         public AeSpriteTextBlock(AeEngine engine, TextFormat format, SolidColorBrush color, AeVector location, bool isFixedPosition)
             : base(engine, null)
         {
-            RenderScaleOrder = SiRenderScaleOrder.PostScale;
+            RenderScaleOrder = AeRenderScaleOrder.PostScale;
             IsFixedPosition = isFixedPosition;
             Location = new AeVector(location);
             Color = color;

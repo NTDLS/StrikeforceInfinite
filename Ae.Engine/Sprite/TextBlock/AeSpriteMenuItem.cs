@@ -36,12 +36,12 @@ namespace Ae.Engine.Sprite.TextBlock
             }
         }
 
-        public SiMenuItemType ItemType { get; set; }
+        public AeMenuItemType ItemType { get; set; }
 
         public AeSpriteMenuItem(AeEngine engine, AeMenu menu, TextFormat format, SolidColorBrush color, AeVector location)
             : base(engine, format, color, location, true)
         {
-            ItemType = SiMenuItemType.Undefined;
+            ItemType = AeMenuItemType.Undefined;
             Menu = menu;
             IsVisible = true;
         }
