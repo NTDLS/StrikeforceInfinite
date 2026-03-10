@@ -74,8 +74,6 @@ namespace Ae.AssetExplorer.Forms
 
                 var text = $"{value.Attribute.FriendlyName} ({value.Type.Name})";
 
-                //AeReflection.GetStaticPropertyValue()
-
                 if (value.Type.IsAssignableTo(typeof(IAeRuntimeCompiledCodeAsset)))
                 {
                     //This is compiled user code, so we want to show the user friendly name of the asset instead of the class name.
