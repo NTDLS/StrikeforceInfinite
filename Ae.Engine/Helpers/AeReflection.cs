@@ -160,7 +160,7 @@ namespace Ae.Engine.Helpers
         /// <summary>
         // Caches all types that inherit from T;
         /// </summary>
-        public static void BuildReflectionCacheOfType<T>(Action<string, float>? progressCallback, Action<string, AeLoggingLevel?>? writeOutput = null)
+        public static void BuildReflectionCacheOfType<T>(Action<string, float>? progressCallback, WriteLogDelegate? writeLog = null)
         {
             foreach (var item in GetSubClassesOf<T>())
             {
@@ -170,9 +170,9 @@ namespace Ae.Engine.Helpers
                 }
                 catch (Exception ex)
                 {
-                    if (writeOutput != null)
+                    if (writeLog != null)
                     {
-                        writeOutput?.Invoke($"Failed to cache type {item.Name}: {ex.Message}", AeLoggingLevel.Error);
+                        writeLog?.Invoke($"Failed to cache type {item.Name}: {ex.Message}", AeLoggingLevel.Error);
                     }
                     else throw;
                 }

@@ -125,7 +125,7 @@ namespace Ae.Engine.Manager
             return sprite;
         }
 
-        public SpriteBase EditorAdd(string assetKey, Action<string, AeLoggingLevel?> writeOutput, Action<SpriteBase>? initializationProc = null)
+        public SpriteBase EditorAdd(string assetKey, WriteLogDelegate writeLog, Action<SpriteBase>? initializationProc = null)
         {
             if (_engine.ExecutionMode != AeConstants.SiEngineExecutionMode.Edit)
             {
@@ -188,7 +188,7 @@ namespace Ae.Engine.Manager
             }
             catch (Exception ex)
             {
-                writeOutput($"Error creating sprite with asset key {assetKey}: {ex.Message}", AeLoggingLevel.Error);
+                writeLog?.Invoke($"Error creating sprite with asset key {assetKey}: {ex.Message}", AeLoggingLevel.Error);
             }
 
             return new SpriteBase(_engine, assetKey);

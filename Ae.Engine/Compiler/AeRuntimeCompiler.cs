@@ -43,7 +43,7 @@ namespace Ae.Engine.Compiler
             return references;
         }
 
-        public static Assembly? CompileToAssembly(string assetKey, string sourceCode, bool loadAssembly, Action<string, AeLoggingLevel?>? writeOutput = null)
+        public static bool CompileToAssembly(string assetKey, string sourceCode, bool loadAssembly, WriteLogDelegate? writeLog = null)
         {
             var assetClassName = AssetKeyToClassName(assetKey);
 
@@ -69,15 +69,21 @@ namespace Ae.Engine.Compiler
                     .Where(d => d.Severity == DiagnosticSeverity.Error)
                     .Select(d => d.ToString());
 
-                throw new Exception("Compilation failed:\n" + string.Join("\n", errors));
+                foreach (var error in errors)
+                {
+                    writeLog?.Invoke(error, AeLoggingLevel.Error, assetKey);
+                }
+
+                return false;
             }
 
             peStream.Position = 0;
             if (loadAssembly)
             {
-                return Assembly.Load(peStream.ToArray());
+                Assembly.Load(peStream.ToArray());
+                return true;
             }
-            return null;
+            return true;
         }
     }
 }

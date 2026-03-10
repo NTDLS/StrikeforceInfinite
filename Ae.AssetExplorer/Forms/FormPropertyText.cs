@@ -12,7 +12,7 @@ namespace Ae.AssetExplorer.Forms
             InitializeComponent();
         }
 
-        public FormPropertyText(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
+        public FormPropertyText(WriteLogDelegate writeLog, PropertyItem propertyItem)
         {
             InitializeComponent();
 

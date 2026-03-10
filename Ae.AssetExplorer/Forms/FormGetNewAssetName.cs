@@ -8,7 +8,7 @@ namespace Ae.AssetExplorer.Forms
     {
         public string AssetName => textBoxAssetName.Text.Trim();
 
-        public FormGetNewAssetName(Action<string, AeLoggingLevel?>? writeOutput)
+        public FormGetNewAssetName(WriteLogDelegate writeLog)
         {
             InitializeComponent();
             AcceptButton = buttonCreate;

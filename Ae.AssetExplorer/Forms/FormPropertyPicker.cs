@@ -34,7 +34,7 @@ namespace Ae.AssetExplorer.Forms
             }
         }
 
-        public FormPropertyPicker(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
+        public FormPropertyPicker(WriteLogDelegate writeLog, PropertyItem propertyItem)
         {
             InitializeComponent();
 

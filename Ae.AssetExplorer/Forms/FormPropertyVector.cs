@@ -13,7 +13,7 @@ namespace Ae.AssetExplorer.Forms
             InitializeComponent();
         }
 
-        public FormPropertyVector(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
+        public FormPropertyVector(WriteLogDelegate writeLog, PropertyItem propertyItem)
         {
             InitializeComponent();
 

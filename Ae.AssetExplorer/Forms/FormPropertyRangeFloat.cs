@@ -13,7 +13,7 @@ namespace Ae.AssetExplorer.Forms
             InitializeComponent();
         }
 
-        public FormPropertyRangeFloat(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
+        public FormPropertyRangeFloat(WriteLogDelegate writeLog, PropertyItem propertyItem)
         {
             InitializeComponent();
 

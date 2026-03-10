@@ -39,7 +39,7 @@ namespace Ae.AssetExplorer.Forms
             }
         }
 
-        public FormPropertyEnum(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
+        public FormPropertyEnum(WriteLogDelegate writeLog, PropertyItem propertyItem)
         {
             InitializeComponent();
 

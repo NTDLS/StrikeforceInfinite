@@ -9,6 +9,8 @@ namespace Ae.Engine
 {
     public static class AeConstants
     {
+        public delegate void WriteLogDelegate(string message, AeLoggingLevel level, string? assetKey = null);
+
         public static Lock SharedLock { get; private set; } = new Lock();
         public const string FriendlyName = "Axis Engine";
         public const string MultiplayServerAddress = "127.0.0.1";

@@ -110,7 +110,7 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public string? GetAssetCodeForCompilation(string assetKey, Action<string, AeLoggingLevel?>? writeOutput = null)
+        public string? GetAssetCodeForCompilation(string assetKey, WriteLogDelegate? writeLog = null)
         {
             var model = _assetsDatabase.QueryFirstOrDefault<AssetDatabaseModel>(
                 "SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets WHERE Key = @Key", new { Key = assetKey })
@@ -125,9 +125,9 @@ namespace Ae.Engine.Manager
 
             if (BaseAssetTypes.TryGetValue(model.BaseType, out var baseType) == false)
             {
-                if (writeOutput != null)
+                if (writeLog != null)
                 {
-                    writeOutput($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}", AeLoggingLevel.Error);
+                    writeLog($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}", AeLoggingLevel.Error, assetKey);
                 }
                 else throw new Exception($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}");
             }
@@ -163,7 +163,7 @@ namespace Ae.Engine.Manager
             return null;
         }
 
-        public void LoadAllAssets(Action<string, float>? progressCallback, Action<string, AeLoggingLevel?>? writeOutput = null)
+        public void LoadAllAssets(Action<string, float>? progressCallback, WriteLogDelegate? writeLog = null)
         {
             progressCallback?.Invoke("Loading assets...", 0);
 
@@ -189,9 +189,9 @@ namespace Ae.Engine.Manager
                 {
                     if (BaseAssetTypes.TryGetValue(model.BaseType, out var baseType) == false)
                     {
-                        if (writeOutput != null)
+                        if (writeLog != null)
                         {
-                            writeOutput($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}", AeLoggingLevel.Error);
+                            writeLog($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}", AeLoggingLevel.Error, model.Key);
                         }
                         else throw new Exception($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}");
                     }
@@ -200,30 +200,31 @@ namespace Ae.Engine.Manager
                     var assetContainer = DeserializeAssetContainer(model);
                     if (string.IsNullOrEmpty(assetContainer.Metadata.AssetKey))
                     {
-                        if (writeOutput != null)
+                        if (writeLog != null)
                         {
-                            writeOutput($"Asset metadata for asset with key: {model.Key} does not contain an AssetKey.", AeLoggingLevel.Error);
+                            writeLog($"Asset metadata for asset with key: {model.Key} does not contain an AssetKey.", AeLoggingLevel.Error, model.Key);
                             return;
                         }
                         else throw new Exception($"Asset metadata for asset with key: {model.Key} does not contain an AssetKey.");
                     }
 
-                    var assetCodeForCompilation = GetAssetCodeForCompilation(assetContainer.Metadata.AssetKey, writeOutput);
+                    var assetCodeForCompilation = GetAssetCodeForCompilation(assetContainer.Metadata.AssetKey, writeLog);
 
                     if (assetCodeForCompilation != null)
                     {
                         try
                         {
-                            AeRuntimeCompiler.CompileToAssembly(assetContainer.Metadata.AssetKey, assetCodeForCompilation, true, writeOutput);
+                            if(!AeRuntimeCompiler.CompileToAssembly(assetContainer.Metadata.AssetKey, assetCodeForCompilation, true, writeLog))
+                                throw new Exception($"Failed to compile asset code for asset with key: {model.Key}. No assembly was returned from the compiler.");
 
                             //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
                             AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);
                         }
                         catch (Exception ex)
                         {
-                            if (writeOutput != null)
+                            if (writeLog != null)
                             {
-                                writeOutput($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}", AeLoggingLevel.Error);
+                                writeLog($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}", AeLoggingLevel.Error, model.Key);
                             }
                             else throw new Exception($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}");
                         }

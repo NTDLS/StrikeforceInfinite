@@ -3,7 +3,9 @@ using Ae.AssetExplorer.Forms;
 using Ae.AssetExplorer.Properties;
 using Ae.Engine;
 using Ae.Engine.Metadata;
+using System.Text;
 using System.Text.Json;
+using System.Xml.Linq;
 using Talkster.Client.Controls;
 using static Ae.Engine.AeConstants;
 
@@ -13,7 +15,7 @@ namespace Ae.AssetExplorer
     {
         private readonly DoubleBufferedTreeView _treeView;
         private readonly AeEngine _engine;
-        private readonly Action<string, AeLoggingLevel?> _writeOutput;
+        private readonly WriteLogDelegate _writeLog;
         private readonly Action<AeTreeNode> _loadSelectedTreeNode;
         private readonly AeTreeNode _rootNode;
 
@@ -28,12 +30,12 @@ namespace Ae.AssetExplorer
         };
 
         public TreeManager(DoubleBufferedTreeView treeView, AeEngine engine,
-            Action<string, AeLoggingLevel?> writeOutput,
+            WriteLogDelegate writeLog,
             Action<AeTreeNode> loadSelectedTreeNode)
         {
             _engine = engine;
             _treeView = treeView;
-            _writeOutput = writeOutput;
+            _writeLog = writeLog;
             _loadSelectedTreeNode = loadSelectedTreeNode;
 
             _treeView.NodeMouseDoubleClick += TreeView_NodeMouseDoubleClick;
@@ -57,6 +59,44 @@ namespace Ae.AssetExplorer
                 SelectedImageKey = "folder"
             };
             _treeView.Nodes.Add(_rootNode);
+        }
+
+        public void HighlightItem(string assetKey)
+        {
+            if (_treeView.InvokeRequired)
+            {
+                _treeView.Invoke(new Action<string>(HighlightItem), assetKey);
+                return;
+            }
+
+            var parts = assetKey.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            AeTreeNode? lastFoundNode = null;
+
+            var workingLevel = _rootNode.Nodes;
+
+            var sb = new StringBuilder();
+            foreach (var part in parts)
+            {
+                var foundNode = workingLevel.Find(part, false)?.FirstOrDefault() as AeTreeNode;
+
+                if (foundNode == null)
+                {
+                    break;
+                }
+
+                sb.Append($"{part}/");
+
+                lastFoundNode = foundNode;
+                workingLevel = foundNode.Nodes;
+            }
+
+            if (lastFoundNode != null && sb.ToString().Trim('/').Equals(assetKey.Trim('/'), StringComparison.OrdinalIgnoreCase))
+            {
+                _treeView.SelectedNode = lastFoundNode;
+                lastFoundNode.EnsureVisible();
+                _treeView.Focus();
+                _loadSelectedTreeNode(lastFoundNode);
+            }
         }
 
         private void TreeView_NodeMouseClick(object? sender, TreeNodeMouseClickEventArgs e)
@@ -95,7 +135,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -123,7 +163,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                using var form = new FormGetNewAssetName(_writeOutput);
+                using var form = new FormGetNewAssetName(_writeLog);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     var newAssetKey = $"{GetNodeAssetDirectory(node)}/{form.AssetName}".Trim('/');
@@ -138,7 +178,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -146,7 +186,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                using var form = new FormCreateFolder(_writeOutput);
+                using var form = new FormCreateFolder(_writeLog);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     var newAssetKey = $"{GetNodeAssetDirectory(node)}/{form.FolderName}".Trim('/');
@@ -159,7 +199,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -203,7 +243,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -226,7 +266,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -242,37 +282,34 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
-
-        private void WriteOutput(string text, AeLoggingLevel? color = null)
-            => _writeOutput(text, color);
 
         public void Repopulate()
         {
             try
             {
-                WriteOutput("Populating assets.", AeLoggingLevel.Verbose);
+                _writeLog?.Invoke("Populating assets.", AeLoggingLevel.Verbose);
 
                 //Files and paths that contain "#" are for internal purposes and should not be shown in the editor.
                 var assets = _engine.Assets.GetAssets()
                     .Where(o => o.Key.Contains('#') == false).ToList();
 
-                WriteOutput($"Enumerating {assets.Count:n0} assets.", AeLoggingLevel.Verbose);
+                _writeLog?.Invoke($"Enumerating {assets.Count:n0} assets.", AeLoggingLevel.Verbose);
 
                 foreach (var asset in assets)
                 {
                     UpsertTreeNodesPath(asset);
                 }
 
-                WriteOutput($"Assets enumeration complete.", AeLoggingLevel.Verbose);
+                _writeLog?.Invoke($"Assets enumeration complete.", AeLoggingLevel.Verbose);
 
                 _treeView.Invoke(() => _rootNode.Expand());
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -348,7 +385,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
             return null;
         }

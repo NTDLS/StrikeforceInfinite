@@ -41,7 +41,10 @@ namespace Ae.AssetExplorer
             splitContainerBottom = new SplitContainer();
             tabControlOutput = new TabControl();
             tabPageOutput = new TabPage();
-            richTextBoxOutput = new RichTextBox();
+            listViewOutput = new Ae.AssetExplorer.Controls.BufferedListView();
+            columnHeaderSeverity = new ColumnHeader();
+            columnHeaderAsset = new ColumnHeader();
+            columnHeaderText = new ColumnHeader();
             tabPageCode = new TabPage();
             toolStrip1 = new ToolStrip();
             toolStripButtonSettings = new ToolStripButton();
@@ -202,7 +205,7 @@ namespace Ae.AssetExplorer
             // 
             // tabPageOutput
             // 
-            tabPageOutput.Controls.Add(richTextBoxOutput);
+            tabPageOutput.Controls.Add(listViewOutput);
             tabPageOutput.Location = new Point(4, 24);
             tabPageOutput.Name = "tabPageOutput";
             tabPageOutput.Padding = new Padding(3);
@@ -211,14 +214,34 @@ namespace Ae.AssetExplorer
             tabPageOutput.Text = "Output";
             tabPageOutput.UseVisualStyleBackColor = true;
             // 
-            // richTextBoxOutput
+            // listViewOutput
             // 
-            richTextBoxOutput.Dock = DockStyle.Fill;
-            richTextBoxOutput.Location = new Point(3, 3);
-            richTextBoxOutput.Name = "richTextBoxOutput";
-            richTextBoxOutput.Size = new Size(786, 133);
-            richTextBoxOutput.TabIndex = 0;
-            richTextBoxOutput.Text = "";
+            listViewOutput.Columns.AddRange(new ColumnHeader[] { columnHeaderSeverity, columnHeaderAsset, columnHeaderText });
+            listViewOutput.Dock = DockStyle.Fill;
+            listViewOutput.FullRowSelect = true;
+            listViewOutput.Location = new Point(3, 3);
+            listViewOutput.MultiSelect = false;
+            listViewOutput.Name = "listViewOutput";
+            listViewOutput.ShowGroups = false;
+            listViewOutput.Size = new Size(786, 133);
+            listViewOutput.TabIndex = 0;
+            listViewOutput.UseCompatibleStateImageBehavior = false;
+            listViewOutput.View = View.Details;
+            // 
+            // columnHeaderSeverity
+            // 
+            columnHeaderSeverity.Text = "Severity";
+            columnHeaderSeverity.Width = 100;
+            // 
+            // columnHeaderAsset
+            // 
+            columnHeaderAsset.Text = "Asset";
+            columnHeaderAsset.Width = 100;
+            // 
+            // columnHeaderText
+            // 
+            columnHeaderText.Text = "Text";
+            columnHeaderText.Width = 500;
             // 
             // tabPageCode
             // 
@@ -408,7 +431,6 @@ namespace Ae.AssetExplorer
         private SplitContainer splitContainerProperties;
         private PictureBox drawingSurface;
         private ListView listViewProperties;
-        private RichTextBox richTextBoxOutput;
         private ToolStrip toolStrip1;
         private ToolStripButton toolStripButtonSettings;
         private ToolStripButton toolStripButtonDeveloperConsole;
@@ -429,5 +451,9 @@ namespace Ae.AssetExplorer
         private TabControl tabControlOutput;
         private TabPage tabPageOutput;
         private TabPage tabPageCode;
+        private Controls.BufferedListView listViewOutput;
+        private ColumnHeader columnHeaderSeverity;
+        private ColumnHeader columnHeaderAsset;
+        private ColumnHeader columnHeaderText;
     }
 }

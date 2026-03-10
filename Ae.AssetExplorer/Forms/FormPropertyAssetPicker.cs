@@ -14,17 +14,17 @@ namespace Ae.AssetExplorer.Forms
         private readonly Type? _requireAssignableFrom;
         public List<string> Value => _selectedAssetKeys;
         private readonly List<string> _selectedAssetKeys = new List<string>();
-        private readonly Action<string, AeLoggingLevel?>? _writeOutput;
+        private readonly WriteLogDelegate? _writeLog;
 
         public FormPropertyAssetPicker()
         {
             InitializeComponent();
         }
 
-        public FormPropertyAssetPicker(AeEngine engine, Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem, bool multiSelect)
+        public FormPropertyAssetPicker(AeEngine engine, WriteLogDelegate writeLog, PropertyItem propertyItem, bool multiSelect)
         {
             InitializeComponent();
-            _writeOutput = writeOutput;
+            _writeLog = writeLog;
             _engine = engine;
             _multiSelect = multiSelect;
             _requireAssignableFrom = propertyItem.Attributes?.RequireAssignableFrom;
@@ -111,7 +111,7 @@ namespace Ae.AssetExplorer.Forms
                         }
                         catch (Exception ex)
                         {
-                            _writeOutput?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Warning);
+                            _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Warning);
                             continue;
                         }
                     }
@@ -147,7 +147,7 @@ namespace Ae.AssetExplorer.Forms
             }
             catch (Exception ex)
             {
-                _writeOutput?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -200,7 +200,7 @@ namespace Ae.AssetExplorer.Forms
             }
             catch (Exception ex)
             {
-                //_writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -221,7 +221,7 @@ namespace Ae.AssetExplorer.Forms
             }
             catch (Exception ex)
             {
-                //_writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 

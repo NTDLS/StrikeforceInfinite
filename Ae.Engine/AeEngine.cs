@@ -381,7 +381,7 @@ namespace Ae.Engine
             }
         }
 
-        public void StartEngine(Action<string, float>? progressCallback = null, Action<string, AeLoggingLevel?>? writeOutput = null)
+        public void StartEngine(Action<string, float>? progressCallback = null, WriteLogDelegate? writeLog = null)
         {
             if (IsRunning)
             {
@@ -402,15 +402,15 @@ namespace Ae.Engine
             {
                 IsInitializing = true;
 
-                HydrateCache(progressCallback, writeOutput);
+                HydrateCache(progressCallback, writeLog);
             }
             else if (ExecutionMode == SiEngineExecutionMode.SharedEngineContent)
             {
-                HydrateCache(progressCallback, writeOutput);
+                HydrateCache(progressCallback, writeLog);
             }
             else if (ExecutionMode == SiEngineExecutionMode.Edit)
             {
-                HydrateCache(progressCallback, writeOutput);
+                HydrateCache(progressCallback, writeLog);
             }
 
             OnInitializationComplete?.Invoke(this);
@@ -470,14 +470,14 @@ namespace Ae.Engine
             //}
         }
 
-        private void HydrateCache(Action<string, float>? progressCallback, Action<string, AeLoggingLevel?>? writeOutput = null)
+        private void HydrateCache(Action<string, float>? progressCallback, WriteLogDelegate? writeLog = null)
         {
             progressCallback?.Invoke("Hydrating sprites...", 0);
-            AeReflection.BuildReflectionCacheOfType<SpriteBase>(progressCallback, writeOutput);
+            AeReflection.BuildReflectionCacheOfType<SpriteBase>(progressCallback, writeLog);
             progressCallback?.Invoke("Hydrating AI machines...", 0);
-            AeReflection.BuildReflectionCacheOfType<AIStateMachine>(progressCallback, writeOutput);
+            AeReflection.BuildReflectionCacheOfType<AIStateMachine>(progressCallback, writeLog);
 
-            Assets.LoadAllAssets(progressCallback, writeOutput);
+            Assets.LoadAllAssets(progressCallback, writeLog);
         }
 
         public void ShutdownEngine()

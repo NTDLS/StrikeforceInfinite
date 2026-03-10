@@ -13,18 +13,18 @@ namespace Ae.AssetExplorer
     {
         private readonly AeEngine _engine;
         private readonly ListView _listView;
-        private readonly Action<string, AeLoggingLevel?> _writeOutput;
+        private readonly WriteLogDelegate _writeLog;
         private readonly Action<SpriteBase, PropertyItem> _propertiesEdited;
         private SpriteBase? _lastSprite;
         private string? _lastAssetKey;
 
         public PropertyListManager(ListView listView, AeEngine engine,
-            Action<string, AeLoggingLevel?> writeOutput,
+            WriteLogDelegate writeLog,
             Action<SpriteBase, PropertyItem> propertiesEdited)
         {
             _engine = engine;
             _listView = listView;
-            _writeOutput = writeOutput;
+            _writeLog = writeLog;
             _propertiesEdited = propertiesEdited;
 
             _listView.View = View.Details;
@@ -62,7 +62,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -108,91 +108,91 @@ namespace Ae.AssetExplorer
                         return;
                     case PropertyEditorType.Class:
                         {
-                            using var form = new FormPropertyClassPicker(_writeOutput, selectedItem);
+                            using var form = new FormPropertyClassPicker(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.String:
                         {
-                            using var form = new FormPropertyString(_writeOutput, selectedItem);
+                            using var form = new FormPropertyString(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Text:
                         {
-                            using var form = new FormPropertyText(_writeOutput, selectedItem);
+                            using var form = new FormPropertyText(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Integer:
                         {
-                            using var form = new FormPropertyInteger(_writeOutput, selectedItem);
+                            using var form = new FormPropertyInteger(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Float:
                         {
-                            using var form = new FormPropertyFloat(_writeOutput, selectedItem);
+                            using var form = new FormPropertyFloat(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Boolean:
                         {
-                            using var form = new FormPropertyBoolean(_writeOutput, selectedItem);
+                            using var form = new FormPropertyBoolean(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.RangeInt:
                         {
-                            using var form = new FormPropertyRangeInt(_writeOutput, selectedItem);
+                            using var form = new FormPropertyRangeInt(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.RangeFloat:
                         {
-                            using var form = new FormPropertyRangeFloat(_writeOutput, selectedItem);
+                            using var form = new FormPropertyRangeFloat(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Vector:
                         {
-                            using var form = new FormPropertyVector(_writeOutput, selectedItem);
+                            using var form = new FormPropertyVector(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Enum:
                         {
-                            using var form = new FormPropertyEnum(_writeOutput, selectedItem);
+                            using var form = new FormPropertyEnum(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Picker:
                         {
-                            using var form = new FormPropertyPicker(_writeOutput, selectedItem);
+                            using var form = new FormPropertyPicker(_writeLog, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.MultipleSpritePicker:
                         {
-                            using var form = new FormPropertyAssetPicker(_engine, _writeOutput, selectedItem, true);
+                            using var form = new FormPropertyAssetPicker(_engine, _writeLog, selectedItem, true);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value.ToArray();
                             break;
                         }
                     case PropertyEditorType.SingleSpritePicker:
                         {
-                            using var form = new FormPropertyAssetPicker(_engine, _writeOutput, selectedItem, false);
+                            using var form = new FormPropertyAssetPicker(_engine, _writeLog, selectedItem, false);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value.FirstOrDefault();
                             break;
@@ -211,7 +211,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -305,7 +305,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                _writeOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                _writeLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
     }

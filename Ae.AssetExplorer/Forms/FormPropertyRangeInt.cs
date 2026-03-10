@@ -13,7 +13,7 @@ namespace Ae.AssetExplorer.Forms
             InitializeComponent();
         }
 
-        public FormPropertyRangeInt(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
+        public FormPropertyRangeInt(WriteLogDelegate writeLog, PropertyItem propertyItem)
         {
             InitializeComponent();
 

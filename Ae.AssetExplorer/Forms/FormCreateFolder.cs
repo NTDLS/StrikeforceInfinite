@@ -8,7 +8,7 @@ namespace Ae.AssetExplorer.Forms
     {
         public string FolderName => textBoxFolderName.Text.Trim();
 
-        public FormCreateFolder(Action<string, AeLoggingLevel?>? writeOutput)
+        public FormCreateFolder(WriteLogDelegate writeLog)
         {
             InitializeComponent();
             AcceptButton = buttonCreate;

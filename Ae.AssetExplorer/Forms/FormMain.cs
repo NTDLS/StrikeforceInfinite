@@ -24,7 +24,7 @@ namespace Ae.AssetExplorer
         {
             InitializeComponent();
 
-            WriteOutput("Instantiating EngineCore.", AeLoggingLevel.Verbose);
+            WriteLog("Instantiating EngineCore.", AeLoggingLevel.Verbose);
 
             drawingSurface.Parent.EnsureNotNull().Resize += Parent_Resize;
             Parent_Resize(null, new());
@@ -35,8 +35,8 @@ namespace Ae.AssetExplorer
             _engine.Display.ZoomOverride = 0.1f; // Start zoomed out to show the whole sprite.
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
 
-            _treeManager = new TreeManager(treeViewAssets, _engine, WriteOutput, LoadSelectedTreeNode);
-            _propertyListManager = new PropertyListManager(listViewProperties, _engine, WriteOutput, PropertiesEdited);
+            _treeManager = new TreeManager(treeViewAssets, _engine, WriteLog, LoadSelectedTreeNode);
+            _propertyListManager = new PropertyListManager(listViewProperties, _engine, WriteLog, PropertiesEdited);
             _tabManager = new TabManager(_engine, tabControlCode, TabSelected);
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
@@ -46,6 +46,19 @@ namespace Ae.AssetExplorer
 
             _codeViewer = new AeCodeEditor(this, AeCodeType.CSharp);
             tabPageCode.Controls.Add(_codeViewer);
+
+
+            listViewOutput.MouseDoubleClick += ListViewOutput_MouseDoubleClick;
+
+        }
+
+        private void ListViewOutput_MouseDoubleClick(object? sender, MouseEventArgs e)
+        {
+            var item = listViewOutput.HitTest(e.Location)?.Item as AeLogListViewItem;
+            if (item != null && string.IsNullOrEmpty(item.AssetKey) == false)
+            {
+                _treeManager.HighlightItem(item.AssetKey);
+            }
         }
 
         private void PictureBoxPreview_MouseWheel(object? sender, MouseEventArgs e)
@@ -174,7 +187,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -182,7 +195,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                WriteOutput("Engine initialization complete.", AeLoggingLevel.Verbose);
+                WriteLog("Engine initialization complete.", AeLoggingLevel.Verbose);
 
                 engine.Events.Once(() =>
                 {
@@ -194,7 +207,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -216,7 +229,7 @@ namespace Ae.AssetExplorer
 
                     progressForm.Execute(() =>
                     {
-                        WriteOutput("Initializing engine.", AeLoggingLevel.Verbose);
+                        WriteLog("Initializing engine.", AeLoggingLevel.Verbose);
 
                         progressForm.SeProgressStyle(ProgressBarStyle.Continuous);
                         progressForm.SetProgressMinimum(0);
@@ -228,13 +241,13 @@ namespace Ae.AssetExplorer
                             progressForm.SetProgressValue((int)progress);
                         }
 
-                        _engine.StartEngine(EngineStartupProgressCallback, WriteOutput);
+                        _engine.StartEngine(EngineStartupProgressCallback, WriteLog);
                     });
                 }
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -260,7 +273,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -277,7 +290,7 @@ namespace Ae.AssetExplorer
                     _engine.Sprites.QueueAllForDeletion();
                     _engine.Sprites.HardDeleteAllQueuedDeletions();
 
-                    var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, WriteOutput, (o) =>
+                    var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, WriteLog, (o) =>
                     {
                         if (o is SpriteAnimation spriteAnimation)
                         {
@@ -297,38 +310,20 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
-        private void WriteOutput(string text, AeLoggingLevel? loggingLevel)
+        private void WriteLog(string message, AeLoggingLevel level, string? assetKey = null)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<string, AeLoggingLevel?>(WriteOutput), text, loggingLevel);
+                Invoke(new Action<string, AeLoggingLevel, string?>(WriteLog), message, level, assetKey);
                 return;
             }
 
-            var color = loggingLevel switch
-            {
-                AeLoggingLevel.Verbose => AssetExplorerColors.Verbose,
-                AeLoggingLevel.Information => AssetExplorerColors.Information,
-                AeLoggingLevel.Warning => AssetExplorerColors.Warning,
-                AeLoggingLevel.Error => AssetExplorerColors.Error,
-                _ => AssetExplorerColors.Default
-            };
-
-            richTextBoxOutput.SelectionStart = richTextBoxOutput.TextLength;
-            richTextBoxOutput.SelectionLength = 0;
-            richTextBoxOutput.SelectionColor = color;
-            richTextBoxOutput.AppendText(text + Environment.NewLine);
-            richTextBoxOutput.SelectionColor = richTextBoxOutput.ForeColor;
-
-            // Reset selection to end.
-            richTextBoxOutput.Select(richTextBoxOutput.TextLength, 0);
-            richTextBoxOutput.SelectionColor = richTextBoxOutput.ForeColor;
-
-            richTextBoxOutput.ScrollToCaret();
+            listViewOutput.Items.Add(new AeLogListViewItem(level, message, assetKey));
+            listViewOutput.EnsureVisible(listViewOutput.Items.Count - 1);
         }
 
         #region Toolstrip buttons
@@ -342,7 +337,7 @@ namespace Ae.AssetExplorer
             }
             catch (Exception ex)
             {
-                WriteOutput($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 
@@ -379,22 +374,28 @@ namespace Ae.AssetExplorer
 
         private void ToolStripButtonBuild_Click(object sender, EventArgs e)
         {
+            if (!_tabManager.SaveCurrentTab())
+            {
+                return;
+            }
             var tab = _tabManager.CurrentTab();
             if (tab != null)
             {
-                var codeToCompile = _engine.Assets.GetAssetCodeForCompilation(tab.AssetKey, WriteOutput);
+                var codeToCompile = _engine.Assets.GetAssetCodeForCompilation(tab.AssetKey, WriteLog);
                 _codeViewer.Text = codeToCompile ?? $"No code available for asset {tab.AssetKey}";
 
                 if (string.IsNullOrEmpty(codeToCompile) == false)
                 {
                     try
                     {
-                        AeRuntimeCompiler.CompileToAssembly(tab.AssetKey, codeToCompile, false, WriteOutput);
-                        WriteOutput("Successfully compiled.", AeLoggingLevel.Information);
+                        if (AeRuntimeCompiler.CompileToAssembly(tab.AssetKey, codeToCompile, false, WriteLog))
+                        {
+                            WriteLog("Successfully compiled.", AeLoggingLevel.Information, tab.AssetKey);
+                        }
                     }
                     catch (Exception ex)
                     {
-                        WriteOutput($"Failed to compile asset controller for asset with key: {tab.AssetKey}. Error: {ex.Message}", AeLoggingLevel.Error);
+                        WriteLog($"Failed to compile asset controller for asset with key: {tab.AssetKey}. Error: {ex.Message}", AeLoggingLevel.Error);
                     }
                 }
             }
