@@ -32,7 +32,6 @@ namespace Ae.AssetExplorer
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             splitContainerLeft = new SplitContainer();
-            treeViewAssets = new DoubleBufferedTreeView();
             splitContainerRight = new SplitContainer();
             tabControlCode = new TabControl();
             splitContainerProperties = new SplitContainer();
@@ -53,7 +52,6 @@ namespace Ae.AssetExplorer
             toolStripButtonToggleProperties = new ToolStripButton();
             toolStripButtonAbout = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
-            splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
             splitContainerLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).BeginInit();
@@ -79,24 +77,12 @@ namespace Ae.AssetExplorer
             splitContainerLeft.Location = new Point(0, 0);
             splitContainerLeft.Name = "splitContainerLeft";
             // 
-            // splitContainerLeft.Panel1
-            // 
-            splitContainerLeft.Panel1.Controls.Add(treeViewAssets);
-            // 
             // splitContainerLeft.Panel2
             // 
             splitContainerLeft.Panel2.Controls.Add(splitContainerRight);
             splitContainerLeft.Size = new Size(800, 429);
             splitContainerLeft.SplitterDistance = 273;
             splitContainerLeft.TabIndex = 0;
-            // 
-            // treeViewAssets
-            // 
-            treeViewAssets.Dock = DockStyle.Fill;
-            treeViewAssets.Location = new Point(0, 0);
-            treeViewAssets.Name = "treeViewAssets";
-            treeViewAssets.Size = new Size(273, 429);
-            treeViewAssets.TabIndex = 0;
             // 
             // splitContainerRight
             // 
@@ -313,7 +299,6 @@ namespace Ae.AssetExplorer
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Asset Manager";
-            splitContainerLeft.Panel1.ResumeLayout(false);
             splitContainerLeft.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).EndInit();
             splitContainerLeft.ResumeLayout(false);

@@ -12,7 +12,7 @@
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<ApplicationIcon>AeIcon.ico</ApplicationIcon>
+		<ApplicationIcon>AeIcon128Edit.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="AeIcon.ico" />
+	  <Content Include="AeIcon128Edit.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
