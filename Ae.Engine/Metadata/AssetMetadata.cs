@@ -3,7 +3,6 @@ using Ae.Engine.Audio;
 using Ae.Engine.Compiler;
 using Ae.Engine.Mathematics;
 using Ae.Engine.Sprite;
-using Ae.Engine.Sprite.Animation;
 using Ae.Engine.Sprite.Base;
 using Ae.Engine.Sprite.Interactive;
 using Ae.Engine.Sprite.Munition;
@@ -28,11 +27,11 @@ namespace Ae.Engine.Metadata
         public string? AssetKey { get; set; }
 
         [AssetMetadata("Sound Volume", "Volume of the sound expressed in percentages.", PropertyEditorGroup.Audio, PropertyEditorType.Float,
-            applicableTo: [typeof(AudioClip)], minValue: 0, maxValue: 1)]
+            applicableTo: [typeof(AeAudioClip)], minValue: 0, maxValue: 1)]
         public float? SoundVolume { get; set; }
 
         [AssetMetadata("Loop Sound", "Indicates whether the sound should loop when played.", PropertyEditorGroup.Audio, PropertyEditorType.Boolean,
-            applicableTo: [typeof(AudioClip)])]
+            applicableTo: [typeof(AeAudioClip)])]
         public bool? LoopSound { get; set; }
 
         [AssetMetadata("Class", "The class of the sprite which will be used to control the sprite.", PropertyEditorGroup.Base, PropertyEditorType.Class,
@@ -51,17 +50,17 @@ namespace Ae.Engine.Metadata
         //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
         [AssetMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.",
             PropertyEditorGroup.Attachment, PropertyEditorType.Vector,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public AeVector? AttachmentPosition { get; set; }
 
         [AssetMetadata("AI Controllers", "The AI controller classes that will be available to this sprite.",
             PropertyEditorGroup.AI, PropertyEditorType.MultipleSpritePicker,
-            applicableTo: [typeof(SpriteInteractive)], requireAssignableFrom: typeof(IAIController))]
+            applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeIAIController))]
         public string[]? AIControllers { get; set; }
 
         [AssetMetadata("Default AI Controller", "The default AI controller class for the sprite.",
             PropertyEditorGroup.AI, PropertyEditorType.SingleSpritePicker,
-            applicableTo: [typeof(SpriteInteractive)], requireAssignableFrom: typeof(IAIController))]
+            applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeIAIController))]
         public string? DefaultAIController { get; set; }
 
         #region InteractiveSpriteMetadata
@@ -70,47 +69,47 @@ namespace Ae.Engine.Metadata
         //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
         [AssetMetadata("Orientation Type", "Determines how the attached sprite orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.",
             PropertyEditorGroup.Attachment, PropertyEditorType.Enum,
-            applicableTo: [typeof(SpriteBase)], enumType: typeof(AttachmentOrientationType))]
+            applicableTo: [typeof(AeSprite)], enumType: typeof(AttachmentOrientationType))]
         public AttachmentOrientationType? AttachmentOrientationType { get; set; }
 
         //TODO: THIS NEED A NEW EDITOR.
         //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
         [AssetMetadata("Position Type", "Determines how the attached sprite position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.",
             PropertyEditorGroup.Attachment, PropertyEditorType.Enum,
-            applicableTo: [typeof(SpriteBase)], enumType: typeof(AttachmentPositionType))]
+            applicableTo: [typeof(AeSprite)], enumType: typeof(AttachmentPositionType))]
         public AttachmentPositionType? AttachmentPositionType { get; set; }
 
         [AssetMetadata("Explosion Type", "Determines the type of explosion effect for the sprite.",
             PropertyEditorGroup.Destroy, PropertyEditorType.Enum,
-            applicableTo: [typeof(SpriteBase)], enumType: typeof(ExplosionType))]
+            applicableTo: [typeof(AeSprite)], enumType: typeof(ExplosionType))]
         public ExplosionType? ExplosionType { get; set; }
 
         [AssetMetadata("Particle Blast On Explode Amount", "Specifies the amount of particles generated when the sprite explodes.",
             PropertyEditorGroup.Destroy, PropertyEditorType.RangeInt,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public AeRange<int>? ParticleBlastOnExplodeAmount { get; set; }
 
         [AssetMetadata("Fragment On Explode", "Indicates whether the sprite should fragment upon explosion.",
             PropertyEditorGroup.Destroy, PropertyEditorType.Boolean,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public bool? FragmentOnExplode { get; set; }
 
         [AssetMetadata("Screen Shake On Explode Amount", "Specifies the intensity of screen shake when the sprite explodes.",
             PropertyEditorGroup.Destroy, PropertyEditorType.RangeInt,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public AeRange<int>? ScreenShakeOnExplodeAmount { get; set; }
 
         [AssetMetadata("Speed", "The speed of the sprite.", PropertyEditorGroup.Momentum, PropertyEditorType.RangeFloat,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public AeRange<float>? Speed { get; set; }
 
         [AssetMetadata("Max Throttle", "The maximum throttle of the sprite.", PropertyEditorGroup.Momentum, PropertyEditorType.Float,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public float? MaxThrottle { get; set; }
 
         [AssetMetadata("Throttle", "The throttle of the sprite, which determines its current speed as a percentage of its maximum speed.",
             PropertyEditorGroup.Momentum, PropertyEditorType.Float,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public float? Throttle { get; set; }
 
         /// <summary>
@@ -122,7 +121,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Mass", "The mass of the sprite, which affects its resistance to acceleration and deceleration in physics calculations when munition detection is enabled. A higher mass makes the sprite more resistant to external forces, while a lower mass makes it more agile but also more susceptible to being moved by such forces. A mass of 0 is considered infinite mass, meaning the sprite cannot be moved by inertial forces.",
             PropertyEditorGroup.Momentum, PropertyEditorType.RangeFloat,
-            applicableTo: [typeof(SpriteInteractive)])]
+            applicableTo: [typeof(AeSpriteInteractive)])]
         public AeRange<float>? Mass { get; set; }
 
         /// <summary>
@@ -130,7 +129,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Hull", "The hull strength of the sprite, representing its hit points. When this reaches 0, the sprite is destroyed.",
             PropertyEditorGroup.Health, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public int? Hull { get; set; }
 
         /// <summary>
@@ -138,7 +137,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Shields", "The shield strength of the sprite, representing its defensive capabilities.",
             PropertyEditorGroup.Health, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public int? Shields { get; set; }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Bounty", "The bounty amount associated with the sprite. This probably will not survive the early access period.",
             PropertyEditorGroup.Health, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public int? Bounty { get; set; }
 
         /// <summary>
@@ -154,7 +153,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Munition Detection", "Indicates whether munition detection (bullet detection) is enabled for the sprite.",
             PropertyEditorGroup.Collision, PropertyEditorType.Boolean,
-            applicableTo: [typeof(SpriteBase)])]
+            applicableTo: [typeof(AeSprite)])]
         public bool? MunitionDetection { get; set; }
 
         /// <summary>
@@ -165,7 +164,7 @@ namespace Ae.Engine.Metadata
         /// monitored.</remarks>
         [AssetMetadata("Collision Detection", "Indicates whether collision detection is enabled for the sprite.",
             PropertyEditorGroup.Collision, PropertyEditorType.Boolean,
-            applicableTo: [typeof(SpriteInteractive)])]
+            applicableTo: [typeof(AeSpriteInteractive)])]
         public bool? CollisionDetection { get; set; }
 
         /// <summary>
@@ -176,7 +175,7 @@ namespace Ae.Engine.Metadata
         /// collisions. This can be useful for accommodating visual effects or gameplay balancing.</remarks>
         [AssetMetadata("Collision Polygon Augmentation", "The augmentation factor applied to the collision polygon, affecting its size and shape during collision detection.",
             PropertyEditorGroup.Collision, PropertyEditorType.Float,
-            applicableTo: [typeof(SpriteInteractive)])]
+            applicableTo: [typeof(AeSpriteInteractive)])]
         public float? CollisionPolyAugmentation { get; set; }
 
         /// <summary>
@@ -184,19 +183,19 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Primary Weapon", "The primary weapon assigned to the sprite.",
             PropertyEditorGroup.Weapons, PropertyEditorType.SingleSpritePicker,
-            applicableTo: [typeof(SpriteInteractive)], requireAssignableFrom: typeof(SpriteWeapon))]
+            applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeSpriteWeapon))]
         public string? PrimaryWeaponAssetKey { get; set; }
 
         //TODO: THIS NEED A NEW EDITOR.
         //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
         [AssetMetadata("Attachments", "The list of attachments for the sprite.",
             PropertyEditorGroup.Attachment, PropertyEditorType.MultipleSpritePicker,
-            applicableTo: [typeof(SpriteBase)], requireAssignableFrom: typeof(SpriteAttachment))]
+            applicableTo: [typeof(AeSprite)], requireAssignableFrom: typeof(AeSpriteAttachment))]
         public List<AssetMetadata>? Attachments { get; set; }
 
         [AssetMetadata("Weapon Assets", "The list of weapons for the sprite.",
             PropertyEditorGroup.Weapons, PropertyEditorType.MultipleSpritePicker,
-            applicableTo: [typeof(SpriteInteractive)], requireAssignableFrom: typeof(SpriteWeapon))]
+            applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeSpriteWeapon))]
         public List<string>? WeaponAssetKeys { get; set; }
 
         #endregion
@@ -205,7 +204,7 @@ namespace Ae.Engine.Metadata
 
         [AssetMetadata("Munition Count", "The number of munitions available for the weapon.",
             PropertyEditorGroup.Munitions, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteWeapon)])]
+            applicableTo: [typeof(AeSpriteWeapon)])]
         public int? MunitionCount { get; set; }
 
         #endregion
@@ -214,22 +213,22 @@ namespace Ae.Engine.Metadata
 
         [AssetMetadata("Frame Width", "The width of each frame in the sprite animation.",
             PropertyEditorGroup.Animation, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteAnimation)])]
+            applicableTo: [typeof(AeSpriteAnimation)])]
         public int? FrameWidth { get; set; }
 
         [AssetMetadata("Frame Height", "The height of each frame in the sprite animation.",
             PropertyEditorGroup.Animation, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteAnimation)])]
+            applicableTo: [typeof(AeSpriteAnimation)])]
         public int? FrameHeight { get; set; }
 
         [AssetMetadata("Frames Per Second", "The number of frames displayed per second in the sprite animation.",
             PropertyEditorGroup.Animation, PropertyEditorType.RangeFloat,
-            applicableTo: [typeof(SpriteAnimation)])]
+            applicableTo: [typeof(AeSpriteAnimation)])]
         public AeRange<float>? FramesPerSecond { get; set; }
 
         [AssetMetadata("Play Mode", "The play mode of the sprite animation.",
             PropertyEditorGroup.Animation, PropertyEditorType.Enum,
-            applicableTo: [typeof(SpriteAnimation)], enumType: typeof(SiAnimationPlayMode))]
+            applicableTo: [typeof(AeSpriteAnimation)], enumType: typeof(SiAnimationPlayMode))]
         public SiAnimationPlayMode? PlayMode { get; set; }
 
         #endregion
@@ -241,13 +240,13 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Munition Assets", "The munitions assets for the weapon.",
             PropertyEditorGroup.Munitions, PropertyEditorType.MultipleSpritePicker,
-            applicableTo: [typeof(SpriteWeapon)],
-            requireAssignableFrom: typeof(SpriteMunition))]
+            applicableTo: [typeof(AeSpriteWeapon)],
+            requireAssignableFrom: typeof(AeSpriteMunition))]
         public string[]? MunitionAssetKeys { get; set; }
 
         [AssetMetadata("Sound Asset", "The sound asset file for the sprite.",
             PropertyEditorGroup.Audio, PropertyEditorType.String,
-            applicableTo: [typeof(SpriteBase)]/*, requireAssignableFrom: typeof(SpriteSound)*/)]
+            applicableTo: [typeof(AeSprite)]/*, requireAssignableFrom: typeof(SpriteSound)*/)]
         public string[]? SoundAssetKeys { get; set; }
 
         /// <summary>
@@ -255,18 +254,18 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Angle Variance", "The variance in degrees that the loaded munition will use for an initial heading angle.",
             PropertyEditorGroup.Munitions, PropertyEditorType.Float,
-            applicableTo: [typeof(SpriteMunition)])]
+            applicableTo: [typeof(AeSpriteMunition)])]
         public float? AngleVarianceDegrees { get; set; }
 
 
         [AssetMetadata("Fire Delay", "The delay in milliseconds between each shot fired by the weapon.",
             PropertyEditorGroup.Munitions, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteWeapon)])]
+            applicableTo: [typeof(AeSpriteWeapon)])]
         public int? FireDelayMilliseconds { get; set; }
 
         [AssetMetadata("Damage", "The amount of damage dealt by the munition.",
             PropertyEditorGroup.Munitions, PropertyEditorType.RangeInt,
-            applicableTo: [typeof(SpriteMunition)])]
+            applicableTo: [typeof(AeSpriteMunition)])]
         public AeRange<int>? Damage { get; set; }
 
         /// <summary>
@@ -274,7 +273,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Max Lock-On Angle", "The maximum angle, in degrees, within which a target can be locked on.",
             PropertyEditorGroup.Weapons, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteWeapon)])]
+            applicableTo: [typeof(AeSpriteWeapon)])]
         public int? MaxLockOnAngle { get; set; }
 
         /// <summary>
@@ -282,7 +281,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Max Locks", "The maximum number of targets that can be locked on at once.",
             PropertyEditorGroup.Weapons, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteWeapon)])]
+            applicableTo: [typeof(AeSpriteWeapon)])]
         public int? MaxLocks { get; set; }
 
         /// <summary>
@@ -290,7 +289,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Min Lock Distance", "The minimum distance, in units, required to initiate a lock.",
             PropertyEditorGroup.Weapons, PropertyEditorType.Float,
-            applicableTo: [typeof(SpriteWeapon)])]
+            applicableTo: [typeof(AeSpriteWeapon)])]
         public float? MinLockDistance { get; set; }
 
         /// <summary>
@@ -298,12 +297,12 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Max Lock Distance", "The maximum distance, in units, required to initiate a lock.",
             PropertyEditorGroup.Weapons, PropertyEditorType.Float,
-            applicableTo: [typeof(SpriteWeapon)])]
+            applicableTo: [typeof(AeSpriteWeapon)])]
         public float? MaxLockDistance { get; set; }
 
         [AssetMetadata("Explodes On Impact", "Indicates whether the munition explodes on impact.",
             PropertyEditorGroup.Munitions, PropertyEditorType.Boolean,
-            applicableTo: [typeof(SpriteMunition)])]
+            applicableTo: [typeof(AeSpriteMunition)])]
         public bool? ExplodesOnImpact { get; set; }
 
         /// <summary>
@@ -311,7 +310,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Seeking Escape Angle", "The viewing angle that the munition will use for seeking/locking.",
             PropertyEditorGroup.Munitions, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteMunition)])]
+            applicableTo: [typeof(AeSpriteMunition)])]
         public int? SeekingEscapeAngleDegrees { get; set; }
 
         /// <summary>
@@ -319,7 +318,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Seeking Escape Distance", "The viewing distance that the munition will use for seeking/locking.",
             PropertyEditorGroup.Munitions, PropertyEditorType.Integer,
-            applicableTo: [typeof(SpriteMunition)])]
+            applicableTo: [typeof(AeSpriteMunition)])]
         public int? SeekingEscapeDistance { get; set; }
 
         /// <summary>
@@ -327,7 +326,7 @@ namespace Ae.Engine.Metadata
         /// </summary>
         [AssetMetadata("Seeking Rotation Rate", "Rate in degrees that the munition will rotate towards it target.",
             PropertyEditorGroup.Munitions, PropertyEditorType.Float,
-            applicableTo: [typeof(SpriteMunition)])]
+            applicableTo: [typeof(AeSpriteMunition)])]
         public float? SeekingRotationRateDegrees { get; set; }
 
         #endregion

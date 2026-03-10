@@ -5,7 +5,7 @@ using Ae.Engine.Sprite;
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class SkyBoxSpriteTickController
-        : VectoredTickControllerBase<SpriteSkyBox>
+        : VectoredTickControllerBase<AeSpriteSkyBox>
     {
         public SkyBoxSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)

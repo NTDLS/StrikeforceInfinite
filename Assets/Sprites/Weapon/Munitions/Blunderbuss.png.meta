@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Blunderbuss",
-  "Class": "SpriteProjectileMunition",
+  "Class": "AeSpriteProjectileMunition",
   "Name": "Blunderbuss",
   "Description": "",
   "Speed": {

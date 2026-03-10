@@ -8,11 +8,11 @@ using System.Linq;
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class TextBlocksSpriteTickController
-        : VectoredTickControllerBase<SpriteTextBlock>
+        : VectoredTickControllerBase<AeSpriteTextBlock>
     {
-        public SpriteTextBlock PlayerStatsText { get; private set; }
-        public SpriteTextBlock DebugText { get; private set; }
-        public SpriteTextBlock PausedText { get; private set; }
+        public AeSpriteTextBlock PlayerStatsText { get; private set; }
+        public AeSpriteTextBlock DebugText { get; private set; }
+        public AeSpriteTextBlock PausedText { get; private set; }
 
 
         public TextBlocksSpriteTickController(AeEngine engine, SpriteManager manager)
@@ -39,31 +39,31 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 
         #region Factories.
 
-        public SpriteRadarPositionTextBlock CreateRadarPosition(TextFormat format, SolidColorBrush color, AeVector location)
+        public AeSpriteRadarPositionTextBlock CreateRadarPosition(TextFormat format, SolidColorBrush color, AeVector location)
         {
-            var obj = new SpriteRadarPositionTextBlock(Engine, format, color, location);
+            var obj = new AeSpriteRadarPositionTextBlock(Engine, format, color, location);
             SpriteManager.Insert(obj);
             return obj;
         }
 
-        public SpriteTextBlock Add(TextFormat format, SolidColorBrush color, AeVector location, bool isPositionStatic)
+        public AeSpriteTextBlock Add(TextFormat format, SolidColorBrush color, AeVector location, bool isPositionStatic)
         {
-            var obj = new SpriteTextBlock(Engine, format, color, location, isPositionStatic);
+            var obj = new AeSpriteTextBlock(Engine, format, color, location, isPositionStatic);
             SpriteManager.Insert(obj);
             return obj;
         }
 
-        public SpriteTextBlock Add(TextFormat format, SolidColorBrush color, AeVector location, bool isPositionStatic, string name)
+        public AeSpriteTextBlock Add(TextFormat format, SolidColorBrush color, AeVector location, bool isPositionStatic, string name)
         {
-            var obj = new SpriteTextBlock(Engine, format, color, location, isPositionStatic);
+            var obj = new AeSpriteTextBlock(Engine, format, color, location, isPositionStatic);
             obj.SpriteTag = name;
             SpriteManager.Insert(obj);
             return obj;
         }
 
-        public SpriteTextBlock Add(TextFormat format, SolidColorBrush color, AeVector location, bool isPositionStatic, string name, string text)
+        public AeSpriteTextBlock Add(TextFormat format, SolidColorBrush color, AeVector location, bool isPositionStatic, string name, string text)
         {
-            var obj = new SpriteTextBlock(Engine, format, color, location, isPositionStatic);
+            var obj = new AeSpriteTextBlock(Engine, format, color, location, isPositionStatic);
             obj.SpriteTag = name;
             obj.Text = text;
             SpriteManager.Insert(obj);

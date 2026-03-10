@@ -8,7 +8,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
     /// These are just minimal non-collidable, non interactive, generic bitmap sprites.
     /// </summary>
     public class MinimalBitmapSpriteTickController
-        : VectoredCollidableTickControllerBase<SpriteMinimalBitmap>
+        : VectoredCollidableTickControllerBase<AeSpriteMinimalBitmap>
     {
         public MinimalBitmapSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)

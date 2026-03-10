@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Enemy/Boss/Devastator/Hull",
-  "Class": "SpriteEnemy",
+  "Class": "AeSpriteEnemy",
   "Name": "Devastator",
   "Description": "TODO: Add a description",
   "Speed": {

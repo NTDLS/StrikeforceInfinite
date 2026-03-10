@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Photon Torpedo",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Photon Torpedo",
   "Description": "",
   "MunitionCount": 65535,

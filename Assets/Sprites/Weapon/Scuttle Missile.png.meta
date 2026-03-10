@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Scuttle Missile",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Scuttle Missile Missile",
   "Description": "",
   "MunitionCount": 65535,

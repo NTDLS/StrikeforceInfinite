@@ -20,8 +20,8 @@ namespace Ae.Engine.Compiler
 
         private readonly static Dictionary<string, ConstructorSignatures> ConstructorSignaturesByBaseClass = new()
         {
-            { "AIStateMachine", new ConstructorSignatures("AeEngine engine, SpriteInteractive owner", "engine, owner") },
-            { "SpriteWeapon", new ConstructorSignatures("AeEngine engine, SpriteBase owner, string assetKey", "engine, owner, assetKey") },
+            { "AeAIStateMachine", new ConstructorSignatures("AeEngine engine, AeSpriteInteractive owner", "engine, owner") },
+            { "AeSpriteWeapon", new ConstructorSignatures("AeEngine engine, AeSprite owner, string assetKey", "engine, owner, assetKey") },
         };
 
         public static string Get(string? baseClassName, string className, string userCode, Type interfaceType, string friendlyName)

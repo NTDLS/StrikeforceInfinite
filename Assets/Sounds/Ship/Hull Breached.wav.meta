@@ -2,5 +2,5 @@
   "AssetKey": "Sounds/Ship/Hull Breached",
   "SoundVolume": 0.5,
   "LoopSound": false,
-  "Class": "AudioClip"
+  "Class": "AeAudioClip"
 }

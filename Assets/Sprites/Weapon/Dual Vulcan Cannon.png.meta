@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Dual Vulcan Cannon",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Dual Vulcan Cannon",
   "Description": "",
   "MunitionCount": 65535,

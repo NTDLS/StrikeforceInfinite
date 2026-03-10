@@ -1,0 +1,329 @@
+﻿using Ae.Engine.Audio;
+using Ae.Engine.Helpers;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Metadata;
+using Ae.Engine.Sprite.Base;
+using Ae.Engine.Sprite.Munition;
+using NTDLS.Helpers;
+using System;
+using System.Linq;
+using static Ae.Engine.AeConstants;
+
+namespace Ae.Engine.Sprite.Interactive
+{
+    /// <summary>
+    /// The player base is a sub-class of the ship base. It is only used by the Player and as a model for menu selections.
+    /// </summary>
+    [AssetClass("Bitmap", "", AeBaseAssetType.Image, true)]
+    public class AeSpritePlayer
+        : AeSpriteInteractive
+    {
+        public readonly string BoostResourceName = "SpritePlayerBase:Boost";
+
+        public AeAudioClip? AmmoLowSound { get; private set; }
+        public AeAudioClip? AmmoEmptySound { get; private set; }
+        public AeAudioClip? ShipEngineRoarSound { get; private set; }
+        public AeAudioClip? ShipEngineIdleSound { get; private set; }
+        public AeAudioClip? AllSystemsGoSound { get; private set; }
+        public AeAudioClip? ShieldFailSound { get; private set; }
+        public AeAudioClip? ShieldDownSound { get; private set; }
+        public AeAudioClip? ShieldMaxSound { get; private set; }
+        public AeAudioClip? ShieldNominalSound { get; private set; }
+        public AeAudioClip? SystemsFailingSound { get; private set; }
+        public AeAudioClip? HullBreachedSound { get; private set; }
+        public AeAudioClip? IntegrityLowSound { get; private set; }
+        public AeAudioClip? ShipEngineBoostSound { get; private set; }
+        public int MaxHullHealth { get; set; }
+        public int MaxShieldPoints { get; set; }
+        public AeSpriteAnimation? ThrusterAnimation { get; private set; }
+        public AeSpriteAnimation? BoosterAnimation { get; private set; }
+        public AeSpriteWeapon? PrimaryWeapon { get; private set; }
+        public AeSpriteWeapon? SelectedSecondaryWeapon { get; private set; }
+
+        public AeSpritePlayer(AeEngine engine)
+            : base(engine, (string?)null)
+        {
+        }
+
+        public AeSpritePlayer(AeEngine engine, string assetKey)
+            : base(engine, assetKey)
+        {
+            OnHit += SpritePlayer_OnHit;
+
+            AmmoLowSound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
+            SystemsFailingSound = Engine.Assets.GetAudio("Sounds/Ship/Systems Failing");
+            HullBreachedSound = Engine.Assets.GetAudio("Sounds/Ship/Hull Breached");
+            IntegrityLowSound = Engine.Assets.GetAudio("Sounds/Ship/Integrity Low");
+            ShieldFailSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Fail");
+            ShieldDownSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Down");
+            ShieldMaxSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Max");
+            ShieldNominalSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Nominal");
+            AllSystemsGoSound = Engine.Assets.GetAudio("Sounds/Ship/All Systems Go");
+            AmmoLowSound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
+            AmmoEmptySound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Empty");
+            ShipEngineRoarSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Roar");
+            ShipEngineIdleSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Idle");
+            ShipEngineBoostSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Boost");
+
+            Orientation = AeVector.One();
+            Throttle = 0;
+
+            RenewableResources.Create(BoostResourceName, Engine.Settings.MaxPlayerBoostAmount,
+                Engine.Settings.MaxPlayerBoostAmount, 250f, Engine.Settings.MaxPlayerBoostAmount / 10);
+
+            if (ThrusterAnimation == null || ThrusterAnimation.IsQueuedForDeletion == true)
+            {
+                ThrusterAnimation = Engine.Sprites.Animations.Add("Sprites/Animation/ThrustStandard32x32", (o) =>
+                {
+                    o.SpriteTag = "PlayerForwardThrust";
+                    o.IsVisible = false;
+                    o.OwnerUID = UID;
+                    o.OnVisibilityChanged += (sender) => UpdateThrustAnimationPositions();
+                });
+            }
+
+            if (BoosterAnimation == null || BoosterAnimation.IsQueuedForDeletion == true)
+            {
+                BoosterAnimation = Engine.Sprites.Animations.Add("Sprites/Animation/ThrustBoost32x32", (o) =>
+                {
+                    o.SpriteTag = "PlayerForwardThrust";
+                    o.IsVisible = false;
+                    o.OwnerUID = UID;
+                    o.OnVisibilityChanged += (sender) => UpdateThrustAnimationPositions();
+                });
+            }
+
+            CenterInUniverse();
+        }
+
+        public override void Cleanup()
+        {
+            ThrusterAnimation?.QueueForDelete();
+            BoosterAnimation?.QueueForDelete();
+            base.Cleanup();
+        }
+
+        public override void VisibilityChanged()
+        {
+            UpdateThrustAnimationPositions();
+            if (IsVisible == false)
+            {
+                ThrusterAnimation?.IsVisible = false;
+                BoosterAnimation?.IsVisible = false;
+                ShipEngineIdleSound?.Stop();
+                ShipEngineRoarSound?.Stop();
+            }
+        }
+
+        public override void OrientationChanged() => UpdateThrustAnimationPositions();
+
+        //The player position does not change, only the background offset changes... hmmmm. :/
+        public override void LocationChanged() => UpdateThrustAnimationPositions();
+
+        public string GetLoadoutHelpText()
+        {
+            string primaryWeapon = "None";
+
+            if (!string.IsNullOrEmpty(Metadata.PrimaryWeaponAssetKey))
+            {
+                var primaryWeaponMetadata = Engine.Assets.GetMetadata(Metadata.PrimaryWeaponAssetKey);
+                primaryWeapon = $"{primaryWeaponMetadata.Name} x{primaryWeaponMetadata.MunitionCount}";
+            }
+
+            string secondaryWeapons = string.Empty;
+            if (Metadata.WeaponAssetKeys != null)
+            {
+                foreach (var weaponAssetKey in Metadata.WeaponAssetKeys)
+                {
+                    var secondaryWeaponMetadata = Engine.Assets.GetMetadata(weaponAssetKey);
+                    secondaryWeapons += $"{secondaryWeaponMetadata.Name} x{secondaryWeaponMetadata.MunitionCount}\n{new string(' ', 20)}";
+                }
+            }
+
+            string result = $"             Name : {Metadata.Name}\n";
+            result += $"   Primary weapon : {primaryWeapon.Trim()}\n";
+            result += $"Secondary Weapons : {secondaryWeapons.Trim()}\n";
+            result += $"          Shields : {Metadata.Shields:n0}\n";
+            result += $"             Hull : {Metadata.Hull:n0}\n";
+            result += $"            Speed : {Metadata.Speed:n1}\n";
+            result += $"         Throttle : {Metadata.MaxThrottle:n1}\n";
+            result += $"\n{Metadata.Description}";
+
+            return result;
+        }
+
+        /// <summary>
+        /// Resets ship state, health etc while keeping the existing class.
+        /// </summary>
+        public void Reset()
+        {
+            ReviveDeadOrExploded();
+
+            //TODO: We should reload metadata and reapply it.
+        }
+
+        public override void AddShieldHealth(int pointsToAdd)
+        {
+            if (ShieldHealth < Engine.Settings.MaxShieldHealth && ShieldHealth + pointsToAdd >= Engine.Settings.MaxShieldHealth)
+            {
+                ShieldMaxSound?.Play(); //If we didn't have full shields but now we do, tell the player.
+            }
+
+            base.AddShieldHealth(pointsToAdd);
+        }
+
+        private void UpdateThrustAnimationPositions()
+        {
+            var pointBehind = (Orientation * -1) * new AeVector(40, 40);
+
+            if (ThrusterAnimation != null)
+            {
+                if (IsVisible)
+                {
+                    ThrusterAnimation.Orientation = Orientation;
+                    ThrusterAnimation.Location = Location + pointBehind;
+                }
+            }
+
+            if (BoosterAnimation != null)
+            {
+                if (IsVisible)
+                {
+                    BoosterAnimation.Orientation = Orientation;
+                    BoosterAnimation.Location = Location + pointBehind;
+                }
+            }
+        }
+
+        public override void MunitionHit(AeSpriteMunition munition)
+        {
+            Hit(munition);
+            if (HullHealth <= 0)
+            {
+                //Explode(); //We don't auto delete the player because the engine always assumes its valid. 
+            }
+        }
+
+        public override bool TryMunitionHit(AeSpriteMunition munition, AeVector hitTestPosition)
+        {
+            if (munition.FiredFromType == SiFiredFromType.Enemy)
+            {
+                return IntersectsAabb(hitTestPosition);
+            }
+            return false;
+        }
+
+        private void SpritePlayer_OnHit(AeSprite sender, SiDamageType damageType, int damageAmount)
+        {
+            if (damageType == SiDamageType.Shield)
+            {
+                if (ShieldHealth == 0)
+                {
+                    ShieldDownSound?.Play();
+                }
+            }
+
+            //This is the hit that took us under the threshold.
+            if (HullHealth < 100 && HullHealth + damageAmount > 100)
+            {
+                IntegrityLowSound?.Play();
+            }
+            else if (HullHealth < 50 && HullHealth + damageAmount > 50)
+            {
+                SystemsFailingSound?.Play();
+            }
+            else if (HullHealth < 20 && HullHealth + damageAmount > 20)
+            {
+                HullBreachedSound?.Play();
+            }
+        }
+
+        #region Weapons selection and evaluation.
+
+        public void SetPrimaryWeapon(string assetKey, int munitionCount)
+        {
+            var asset = Engine.Assets.GetAsset(assetKey)
+                ?? throw new Exception($"The metadata for the weapon sprite '{assetKey}' does not exist.");
+
+            var className = (string.IsNullOrEmpty(asset.ControllerName) ? asset.Metadata.Class : asset.ControllerName)
+                ?? throw new Exception($"The sprite {assetKey} does not have a class or controller defined in its metadata.");
+            var type = AeReflection.GetTypeByName(className);
+
+            PrimaryWeapon = (AeSpriteWeapon)Activator.CreateInstance(type, [Engine, this, assetKey]).EnsureNotNull();
+            PrimaryWeapon.MunitionQuantity = munitionCount;
+        }
+
+        public AeSpriteWeapon? SelectPreviousAvailableUsableSecondaryWeapon()
+        {
+            AeSpriteWeapon? previousWeapon = null;
+
+            foreach (var weapon in Weapons)
+            {
+                if (weapon == SelectedSecondaryWeapon)
+                {
+                    if (previousWeapon == null)
+                    {
+                        return SelectLastAvailableUsableSecondaryWeapon(); //No suitable weapon found after the current one. Go back to the end.
+                    }
+                    SelectedSecondaryWeapon = previousWeapon;
+                    return previousWeapon;
+                }
+
+                previousWeapon = weapon;
+            }
+
+            return SelectFirstAvailableUsableSecondaryWeapon(); //No suitable weapon found after the current one. Go back to the beginning.
+        }
+
+        public AeSpriteWeapon? SelectNextAvailableUsableSecondaryWeapon()
+        {
+            bool selectNextWeapon = false;
+
+            foreach (var weapon in Weapons)
+            {
+                if (selectNextWeapon)
+                {
+                    SelectedSecondaryWeapon = weapon;
+                    return weapon;
+                }
+
+                if (weapon == SelectedSecondaryWeapon) //Find the current weapon in the collection;
+                {
+                    selectNextWeapon = true;
+                }
+            }
+
+            return SelectFirstAvailableUsableSecondaryWeapon(); //No suitable weapon found after the current one. Go back to the beginning.
+        }
+
+        public AeSpriteWeapon? SelectFirstAvailableUsableSecondaryWeapon()
+        {
+            var existingWeapon = (from o in Weapons where o.MunitionQuantity > 0 select o).FirstOrDefault();
+            if (existingWeapon != null)
+            {
+                SelectedSecondaryWeapon = existingWeapon;
+            }
+            else
+            {
+                SelectedSecondaryWeapon = null;
+            }
+            return SelectedSecondaryWeapon;
+        }
+
+        public AeSpriteWeapon? SelectLastAvailableUsableSecondaryWeapon()
+        {
+            var existingWeapon = (from o in Weapons where o.MunitionQuantity > 0 select o).LastOrDefault();
+            if (existingWeapon != null)
+            {
+                SelectedSecondaryWeapon = existingWeapon;
+            }
+            else
+            {
+                SelectedSecondaryWeapon = null;
+            }
+            return SelectedSecondaryWeapon;
+        }
+
+        #endregion
+    }
+}

@@ -1,5 +1,5 @@
-private SpriteAttachment? _thrusterLeft;
-private SpriteAttachment? _thrusterRight;
+private AeSpriteAttachment? _thrusterLeft;
+private AeSpriteAttachment? _thrusterRight;
 
 public override void OnMaterialized()
 {

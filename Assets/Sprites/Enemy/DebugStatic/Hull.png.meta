@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Enemy/DebugStatic/Hull",
-  "Class": "SpriteEnemy",
+  "Class": "AeSpriteEnemy",
   "Description": "",
   "Speed": {
     "Min": 0,

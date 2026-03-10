@@ -2,5 +2,5 @@
   "AssetKey": "Sounds/Explode/3",
   "SoundVolume": 0.5,
   "LoopSound": false,
-  "Class": "AudioClip"
+  "Class": "AeAudioClip"
 }

@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Generic",
-  "Class": "SpriteProjectileMunition",
+  "Class": "AeSpriteProjectileMunition",
   "Name": "Generic",
   "Description": "",
   "Speed": {

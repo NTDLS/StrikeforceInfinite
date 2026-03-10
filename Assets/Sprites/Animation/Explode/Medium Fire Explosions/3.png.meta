@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Animation/Explode/Medium Fire Explosions/3",
-  "Class": "SpriteAnimation",
+  "Class": "AeSpriteAnimation",
   "FrameWidth": 256,
   "FrameHeight": 256,
   "FramesPerSecond": {

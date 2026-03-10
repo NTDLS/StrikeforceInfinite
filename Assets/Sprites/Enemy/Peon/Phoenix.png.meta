@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Enemy/Peon/Phoenix",
-  "Class": "SpriteEnemy",
+  "Class": "AeSpriteEnemy",
   "Description": "",
   "AIControllers": [
     "Classes/AI/AILogisticsOffScreenReentry",

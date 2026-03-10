@@ -2,5 +2,5 @@
   "AssetKey": "Sounds/Ship/Engine Boost",
   "SoundVolume": 0.5,
   "LoopSound": true,
-  "Class": "AudioClip"
+  "Class": "AeAudioClip"
 }

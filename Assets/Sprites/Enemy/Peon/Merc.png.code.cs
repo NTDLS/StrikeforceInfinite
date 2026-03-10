@@ -1,5 +1,5 @@
-private SpriteAnimation? _thrusterAnimation;
-private SpriteAnimation? _boosterAnimation;
+private AeSpriteAnimation? _thrusterAnimation;
+private AeSpriteAnimation? _boosterAnimation;
 
 public override void OnMaterialized()
 {
@@ -48,7 +48,7 @@ private void UpdateThrustAnimationPositions()
 	}
 }
 
-private void EnemyBase_OnVisibilityChanged(SpriteBase sender)
+private void EnemyBase_OnVisibilityChanged(AeSprite sender)
 {
 	_thrusterAnimation?.IsVisible = false;
 	_boosterAnimation?.IsVisible = false;

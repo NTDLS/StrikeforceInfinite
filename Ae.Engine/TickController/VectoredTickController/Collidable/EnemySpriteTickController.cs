@@ -5,7 +5,7 @@ using Ae.Engine.Sprite.Interactive.Ship;
 namespace Ae.Engine.TickController.VectoredTickController.Collidable
 {
     public class EnemySpriteTickController
-        : VectoredCollidableTickControllerBase<SpriteEnemy>
+        : VectoredCollidableTickControllerBase<AeSpriteEnemy>
     {
         private readonly AeEngine _engine;
 

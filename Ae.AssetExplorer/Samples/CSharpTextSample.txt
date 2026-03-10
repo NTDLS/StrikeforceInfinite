@@ -52,7 +52,7 @@ private void UpdateThrustAnimationPositions()
 	}
 }
 
-private void EnemyBase_OnVisibilityChanged(SpriteBase sender)
+private void EnemyBase_OnVisibilityChanged(AeSprite sender)
 {
 	_thrusterAnimation?.IsVisible = false;
 	_boosterAnimation?.IsVisible = false;

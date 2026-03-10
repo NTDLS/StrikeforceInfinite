@@ -3,7 +3,7 @@ using Ae.AssetExplorer.Forms;
 using Ae.Engine;
 using Ae.Engine.Compiler;
 using Ae.Engine.ExtensionMethods;
-using Ae.Engine.Sprite.Animation;
+using Ae.Engine.Sprite;
 using Ae.Engine.Sprite.Base;
 using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
@@ -75,7 +75,7 @@ namespace Ae.AssetExplorer
 
         private void DrawingSurface_MouseDown(object? sender, MouseEventArgs e)
         {
-            List<SpriteBase>? sprites = null;
+            List<AeSprite>? sprites = null;
 
             _engine.Invoke(() =>
             {
@@ -139,7 +139,7 @@ namespace Ae.AssetExplorer
         private void InspectMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
             (sender as ToolStripDropDown)?.Close();
-            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+            if (e.ClickedItem?.Tag is not AeSprite sprite) return;
 
             _engine.Development?.EnsureVisibility();
             _engine.Development?.EnqueueCommand($"Sprite-Inspect {sprite.UID}");
@@ -148,7 +148,7 @@ namespace Ae.AssetExplorer
         private void WatchMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
             (sender as ToolStripDropDown)?.Close();
-            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+            if (e.ClickedItem?.Tag is not AeSprite sprite) return;
 
             Task.Run(() =>
             {
@@ -160,7 +160,7 @@ namespace Ae.AssetExplorer
         private void DeleteMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
             (sender as ToolStripDropDown)?.Close();
-            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+            if (e.ClickedItem?.Tag is not AeSprite sprite) return;
 
             sprite.QueueForDelete();
         }
@@ -256,7 +256,7 @@ namespace Ae.AssetExplorer
         /// </summary>
         /// <param name="sprite"></param>
         /// <param name="propertyItem"></param>
-        private void PropertiesEdited(SpriteBase sprite, PropertyItem propertyItem)
+        private void PropertiesEdited(AeSprite sprite, PropertyItem propertyItem)
         {
 
         }
@@ -292,7 +292,7 @@ namespace Ae.AssetExplorer
 
                     var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, WriteLog, (o) =>
                     {
-                        if (o is SpriteAnimation spriteAnimation)
+                        if (o is AeSpriteAnimation spriteAnimation)
                         {
                             spriteAnimation.PlayMode = SiAnimationPlayMode.Infinite;
                         }

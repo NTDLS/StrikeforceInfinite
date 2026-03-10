@@ -2,5 +2,5 @@
   "AssetKey": "Sounds/Ship/Radar Blips",
   "SoundVolume": 0.5,
   "LoopSound": false,
-  "Class": "AudioClip"
+  "Class": "AeAudioClip"
 }

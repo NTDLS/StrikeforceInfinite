@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Blunderbuss",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Blunderbuss",
   "Description": "",
   "MunitionCount": 65535,

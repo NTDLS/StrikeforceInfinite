@@ -12,25 +12,25 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
     /// This is the controller for the single local player.
     /// </summary>
     public class PlayerSpriteTickController
-        : PlayerSpriteTickControllerBase<SpritePlayer>
+        : PlayerSpriteTickControllerBase<AeSpritePlayer>
     {
         private readonly AeEngine _engine;
         private readonly Stopwatch _inputDelay = new();
 
         public PlayerStats Stats { get; set; } = new(); //This should be saved.
-        public SpritePlayer Sprite { get; set; }
+        public AeSpritePlayer Sprite { get; set; }
 
         public PlayerSpriteTickController(AeEngine engine)
             : base(engine)
         {
-            Sprite = new SpritePlayer(engine); //We want to make sure this is never null.
+            Sprite = new AeSpritePlayer(engine); //We want to make sure this is never null.
 
             engine.OnInitializationComplete += (AeEngine engine) =>
             {
                 //This is where the player is created.
                 if (engine.ExecutionMode == SiEngineExecutionMode.Play)
                 {
-                    Sprite = engine.Sprites.Add<SpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
+                    Sprite = engine.Sprites.Add<AeSpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
                     {
                         o.IsVisible = false;
                     });
@@ -38,7 +38,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
                 else
                 {
                     // In edit mode, the player is just a placeholder and is not added to the collecton.
-                    Sprite = engine.Sprites.Create<SpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
+                    Sprite = engine.Sprites.Create<AeSpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
                     {
                         o.IsVisible = true;
                     });
@@ -54,7 +54,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             //Remove the player from the sprite collection.
             Sprite.QueueForDelete();
             Sprite.Cleanup();
-            Sprite = Engine.Sprites.Add<SpritePlayer>(assetKey, (o) =>
+            Sprite = Engine.Sprites.Add<AeSpritePlayer>(assetKey, (o) =>
             {
                 o.IsVisible = false;
             });

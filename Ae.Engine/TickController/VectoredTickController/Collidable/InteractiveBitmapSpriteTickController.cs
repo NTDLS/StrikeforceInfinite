@@ -8,7 +8,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Collidable
     /// These are generic collidable, interactive bitmap sprites. They can take damage and even shoot back.
     /// </summary>
     public class InteractiveBitmapSpriteTickController
-        : VectoredCollidableTickControllerBase<SpriteInteractiveBitmap>
+        : VectoredCollidableTickControllerBase<AeSpriteInteractiveBitmap>
     {
         public InteractiveBitmapSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)

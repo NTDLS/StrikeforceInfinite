@@ -14,20 +14,21 @@ public override void OnMaterialized()
     owner.OnHit += Owner_OnHit;
 
     SetAIState(new GotoRadiusOfObservedObject(this));
+
 }
 
 #region AI States.
 
 private class GotoRadiusOfObservedObject
-    : AIStateHandler
+    : AeAIStateHandler
 {
-    private readonly AIStateMachine _stateMachine;
+    private readonly AeAIStateMachine _stateMachine;
     private SimpleDirection _rotateDirection;
     private float _rotationAngle = AeRandom.Variance(5, 0.10f);
     private readonly AeVector _targetLocation;
-    private readonly SpriteBase _targetPlayerSprite;
+    private readonly AeSprite _targetPlayerSprite;
 
-    public GotoRadiusOfObservedObject(AIStateMachine stateMachine)
+    public GotoRadiusOfObservedObject(AeAIStateMachine stateMachine)
     {
         _stateMachine = stateMachine;
         _targetPlayerSprite = stateMachine.Engine.Sprites.AllVisiblePlayers.First();
@@ -60,12 +61,12 @@ private class GotoRadiusOfObservedObject
 }
 
 private class SteadyOnCurrentPath
-    : AIStateHandler
+    : AeAIStateHandler
 {
-    private readonly AIStateMachine _stateMachine;
+    private readonly AeAIStateMachine _stateMachine;
     private float _burndownEpochs = 3;
 
-    public SteadyOnCurrentPath(AIStateMachine stateMachine)
+    public SteadyOnCurrentPath(AeAIStateMachine stateMachine)
     {
         _stateMachine = stateMachine;
     }
@@ -86,7 +87,7 @@ private class SteadyOnCurrentPath
 
 #endregion
 
-private void Owner_OnHit(SpriteBase sender, SiDamageType damageType, int damageAmount)
+private void Owner_OnHit(AeSprite sender, SiDamageType damageType, int damageAmount)
 {
     /*
     if (sender.HullHealth <= 10)
@@ -96,3 +97,4 @@ private void Owner_OnHit(SpriteBase sender, SiDamageType damageType, int damageA
     }
     */
 }
+

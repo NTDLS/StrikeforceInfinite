@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Frag Missile",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Frag Missile",
   "Description": "",
   "MunitionCount": 65535,

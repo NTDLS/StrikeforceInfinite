@@ -12,7 +12,7 @@ using static Ae.Engine.AeConstants;
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class ParticleSpriteTickController
-        : VectoredTickControllerBase<SpriteParticle>
+        : VectoredTickControllerBase<AeSpriteParticle>
     {
         public ParticleSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
@@ -36,7 +36,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public void AddAt(SpriteBase sprite, Color4 color, int count, Size? size = null)
+        public void AddAt(AeSprite sprite, Color4 color, int count, Size? size = null)
         {
             for (int i = 0; i < count; i++)
             {
@@ -44,16 +44,16 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public SpriteParticle AddAt(SpriteBase sprite, Color4 color, Size? size = null)
+        public AeSpriteParticle AddAt(AeSprite sprite, Color4 color, Size? size = null)
         {
-            var obj = new SpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
+            var obj = new AeSpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
             SpriteManager.Insert(obj);
             return obj;
         }
 
-        public SpriteParticle AddAt(AeVector location, Color4 color, Size? size = null)
+        public AeSpriteParticle AddAt(AeVector location, Color4 color, Size? size = null)
         {
-            var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1), color)
+            var obj = new AeSpriteParticle(Engine, location, size ?? new Size(1, 1), color)
             {
                 IsVisible = true
             };
@@ -61,9 +61,9 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
-        public SpriteParticle AddAt(AeVector location, Size? size = null)
+        public AeSpriteParticle AddAt(AeVector location, Size? size = null)
         {
-            var obj = new SpriteParticle(Engine, location, size ?? new Size(1, 1))
+            var obj = new AeSpriteParticle(Engine, location, size ?? new Size(1, 1))
             {
                 IsVisible = true
             };
@@ -71,7 +71,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
-        public void ParticleBlastAt(SpriteBase at, int maxParticleCount)
+        public void ParticleBlastAt(AeSprite at, int maxParticleCount)
         {
             Engine.Events.Add(() => ParticleBlastAt(at.Location, maxParticleCount));
         }
@@ -153,7 +153,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public void ParticleCloud(int particleCount, SpriteBase at)
+        public void ParticleCloud(int particleCount, AeSprite at)
             => ParticleCloud(particleCount, at.Location);
 
         public void ParticleCloud(int particleCount, AeVector location)

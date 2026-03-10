@@ -87,11 +87,11 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public AudioClip GetAudio(string assetKey)
+        public AeAudioClip GetAudio(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
-                var audioClip = assetContainer.Object as AudioClip
+                var audioClip = assetContainer.Object as AeAudioClip
                     ?? throw new FileNotFoundException($"Asset could not be converted to audio: {assetKey}");
                 audioClip.SetInitialVolume(assetContainer.Metadata.SoundVolume ?? 1);
                 audioClip.SetLoopForever(assetContainer.Metadata.LoopSound ?? false);
@@ -306,7 +306,7 @@ namespace Ae.Engine.Manager
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         using var stream = new MemoryStream(bytes);
-                        var obj = new AudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
+                        var obj = new AeAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
 
                         return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }

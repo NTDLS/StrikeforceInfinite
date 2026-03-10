@@ -335,7 +335,7 @@ namespace Ae.Engine.Manager
 
         public void CommandHandler_Sprite_ListTypes(InterrogationCommand command)
         {
-            var spriteTypes = AeReflection.GetSubClassesOf<SpriteBase>();
+            var spriteTypes = AeReflection.GetSubClassesOf<AeSprite>();
 
             StringBuilder text = new();
 

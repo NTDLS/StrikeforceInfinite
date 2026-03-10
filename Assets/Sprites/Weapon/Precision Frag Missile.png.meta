@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Precision Frag Missile",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Precision Frag Missile",
   "Description": "",
   "MunitionCount": 65535,

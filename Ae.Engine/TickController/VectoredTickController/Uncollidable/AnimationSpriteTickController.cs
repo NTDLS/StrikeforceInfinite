@@ -1,13 +1,13 @@
 ﻿using Ae.Engine.Helpers;
 using Ae.Engine.Manager;
 using Ae.Engine.Mathematics;
-using Ae.Engine.Sprite.Animation;
+using Ae.Engine.Sprite;
 using Ae.Engine.Sprite.Base;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class AnimationSpriteTickController
-        : VectoredTickControllerBase<SpriteAnimation>
+        : VectoredTickControllerBase<AeSpriteAnimation>
     {
         public AnimationSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
@@ -30,7 +30,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// </summary>
         /// <param name="animation"></param>
         /// <param name="defaultPosition"></param>
-        public void Insert(SpriteAnimation animation, SpriteBase defaultPosition)
+        public void Insert(AeSpriteAnimation animation, AeSprite defaultPosition)
         {
             animation.Location = defaultPosition.Location.Clone();
             SpriteManager.Insert(animation);
@@ -39,7 +39,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// <summary>
         /// Very small fiery explosion.
         /// </summary>
-        public void AddRandomMicroFireExplosionAt(SpriteBase positionOf)
+        public void AddRandomMicroFireExplosionAt(AeSprite positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Micro Fire Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
@@ -51,7 +51,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// <summary>
         /// Small fiery explosion.
         /// </summary>
-        public void AddRandomSmallFireExplosionAt(SpriteBase positionOf)
+        public void AddRandomSmallFireExplosionAt(AeSprite positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Small Fire Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
@@ -64,7 +64,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// Medium fiery explosion.
         /// </summary>
         /// <param name="PositionOf"></param>
-        public void AddRandomMediumFireExplosionAt(SpriteBase positionOf)
+        public void AddRandomMediumFireExplosionAt(AeSprite positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Medium Fire Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
@@ -77,7 +77,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// Somewhat large fiery explosion.
         /// </summary>
         /// <param name="PositionOf"></param>
-        public void AddRandomLargeFireExplosionAt(SpriteBase positionOf)
+        public void AddRandomLargeFireExplosionAt(AeSprite positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Large Fire Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
@@ -89,7 +89,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// <summary>
         /// Fairly large colorful energy-looking explosions.
         /// </summary>
-        public void AddRandomEnergyExplosionAt(SpriteBase positionOf)
+        public void AddRandomEnergyExplosionAt(AeSprite positionOf)
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Energy Explosions");
             Add(assetKeys.OneOf(), (sprite) =>

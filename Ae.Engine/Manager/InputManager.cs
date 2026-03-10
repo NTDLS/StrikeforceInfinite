@@ -424,9 +424,9 @@ namespace Ae.Engine.Manager
             {
                 _engine.Invoke(() =>
                 {
-                    if (_engine.Sprites.OfType<SpriteEnemy>().Count() > 0)
+                    if (_engine.Sprites.OfType<AeSpriteEnemy>().Count() > 0)
                     {
-                        _engine.Sprites.OfType<SpriteEnemy>()[0].Explode();
+                        _engine.Sprites.OfType<AeSpriteEnemy>()[0].Explode();
                     }
                 });
             }

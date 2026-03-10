@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Star/1",
-  "Class": "SpriteStar",
+  "Class": "AeSpriteStar",
   "Speed": {
     "Min": 10,
     "Max": 30

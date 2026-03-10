@@ -2,5 +2,5 @@
   "AssetKey": "Sounds/Ship/All Systems Go",
   "SoundVolume": 0.5,
   "LoopSound": false,
-  "Class": "AudioClip"
+  "Class": "AeAudioClip"
 }

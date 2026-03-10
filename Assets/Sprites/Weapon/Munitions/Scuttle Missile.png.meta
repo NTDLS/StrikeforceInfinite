@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Scuttle Missile",
-  "Class": "SpriteLockingMunition",
+  "Class": "AeSpriteLockingMunition",
   "Name": "Scuttle Missile Missile",
   "Description": "",
   "Speed": {

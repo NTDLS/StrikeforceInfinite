@@ -16,7 +16,7 @@ namespace Ae.Client
 {
     public partial class FormRenderTarget : Form
     {
-        private readonly List<SpriteBase> highlightedSprites = new();
+        private readonly List<AeSprite> highlightedSprites = new();
         private readonly ToolTip _interrogationTip = new();
         private readonly AeEngine _engine;
         private readonly bool _fullScreen = false;
@@ -137,7 +137,7 @@ namespace Ae.Client
         {
             var translatedPosition = _engine.Display.TranslateScreenPosition(e.Location);
 
-            List<SpriteBase>? sprites = null;
+            List<AeSprite>? sprites = null;
 
             _engine.Invoke(() =>
             {
@@ -248,7 +248,7 @@ namespace Ae.Client
         private void InspectMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
             (sender as ToolStripDropDown)?.Close();
-            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+            if (e.ClickedItem?.Tag is not AeSprite sprite) return;
 
             _engine.Development?.EnsureVisibility();
             _engine.Development?.EnqueueCommand($"Sprite-Inspect {sprite.UID}");
@@ -257,7 +257,7 @@ namespace Ae.Client
         private void WatchMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
             (sender as ToolStripDropDown)?.Close();
-            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+            if (e.ClickedItem?.Tag is not AeSprite sprite) return;
 
             Task.Run(() =>
             {
@@ -269,7 +269,7 @@ namespace Ae.Client
         private void DeleteMenu_ItemClicked(object? sender, ToolStripItemClickedEventArgs e)
         {
             (sender as ToolStripDropDown)?.Close();
-            if (e.ClickedItem?.Tag is not SpriteBase sprite) return;
+            if (e.ClickedItem?.Tag is not AeSprite sprite) return;
 
             sprite.QueueForDelete();
         }

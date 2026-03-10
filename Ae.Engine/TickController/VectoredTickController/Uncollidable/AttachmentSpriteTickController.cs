@@ -6,7 +6,7 @@ using System.Linq;
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class AttachmentSpriteTickController
-        : VectoredTickControllerBase<SpriteAttachment>
+        : VectoredTickControllerBase<AeSpriteAttachment>
     {
         public AttachmentSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
@@ -29,9 +29,9 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public SpriteAttachment AddAttachment(string assetKey, SpriteInteractive owner, AeVector locationRelativeToOwner)
+        public AeSpriteAttachment AddAttachment(string assetKey, AeSpriteInteractive owner, AeVector locationRelativeToOwner)
         {
-            var sprite = Engine.Sprites.Add<SpriteAttachment>(assetKey, (o) =>
+            var sprite = Engine.Sprites.Add<AeSpriteAttachment>(assetKey, (o) =>
             {
                 o.Z = owner.Z + 1; //We want to make sure these go on top of the parent.
                 o.OwnerUID = owner.UID;

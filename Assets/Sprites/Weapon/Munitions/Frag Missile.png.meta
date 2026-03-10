@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Frag Missile",
-  "Class": "SpriteSeekingMunition",
+  "Class": "AeSpriteSeekingMunition",
   "Name": "Frag Missile",
   "Description": "",
   "Speed": {

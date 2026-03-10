@@ -14,13 +14,13 @@ namespace Ae.AssetExplorer
         private readonly AeEngine _engine;
         private readonly ListView _listView;
         private readonly WriteLogDelegate _writeLog;
-        private readonly Action<SpriteBase, PropertyItem> _propertiesEdited;
-        private SpriteBase? _lastSprite;
+        private readonly Action<AeSprite, PropertyItem> _propertiesEdited;
+        private AeSprite? _lastSprite;
         private string? _lastAssetKey;
 
         public PropertyListManager(ListView listView, AeEngine engine,
             WriteLogDelegate writeLog,
-            Action<SpriteBase, PropertyItem> propertiesEdited)
+            Action<AeSprite, PropertyItem> propertiesEdited)
         {
             _engine = engine;
             _listView = listView;
@@ -229,13 +229,13 @@ namespace Ae.AssetExplorer
             }
         }
 
-        public void PopulateProperties(string assetKey, SpriteBase sprite)
+        public void PopulateProperties(string assetKey, AeSprite sprite)
         {
             try
             {
                 if (_listView.InvokeRequired)
                 {
-                    _listView.Invoke(new Action<string, SpriteBase>(PopulateProperties), assetKey, sprite);
+                    _listView.Invoke(new Action<string, AeSprite>(PopulateProperties), assetKey, sprite);
                     return;
                 }
 

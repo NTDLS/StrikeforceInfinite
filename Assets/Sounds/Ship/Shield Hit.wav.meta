@@ -2,5 +2,5 @@
   "AssetKey": "Sounds/Ship/Shield Hit",
   "SoundVolume": 0.5,
   "LoopSound": false,
-  "Class": "AudioClip"
+  "Class": "AeAudioClip"
 }

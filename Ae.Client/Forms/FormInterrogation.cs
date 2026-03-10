@@ -229,7 +229,7 @@ namespace Ae.Client.Forms
             richTextBoxOutput.ResumeLayout();
         }
 
-        public void StartWatch(AeEngine engine, ISprite sprite)
+        public void StartWatch(AeEngine engine, IAeSprite sprite)
         {
             Task.Run(() =>
             {

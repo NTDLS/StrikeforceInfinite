@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Enemy/Starbase/Garrison/Turret",
-  "Class": "SpriteAttachment",
+  "Class": "AeSpriteAttachment",
   "Hull": 200,
   "MunitionDetection": true,
   "WeaponAssetKeys": [

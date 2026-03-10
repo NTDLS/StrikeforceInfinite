@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Player/Ships/Debug",
-  "Class": "SpritePlayer",
+  "Class": "AeSpritePlayer",
   "Name": "Debug",
   "Description": "\u2192 The code crusader \u2190\nCrude in design but equipped with advanced diagnostics and repair systems.\nNearly indestructible and inconceivably fast. Its mission is to discover\nglitches in the vast cosmic code, ensuring a smooth journey for all that follow...",
   "Speed": {

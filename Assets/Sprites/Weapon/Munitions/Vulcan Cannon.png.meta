@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Vulcan Cannon",
-  "Class": "SpriteProjectileMunition",
+  "Class": "AeSpriteProjectileMunition",
   "Name": "Vulcan Cannon",
   "Description": "",
   "Speed": {

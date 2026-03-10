@@ -9,7 +9,7 @@ using System.Threading;
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class StarSpriteTickController
-        : VectoredTickControllerBase<SpriteStar>
+        : VectoredTickControllerBase<AeSpriteStar>
     {
         private const int _maxDistance = 1000;
         private readonly Lock _lock = new();
@@ -24,7 +24,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         {
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Star");
 
-            Engine.Sprites.Add<SpriteStar>(assetKeys.OneOf(), (sprite) =>
+            Engine.Sprites.Add<AeSpriteStar>(assetKeys.OneOf(), (sprite) =>
             {
                 sprite.Location = position;
             });
@@ -36,7 +36,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             {
                 #region Add new stars...
 
-                if (SpriteManager.VisibleOfType<SpriteStar>().Length < Engine.Settings.DeltaFrameTargetStarCount) //Never wan't more than n stars.
+                if (SpriteManager.VisibleOfType<AeSpriteStar>().Length < Engine.Settings.DeltaFrameTargetStarCount) //Never wan't more than n stars.
                 {
                     if (cameraDisplacement.X > 0)
                     {

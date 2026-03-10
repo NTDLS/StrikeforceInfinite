@@ -4,7 +4,6 @@ using Ae.Engine.ExtensionMethods;
 using Ae.Engine.Helpers;
 using Ae.Engine.Mathematics;
 using Ae.Engine.Rendering;
-using Ae.Engine.Sprite.Animation;
 using Ae.Engine.Sprite.Base;
 using Ae.Engine.Sprite.Interactive.Ship;
 using Ae.Engine.Sprite.Interactive;

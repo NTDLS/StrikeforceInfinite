@@ -13,7 +13,7 @@ namespace Ae.Engine.TickController
     /// Also contains various factory methods.
     /// </summary>
     public class VectoredCollidableTickControllerBase<T>
-        : ITickController<T> where T : SpriteBase
+        : ITickController<T> where T : AeSprite
     {
         public AeEngine Engine { get; private set; }
         public SpriteManager SpriteManager { get; private set; }

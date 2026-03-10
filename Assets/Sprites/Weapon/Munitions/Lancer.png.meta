@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Lancer",
-  "Class": "SpriteEnergyMunition",
+  "Class": "AeSpriteEnergyMunition",
   "Name": "Lancer",
   "Description": "",
   "Speed": {

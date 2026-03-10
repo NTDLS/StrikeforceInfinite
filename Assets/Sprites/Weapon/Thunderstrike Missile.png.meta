@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Thunderstrike Missile",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Thunderstrike Missile",
   "Description": "",
   "MunitionCount": 65535,

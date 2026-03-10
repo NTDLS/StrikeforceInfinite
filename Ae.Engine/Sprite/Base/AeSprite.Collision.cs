@@ -1,0 +1,493 @@
+﻿using Ae.Engine.Mathematics;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+
+namespace Ae.Engine.Sprite.Base
+{
+    /// <summary>
+    /// Represents a single item that can be rendered to the screen. All on-screen objects are derived from this class.
+    /// </summary>
+    public partial class AeSprite
+    {
+        #region Post-movement movement vector collision detection.
+
+        /// <summary>
+        /// Returns a list of all collisions the sprite made on is current movement vector, in the order in which they would be encountered.
+        /// </summary>
+        /// <returns></returns>
+        public List<AeSprite> FindReverseCollisionsAlongMovementVector(float epoch)
+            => FindReverseCollisionsAlongMovementVector(Engine.Sprites.Visible(), epoch);
+
+        /// <summary>
+        /// Returns a list of all collisions the sprite made on is current movement vector, in the order in which they would be encountered.
+        /// </summary>
+        /// <param name="objectsThatCanBeHit"></param>
+        /// <returns></returns>
+        public List<AeSprite> FindReverseCollisionsAlongMovementVector(AeSprite[] objectsThatCanBeHit, float epoch)
+        {
+            /// Takes the position of an object after it has been moved and tests each location
+            ///     between where it ended up and where it should have come from given its movement vector.
+
+            var collisions = new List<AeSprite>();
+
+            //Get the starting position of the sprite before it was last moved.
+            var hitTestPosition = new AeVector(Location - (MovementVector * epoch));
+            var directionVector = MovementVector.Normalize();
+            var totalTravelDistance = Math.Abs(Location.DistanceTo(hitTestPosition));
+
+            if (totalTravelDistance > Engine.Display.TotalCanvasDiagonal)
+            {
+                //This is just a sanity check, if the epoch is super high then the engine is
+                //  lagging like mad and the last thing we want is to trace a giant vector path.
+                // Keep in mind that we are tracing the individual steps per "frame", so this IS NOT
+                //  going to greatly effect collision detection even if the lagging is really bad.
+                totalTravelDistance = Engine.Display.TotalCanvasDiagonal;
+            }
+
+            //Hit-test each position along the sprite path.
+            for (int i = 0; i < totalTravelDistance; i++)
+            {
+                hitTestPosition += directionVector;
+                foreach (var obj in objectsThatCanBeHit)
+                {
+                    if (obj.IntersectsAabb(hitTestPosition))
+                    {
+                        collisions.Add(obj);
+                    }
+                }
+            }
+
+            return collisions;
+        }
+
+        /// <summary>
+        /// Returns the first collision (if any) the sprite made on is current movement vector.
+        /// AABB = Axis-Aligned Bounding Box.
+        /// </summary>
+        /// <returns></returns>
+        public AeSprite? FindFirstReverseCollisionAlongMovementVectorAabb(float epoch)
+            => FindFirstReverseCollisionAlongMovementVectorAabb(Engine.Sprites.Visible(), epoch);
+
+        /// <summary>
+        /// Returns the first collision (if any) the sprite made on is current movement vector.
+        /// AABB = Axis-Aligned Bounding Box.
+        /// </summary>
+        /// <param name="objectsThatCanBeHit"></param>
+        /// <returns></returns>
+        public AeSprite? FindFirstReverseCollisionAlongMovementVectorAabb(AeSprite[] objectsThatCanBeHit, float epoch)
+        {
+            /// Takes the position of an object after it has been moved and tests each location
+            ///     between where it ended up and where it should have come from given its movement vector.
+
+            //Get the starting position of the sprite before it was last moved.
+            var hitTestPosition = new AeVector(Location - (MovementVector * epoch));
+            var directionVector = MovementVector.Normalize();
+
+            //We want to step at least 1 pixel at a time, but for larger sprites we can step more
+            // (half the size of the sprite) to save on performance without effecting accuracy.
+            float step = MathF.Max(1f, MathF.Max(Size.Width, Size.Height) * 0.5f);
+
+            var totalTravelDistance = Math.Abs(Location.DistanceTo(hitTestPosition));
+
+            if (totalTravelDistance > Engine.Display.TotalCanvasDiagonal)
+            {
+                //This is just a sanity check, if the epoch is super high then the engine is
+                //  lagging like mad and the last thing we want is to trace a giant vector path.
+                // Keep in mind that we are tracing the individual steps per "frame", so this IS NOT
+                //  going to greatly effect collision detection even if the lagging is really bad.
+                totalTravelDistance = Engine.Display.TotalCanvasDiagonal;
+            }
+
+            //Hit-test each position along the sprite path.
+            for (float traveled = 0; traveled < totalTravelDistance; traveled += step)
+            {
+                hitTestPosition += directionVector * step;
+
+                foreach (var obj in objectsThatCanBeHit)
+                {
+                    if (obj.IntersectsAabb(hitTestPosition))
+                    {
+                        return obj;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region Pre-movement movement vector collision detection.
+
+        /// <summary>
+        /// Returns a list of all collisions the sprite will make on is current movement vector, in the order in which they would be encountered.
+        /// AABB = Axis-Aligned Bounding Box.
+        /// </summary>
+        /// <returns></returns>
+        public List<AeSprite> FindForwardCollisionsAlongMovementVectorAabb(float epoch)
+            => FindForwardCollisionsAlongMovementVectorAabb(Engine.Sprites.Visible(), epoch);
+
+        /// <summary>
+        /// Returns a list of all collisions the sprite will make on is current movement vector, in the order in which they would be encountered.
+        /// AABB = Axis-Aligned Bounding Box.
+        /// </summary>
+        /// <param name="objectsThatCanBeHit"></param>
+        /// <returns></returns>
+        public List<AeSprite> FindForwardCollisionsAlongMovementVectorAabb(AeSprite[] objectsThatCanBeHit, float epoch)
+        {
+            /// Takes the position of an object before it has been moved and tests each location
+            ///     between where it is and where it will end up given its movement vector.
+
+            var collisions = new List<AeSprite>();
+
+            var hitTestPosition = new AeVector(Location);
+            var destinationPoint = new AeVector(Location + (MovementVector * epoch));
+            var directionVector = MovementVector.Normalize();
+            var totalTravelDistance = Math.Abs(Location.DistanceTo(destinationPoint));
+
+            if (totalTravelDistance > Engine.Display.TotalCanvasDiagonal)
+            {
+                //This is just a sanity check, if the epoch is super high then the engine is
+                //  lagging like mad and the last thing we want is to trace a giant vector path.
+                // Keep in mind that we are tracing the individual steps per "frame", so this IS NOT
+                //  going to greatly effect collision detection even if the lagging is really bad.
+                totalTravelDistance = Engine.Display.TotalCanvasDiagonal;
+            }
+
+            //Hit-test each position along the sprite path.
+            for (int i = 0; i < totalTravelDistance; i++)
+            {
+                hitTestPosition += directionVector;
+                foreach (var obj in objectsThatCanBeHit)
+                {
+                    if (obj.IntersectsAabb(hitTestPosition))
+                    {
+                        collisions.Add(obj);
+                    }
+                }
+            }
+
+            return collisions;
+        }
+
+        /// <summary>
+        /// Returns the first collision (if any) the sprite will make on is current movement vector.
+        /// </summary>
+        /// <returns></returns>
+        public AeSprite? FindFirstForwardCollisionAlongMovementVectorAabb(float epoch)
+            => FindFirstForwardCollisionAlongMovementVectorAabb(Engine.Sprites.Visible(), epoch);
+
+        /// <summary>
+        /// Returns the first collision (if any) the sprite will make on is current movement vector.
+        /// </summary>
+        /// <param name="objectsThatCanBeHit"></param>
+        /// <returns></returns>
+        public AeSprite? FindFirstForwardCollisionAlongMovementVectorAabb(AeSprite[] objectsThatCanBeHit, float epoch)
+        {
+            /// Takes the position of an object before it has been moved and tests each location
+            ///     between where it is and where it will end up given its movement vector.
+
+            var hitTestPosition = new AeVector(Location);
+            var destinationPoint = new AeVector(Location + (MovementVector * epoch));
+            var directionVector = MovementVector.Normalize();
+            var totalTravelDistance = Math.Abs(Location.DistanceTo(destinationPoint));
+
+            if (totalTravelDistance > Engine.Display.TotalCanvasDiagonal)
+            {
+                //This is just a sanity check, if the epoch is super high then the engine is
+                //  lagging like mad and the last thing we want is to trace a giant vector path.
+                // Keep in mind that we are tracing the individual steps per "frame", so this IS NOT
+                //  going to greatly effect collision detection even if the lagging is really bad.
+                totalTravelDistance = Engine.Display.TotalCanvasDiagonal;
+            }
+
+            //Hit-test each position along the sprite path.
+            for (int i = 0; i < totalTravelDistance; i++)
+            {
+                hitTestPosition += directionVector;
+                foreach (var obj in objectsThatCanBeHit)
+                {
+                    if (obj.IntersectsAabb(hitTestPosition))
+                    {
+                        return obj;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region Vector distance collision detection.
+
+        /// <summary>
+        /// Returns a list of all collisions the sprite will make over a given distance and optional angle, in the order in which they would be encountered.
+        /// </summary>
+        /// <param name="distance">Distance to detect collisions.</param>
+        /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
+        /// <returns></returns>
+        public List<AeSprite> FindCollisionsAlongDistanceVectorAabb(float distance, AeVector? angle = null)
+            => FindCollisionsAlongDistanceVectorAabb(Engine.Sprites.Visible(), distance, angle);
+
+        /// <summary>
+        ///  Returns a list of all collisions the sprite will make over a given distance and optional angle, in the order in which they would be encountered.
+        /// </summary>
+        /// <param name="objectsThatCanBeHit">List of objects to test for collisions.</param>
+        /// <param name="distance">Distance to detect collisions.</param>
+        /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
+        /// <returns></returns>
+        public List<AeSprite> FindCollisionsAlongDistanceVectorAabb(AeSprite[] objectsThatCanBeHit, float distance, AeVector? angle = null)
+        {
+            var collisions = new List<AeSprite>();
+
+            var hitTestPosition = new AeVector(Location);
+            var directionVector = angle ?? Orientation;
+
+            //Hit-test each position along the sprite path.
+            for (int i = 0; i < distance; i++)
+            {
+                hitTestPosition += directionVector;
+                foreach (var obj in objectsThatCanBeHit)
+                {
+                    if (obj.IntersectsAabb(hitTestPosition))
+                    {
+                        collisions.Add(obj);
+                    }
+                }
+            }
+
+            return collisions;
+        }
+
+        /// <summary>
+        /// Returns a the first object the sprite will collide with over a given distance and optional angle.
+        /// </summary>
+        /// <param name="distance">Distance to detect collisions.</param>
+        /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
+        /// <returns></returns>
+        public AeSprite? FindFirstCollisionAlongDistanceVectorAabb(float distance, AeVector? angle = null)
+            => FindFirstCollisionAlongDistanceVectorAabb(Engine.Sprites.Visible(), distance, angle);
+
+        /// <summary>
+        /// Returns a the first object the sprite will collide with over a given distance and optional angle.
+        /// </summary>
+        /// <param name="objectsThatCanBeHit">List of objects to test for collisions.</param>
+        /// <param name="distance">Distance to detect collisions.</param>
+        /// <param name="angle">Optional angle for detection, if not specified then the sprites forward angle is used.</param>
+        /// <returns></returns>
+        public AeSprite? FindFirstCollisionAlongDistanceVectorAabb(AeSprite[] objectsThatCanBeHit, float distance, AeVector? angle = null)
+        {
+            var hitTestPosition = new AeVector(Location);
+            var directionVector = angle ?? Orientation;
+
+            //Hit-test each position along the sprite path.
+            for (int i = 0; i < distance; i++)
+            {
+                hitTestPosition += directionVector;
+                foreach (var obj in objectsThatCanBeHit)
+                {
+                    if (obj.IntersectsAabb(hitTestPosition))
+                    {
+                        return obj;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region Intersections.
+
+        /// <summary>
+        /// Determines if two axis-aligned bounding boxes (AABB) intersect.
+        /// </summary>
+        /// <param name="otherObject"></param>
+        /// <returns></returns>
+        public bool IntersectsAABB(AeSprite otherObject)
+        {
+            if (IsVisible && otherObject.IsVisible && !IsQueuedForDeletion && !otherObject.IsQueuedForDeletion)
+            {
+                return Bounds.IntersectsWith(otherObject.Bounds);
+            }
+            return false;
+        }
+
+        public bool IntersectsWithTrajectory(AeSprite otherObject)
+        {
+            if (IsVisible && otherObject.IsVisible)
+            {
+                var previousPosition = otherObject.Location;
+
+                for (int i = 0; i < otherObject.Speed; i++)
+                {
+                    previousPosition.X -= otherObject.Orientation.X;
+                    previousPosition.Y -= otherObject.Orientation.Y;
+
+                    if (IntersectsAabb(previousPosition))
+                    {
+                        return true;
+
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines if two axis-aligned bounding boxes (AABB) intersect.
+        /// </summary>
+        /// <returns></returns>
+        public bool IntersectsAABB(AeSprite otherObject, AeVector sizeAdjust)
+        {
+            if (IsVisible && otherObject.IsVisible && !IsQueuedForDeletion && !otherObject.IsQueuedForDeletion)
+            {
+                var alteredHitBox = new RectangleF(
+                    otherObject.Bounds.X - (sizeAdjust.X / 2.0f),
+                    otherObject.Bounds.Y - (sizeAdjust.Y / 2.0f),
+                    otherObject.Bounds.Width + (sizeAdjust.X / 2.0f),
+                    otherObject.Bounds.Height + (sizeAdjust.Y / 2.0f));
+
+                return Bounds.IntersectsWith(alteredHitBox);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Intersect detection with another object using adjusted "hit box" size.
+        /// </summary>
+        /// <returns></returns>
+        public bool Intersects(AeSprite with, int variance = 0)
+        {
+            var alteredHitBox = new RectangleF(
+                (with.Bounds.X - variance),
+                (with.Bounds.Y - variance),
+                with.Size.Width + variance * 2, with.Size.Height + variance * 2);
+
+            return Bounds.IntersectsWith(alteredHitBox);
+        }
+
+        /// <summary>
+        /// Determines if two axis-aligned bounding boxes (AABB) intersect.
+        /// </summary>
+        /// <returns></returns>
+        public bool IntersectsAABB(AeVector location, AeVector size)
+        {
+            var alteredHitBox = new RectangleF(
+                location.X,
+                location.Y,
+                size.X,
+                size.Y
+                );
+
+            return Bounds.IntersectsWith(alteredHitBox);
+        }
+
+        /// <summary>
+        /// Determines if two axis-aligned bounding boxes (AABB) intersect.
+        /// </summary>
+        /// <returns></returns>
+        public bool RenderLocationIntersectsAABB(AeVector location, AeVector size)
+        {
+            var alteredHitBox = new RectangleF(
+                location.X,
+                location.Y,
+                size.X,
+                size.Y
+                );
+
+            return RenderBounds.IntersectsWith(alteredHitBox);
+        }
+
+        /// <summary>
+        /// Determines if two axis-aligned bounding boxes (AABB) intersect.
+        /// AABB = Axis-Aligned Bounding Box.
+        /// </summary>
+        public bool IntersectsAabb(AeVector location)
+        {
+            var alteredHitBox = new RectangleF(location.X, location.Y, 1f, 1f);
+            return Bounds.IntersectsWith(alteredHitBox);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Calculates the axis-aligned bounding box (AABB) that fully contains the motion of an object
+        /// between its position at the start of the epoch and its position at the end of the epoch,
+        /// taking into account its size. The AABB is defined by the minimum and maximum corners that encompass the entire path of the object as it moves from its initial position to its final position, expanded by half of the object's size in all directions. This method is particularly useful for determining potential collisions or interactions with other objects during the movement, as it provides a bounding box that can be used for efficient spatial queries. The resulting AABB will cover the area swept by the object as it moves along its trajectory, ensuring that any collisions or interactions that occur during this movement are accounted for within the calculated bounds.
+        /// </summary>
+        /// <remarks>This method is useful for collision detection and spatial queries in 2D environments,
+        /// as it provides the minimal bounding box that encompasses the object's entire path, including its
+        /// size.</remarks>
+        /// <returns>A tuple containing the minimum and maximum corners of the calculated AABB as vectors.</returns>
+        public (AeVector min, AeVector max) SweptAabbForMotion(float epoch)
+        {
+            var startPos = Location;
+            var endPos = Location + (MovementVector * epoch);
+
+            float hw = Size.Width * 0.5f;
+            float hh = Size.Height * 0.5f;
+
+            float r = Orientation.Radians;
+            float c = MathF.Cos(r);
+            float s = MathF.Sin(r);
+
+            // Half extents of the rotated rectangle's enclosing AABB.
+            float ex = MathF.Abs(c) * hw + MathF.Abs(s) * hh;
+            float ey = MathF.Abs(s) * hw + MathF.Abs(c) * hh;
+
+            var half = new AeVector(ex, ey);
+
+            return AeAxisAlignedBoundingBox.SweptAabbForMotion(startPos, endPos, half);
+        }
+
+        /// <summary>
+        /// Calculates the minimum and maximum points of the axis-aligned bounding box (AABB) for the current object
+        /// based on its location and size (where Location is sprite center). 
+        /// </summary>
+        /// <remarks>Use this method to determine the spatial boundaries of the object in 2D space, which
+        /// is useful for collision detection, rendering, or spatial queries.</remarks>
+        /// <returns>A tuple containing two <see cref="AeVector"/> values: the minimum point at the current location, and the
+        /// maximum point determined by adding the width and height to the location.</returns>
+        public (AeVector min, AeVector max) GetAabbMinMax()
+        {
+            var half = new AeVector(Size.Width * 0.5f, Size.Height * 0.5f);
+            return (Location - half, Location + half);
+        }
+
+        /// <summary>
+        /// Calculates the minimum and maximum points of the axis-aligned bounding box (AABB) for the current object
+        /// based on its location, size and rotation (where Location is sprite center). 
+        /// </summary>
+        /// <remarks>Use this method to determine the spatial boundaries of the object in 2D space, which
+        /// is useful for collision detection, rendering, or spatial queries.</remarks>
+        /// <returns>A tuple containing two <see cref="AeVector"/> values: the minimum point at the current location, and the
+        /// maximum point determined by adding the width and height to the location.</returns>
+        public (AeVector min, AeVector max) GetAabbMinMaxRotated()
+        {
+            // Center
+            float cx = Location.X;
+            float cy = Location.Y;
+
+            // Half extents in local space
+            float hw = Size.Width * 0.5f;
+            float hh = Size.Height * 0.5f;
+
+            // Rotation
+            float r = Orientation.Radians;
+            float c = MathF.Cos(r);
+            float s = MathF.Sin(r);
+
+            // Project rotated half extents onto world axes
+            float ex = MathF.Abs(c) * hw + MathF.Abs(s) * hh;
+            float ey = MathF.Abs(s) * hw + MathF.Abs(c) * hh;
+
+            var min = new AeVector(cx - ex, cy - ey);
+            var max = new AeVector(cx + ex, cy + ey);
+            return (min, max);
+        }
+    }
+}

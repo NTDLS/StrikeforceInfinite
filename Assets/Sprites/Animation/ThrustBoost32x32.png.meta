@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Animation/ThrustBoost32x32",
-  "Class": "SpriteAnimation",
+  "Class": "AeSpriteAnimation",
   "FrameWidth": 32,
   "FrameHeight": 32,
   "FramesPerSecond": {

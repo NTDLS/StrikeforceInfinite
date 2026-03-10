@@ -10,11 +10,11 @@ namespace Ae.Engine.Manager
     {
         private readonly AeEngine _engine;
 
-        public AudioClip? BackgroundMusicSound { get; private set; }
-        public AudioClip? RadarBlipsSound { get; private set; }
-        public AudioClip? DoorIsAjarSound { get; private set; }
-        public AudioClip? LockedOnBlip { get; private set; }
-        public AudioClip? Click { get; private set; }
+        public AeAudioClip? BackgroundMusicSound { get; private set; }
+        public AeAudioClip? RadarBlipsSound { get; private set; }
+        public AeAudioClip? DoorIsAjarSound { get; private set; }
+        public AeAudioClip? LockedOnBlip { get; private set; }
+        public AeAudioClip? Click { get; private set; }
 
         public AudioManager(AeEngine engine)
         {

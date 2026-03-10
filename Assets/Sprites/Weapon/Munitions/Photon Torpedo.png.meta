@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Photon Torpedo",
-  "Class": "SpriteEnergyMunition",
+  "Class": "AeSpriteEnergyMunition",
   "Name": "Photon Torpedo",
   "Description": "",
   "Speed": {

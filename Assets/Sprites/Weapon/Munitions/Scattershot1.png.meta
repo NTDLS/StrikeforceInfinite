@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Scattershot1",
-  "Class": "SpriteProjectileMunition",
+  "Class": "AeSpriteProjectileMunition",
   "Name": "Scattershot",
   "Description": "",
   "Speed": {

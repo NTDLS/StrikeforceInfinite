@@ -1,0 +1,107 @@
+﻿using Ae.Engine.Mathematics;
+using Ae.Engine.Metadata;
+using System;
+using static Ae.Engine.AeConstants;
+
+namespace Ae.Engine.Sprite.Interactive
+{
+    [AssetClass("Attachment", "", AeBaseAssetType.Image, true)]
+    public class AeSpriteAttachment
+        : AeSpriteInteractive
+    {
+        private AeSpriteInteractive? _rootOwner = null;
+        public AeVector? LocationRelativeToOwner { get; set; }
+        public string? AssetKey { get; private set; }
+
+        /// <summary>
+        /// Determines the behavior of a attachment sprite's orientation.
+        /// </summary>
+        public AttachmentOrientationType AttachmentOrientationType { get; set; }
+
+        /// <summary>
+        /// Determines the behavior of a attachment sprite's position.
+        /// </summary>
+        public AttachmentPositionType AttachmentPositionType { get; set; }
+
+        public AeSpriteAttachment(AeEngine engine, string? assetKey)
+            : base(engine, assetKey)
+        {
+            AssetKey = assetKey;
+        }
+
+        /// <summary>
+        /// We expose the CalculatedLocation because the actual Location is not updated when the sprite is dead.
+        /// This allows us to still get the correct location of the attachment even when dead.
+        /// </summary>
+        public AeVector CalculatedLocation
+        {
+            get
+            {
+                if (AttachmentPositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
+                {
+                    // Since the attachment BaseLocation is relative to the top-left corner of the base sprite, we need
+                    // to get the position relative to the center of the base sprite image so that we can rotate around that.
+                    var attachmentOffset = LocationRelativeToOwner - (RootOwner.Size / 2.0f);
+
+                    // Apply the rotated offset to get the new attachment location relative to the base sprite center.
+                    return RootOwner.Location + attachmentOffset.RotatedBy(RootOwner.Orientation.DegreesSigned);
+                }
+
+                return Location;
+            }
+        }
+
+        /// <summary>
+        /// We expose the CalculatedOrientation because the actual Orientation is not updated when the sprite is dead.
+        /// This allows us to still get the correct Orientation of the attachment even when dead.
+        /// </summary>
+        public AeVector CalculatedOrientation
+        {
+            get
+            {
+                if (AttachmentOrientationType == AttachmentOrientationType.FixedToOwner)
+                {
+                    //Make sure the attachment faces forwards.
+                    return RootOwner.Orientation.Clone();
+                }
+                return Orientation;
+            }
+        }
+
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
+        {
+            if (AttachmentPositionType == AttachmentPositionType.FixedToOwner && LocationRelativeToOwner != null)
+            {
+                Location = CalculatedLocation;
+            }
+
+            if (AttachmentOrientationType == AttachmentOrientationType.FixedToOwner)
+            {
+                Orientation = CalculatedOrientation;
+            }
+
+            base.ApplyMotion(epoch, cameraDisplacement);
+        }
+
+        /// <summary>
+        /// Gets and caches the root owner of this attachment.
+        /// </summary>
+        /// <returns></returns>
+        public AeSpriteInteractive RootOwner
+        {
+            get
+            {
+                if (_rootOwner == null)
+                {
+                    _rootOwner = this;
+
+                    do
+                    {
+                        _rootOwner = Engine.Sprites.GetSpriteByOwner<AeSpriteInteractive>(_rootOwner.OwnerUID);
+                    } while (_rootOwner != null && _rootOwner.OwnerUID != 0);
+                }
+                return _rootOwner ?? throw new Exception("Attachment must have a root owner.");
+            }
+        }
+    }
+}

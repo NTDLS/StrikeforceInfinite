@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Lancer",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Lancer",
   "Description": "",
   "MunitionCount": 65535,

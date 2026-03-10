@@ -17,7 +17,7 @@ namespace Ae.Engine.Mathematics.KinematicBody
         /// <summary>
         /// Reference to the sprite.
         /// </summary>
-        public SpriteInteractive Sprite { get; set; }
+        public AeSpriteInteractive Sprite { get; set; }
 
         /// <summary>
         /// The location of the render window when the prediction was made.
@@ -62,7 +62,7 @@ namespace Ae.Engine.Mathematics.KinematicBody
         /// </summary>
         public AeVector RenderLocation => PredictedLocation - RenderWindowPosition;
 
-        public PredictedKinematicBody(SpriteInteractive sprite, AeVector renderWindowPosition, float epoch)
+        public PredictedKinematicBody(AeSpriteInteractive sprite, AeVector renderWindowPosition, float epoch)
         {
             RenderWindowPosition = renderWindowPosition;
 

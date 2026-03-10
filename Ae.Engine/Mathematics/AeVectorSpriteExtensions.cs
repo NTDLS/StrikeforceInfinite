@@ -14,7 +14,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toSprite">The object to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 1-180 to -1-180.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float AngleToInSignedDegrees(this ISprite fromSprite, ISprite toSprite)
+        public static float AngleToInSignedDegrees(this IAeSprite fromSprite, IAeSprite toSprite)
         {
             var angle = fromSprite.Location.AngleToInUnsignedDegrees(toSprite.Location);
             if (angle > 180)
@@ -34,7 +34,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toSprite">The object to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 0-360.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float AngleToInUnsignedDegrees(this ISprite fromSprite, ISprite toSprite)
+        public static float AngleToInUnsignedDegrees(this IAeSprite fromSprite, IAeSprite toSprite)
             => fromSprite.Location.AngleToInUnsignedDegrees(toSprite.Location);
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toSprite">The object to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 0 though +π and -π though 0.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float AngleToInSignedRadians(this ISprite fromSprite, ISprite toSprite)
+        public static float AngleToInSignedRadians(this IAeSprite fromSprite, IAeSprite toSprite)
             => fromSprite.Location.AngleToInSignedRadians(toSprite.Location);
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toSprite">The object to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 0 though 2*π.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float AngleToInUnsignedRadians(this ISprite fromSprite, ISprite toSprite)
+        public static float AngleToInUnsignedRadians(this IAeSprite fromSprite, IAeSprite toSprite)
             => fromSprite.Location.AngleToInUnsignedRadians(toSprite.Location);
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toLocation">The point to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 0-180 to -180-0.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float AngleToInSignedDegrees(this ISprite fromSprite, AeVector toLocation)
+        public static float AngleToInSignedDegrees(this IAeSprite fromSprite, AeVector toLocation)
         {
             var angle = fromSprite.Location.AngleToInUnsignedDegrees(toLocation);
             if (angle > 180)
@@ -84,7 +84,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toSprite">The object to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 0-360.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float AngleToInUnsignedDegrees(this AeVector fromLocation, ISprite toSprite)
+        public static float AngleToInUnsignedDegrees(this AeVector fromLocation, IAeSprite toSprite)
             => fromLocation.AngleToInUnsignedDegrees(toSprite.Location);
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toLocation">The point to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 0-360.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float AngleToInUnsignedDegrees(this ISprite fromSprite, AeVector toLocation)
+        public static float AngleToInUnsignedDegrees(this IAeSprite fromSprite, AeVector toLocation)
             => fromSprite.Location.AngleToInUnsignedDegrees(toLocation);
 
         #region IsPointingAway (sprite to sprite).
@@ -107,7 +107,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toleranceDegrees"></param>
         /// <returns>True if the object is pointing away from the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAway(this ISprite fromSprite, ISprite atSprite, float toleranceDegrees)
+        public static bool IsPointingAway(this IAeSprite fromSprite, IAeSprite atSprite, float toleranceDegrees)
         {
             var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atSprite));
             return deltaAngle < 180 + toleranceDegrees && deltaAngle > 180 - toleranceDegrees;
@@ -122,7 +122,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="maxDistance"></param>
         /// <returns>True if the object is pointing away from the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAway(this ISprite fromSprite, ISprite atSprite, float toleranceDegrees, float maxDistance)
+        public static bool IsPointingAway(this IAeSprite fromSprite, IAeSprite atSprite, float toleranceDegrees, float maxDistance)
             => fromSprite.IsPointingAway(atSprite, toleranceDegrees) && fromSprite.DistanceTo(atSprite) <= maxDistance;
 
         #endregion
@@ -137,7 +137,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toleranceDegrees"></param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAt(this ISprite fromSprite, ISprite atSprite, float toleranceDegrees)
+        public static bool IsPointingAt(this IAeSprite fromSprite, IAeSprite atSprite, float toleranceDegrees)
         {
             var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInSignedDegrees(atSprite));
             return deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees;
@@ -152,7 +152,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="maxDistance">The distance in which the object to pointing at the other.</param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAt(this ISprite fromSprite, ISprite atSprite, float toleranceDegrees, float maxDistance)
+        public static bool IsPointingAt(this IAeSprite fromSprite, IAeSprite atSprite, float toleranceDegrees, float maxDistance)
         {
             var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atSprite));
             if (deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees)
@@ -173,7 +173,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="maxDistance">The distance in which the object to pointing at the other.</param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAt(this ISprite fromSprite, ISprite atSprite, float toleranceDegrees, float minDistance, float maxDistance)
+        public static bool IsPointingAt(this IAeSprite fromSprite, IAeSprite atSprite, float toleranceDegrees, float minDistance, float maxDistance)
         {
             var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atSprite));
             if (deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees)
@@ -196,7 +196,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toleranceDegrees"></param>
         /// <returns>True if the object is pointing away from the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAway(this ISprite fromSprite, AeVector atVector, float toleranceDegrees)
+        public static bool IsPointingAway(this IAeSprite fromSprite, AeVector atVector, float toleranceDegrees)
         {
             var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atVector));
             return deltaAngle < 180 + toleranceDegrees && deltaAngle > 180 - toleranceDegrees;
@@ -211,7 +211,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="maxDistance"></param>
         /// <returns>True if the object is pointing away from the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAway(this ISprite fromSprite, AeVector atVector, float toleranceDegrees, float maxDistance)
+        public static bool IsPointingAway(this IAeSprite fromSprite, AeVector atVector, float toleranceDegrees, float maxDistance)
             => fromSprite.IsPointingAway(atVector, toleranceDegrees) && fromSprite.DistanceTo(atVector) <= maxDistance;
 
         #endregion
@@ -226,7 +226,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toleranceDegrees"></param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAt(this ISprite fromSprite, AeVector atVector, float toleranceDegrees)
+        public static bool IsPointingAt(this IAeSprite fromSprite, AeVector atVector, float toleranceDegrees)
         {
             var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInSignedDegrees(atVector));
             return deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees;
@@ -241,7 +241,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="maxDistance">The distance in which the object to pointing at the other.</param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAt(this ISprite fromSprite, AeVector atVector, float toleranceDegrees, float maxDistance)
+        public static bool IsPointingAt(this IAeSprite fromSprite, AeVector atVector, float toleranceDegrees, float maxDistance)
         {
             var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atVector));
             if (deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees)
@@ -262,7 +262,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="maxDistance">The distance in which the object to pointing at the other.</param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPointingAt(this ISprite fromSprite, AeVector atVector, float toleranceDegrees, float minDistance, float maxDistance)
+        public static bool IsPointingAt(this IAeSprite fromSprite, AeVector atVector, float toleranceDegrees, float minDistance, float maxDistance)
         {
             var deltaAngle = Math.Abs(fromSprite.HeadingAngleToInUnsignedDegrees(atVector));
             if (deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees)
@@ -285,7 +285,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toSprite">The object to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 180--180.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float HeadingAngleToInSignedDegrees(this ISprite fromSprite, ISprite toSprite)
+        public static float HeadingAngleToInSignedDegrees(this IAeSprite fromSprite, IAeSprite toSprite)
             => fromSprite.HeadingAngleToInSignedDegrees(toSprite.Location);
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toLocation">The location to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 180--180.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float HeadingAngleToInSignedDegrees(this ISprite fromSprite, AeVector toLocation)
+        public static float HeadingAngleToInSignedDegrees(this IAeSprite fromSprite, AeVector toLocation)
             => AeMath.RadToDeg(HeadingAngleToInSignedRadians(fromSprite, toLocation)).NormalizeDegrees();
 
         #endregion
@@ -309,7 +309,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toSprite">The object to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 0-360.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float HeadingAngleToInUnsignedDegrees(this ISprite fromSprite, ISprite toSprite)
+        public static float HeadingAngleToInUnsignedDegrees(this IAeSprite fromSprite, IAeSprite toSprite)
             => fromSprite.HeadingAngleToInUnsignedDegrees(toSprite.Location);
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toLocation">The location to which the calculation is based.</param>
         /// <returns>The calculated angle in the range of 0-360.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float HeadingAngleToInUnsignedDegrees(this ISprite fromSprite, AeVector toLocation)
+        public static float HeadingAngleToInUnsignedDegrees(this IAeSprite fromSprite, AeVector toLocation)
             => AeMath.RadToDeg(HeadingAngleToInSignedRadians(fromSprite, toLocation)).DenormalizeDegrees();
 
         #endregion
@@ -333,7 +333,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toLocation"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float HeadingAngleToInSignedRadians(this ISprite fromSprite, AeVector toLocation)
+        public static float HeadingAngleToInSignedRadians(this IAeSprite fromSprite, AeVector toLocation)
         {
             // Subtracts the fromSprite's current location from toLocation, resulting
             // in a vector that points from the sprite to the target location.
@@ -372,7 +372,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toSprite">The object to which the calculation is based.</param>
         /// <returns>The calculated distance from one object to the other.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float DistanceTo(this ISprite fromSprite, ISprite toSprite)
+        public static float DistanceTo(this IAeSprite fromSprite, IAeSprite toSprite)
             => fromSprite.Location.DistanceTo(toSprite.Location);
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toVector">The object to which the calculation is based.</param>
         /// <returns>The calculated distance from one object to the other.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float DistanceTo(this ISprite fromSprite, AeVector toVector)
+        public static float DistanceTo(this IAeSprite fromSprite, AeVector toVector)
             => fromSprite.Location.DistanceTo(toVector);
 
         #endregion

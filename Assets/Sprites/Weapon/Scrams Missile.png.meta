@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Scrams Missile",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Scrams Missile",
   "Description": "",
   "MunitionCount": 65535,

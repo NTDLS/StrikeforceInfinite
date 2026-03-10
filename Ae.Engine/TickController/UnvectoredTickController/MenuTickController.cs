@@ -1,17 +1,17 @@
-﻿using Ae.Engine.Menu._Superclass;
+﻿using Ae.Engine.Menu;
 using SharpDX.Direct2D1;
 using System.Collections.Generic;
 
 namespace Ae.Engine.TickController.UnvectoredTickController
 {
     public class MenuTickController
-        : UnvectoredTickControllerBase<MenuBase>
+        : UnvectoredTickControllerBase<AeMenu>
     {
-        public delegate void CollectionAccessor(List<MenuBase> sprites);
-        public delegate T CollectionAccessorT<T>(List<MenuBase> sprites);
+        public delegate void CollectionAccessor(List<AeMenu> sprites);
+        public delegate T CollectionAccessorT<T>(List<AeMenu> sprites);
 
-        private MenuBase? _current = null;
-        public MenuBase? Current { get => _current; }
+        private AeMenu? _current = null;
+        public AeMenu? Current { get => _current; }
 
         public MenuTickController(AeEngine engine)
             : base(engine) { }
@@ -19,13 +19,13 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         public void Render(RenderTarget renderTarget, float epoch)
             => _current?.Render(renderTarget, epoch);
 
-        public void Show(MenuBase menu)
+        public void Show(AeMenu menu)
         {
             Unload(_current);
             _current = menu;
         }
 
-        public void Unload(MenuBase? menu)
+        public void Unload(AeMenu? menu)
         {
             if (_current == menu)
             {

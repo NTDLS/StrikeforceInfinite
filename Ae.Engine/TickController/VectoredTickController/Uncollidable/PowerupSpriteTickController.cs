@@ -7,7 +7,7 @@ using System;
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class PowerupSpriteTickController
-        : VectoredTickControllerBase<SpritePowerup>
+        : VectoredTickControllerBase<AeSpritePowerup>
     {
         public PowerupSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
@@ -25,10 +25,10 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public T AddAt<T>(float x, float y) where T : SpritePowerup
+        public T AddAt<T>(float x, float y) where T : AeSpritePowerup
         {
             object[] param = { Engine };
-            var obj = (SpritePowerup)Activator.CreateInstance(typeof(T), param).EnsureNotNull();
+            var obj = (AeSpritePowerup)Activator.CreateInstance(typeof(T), param).EnsureNotNull();
             obj.Location = new AeVector(x, y);
             SpriteManager.Insert(obj);
             return (T)obj;

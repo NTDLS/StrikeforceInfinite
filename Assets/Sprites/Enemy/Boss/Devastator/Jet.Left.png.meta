@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Enemy/Boss/Devastator/Jet.Left",
-  "Class": "SpriteAttachment",
+  "Class": "AeSpriteAttachment",
   "Hull": 50,
   "MunitionDetection": true
 }

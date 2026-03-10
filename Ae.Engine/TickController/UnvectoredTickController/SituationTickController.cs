@@ -1,14 +1,14 @@
 ﻿using Ae.Engine.Helpers;
-using Ae.Engine.Situation._Superclass;
+using Ae.Engine.Situation;
 using System.Linq;
 
 namespace Ae.Engine.TickController.UnvectoredTickController
 {
     public class SituationTickController
-        : UnvectoredTickControllerBase<SituationBase>
+        : UnvectoredTickControllerBase<AeSituation>
     {
         private readonly AeEngine _engine;
-        public SituationBase? CurrentSituation { get; private set; }
+        public AeSituation? CurrentSituation { get; private set; }
 
         public SituationTickController(AeEngine engine)
             : base(engine)
@@ -18,9 +18,9 @@ namespace Ae.Engine.TickController.UnvectoredTickController
 
         public void Select(string name)
         {
-            var situationTypes = AeReflection.GetSubClassesOf<SituationBase>();
+            var situationTypes = AeReflection.GetSubClassesOf<AeSituation>();
             var situationType = situationTypes.Where(o => o.Name == name).First();
-            CurrentSituation = AeReflection.CreateInstanceFromType<SituationBase>(situationType, new object[] { _engine, });
+            CurrentSituation = AeReflection.CreateInstanceFromType<AeSituation>(situationType, new object[] { _engine, });
         }
 
         public override void ExecuteWorldClockTick()

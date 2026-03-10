@@ -1,0 +1,37 @@
+﻿using Ae.Engine.Helpers;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Metadata;
+using Ae.Engine.Sprite.Base;
+using static Ae.Engine.AeConstants;
+
+namespace Ae.Engine.Sprite
+{
+    [AssetClass("Star", "", AeBaseAssetType.Image, true)]
+    public class AeSpriteStar
+        : AeSprite
+    {
+        public AeSpriteStar(AeEngine engine, string assetKey)
+            : base(engine, assetKey)
+        {
+            X = AeRandom.Between(0, engine.Display.TotalCanvasSize.Width);
+            Y = AeRandom.Between(0, engine.Display.TotalCanvasSize.Height);
+
+            Z = int.MinValue + 1000;
+
+            //if (selectedImageIndex >= 0 && selectedImageIndex <= 0)
+            //{
+            //Throttle = SiRandom.Between(8, 10) / 10.0f;
+            //}
+            //else
+            //{
+            Throttle = AeRandom.Between(4, 8) / 10.0f;
+            //}
+        }
+
+        public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
+        {
+            //We omit orientation for stars since they are point-like.
+            Location -= cameraDisplacement * Speed * Throttle * epoch;
+        }
+    }
+}

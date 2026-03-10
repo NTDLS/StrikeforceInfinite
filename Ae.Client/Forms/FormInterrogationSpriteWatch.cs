@@ -12,10 +12,10 @@ namespace Ae.Client.Forms
     public partial class FormInterrogationSpriteWatch : Form
     {
         private readonly AeEngine _engine;
-        private readonly ISprite _sprite;
+        private readonly IAeSprite _sprite;
         private readonly Timer _timer = new();
 
-        internal FormInterrogationSpriteWatch(AeEngine engine, ISprite sprite)
+        internal FormInterrogationSpriteWatch(AeEngine engine, IAeSprite sprite)
         {
             InitializeComponent();
             _engine = engine;
@@ -38,13 +38,13 @@ namespace Ae.Client.Forms
             listViewVariables.BeginUpdate();
             listViewVariables.SuspendLayout();
 
-            var sprite = _sprite as SpriteBase;
+            var sprite = _sprite as AeSprite;
             if (sprite == null)
             {
                 return;
             }
 
-            if (sprite is SpriteEnemy enemy)
+            if (sprite is AeSpriteEnemy enemy)
             {
                 if (enemy.CurrentAIController != null)
                 {

@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Thunderstrike Missile",
-  "Class": "SpriteSeekingMunition",
+  "Class": "AeSpriteSeekingMunition",
   "Name": "Thunderstrike Missile",
   "Description": "",
   "Speed": {

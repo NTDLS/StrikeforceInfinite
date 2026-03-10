@@ -2,5 +2,5 @@
   "AssetKey": "Sounds/Weapons/Photon Torpedo",
   "SoundVolume": 0.5,
   "LoopSound": false,
-  "Class": "AudioClip"
+  "Class": "AeAudioClip"
 }

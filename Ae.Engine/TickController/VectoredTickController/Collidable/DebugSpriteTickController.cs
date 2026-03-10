@@ -5,7 +5,7 @@ using Ae.Engine.Sprite.Interactive.Ship;
 namespace Ae.Engine.TickController.VectoredTickController.Collidable
 {
     public class DebugSpriteTickController
-        : VectoredCollidableTickControllerBase<SpriteDebug>
+        : VectoredCollidableTickControllerBase<AeSpriteDebug>
     {
         public DebugSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)

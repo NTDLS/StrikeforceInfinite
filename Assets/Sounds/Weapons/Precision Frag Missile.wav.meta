@@ -2,5 +2,5 @@
   "AssetKey": "Sounds/Weapons/Precision Frag Missile",
   "SoundVolume": 0.5,
   "LoopSound": false,
-  "Class": "AudioClip"
+  "Class": "AeAudioClip"
 }

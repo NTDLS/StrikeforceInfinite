@@ -31,7 +31,7 @@ namespace Ae.Engine
         #region Backend variables.
 
         private readonly EngineWorldClock? _worldClock;
-        private readonly PessimisticCriticalResource<List<RenderLoopInvocation>> _renderLoopInvocations = new();
+        private readonly PessimisticCriticalResource<List<AeRenderLoopInvocation>> _renderLoopInvocations = new();
         private int _renderLoopInvocationCount = 0;
 
         #endregion
@@ -88,9 +88,9 @@ namespace Ae.Engine
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public RenderLoopInvocation Invoke(Action action)
+        public AeRenderLoopInvocation Invoke(Action action)
         {
-            var invocation = new RenderLoopInvocation(this, action);
+            var invocation = new AeRenderLoopInvocation(this, action);
             _renderLoopInvocations.Use(o =>
             {
                 o.Add(invocation);
@@ -99,7 +99,7 @@ namespace Ae.Engine
             return invocation;
         }
 
-        public void RemoveRenderLoopInvocation(RenderLoopInvocation invocation)
+        public void RemoveRenderLoopInvocation(AeRenderLoopInvocation invocation)
         {
             _renderLoopInvocations.Use(o =>
             {
@@ -318,7 +318,7 @@ namespace Ae.Engine
                         //  be done in the render loop - which is why we attempt to optimize them out with _renderLoopInvocationCount.
                         if (_renderLoopInvocationCount > 0)
                         {
-                            var invocationsToExecute = new List<RenderLoopInvocation>();
+                            var invocationsToExecute = new List<AeRenderLoopInvocation>();
                             _renderLoopInvocations.Use(o => invocationsToExecute.AddRange(o));
                             foreach (var invocation in invocationsToExecute)
                             {
@@ -434,7 +434,7 @@ namespace Ae.Engine
                 //Sprites.SkyBoxes.AddAtCenterUniverse();
 
                 //Events.Add(1, () => AddDemoSprites());
-                Events.Once(() => Menus.Show(new MenuStartNewGame(this)));
+                Events.Once(() => Menus.Show(new AeMenuStartNewGame(this)));
             }
         }
 
@@ -473,9 +473,9 @@ namespace Ae.Engine
         private void HydrateCache(Action<string, float>? progressCallback, WriteLogDelegate? writeLog = null)
         {
             progressCallback?.Invoke("Hydrating sprites...", 0);
-            AeReflection.BuildReflectionCacheOfType<SpriteBase>(progressCallback, writeLog);
+            AeReflection.BuildReflectionCacheOfType<AeSprite>(progressCallback, writeLog);
             progressCallback?.Invoke("Hydrating AI machines...", 0);
-            AeReflection.BuildReflectionCacheOfType<AIStateMachine>(progressCallback, writeLog);
+            AeReflection.BuildReflectionCacheOfType<AeAIStateMachine>(progressCallback, writeLog);
 
             Assets.LoadAllAssets(progressCallback, writeLog);
         }

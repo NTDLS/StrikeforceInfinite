@@ -13,16 +13,16 @@ using static Ae.Engine.AeConstants;
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class MunitionSpriteTickController
-        : VectoredTickControllerBase<SpriteMunition>
+        : VectoredTickControllerBase<AeSpriteMunition>
     {
         #region Private Classes.
 
         private struct MunitionObjectHit
         {
-            public SpriteBase Object { get; set; }
-            public SpriteMunition Munition { get; set; }
+            public AeSprite Object { get; set; }
+            public AeSpriteMunition Munition { get; set; }
 
-            public MunitionObjectHit(SpriteMunition munition, SpriteBase obj)
+            public MunitionObjectHit(AeSpriteMunition munition, AeSprite obj)
             {
                 Object = obj;
                 Munition = munition;
@@ -50,12 +50,12 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 
         public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
-            var munitions = VisibleOfType<SpriteMunition>();
+            var munitions = VisibleOfType<AeSpriteMunition>();
             if (munitions.Count() != 0)
             {
                 var interactiveSprites = SpriteManager.VisibleDamageable();
-                var objectsPlayerCanHit = interactiveSprites.Where(o => o is not SpritePlayer).ToArray();
-                var objectsEnemyCanHit = interactiveSprites.Where(o => o is SpritePlayer).ToArray();
+                var objectsPlayerCanHit = interactiveSprites.Where(o => o is not AeSpritePlayer).ToArray();
+                var objectsEnemyCanHit = interactiveSprites.Where(o => o is AeSpritePlayer).ToArray();
 
                 //Create a collection of threads so we can wait on the ones that we start.
                 var threadPoolTracker = _munitionTraversalThreadPool.CreateChildPool();
@@ -117,13 +117,13 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
-        public void Add(SpriteWeapon weapon)
+        public void Add(AeSpriteWeapon weapon)
         {
             var obj = weapon.CreateMunition();
             SpriteManager.Insert(obj);
         }
 
-        public void Add(SpriteWeapon weapon, AeVector? location = null)
+        public void Add(AeSpriteWeapon weapon, AeVector? location = null)
         {
             var obj = weapon.CreateMunition(location);
             SpriteManager.Insert(obj);
@@ -136,7 +136,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// <param name="lockedTarget"></param>
         /// <param name="xyOffset"></param>
         /// <returns></returns>
-        public void AddLockedOnTo(SpriteWeapon weapon, SpriteInteractive lockedTarget, AeVector? location = null)
+        public void AddLockedOnTo(AeSpriteWeapon weapon, AeSpriteInteractive lockedTarget, AeVector? location = null)
         {
             var obj = weapon.CreateMunition(location, lockedTarget);
             SpriteManager.Insert(obj);

@@ -28,8 +28,8 @@ namespace Ae.Engine.Manager
     /// </summary>
     public class SpriteManager : IDisposable
     {
-        public delegate void CollectionAccessor(SpriteBase[] sprites);
-        public delegate T CollectionAccessorT<T>(SpriteBase[] sprites);
+        public delegate void CollectionAccessor(AeSprite[] sprites);
+        public delegate T CollectionAccessorT<T>(AeSprite[] sprites);
 
         private readonly AeEngine _engine;
         private AeVector? _radarScale;
@@ -37,7 +37,7 @@ namespace Ae.Engine.Manager
 
         public bool RenderRadar { get; set; } = false;
 
-        private readonly List<SpriteBase> _collection = new();
+        private readonly List<AeSprite> _collection = new();
 
         #region Sprite Tick Controllerss.
 
@@ -76,15 +76,15 @@ namespace Ae.Engine.Manager
             TextBlocks = new TextBlocksSpriteTickController(_engine, this);
         }
 
-        public SpriteBase[] Visible() => _collection.Where(o => o.IsVisible == true).ToArray();
+        public AeSprite[] Visible() => _collection.Where(o => o.IsVisible == true).ToArray();
 
-        public SpriteBase[] All() => _collection.ToArray();
+        public AeSprite[] All() => _collection.ToArray();
 
-        public List<SpritePlayer> AllVisiblePlayers
+        public List<AeSpritePlayer> AllVisiblePlayers
         {
             get
             {
-                var players = VisibleOfType<SpritePlayer>().ToList();
+                var players = VisibleOfType<AeSpritePlayer>().ToList();
                 players.Add(_engine.Player.Sprite);
                 return players;
             }
@@ -96,7 +96,7 @@ namespace Ae.Engine.Manager
         public void DeveloperOnlyAccess(CollectionAccessor collectionAccessor)
             => collectionAccessor(All());
 
-        public void QueueAllForDeletionOfType<T>() where T : SpriteBase
+        public void QueueAllForDeletionOfType<T>() where T : AeSprite
         {
             var sprites = OfType<T>();
             foreach (var sprite in sprites)
@@ -109,10 +109,10 @@ namespace Ae.Engine.Manager
         {
         }
 
-        public SpriteBase Create(string assetKey, Action<SpriteBase>? initializationProc = null)
-            => Create<SpriteBase>(assetKey, initializationProc);
+        public AeSprite Create(string assetKey, Action<AeSprite>? initializationProc = null)
+            => Create<AeSprite>(assetKey, initializationProc);
 
-        public T Create<T>(string assetKey, Action<T>? initializationProc = null) where T : SpriteBase
+        public T Create<T>(string assetKey, Action<T>? initializationProc = null) where T : AeSprite
         {
             var asset = _engine.Assets.GetAsset(assetKey)
                 ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
@@ -125,7 +125,7 @@ namespace Ae.Engine.Manager
             return sprite;
         }
 
-        public SpriteBase EditorAdd(string assetKey, WriteLogDelegate writeLog, Action<SpriteBase>? initializationProc = null)
+        public AeSprite EditorAdd(string assetKey, WriteLogDelegate writeLog, Action<AeSprite>? initializationProc = null)
         {
             if (_engine.ExecutionMode != AeConstants.SiEngineExecutionMode.Edit)
             {
@@ -137,10 +137,10 @@ namespace Ae.Engine.Manager
                 var metadata = _engine.Assets.GetMetadata(assetKey)
                      ?? throw new Exception($"No metadata found for sprite path: {assetKey}");
 
-                var className = string.IsNullOrEmpty(metadata.Class) ? "SpriteBase" : metadata.Class;
+                var className = string.IsNullOrEmpty(metadata.Class) ? "AeSprite" : metadata.Class;
                 var classType = AeReflection.GetTypeByName(className);
 
-                if (typeof(SpriteBase).IsAssignableFrom(classType))
+                if (typeof(AeSprite).IsAssignableFrom(classType))
                 {
                     //We only add assets to the sprite collection that are actually sprites.
 
@@ -160,16 +160,16 @@ namespace Ae.Engine.Manager
                                 constructorParams.Add(assetKey);
                                 break;
                             case "firedFrom":
-                                constructorParams.Add(new SpriteEnemy(_engine, "Sprites/#Internal/Ghost"));
+                                constructorParams.Add(new AeSpriteEnemy(_engine, "Sprites/#Internal/Ghost"));
                                 break;
                             case "owner":
-                                constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
+                                constructorParams.Add(new AeSpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
                                 break;
                             case "weapon":
-                                constructorParams.Add(new SpriteWeapon(_engine, new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
+                                constructorParams.Add(new AeSpriteWeapon(_engine, new AeSpriteInteractive(_engine, "Sprites/#Internal/Ghost"), "Sprites/#Internal/Ghost"));
                                 break;
                             case "lockedTarget":
-                                constructorParams.Add(new SpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
+                                constructorParams.Add(new AeSpriteInteractive(_engine, "Sprites/#Internal/Ghost"));
                                 break;
                             case "location":
                                 constructorParams.Add(AeVector.Zero());
@@ -179,7 +179,7 @@ namespace Ae.Engine.Manager
                         }
                     }
 
-                    var sprite = (SpriteBase)Activator.CreateInstance(classType, constructorParams.ToArray()).EnsureNotNull();
+                    var sprite = (AeSprite)Activator.CreateInstance(classType, constructorParams.ToArray()).EnsureNotNull();
                     initializationProc?.Invoke(sprite);
 
                     Insert(sprite);
@@ -191,20 +191,20 @@ namespace Ae.Engine.Manager
                 writeLog?.Invoke($"Error creating sprite with asset key {assetKey}: {ex.Message}", AeLoggingLevel.Error);
             }
 
-            return new SpriteBase(_engine, assetKey);
+            return new AeSprite(_engine, assetKey);
         }
 
-        public SpriteBase Add(string assetKey, Action<SpriteBase>? initializationProc = null)
-            => Add<SpriteBase>(assetKey, initializationProc);
+        public AeSprite Add(string assetKey, Action<AeSprite>? initializationProc = null)
+            => Add<AeSprite>(assetKey, initializationProc);
 
-        public T Add<T>(string assetKey, Action<T>? initializationProc = null) where T : SpriteBase
+        public T Add<T>(string assetKey, Action<T>? initializationProc = null) where T : AeSprite
         {
             var sprite = Create<T>(assetKey, initializationProc);
             Insert(sprite);
             return sprite;
         }
 
-        public T Add<T>(SharpDX.Direct2D1.Bitmap bitmap, Action<T>? initializationProc = null) where T : SpriteBase
+        public T Add<T>(SharpDX.Direct2D1.Bitmap bitmap, Action<T>? initializationProc = null) where T : AeSprite
         {
             T sprite = (T)Activator.CreateInstance(typeof(T), [_engine, bitmap]).EnsureNotNull();
             initializationProc?.Invoke(sprite);
@@ -212,7 +212,7 @@ namespace Ae.Engine.Manager
             return sprite;
         }
 
-        public void Insert(SpriteBase sprite)
+        public void Insert(AeSprite sprite)
         {
             if (_engine.IsInitializing == true)
             {
@@ -251,7 +251,7 @@ namespace Ae.Engine.Manager
             {
                 _engine.Player.Sprite.IsVisible = false;
                 _engine.Player.Sprite.ReviveDeadOrExploded();
-                _engine.Menus.Show(new MenuStartNewGame(_engine));
+                _engine.Menus.Show(new AeMenuStartNewGame(_engine));
             }
         }
 
@@ -269,41 +269,41 @@ namespace Ae.Engine.Manager
             Animations.QueueAllForDeletion();
         }
 
-        public T[]? GetSpritesByTag<T>(string name) where T : SpriteBase
+        public T[]? GetSpritesByTag<T>(string name) where T : AeSprite
             => _collection.Where(o => o.SpriteTag == name).ToArray() as T[];
 
-        public T? GetSingleSpriteByTag<T>(string name) where T : SpriteBase
+        public T? GetSingleSpriteByTag<T>(string name) where T : AeSprite
             => _collection.Where(o => o.SpriteTag == name).SingleOrDefault() as T;
 
-        public T? GetSpriteByOwner<T>(uint ownerUID) where T : SpriteBase
+        public T? GetSpriteByOwner<T>(uint ownerUID) where T : AeSprite
             => _collection.Where(o => o.UID == ownerUID).SingleOrDefault() as T;
 
-        public T[] OfType<T>() where T : SpriteBase
+        public T[] OfType<T>() where T : AeSprite
             => _collection.OfType<T>().ToArray();
 
-        public T[] VisibleOfType<T>() where T : SpriteBase
+        public T[] VisibleOfType<T>() where T : AeSprite
             => _collection.OfType<T>().Where(o => o.IsVisible).ToArray();
 
         public T?[] VisibleDamageable<T>() where T : class
-            => _collection.OfType<SpriteInteractive>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).Select(o => o as T).ToArray();
+            => _collection.OfType<AeSpriteInteractive>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).Select(o => o as T).ToArray();
 
         //Probably faster than VisibleDamageable<T>().
-        public SpriteInteractive[] VisibleDamageable()
-            => _collection.OfType<SpriteInteractive>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).ToArray();
+        public AeSpriteInteractive[] VisibleDamageable()
+            => _collection.OfType<AeSpriteInteractive>().Where(o => o.IsVisible && o.Metadata.MunitionDetection == true).ToArray();
 
         public T?[] VisibleCollidable<T>() where T : class
-            => _collection.OfType<SpriteInteractive>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).Select(o => o as T).ToArray();
+            => _collection.OfType<AeSpriteInteractive>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).Select(o => o as T).ToArray();
 
         //Probably faster than VisibleCollidable<T>().
-        public SpriteInteractive[] VisibleCollidable()
-            => _collection.OfType<SpriteInteractive>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).ToArray();
+        public AeSpriteInteractive[] VisibleCollidable()
+            => _collection.OfType<AeSpriteInteractive>().Where(o => o.IsVisible && o.Metadata.CollisionDetection == true).ToArray();
 
         public PredictedKinematicBody[] VisibleCollidablePredictiveMove(float epoch)
             => _engine.Sprites.VisibleCollidable().Select(o => new PredictedKinematicBody(o, _engine.Display.CameraPosition, epoch)).ToArray();
 
-        public SpriteBase[] VisibleOfTypes(Type[] types)
+        public AeSprite[] VisibleOfTypes(Type[] types)
         {
-            var result = new List<SpriteBase>();
+            var result = new List<AeSprite>();
             foreach (var type in types)
             {
                 result.AddRange(_collection.Where(o => o.IsVisible == true && type.IsAssignableFrom(o.GetType())));
@@ -334,9 +334,9 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public SpriteBase[] Intersections(SpriteBase with)
+        public AeSprite[] Intersections(AeSprite with)
         {
-            var objects = new List<SpriteBase>();
+            var objects = new List<AeSprite>();
 
             foreach (var obj in _collection.Where(o => o.IsVisible == true))
             {
@@ -351,12 +351,12 @@ namespace Ae.Engine.Manager
             return objects.ToArray();
         }
 
-        public SpriteBase[] Intersections(float x, float y, float width, float height)
+        public AeSprite[] Intersections(float x, float y, float width, float height)
             => Intersections(new AeVector(x, y), new AeVector(width, height));
 
-        public SpriteBase[] Intersections(AeVector location, AeVector size)
+        public AeSprite[] Intersections(AeVector location, AeVector size)
         {
-            var objects = new List<SpriteBase>();
+            var objects = new List<AeSprite>();
 
             foreach (var obj in _collection.Where(o => o.IsVisible == true))
             {
@@ -368,9 +368,9 @@ namespace Ae.Engine.Manager
             return objects.ToArray();
         }
 
-        public SpriteBase[] RenderLocationIntersections(AeVector location, AeVector size, bool includeInvisible = false)
+        public AeSprite[] RenderLocationIntersections(AeVector location, AeVector size, bool includeInvisible = false)
         {
-            var objects = new List<SpriteBase>();
+            var objects = new List<AeSprite>();
 
             foreach (var obj in _collection.Where(o => o.IsVisible == true || includeInvisible))
             {
@@ -382,7 +382,7 @@ namespace Ae.Engine.Manager
             return objects.ToArray();
         }
 
-        public SpritePlayer AddPlayer(SpritePlayer sprite)
+        public AeSpritePlayer AddPlayer(AeSpritePlayer sprite)
         {
             Insert(sprite);
             return sprite;
@@ -437,7 +437,7 @@ namespace Ae.Engine.Manager
                             && y < _engine.Display.NaturalScreenSize.Height - radarBgImage.Size.Height + radarBgImage.Size.Height
                             )
                         {
-                            if ((sprite is SpritePlayer || sprite is SpriteEnemy || sprite is SpriteMunition || sprite is SpritePowerup) && sprite.IsVisible == true)
+                            if ((sprite is AeSpritePlayer || sprite is AeSpriteEnemy || sprite is AeSpriteMunition || sprite is AeSpritePowerup) && sprite.IsVisible == true)
                             {
                                 sprite.RenderRadar(renderTarget, x, y);
                             }
@@ -481,7 +481,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void CreateFragmentsOf(SpriteBase sprite)
+        public void CreateFragmentsOf(AeSprite sprite)
         {
             var image = sprite.GetImage();
             if (image == null)

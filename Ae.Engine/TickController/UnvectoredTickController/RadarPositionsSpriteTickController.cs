@@ -9,7 +9,7 @@ using System.Linq;
 namespace Ae.Engine.TickController.UnvectoredTickController
 {
     public class RadarPositionsSpriteTickController
-        : UnvectoredTickControllerBase<SpriteRadarPositionTextBlock>
+        : UnvectoredTickControllerBase<AeSpriteRadarPositionTextBlock>
     {
         private readonly SpriteManager _manager;
 
@@ -21,17 +21,17 @@ namespace Ae.Engine.TickController.UnvectoredTickController
 
         public override void ExecuteWorldClockTick()
         {
-            var overlappingIndicators = new Func<List<List<SpriteRadarPositionTextBlock>>>(() =>
+            var overlappingIndicators = new Func<List<List<AeSpriteRadarPositionTextBlock>>>(() =>
             {
-                var accountedFor = new HashSet<SpriteRadarPositionTextBlock>();
-                var groups = new List<List<SpriteRadarPositionTextBlock>>();
-                var radarTexts = Engine.Sprites.VisibleOfType<SpriteRadarPositionTextBlock>();
+                var accountedFor = new HashSet<AeSpriteRadarPositionTextBlock>();
+                var groups = new List<List<AeSpriteRadarPositionTextBlock>>();
+                var radarTexts = Engine.Sprites.VisibleOfType<AeSpriteRadarPositionTextBlock>();
 
                 foreach (var parent in radarTexts)
                 {
                     if (accountedFor.Contains(parent) == false)
                     {
-                        var group = new List<SpriteRadarPositionTextBlock>();
+                        var group = new List<AeSpriteRadarPositionTextBlock>();
                         foreach (var child in radarTexts)
                         {
                             if (accountedFor.Contains(child) == false)
@@ -74,9 +74,9 @@ namespace Ae.Engine.TickController.UnvectoredTickController
 
         #region Factories.
 
-        public SpriteRadarPositionIndicator Add()
+        public AeSpriteRadarPositionIndicator Add()
         {
-            var obj = new SpriteRadarPositionIndicator(Engine, "Sprites/Radar Indicator/16x16");
+            var obj = new AeSpriteRadarPositionIndicator(Engine, "Sprites/Radar Indicator/16x16");
             _manager.Insert(obj);
             return obj;
         }

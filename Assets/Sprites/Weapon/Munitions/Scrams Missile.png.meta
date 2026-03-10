@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Munitions/Scrams Missile",
-  "Class": "SpriteLockingMunition",
+  "Class": "AeSpriteLockingMunition",
   "Name": "Scrams Missile",
   "Description": "",
   "Speed": {

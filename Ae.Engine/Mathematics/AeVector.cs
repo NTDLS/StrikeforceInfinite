@@ -643,7 +643,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toleranceDegrees"></param>
         /// <returns>True if the object is pointing away from the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsPointingAway(ISprite at, float toleranceDegrees)
+        public bool IsPointingAway(IAeSprite at, float toleranceDegrees)
         {
             var deltaAngle = Math.Abs(DeltaAngleInUnsignedDegrees(at));
             return deltaAngle < 180 + toleranceDegrees && deltaAngle > 180 - toleranceDegrees;
@@ -658,7 +658,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="maxDistance"></param>
         /// <returns>True if the object is pointing away from the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsPointingAway(ISprite at, float toleranceDegrees, float maxDistance)
+        public bool IsPointingAway(IAeSprite at, float toleranceDegrees, float maxDistance)
             => IsPointingAway(at, toleranceDegrees) && DistanceTo(at.Location) <= maxDistance;
 
         /// <summary>
@@ -669,7 +669,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="toleranceDegrees"></param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsPointingAt(ISprite at, float toleranceDegrees)
+        public bool IsPointingAt(IAeSprite at, float toleranceDegrees)
         {
             var deltaAngle = Math.Abs(DeltaAngleInSignedDegrees(at));
             return deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees;
@@ -685,7 +685,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="offsetAngle">The offset in 0-360 degrees of the angle to calculate. For instance, 90 would tell if the right side of the object is pointing at the other.</param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsPointingAt(ISprite at, float toleranceDegrees, float maxDistance, float offsetAngle = 0)
+        public bool IsPointingAt(IAeSprite at, float toleranceDegrees, float maxDistance, float offsetAngle = 0)
         {
             var deltaAngle = Math.Abs(DeltaAngleInUnsignedDegrees(at, offsetAngle));
             if (deltaAngle < toleranceDegrees || deltaAngle > 360 - toleranceDegrees)
@@ -704,7 +704,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="offsetAngle">-90 degrees would be looking off the left-hand (port) side of the object, positive indicated right (starboard) side.</param>
         /// <returns>The calculated angle in the range of 180--180.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float DeltaAngleInSignedDegrees(ISprite to, float offsetAngle = 0)
+        public float DeltaAngleInSignedDegrees(IAeSprite to, float offsetAngle = 0)
         {
             var angle = DeltaAngleInUnsignedDegrees(to, offsetAngle);
             if (angle > 180)
@@ -725,7 +725,7 @@ namespace Ae.Engine.Mathematics
         /// <param name="offsetAngle">-90 degrees would be looking off the left-hand (port) side of the object, positive indicated right (starboard) side.</param>
         /// <returns>The calculated angle in the range of 0-360.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float DeltaAngleInUnsignedDegrees(ISprite to, float offsetAngle = 0)
+        public float DeltaAngleInUnsignedDegrees(IAeSprite to, float offsetAngle = 0)
         {
             float fromAngle = Degrees + offsetAngle;
 

@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Enemy/Starbase/Garrison/Hull",
-  "Class": "SpriteEnemy",
+  "Class": "AeSpriteEnemy",
   "Description": "\u2192 Garrison \u2190\nTODO: Add a description\n",
   "Speed": {
     "Min": 0,

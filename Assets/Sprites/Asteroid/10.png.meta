@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Asteroid/10",
-  "Class": "SpriteInteractiveBitmap",
+  "Class": "AeSpriteInteractiveBitmap",
   "Speed": {
     "Min": 200,
     "Max": 300

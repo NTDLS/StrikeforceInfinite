@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Player/Ships/Reaver",
-  "Class": "SpritePlayer",
+  "Class": "AeSpritePlayer",
   "Name": "Reaver",
   "Description": "\u2192 This ship is a placeholder \u2190\nLook no further, there is nothing to see here.",
   "Speed": {

@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Scattershot",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Scattershot",
   "Description": "",
   "MunitionCount": 65535,

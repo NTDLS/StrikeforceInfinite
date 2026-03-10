@@ -1,6 +1,6 @@
 {
   "AssetKey": "Sprites/Weapon/Vulcan Cannon",
-  "Class": "SpriteWeapon",
+  "Class": "AeSpriteWeapon",
   "Name": "Vulcan Cannon",
   "Description": "",
   "MunitionCount": 65535,
