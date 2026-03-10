@@ -1,0 +1,15 @@
+﻿using Ae.Engine.Sprite._Superclass._Root;
+
+namespace Ae.Engine.Sprite
+{
+    public class SpriteRadarPositionIndicator
+        : SpriteBase
+    {
+        public SpriteRadarPositionIndicator(AeEngine engine, string assetKey)
+            : base(engine, assetKey)
+        {
+            X = 0;
+            Y = 0;
+        }
+    }
+}

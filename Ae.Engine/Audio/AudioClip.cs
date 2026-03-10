@@ -1,11 +1,11 @@
-﻿using Ae.Library.Metadata;
+﻿using Ae.Engine.Metadata;
 using SharpDX.Multimedia;
 using SharpDX.XAudio2;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Audio
 {

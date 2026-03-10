@@ -1,14 +1,15 @@
-﻿using Ae.Engine.Manager;
+﻿using Ae.Engine.Helpers;
+using Ae.Engine.Manager;
+using Ae.Engine.Mathematics;
 using Ae.Engine.Rendering;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library;
-using Ae.Library.Mathematics;
+using Ae.Engine.TickController;
+using Ae.Engine.Types;
 using NTDLS.DelegateThreadPooling;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine
 {
@@ -222,7 +223,11 @@ namespace Ae.Engine
                 }
 
                 //Wait on all enqueued threads to complete.
-                if (!AeUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
+                try
+                {
+                    _worldClockSubPool.WaitForCompletion();
+                }
+                catch
                 {
                     return cameraDisplacement; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
                 }
@@ -245,7 +250,11 @@ namespace Ae.Engine
                 }
 
                 //Wait on all enqueued threads to complete.
-                if (!AeUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
+                try
+                {
+                    _worldClockSubPool.WaitForCompletion();
+                }
+                catch
                 {
                     return cameraDisplacement; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
                 }

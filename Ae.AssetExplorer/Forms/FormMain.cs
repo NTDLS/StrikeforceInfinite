@@ -1,13 +1,12 @@
 using Ae.AssetExplorer.Controls;
 using Ae.AssetExplorer.Forms;
 using Ae.Engine;
+using Ae.Engine.ExtensionMethods;
 using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Engine.Sprite._Superclass.Animation;
-using Ae.Library;
-using Ae.Library.ExtensionMethods;
+using Ae.Engine.Sprite.Animation;
 using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer
 {

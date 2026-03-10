@@ -1,6 +1,6 @@
 ﻿using Ae.Engine;
 using Ae.Engine.Interrogation._Superclass;
-using Ae.Library.Sprite;
+using Ae.Engine.Sprite;
 using NTDLS.Helpers;
 using System;
 using System.Collections.Generic;

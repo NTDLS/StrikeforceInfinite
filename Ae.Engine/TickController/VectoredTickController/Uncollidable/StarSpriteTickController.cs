@@ -1,9 +1,8 @@
-﻿using Ae.Engine.Manager;
-using Ae.Engine.Sprite._Superclass;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library;
-using Ae.Library.ExtensionMethods;
-using Ae.Library.Mathematics;
+﻿using Ae.Engine.ExtensionMethods;
+using Ae.Engine.Helpers;
+using Ae.Engine.Manager;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite;
 using System;
 using System.Threading;
 

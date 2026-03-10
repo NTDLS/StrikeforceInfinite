@@ -1,16 +1,16 @@
 ﻿using Ae.Engine.AI;
 using Ae.Engine.Audio;
-using Ae.Engine.Sprite._Superclass;
+using Ae.Engine.Compiler;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite;
 using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Engine.Sprite._Superclass.Animation;
-using Ae.Engine.Sprite._Superclass.Interactive;
-using Ae.Engine.Sprite._Superclass.Munition;
-using Ae.Library;
-using Ae.Library.Compiler;
-using Ae.Library.Mathematics;
+using Ae.Engine.Sprite.Animation;
+using Ae.Engine.Sprite.Interactive;
+using Ae.Engine.Sprite.Munition;
+using Ae.Engine.Types;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Metadata
 {

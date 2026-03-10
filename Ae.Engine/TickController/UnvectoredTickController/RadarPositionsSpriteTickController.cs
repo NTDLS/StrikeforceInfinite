@@ -1,8 +1,7 @@
 ﻿using Ae.Engine.Manager;
-using Ae.Engine.Sprite._Superclass;
-using Ae.Engine.Sprite._Superclass.TextBlock;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library.Mathematics;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite;
+using Ae.Engine.Sprite.TextBlock;
 using System;
 using System.Collections.Generic;
 using System.Linq;

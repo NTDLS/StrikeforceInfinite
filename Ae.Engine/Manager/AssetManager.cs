@@ -1,7 +1,8 @@
 ﻿using Ae.Engine.Audio;
+using Ae.Engine.Compiler;
+using Ae.Engine.DataModels;
+using Ae.Engine.Helpers;
 using Ae.Engine.Metadata;
-using Ae.Library;
-using Ae.Library.Compiler;
 using NTDLS.DelegateThreadPooling;
 using NTDLS.SqliteDapperWrapper;
 using System;
@@ -12,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Manager
 {

@@ -1,16 +1,14 @@
 ﻿using Ae.Engine.Manager;
-using Ae.Engine.Sprite._Superclass;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite;
 using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Engine.Sprite._Superclass.Interactive;
-using Ae.Engine.Sprite._Superclass.Munition;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library;
-using Ae.Library.Mathematics;
+using Ae.Engine.Sprite.Interactive;
+using Ae.Engine.Sprite.Munition;
 using NTDLS.DelegateThreadPooling;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
@@ -94,8 +92,13 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
                 }
 
                 //Wait on all enqueued threads to complete.
-                if (AeUtility.TryAndIgnore(() => threadPoolTracker.WaitForCompletion()) == false)
+                try
                 {
+                    threadPoolTracker.WaitForCompletion();
+                }
+                catch
+                {
+                    //This is likely a shutdown of the engine while waiting, so we can just ignore it.
                     return;
                 }
 

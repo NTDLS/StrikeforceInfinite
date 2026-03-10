@@ -1,8 +1,9 @@
 ﻿using Ae.AssetExplorer.Controls;
-using Ae.Library;
+using Ae.Engine;
+using Ae.Engine.Helpers;
 using NTDLS.Persistence;
 using NTDLS.WinFormsHelpers;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {
@@ -23,7 +24,7 @@ namespace Ae.AssetExplorer.Forms
             checkBoxLineNumbers.Checked = Settings.Instance.EditorShowLineNumbers;
             checkBoxWordWrap.Checked = Settings.Instance.EditorWordWrap;
 
-            var sampleText = EmbeddedResource.Load("Samples/CSharpTextSample.txt");
+            var sampleText = AeEmbeddedTextResource.Load("Samples/CSharpTextSample.txt");
 
             _fontSampleTextbox = new AeCodeEditor(panelFontSampleParent, AeCodeType.CSharp, sampleText);
 

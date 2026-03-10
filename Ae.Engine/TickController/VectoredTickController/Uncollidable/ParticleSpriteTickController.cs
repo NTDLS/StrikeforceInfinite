@@ -1,19 +1,18 @@
-﻿using Ae.Engine.Manager;
+﻿using Ae.Engine.Helpers;
+using Ae.Engine.Manager;
+using Ae.Engine.Mathematics;
 using Ae.Engine.Rendering;
-using Ae.Engine.Sprite._Superclass;
+using Ae.Engine.Sprite;
 using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library;
-using Ae.Library.Mathematics;
 using SharpDX;
 using System;
 using System.Drawing;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
     public class ParticleSpriteTickController
-        : VectoredTickControllerBase<Sprite._Superclass.SpriteParticle>
+        : VectoredTickControllerBase<SpriteParticle>
     {
         public ParticleSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)

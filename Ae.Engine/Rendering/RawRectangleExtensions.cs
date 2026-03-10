@@ -1,4 +1,4 @@
-﻿using Ae.Library.Mathematics;
+﻿using Ae.Engine.Mathematics;
 using SharpDX.Mathematics.Interop;
 
 namespace Ae.Engine.Rendering

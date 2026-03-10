@@ -1,7 +1,7 @@
 ﻿using System;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
-namespace Ae.Library.Metadata
+namespace Ae.Engine.Metadata
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class AssetClassAttribute : Attribute

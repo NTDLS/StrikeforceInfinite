@@ -38,6 +38,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Compiler\Templates\DynamicCompileImports.txt" />
+	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithBase.txt" />
+	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithoutBase.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.0.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="NTDLS.DelegateThreadPooling" Version="2.0.4" />
 		<PackageReference Include="NTDLS.Helpers" Version="1.3.19" />
@@ -68,7 +76,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Ae.Library\Ae.Library.csproj" />
 		<ProjectReference Include="..\Ae.MpClientToServerComms\Ae.MpClientToServerComms.csproj" />
 	</ItemGroup>
 

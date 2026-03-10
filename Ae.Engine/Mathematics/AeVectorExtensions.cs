@@ -1,0 +1,149 @@
+﻿using Ae.Engine.ExtensionMethods;
+using Ae.Engine.Helpers;
+using System;
+using System.Runtime.CompilerServices;
+
+namespace Ae.Engine.Mathematics
+{
+    public static class AeVectorExtensions
+    {
+        /// <summary>
+        /// Rotate a point around another point by a certain angle.
+        /// 
+        /// Why you’d use it
+        /// orbiting behavior (“circle around target”)
+        /// rotating formation points around a leader
+        /// rotating a vertex around an object’s center
+        /// computing “offset points” for thrusters/guns that rotate with a ship
+        /// 
+        /// </summary>
+        /// <param name="pointToRotate"></param>
+        /// <param name="centerPoint"></param>
+        /// <param name="angleRadians"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AeVector RotateAroundPoint(this AeVector pointToRotate, AeVector centerPoint, float angleRadians)
+        {
+            var cosTheta = (float)Math.Cos(angleRadians);
+            var sinTheta = (float)Math.Sin(angleRadians);
+            var x = cosTheta * (pointToRotate.X - centerPoint.X) - sinTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.X;
+            var y = sinTheta * (pointToRotate.X - centerPoint.X) + cosTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.Y;
+            return new AeVector(x, y);
+        }
+
+        /// <summary>
+        /// Uniform random point in an annulus (between minDist and maxDist)
+        ///This gives a uniform area distribution(no “clumping” toward the center):
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="minDist"></param>
+        /// <param name="maxDist"></param>
+        /// <returns></returns>
+        public static AeVector RandomAtDistance(this AeVector center, float minDist, float maxDist)
+        {
+            // random angle [0, 2π)
+            float a = AeRandom.Between(0f, AeMath.TwoPi);
+
+            // uniform-in-area radius in [minDist, maxDist]
+            float r2 = AeRandom.Between(minDist * minDist, maxDist * maxDist);
+            float r = (float)Math.Sqrt(r2);
+
+            return new AeVector(
+                center.X + (float)Math.Cos(a) * r,
+                center.Y + (float)Math.Sin(a) * r
+            );
+        }
+
+        /// <summary>
+        /// Reflect a vector off a surface.Useful for light reflections, bouncing effects, etc.
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="normal"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AeVector Reflect(this AeVector vector, AeVector normal)
+        {
+            var dotProduct = vector.Dot(normal);
+            return new AeVector(vector.X - 2 * dotProduct * normal.X, vector.Y - 2 * dotProduct * normal.Y);
+        }
+
+        /// <summary>
+        /// Returns a new vector which has been rotated by the given radians.
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="radians"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AeVector RotatedBy(this AeVector vector, float degrees)
+        {
+            float radians = degrees.ToRadians();
+            float cosTheta = (float)Math.Cos(radians);
+            float sinTheta = (float)Math.Sin(radians);
+
+            return new AeVector(
+                vector.X * cosTheta - vector.Y * sinTheta,
+                vector.X * sinTheta + vector.Y * cosTheta
+            );
+        }
+
+        /// <summary>
+        /// Calculate the angle between two points in unsigned degrees.
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float AngleToInUnsignedDegrees(this AeVector from, AeVector to)
+        {
+            var radians = (float)Math.Atan2(to.Y - from.Y, to.X - from.X);
+            return (AeMath.RadToDeg(radians) + 360.0f) % 360.0f;
+        }
+
+        /// <summary>
+        /// Calculate the angle between two points in signed degrees.
+        /// </summary>
+        /// <param name="from">The object from which the calculation is based.</param>
+        /// <param name="to">The point to which the calculation is based.</param>
+        /// <returns>The calculated angle in the range of 1-180 to -1-180.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float AngleToInSignedDegrees(this AeVector from, AeVector to)
+        {
+            var angle = from.AngleToInUnsignedDegrees(to);
+            if (angle > 180)
+            {
+                angle -= 180;
+                angle = 180 - angle;
+                angle *= -1;
+            }
+
+            return -angle;
+        }
+
+        /// <summary>
+        /// Calculate the angle between two points in signed radians.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float AngleToInSignedRadians(this AeVector from, AeVector to)
+            => (float)Math.Atan2(to.Y - from.Y, to.X - from.X);
+
+        /// <summary>
+        /// Calculate the angle between two points in unsigned radians.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float AngleToInUnsignedRadians(this AeVector from, AeVector to)
+        {
+            var angle = (float)Math.Atan2(to.Y - from.Y, to.X - from.X);
+            if (angle < 0)
+            {
+                angle += 2 * (float)Math.PI; // Convert negative angles to positive by adding 2π
+            }
+            return angle;
+        }
+    }
+}

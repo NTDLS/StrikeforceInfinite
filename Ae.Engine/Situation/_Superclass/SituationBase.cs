@@ -1,7 +1,7 @@
 ﻿using Ae.Engine.Level._Superclass;
-using Ae.Library;
+using Ae.Engine.Types;
 using System.Collections.Generic;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Situation._Superclass
 {

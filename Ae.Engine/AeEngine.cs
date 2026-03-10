@@ -1,5 +1,6 @@
 using Ae.Engine.AI;
-using Ae.Engine.EngineLibrary;
+using Ae.Engine.ExtensionMethods;
+using Ae.Engine.Helpers;
 using Ae.Engine.Interrogation._Superclass;
 using Ae.Engine.Manager;
 using Ae.Engine.Menu;
@@ -8,7 +9,7 @@ using Ae.Engine.Rendering;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.TickController.PlayerSpriteTickController;
 using Ae.Engine.TickController.UnvectoredTickController;
-using Ae.Library;
+using Ae.Engine.Types;
 using Ae.MpClientToServerComms;
 using NTDLS.Persistence;
 using NTDLS.Semaphore;
@@ -17,7 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine
 {

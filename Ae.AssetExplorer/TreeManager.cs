@@ -3,10 +3,9 @@ using Ae.AssetExplorer.Forms;
 using Ae.AssetExplorer.Properties;
 using Ae.Engine;
 using Ae.Engine.Metadata;
-using Ae.Library;
 using System.Text.Json;
 using Talkster.Client.Controls;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer
 {

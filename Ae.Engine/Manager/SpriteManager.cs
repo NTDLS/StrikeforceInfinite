@@ -1,23 +1,23 @@
-﻿using Ae.Engine.KinematicBody;
+﻿using Ae.Engine.ExtensionMethods;
+using Ae.Engine.Helpers;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Mathematics.KinematicBody;
 using Ae.Engine.Menu;
-using Ae.Engine.Sprite._Superclass;
+using Ae.Engine.Sprite;
 using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Engine.Sprite._Superclass.Interactive;
-using Ae.Engine.Sprite._Superclass.Interactive.Ship;
-using Ae.Engine.Sprite._Superclass.Munition;
+using Ae.Engine.Sprite.Interactive;
+using Ae.Engine.Sprite.Interactive.Ship;
+using Ae.Engine.Sprite.Munition;
 using Ae.Engine.TickController.UnvectoredTickController;
 using Ae.Engine.TickController.VectoredTickController.Collidable;
 using Ae.Engine.TickController.VectoredTickController.Uncollidable;
-using Ae.Library;
-using Ae.Library.ExtensionMethods;
-using Ae.Library.Mathematics;
 using Microsoft.CodeAnalysis;
 using NTDLS.Helpers;
 using SharpDX.Mathematics.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Manager
 {

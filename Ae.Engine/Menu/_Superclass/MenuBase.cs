@@ -1,12 +1,12 @@
-﻿using Ae.Engine.Sprite._Superclass.MenuItem;
-using Ae.Engine.Sprite._Superclass.TextBlock;
-using Ae.Library.Mathematics;
+﻿using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite.MenuItem;
+using Ae.Engine.Sprite.TextBlock;
 using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Menu._Superclass
 {

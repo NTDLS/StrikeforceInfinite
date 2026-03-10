@@ -1,7 +1,7 @@
-﻿using Ae.Engine.Menu._Superclass;
-using Ae.Engine.Sprite._Superclass.Interactive;
-using Ae.Engine.Sprite._Superclass.TextBlock;
-using Ae.Library.Mathematics;
+﻿using Ae.Engine.Mathematics;
+using Ae.Engine.Menu._Superclass;
+using Ae.Engine.Sprite.Interactive;
+using Ae.Engine.Sprite.TextBlock;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

@@ -1,11 +1,12 @@
-﻿using Ae.Engine.Level._Superclass;
-using Ae.Engine.Sprite._Superclass.Interactive.Ship;
-using Ae.Library;
-using Ae.Library.ExtensionMethods;
-using Ae.Library.Mathematics;
+﻿using Ae.Engine.ExtensionMethods;
+using Ae.Engine.Helpers;
+using Ae.Engine.Level._Superclass;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite.Interactive.Ship;
+using Ae.Engine.Types;
 using System;
 using System.Linq;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Level
 {

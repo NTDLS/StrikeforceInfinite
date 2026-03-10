@@ -1,11 +1,10 @@
-﻿using Ae.Engine.Persistent;
-using Ae.Engine.Sprite._Superclass.Interactive;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library.ExtensionMethods;
-using Ae.Library.Mathematics;
+﻿using Ae.Engine.ExtensionMethods;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Persistent;
+using Ae.Engine.Sprite.Interactive;
 using System;
 using System.Diagnostics;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.TickController.PlayerSpriteTickController
 {

@@ -1,4 +1,4 @@
-﻿using Ae.Library.Sprite;
+﻿using Ae.Engine.Sprite;
 
 namespace Ae.Engine.Interrogation._Superclass
 {

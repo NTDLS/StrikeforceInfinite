@@ -1,9 +1,8 @@
-﻿using Ae.Engine.Manager;
+﻿using Ae.Engine.Helpers;
+using Ae.Engine.Manager;
+using Ae.Engine.Mathematics;
 using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Engine.Sprite._Superclass.Animation;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library;
-using Ae.Library.Mathematics;
+using Ae.Engine.Sprite.Animation;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {

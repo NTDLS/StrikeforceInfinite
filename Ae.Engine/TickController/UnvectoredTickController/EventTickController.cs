@@ -1,9 +1,8 @@
 ﻿using Ae.Engine.Menu;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library;
+using Ae.Engine.Types;
 using NTDLS.Semaphore;
 using System.Collections.Generic;
-using static Ae.Library.AeDefermentEvent;
+using static Ae.Engine.Types.AeDefermentEvent;
 
 namespace Ae.Engine.TickController.UnvectoredTickController
 {

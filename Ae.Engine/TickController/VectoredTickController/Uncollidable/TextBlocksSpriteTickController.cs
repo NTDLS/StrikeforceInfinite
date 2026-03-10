@@ -1,7 +1,6 @@
 ﻿using Ae.Engine.Manager;
-using Ae.Engine.Sprite._Superclass.TextBlock;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library.Mathematics;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite.TextBlock;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using System.Linq;

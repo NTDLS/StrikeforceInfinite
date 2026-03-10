@@ -1,5 +1,5 @@
-﻿using Ae.Engine.KinematicBody;
-using Ae.Engine.Sprite._Superclass.Interactive;
+﻿using Ae.Engine.Mathematics.KinematicBody;
+using Ae.Engine.Sprite.Interactive;
 using System.Collections.Generic;
 
 namespace Ae.Engine.Manager

@@ -1,7 +1,7 @@
-﻿using Ae.Engine.Menu._Superclass;
+﻿using Ae.Engine.Mathematics;
+using Ae.Engine.Menu._Superclass;
 using Ae.Engine.Rendering;
-using Ae.Engine.Sprite._Superclass.TextBlock;
-using Ae.Library.Mathematics;
+using Ae.Engine.Sprite.TextBlock;
 using NTDLS.Helpers;
 using SharpDX.Mathematics.Interop;
 using System.Linq;

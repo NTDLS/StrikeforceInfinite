@@ -1,10 +1,10 @@
-﻿using Ae.Library;
+﻿using Ae.Engine.Helpers;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System.ComponentModel;
 using System.Xml;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer.Controls
 {
@@ -75,10 +75,10 @@ namespace Ae.AssetExplorer.Controls
 
             var highlighterText = codeType switch
             {
-                AeCodeType.CSharp => EmbeddedResource.Load("Highlighters/AeCSharpHighlighter.xshd"),
-                AeCodeType.JSON => EmbeddedResource.Load("Highlighters/AeJsonHighlighter.xshd"),
-                AeCodeType.MarkDown => EmbeddedResource.Load("Highlighters/AeMarkDownHighlighter.xshd"),
-                AeCodeType.XML => EmbeddedResource.Load("Highlighters/AeXmlHighlighter.xshd"),
+                AeCodeType.CSharp => AeEmbeddedTextResource.Load("Highlighters/AeCSharpHighlighter.xshd"),
+                AeCodeType.JSON => AeEmbeddedTextResource.Load("Highlighters/AeJsonHighlighter.xshd"),
+                AeCodeType.MarkDown => AeEmbeddedTextResource.Load("Highlighters/AeMarkDownHighlighter.xshd"),
+                AeCodeType.XML => AeEmbeddedTextResource.Load("Highlighters/AeXmlHighlighter.xshd"),
                 _ => null
             };
 

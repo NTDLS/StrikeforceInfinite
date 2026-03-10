@@ -1,8 +1,8 @@
 using Ae.Client.Forms;
 using Ae.Client.Hardware;
 using Ae.Engine;
+using Ae.Engine.Mathematics;
 using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Client
 {

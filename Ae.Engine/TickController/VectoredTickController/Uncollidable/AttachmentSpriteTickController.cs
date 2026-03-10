@@ -1,8 +1,6 @@
 ﻿using Ae.Engine.Manager;
-using Ae.Engine.Sprite._Superclass.Interactive;
-using Ae.Engine.TickController._Superclass;
-using Ae.Library;
-using Ae.Library.Mathematics;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite.Interactive;
 using System.Linq;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable

@@ -1,8 +1,8 @@
-﻿using Ae.Engine.Sprite._Superclass.Interactive;
-using Ae.Library.Mathematics;
-using Ae.Library.Metadata;
+﻿using Ae.Engine.Mathematics;
+using Ae.Engine.Metadata;
+using Ae.Engine.Sprite.Interactive;
 using System;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.AI
 {

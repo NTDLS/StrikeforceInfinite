@@ -40,7 +40,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Ae.Engine\Ae.Engine.csproj" />
-		<ProjectReference Include="..\Ae.Library\Ae.Library.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

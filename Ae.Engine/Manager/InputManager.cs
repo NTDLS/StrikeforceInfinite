@@ -1,14 +1,14 @@
-﻿using Ae.Engine.Sprite._Superclass.Interactive.Ship;
-using Ae.Library;
-using Ae.Library.ExtensionMethods;
-using Ae.Library.Mathematics;
+﻿using Ae.Engine.ExtensionMethods;
+using Ae.Engine.Helpers;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite.Interactive.Ship;
 using SharpDX.DirectInput;
 using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using static Ae.Library.AeConstants;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Manager
 {

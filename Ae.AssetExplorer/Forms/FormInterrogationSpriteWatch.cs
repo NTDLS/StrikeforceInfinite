@@ -1,8 +1,8 @@
 ﻿using Ae.Engine;
+using Ae.Engine.Mathematics;
+using Ae.Engine.Sprite;
 using Ae.Engine.Sprite._Superclass._Root;
-using Ae.Engine.Sprite._Superclass.Interactive.Ship;
-using Ae.Library.Mathematics;
-using Ae.Library.Sprite;
+using Ae.Engine.Sprite.Interactive.Ship;
 
 namespace Ae.AssetExplorer.Forms
 {
