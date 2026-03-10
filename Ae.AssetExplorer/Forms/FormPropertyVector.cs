@@ -1,4 +1,5 @@
 ﻿using Ae.Library.Mathematics;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {
@@ -12,7 +13,7 @@ namespace Ae.AssetExplorer.Forms
             InitializeComponent();
         }
 
-        public FormPropertyVector(PropertyItem propertyItem)
+        public FormPropertyVector(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
         {
             InitializeComponent();
 

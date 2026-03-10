@@ -1,8 +1,8 @@
 ﻿using Ae.AssetExplorer.Forms;
 using Ae.Engine;
+using Ae.Engine.Metadata;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Library;
-using Ae.Library.Metadata;
 using System.Reflection;
 using static Ae.Library.AeConstants;
 
@@ -107,91 +107,91 @@ namespace Ae.AssetExplorer
                         return;
                     case PropertyEditorType.Class:
                         {
-                            using var form = new FormPropertyClassPicker(selectedItem);
+                            using var form = new FormPropertyClassPicker(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.String:
                         {
-                            using var form = new FormPropertyString(selectedItem);
+                            using var form = new FormPropertyString(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Text:
                         {
-                            using var form = new FormPropertyText(selectedItem);
+                            using var form = new FormPropertyText(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Integer:
                         {
-                            using var form = new FormPropertyInteger(selectedItem);
+                            using var form = new FormPropertyInteger(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Float:
                         {
-                            using var form = new FormPropertyFloat(selectedItem);
+                            using var form = new FormPropertyFloat(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Boolean:
                         {
-                            using var form = new FormPropertyBoolean(selectedItem);
+                            using var form = new FormPropertyBoolean(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.RangeInt:
                         {
-                            using var form = new FormPropertyRangeInt(selectedItem);
+                            using var form = new FormPropertyRangeInt(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.RangeFloat:
                         {
-                            using var form = new FormPropertyRangeFloat(selectedItem);
+                            using var form = new FormPropertyRangeFloat(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Vector:
                         {
-                            using var form = new FormPropertyVector(selectedItem);
+                            using var form = new FormPropertyVector(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Enum:
                         {
-                            using var form = new FormPropertyEnum(selectedItem);
+                            using var form = new FormPropertyEnum(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.Picker:
                         {
-                            using var form = new FormPropertyPicker(selectedItem);
+                            using var form = new FormPropertyPicker(_writeOutput, selectedItem);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value;
                             break;
                         }
                     case PropertyEditorType.MultipleSpritePicker:
                         {
-                            using var form = new FormPropertySpritePicker(_engine, selectedItem, true);
+                            using var form = new FormPropertyAssetPicker(_engine, _writeOutput, selectedItem, true);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value.ToArray();
                             break;
                         }
                     case PropertyEditorType.SingleSpritePicker:
                         {
-                            using var form = new FormPropertySpritePicker(_engine, selectedItem, false);
+                            using var form = new FormPropertyAssetPicker(_engine, _writeOutput, selectedItem, false);
                             if (form.ShowDialog() != DialogResult.OK) return;
                             newValue = form.Value.FirstOrDefault();
                             break;

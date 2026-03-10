@@ -1,7 +1,7 @@
 ﻿using Ae.Audio;
+using Ae.Engine.Metadata;
 using Ae.Library;
 using Ae.Library.Compiler;
-using Ae.Library.Metadata;
 using NTDLS.DelegateThreadPooling;
 using NTDLS.SqliteDapperWrapper;
 using System;

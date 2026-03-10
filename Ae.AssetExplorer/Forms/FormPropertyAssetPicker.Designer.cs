@@ -1,6 +1,6 @@
 ﻿namespace Ae.AssetExplorer.Forms
 {
-    partial class FormPropertySpritePicker
+    partial class FormPropertyAssetPicker
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertySpritePicker));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPropertyAssetPicker));
             labelName = new Label();
             buttonCancel = new Button();
             buttonSave = new Button();
@@ -89,7 +89,7 @@
             treeViewAssets.Size = new Size(346, 256);
             treeViewAssets.TabIndex = 0;
             // 
-            // FormPropertySpritePicker
+            // FormPropertyAssetPicker
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -104,7 +104,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "FormPropertySpritePicker";
+            Name = "FormPropertyAssetPicker";
             Opacity = 0.95D;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;

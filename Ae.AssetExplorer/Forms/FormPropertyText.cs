@@ -1,4 +1,6 @@
-﻿namespace Ae.AssetExplorer.Forms
+﻿using static Ae.Library.AeConstants;
+
+namespace Ae.AssetExplorer.Forms
 {
     public partial class FormPropertyText
         : Form
@@ -10,7 +12,7 @@
             InitializeComponent();
         }
 
-        public FormPropertyText(PropertyItem propertyItem)
+        public FormPropertyText(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
         {
             InitializeComponent();
 

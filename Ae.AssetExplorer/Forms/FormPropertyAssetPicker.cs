@@ -1,28 +1,32 @@
 ﻿using Ae.AssetExplorer.Controls;
 using Ae.Engine;
+using Ae.Engine.Metadata;
 using Ae.Library;
-using Ae.Library.Metadata;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {
-    public partial class FormPropertySpritePicker
+    public partial class FormPropertyAssetPicker
         : Form
     {
         private readonly AeEngine? _engine;
         private readonly bool _multiSelect;
+        private readonly Type? _requireAssignableFrom;
         public List<string> Value => _selectedAssetKeys;
-        private List<string> _selectedAssetKeys = new List<string>();
+        private readonly List<string> _selectedAssetKeys = new List<string>();
+        private readonly Action<string, AeLoggingLevel?>? _writeOutput;
 
-        public FormPropertySpritePicker()
+        public FormPropertyAssetPicker()
         {
             InitializeComponent();
         }
 
-        public FormPropertySpritePicker(AeEngine engine, PropertyItem propertyItem, bool multiSelect)
+        public FormPropertyAssetPicker(AeEngine engine, Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem, bool multiSelect)
         {
             InitializeComponent();
             _engine = engine;
             _multiSelect = multiSelect;
+            _requireAssignableFrom = propertyItem.Attributes?.RequireAssignableFrom;
 
             Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
             labelName.Text = propertyItem.Attributes?.FriendlyName ?? propertyItem.Name;
@@ -89,6 +93,28 @@ namespace Ae.AssetExplorer.Forms
 
                 foreach (var asset in assets)
                 {
+                    if (_requireAssignableFrom != null)
+                    {
+                        try
+                        {
+                            if (string.IsNullOrEmpty(asset.Metadata.Class))
+                            {
+                                continue;
+                            }
+
+                            var assetClassType = AeReflection.GetTypeByName(asset.Metadata.Class);
+                            if (_requireAssignableFrom.IsAssignableFrom(assetClassType) == false)
+                            {
+                                continue;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _writeOutput?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Warning);
+                            continue;
+                        }
+                    }
+
                     UpsertTreeNodesPath(asset, selectedAssetKeys);
                 }
 
@@ -120,7 +146,7 @@ namespace Ae.AssetExplorer.Forms
             }
             catch (Exception ex)
             {
-                //_writeOutput($"Error: {ex.GetBaseException().Message}", LoggingLevel.Error);
+                _writeOutput?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
         }
 

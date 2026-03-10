@@ -1,4 +1,5 @@
 ﻿using Ae.Library;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {
@@ -7,7 +8,7 @@ namespace Ae.AssetExplorer.Forms
     {
         public string AssetName => textBoxAssetName.Text.Trim();
 
-        public FormGetNewAssetName()
+        public FormGetNewAssetName(Action<string, AeLoggingLevel?>? writeOutput)
         {
             InitializeComponent();
             AcceptButton = buttonCreate;

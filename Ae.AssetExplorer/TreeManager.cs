@@ -2,6 +2,7 @@
 using Ae.AssetExplorer.Forms;
 using Ae.AssetExplorer.Properties;
 using Ae.Engine;
+using Ae.Engine.Metadata;
 using Ae.Library;
 using System.Text.Json;
 using Talkster.Client.Controls;
@@ -123,7 +124,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                using var form = new FormGetNewAssetName();
+                using var form = new FormGetNewAssetName(_writeOutput);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     var newAssetKey = $"{GetNodeAssetDirectory(node)}/{form.AssetName}".Trim('/');
@@ -146,7 +147,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                using var form = new FormCreateFolder();
+                using var form = new FormCreateFolder(_writeOutput);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     var newAssetKey = $"{GetNodeAssetDirectory(node)}/{form.FolderName}".Trim('/');

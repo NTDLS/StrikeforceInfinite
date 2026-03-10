@@ -1,4 +1,5 @@
 ﻿using Ae.Library;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {
@@ -12,7 +13,7 @@ namespace Ae.AssetExplorer.Forms
             InitializeComponent();
         }
 
-        public FormPropertyRangeInt(PropertyItem propertyItem)
+        public FormPropertyRangeInt(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
         {
             InitializeComponent();
 

@@ -73,7 +73,7 @@
 		<Compile Update="Forms\FormPropertyRangeInt.cs">
 			<SubType>Form</SubType>
 		</Compile>
-		<Compile Update="Forms\FormPropertySpritePicker.cs">
+		<Compile Update="Forms\FormPropertyAssetPicker.cs">
 			<SubType>Form</SubType>
 		</Compile>
 		<Compile Update="Forms\FormPropertyRangeFloat.cs">

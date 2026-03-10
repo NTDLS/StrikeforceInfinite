@@ -1,9 +1,15 @@
-﻿using Ae.Library.Compiler;
+﻿using Ae.Engine.AI;
+using Ae.Engine.Sprite._Superclass;
+using Ae.Engine.Sprite._Superclass.Interactive;
+using Ae.Engine.Sprite._Superclass.Munition;
+using Ae.Library;
+using Ae.Library.Compiler;
 using Ae.Library.Mathematics;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using static Ae.Library.AeConstants;
 
-namespace Ae.Library.Metadata
+namespace Ae.Engine.Metadata
 {
     public class AssetMetadata
     {
@@ -32,21 +38,29 @@ namespace Ae.Library.Metadata
         [AssetMetadata("Description", "A brief description of the sprite.", PropertyEditorGroup.Base, PropertyEditorType.String)]
         public string? Description { get; set; }
 
-        [AssetMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.", PropertyEditorGroup.Attachment, PropertyEditorType.Vector)]
+        //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
+        [AssetMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.",
+            PropertyEditorGroup.Attachment, PropertyEditorType.Vector)]
         public AeVector? AttachmentPosition { get; set; }
 
-        [AssetMetadata("AI Controllers", "The AI controller classes that will be available to this sprite.", PropertyEditorGroup.AI, PropertyEditorType.MultipleSpritePicker)]
+        [AssetMetadata("AI Controllers", "The AI controller classes that will be available to this sprite.",
+            PropertyEditorGroup.AI, PropertyEditorType.MultipleSpritePicker, requireAssignableFrom: typeof(IAIController))]
         public string[]? AIControllers { get; set; }
 
-        [AssetMetadata("Default AI Controller", "The default AI controller class for the sprite.", PropertyEditorGroup.AI, PropertyEditorType.SingleSpritePicker)]
+        [AssetMetadata("Default AI Controller", "The default AI controller class for the sprite.",
+            PropertyEditorGroup.AI, PropertyEditorType.SingleSpritePicker, requireAssignableFrom: typeof(IAIController))]
         public string? DefaultAIController { get; set; }
 
         #region InteractiveSpriteMetadata
 
-        [AssetMetadata("Orientation Type", "Determines how the attached sprite orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.", PropertyEditorGroup.Attachment, PropertyEditorType.Enum, enumType: typeof(AttachmentOrientationType))]
+        //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
+        [AssetMetadata("Orientation Type", "Determines how the attached sprite orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.",
+            PropertyEditorGroup.Attachment, PropertyEditorType.Enum, enumType: typeof(AttachmentOrientationType))]
         public AttachmentOrientationType? AttachmentOrientationType { get; set; }
 
-        [AssetMetadata("Position Type", "Determines how the attached sprite position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.", PropertyEditorGroup.Attachment, PropertyEditorType.Enum, enumType: typeof(AttachmentPositionType))]
+        //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
+        [AssetMetadata("Position Type", "Determines how the attached sprite position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.",
+            PropertyEditorGroup.Attachment, PropertyEditorType.Enum, enumType: typeof(AttachmentPositionType))]
         public AttachmentPositionType? AttachmentPositionType { get; set; }
 
         [AssetMetadata("Explosion Type", "Determines the type of explosion effect for the sprite.", PropertyEditorGroup.Destroy, PropertyEditorType.Enum, enumType: typeof(ExplosionType))]
@@ -125,13 +139,17 @@ namespace Ae.Library.Metadata
         /// <summary>
         /// Used for the players "primary weapon slot".
         /// </summary>
-        [AssetMetadata("Primary Weapon", "The primary weapon assigned to the sprite.", PropertyEditorGroup.Weapons, PropertyEditorType.SingleSpritePicker)]
+        [AssetMetadata("Primary Weapon", "The primary weapon assigned to the sprite.",
+            PropertyEditorGroup.Weapons, PropertyEditorType.SingleSpritePicker, requireAssignableFrom: typeof(SpriteWeapon))]
         public string? PrimaryWeaponAssetKey { get; set; }
 
-        [AssetMetadata("Attachments", "The list of attachments for the sprite.", PropertyEditorGroup.Attachment, PropertyEditorType.MultipleSpritePicker)]
+        //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
+        [AssetMetadata("Attachments", "The list of attachments for the sprite.",
+            PropertyEditorGroup.Attachment, PropertyEditorType.MultipleSpritePicker, requireAssignableFrom: typeof(SpriteAttachment))]
         public List<AssetMetadata>? Attachments { get; set; }
 
-        [AssetMetadata("Weapon Assets", "The list of weapons for the sprite.", PropertyEditorGroup.Weapons, PropertyEditorType.MultipleSpritePicker)]
+        [AssetMetadata("Weapon Assets", "The list of weapons for the sprite.",
+            PropertyEditorGroup.Weapons, PropertyEditorType.MultipleSpritePicker, requireAssignableFrom: typeof(SpriteWeapon))]
         public List<string>? WeaponAssetKeys { get; set; }
 
         #endregion
@@ -164,10 +182,12 @@ namespace Ae.Library.Metadata
         /// <summary>
         /// If the sprite has an image, these are the paths to the bitmaps (be default, they are used at random)..
         /// </summary>
-        [AssetMetadata("Munition Assets", "The munitions assets for the weapon.", PropertyEditorGroup.Munitions, PropertyEditorType.MultipleSpritePicker)]
+        [AssetMetadata("Munition Assets", "The munitions assets for the weapon.",
+            PropertyEditorGroup.Munitions, PropertyEditorType.MultipleSpritePicker, requireAssignableFrom: typeof(SpriteMunition))]
         public string[]? MunitionAssetKeys { get; set; }
 
-        [AssetMetadata("Sound Asset", "The sound asset file for the sprite.", PropertyEditorGroup.Audio, PropertyEditorType.String)]
+        [AssetMetadata("Sound Asset", "The sound asset file for the sprite.",
+            PropertyEditorGroup.Audio, PropertyEditorType.String/*, requireAssignableFrom: typeof(SpriteSound)*/)]
         public string? SoundAssetKey { get; set; }
 
         /// <summary>

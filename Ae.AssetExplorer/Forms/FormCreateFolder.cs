@@ -1,4 +1,5 @@
 ﻿using Ae.Library;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {
@@ -7,7 +8,7 @@ namespace Ae.AssetExplorer.Forms
     {
         public string FolderName => textBoxFolderName.Text.Trim();
 
-        public FormCreateFolder()
+        public FormCreateFolder(Action<string, AeLoggingLevel?>? writeOutput)
         {
             InitializeComponent();
             AcceptButton = buttonCreate;

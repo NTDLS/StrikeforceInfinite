@@ -1,4 +1,5 @@
 ﻿using Ae.Library;
+using static Ae.Library.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {
@@ -33,7 +34,7 @@ namespace Ae.AssetExplorer.Forms
             }
         }
 
-        public FormPropertyPicker(PropertyItem propertyItem)
+        public FormPropertyPicker(Action<string, AeLoggingLevel?>? writeOutput, PropertyItem propertyItem)
         {
             InitializeComponent();
 

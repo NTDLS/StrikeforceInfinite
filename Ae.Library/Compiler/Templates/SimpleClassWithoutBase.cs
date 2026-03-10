@@ -5,7 +5,5 @@ public class [[className]] (AeEngine engine, string assetKey)
 {
     public string AeGetClassName() => "[[className]]";
 
-    /*--BEGIN USER CODE--*/
     [[userCode]]
-    /*--END USER CODE--*/
 }

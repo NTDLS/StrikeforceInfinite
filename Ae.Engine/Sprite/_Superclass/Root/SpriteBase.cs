@@ -1,9 +1,9 @@
-﻿using Ae.Engine.Sprite._Superclass.Interactive;
+﻿using Ae.Engine.Metadata;
+using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
 using Ae.Library;
 using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
-using Ae.Library.Metadata;
 using Ae.Library.Sprite;
 using System;
 using System.Drawing;

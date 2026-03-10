@@ -1,4 +1,5 @@
-﻿using static Ae.Library.AeConstants;
+﻿using System;
+using static Ae.Library.AeConstants;
 
 namespace Ae.Library.Metadata
 {

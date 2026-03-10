@@ -5,7 +5,5 @@ public class [[className]]([[constructorSignature]])
 {
     public string AeGetClassName() => "[[className]]";
 
-    /*--BEGIN USER CODE--*/
     [[userCode]]
-    /*--END USER CODE--*/
 }

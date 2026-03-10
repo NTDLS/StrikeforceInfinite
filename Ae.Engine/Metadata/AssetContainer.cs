@@ -1,6 +1,4 @@
-﻿using Ae.Library.Metadata;
-
-namespace Ae.Library
+﻿namespace Ae.Engine.Metadata
 {
     public class AssetContainer
     {
