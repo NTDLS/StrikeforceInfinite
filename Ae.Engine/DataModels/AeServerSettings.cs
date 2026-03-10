@@ -1,4 +1,4 @@
-﻿namespace Ae.Engine
+﻿namespace Ae.Engine.DataModels
 {
     public class AeServerSettings
     {

@@ -1,6 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
-namespace Ae.AssetExplorer.Hardware
+namespace Ae.Engine.Hardware
 {
     #region DEVMODE struct.
 
@@ -44,7 +46,7 @@ namespace Ae.AssetExplorer.Hardware
 
     #endregion
 
-    internal static class Display
+    public static class Display
     {
         private const int ENUM_CURRENT_SETTINGS = -1;
 

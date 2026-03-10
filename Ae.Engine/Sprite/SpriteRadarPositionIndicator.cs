@@ -1,4 +1,4 @@
-﻿using Ae.Engine.Sprite._Superclass._Root;
+﻿using Ae.Engine.Sprite.Base;
 
 namespace Ae.Engine.Sprite
 {

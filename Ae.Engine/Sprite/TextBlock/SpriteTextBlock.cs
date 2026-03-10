@@ -1,5 +1,5 @@
 ﻿using Ae.Engine.Mathematics;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;

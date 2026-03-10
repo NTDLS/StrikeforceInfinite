@@ -1,4 +1,5 @@
 ﻿using Ae.Engine.Helpers;
+using Ae.Engine.Mathematics;
 using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
@@ -36,7 +37,7 @@ namespace Ae.Engine.Rendering
 
         public static List<Bitmap> GenerateIrregularFragments(AeRendering rendering, Bitmap originalBitmap, int countOfFragments, int countOfVertices)
         {
-            if (AeMathHelpers.IsSquareNumber(countOfFragments) == false)
+            if (AeMath.IsSquareNumber(countOfFragments) == false)
             {
                 throw new Exception("Parameter countOfFragments of GenerateIrregularFragments() (which is {countOfFragments}), must be a square number.");
             }

@@ -1,5 +1,5 @@
-﻿using Ae.Client.Hardware;
-using Ae.Engine;
+﻿using Ae.Engine;
+using Ae.Engine.Hardware;
 using Ae.Engine.Rendering;
 using System;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Ae.Client
     {
         private const int MAX_RESOLUTIONS = 32;
 
-        private Screen _screen;
+        private readonly Screen _screen;
 
         public FormSettings(Screen screen)
         {

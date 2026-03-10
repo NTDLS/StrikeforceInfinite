@@ -3,7 +3,7 @@ using Ae.Engine.Manager;
 using Ae.Engine.Mathematics;
 using Ae.Engine.Rendering;
 using Ae.Engine.Sprite;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using SharpDX;
 using System;
 using System.Drawing;

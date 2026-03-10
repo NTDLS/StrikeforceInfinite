@@ -3,7 +3,7 @@ using Ae.Engine.Helpers;
 using Ae.Engine.Mathematics;
 using Ae.Engine.Mathematics.KinematicBody;
 using Ae.Engine.Metadata;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using Ae.Engine.Sprite.Munition;
 using Microsoft.CodeAnalysis;
 using NTDLS.Helpers;

@@ -110,6 +110,59 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
+        public string? GetAssetCodeForCompilation(string assetKey, Action<string, AeLoggingLevel?>? writeOutput = null)
+        {
+            var model = _assetsDatabase.QueryFirstOrDefault<AssetDatabaseModel>(
+                "SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets WHERE Key = @Key", new { Key = assetKey })
+                ?? throw new Exception($"Asset not found {assetKey}");
+
+            var assetContainer = DeserializeAssetContainer(model);
+
+            if (assetContainer.Metadata.AssetKey == null)
+            {
+                throw new Exception($"Asset metadata for asset with key: {assetContainer.Key} does not contain a valid AssetKey.");
+            }
+
+            if (BaseAssetTypes.TryGetValue(model.BaseType, out var baseType) == false)
+            {
+                if (writeOutput != null)
+                {
+                    writeOutput($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}", AeLoggingLevel.Error);
+                }
+                else throw new Exception($"Unsupported asset base type: {model.BaseType} for asset with key: {model.Key}");
+            }
+
+            var friendlyName = assetContainer.Metadata.AssetKey.Split('/').LastOrDefault()
+                ?? throw new Exception($"Asset metadata for asset with key: {assetContainer.Key} does not contain a valid AssetKey.");
+
+            string? assetDynamicCode = null;
+            Type? interfaceType = null;
+
+            if (baseType != AeBaseAssetType.Code
+                && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
+                && !string.IsNullOrWhiteSpace(model.Controller))
+            {
+                //Non-code ("sprite") asset code is the Controller field and Metadata.Class is the base class.
+                assetDynamicCode = model.Controller;
+                interfaceType = typeof(IAeRuntimeCompiledSpriteAsset);
+            }
+            else if (baseType == AeBaseAssetType.Code)
+            {
+                //"Code" asset type code is in the Bytes field.
+                assetDynamicCode = Encoding.UTF8.GetString(model.Bytes);
+                interfaceType = typeof(IAeRuntimeCompiledCodeAsset);
+            }
+
+            if (assetDynamicCode != null && interfaceType != null)
+            {
+                //Compile user code for asset.
+                return AeAssetCodeClassBuilder.Get(
+                    assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, assetDynamicCode, interfaceType, friendlyName);
+            }
+
+            return null;
+        }
+
         public void LoadAllAssets(Action<string, float>? progressCallback, Action<string, AeLoggingLevel?>? writeOutput = null)
         {
             progressCallback?.Invoke("Loading assets...", 0);
@@ -155,36 +208,13 @@ namespace Ae.Engine.Manager
                         else throw new Exception($"Asset metadata for asset with key: {model.Key} does not contain an AssetKey.");
                     }
 
-                    var friendlyName = assetContainer.Metadata.AssetKey.Split('/').LastOrDefault()
-                        ?? throw new Exception($"Asset metadata for asset with key: {model.Key} does not contain a valid AssetKey.");
+                    var assetCodeForCompilation = GetAssetCodeForCompilation(assetContainer.Metadata.AssetKey, writeOutput);
 
-                    string? assetDynamicCode = null;
-                    Type? interfaceType = null;
-
-                    if (baseType != AeBaseAssetType.Code
-                        && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
-                        && !string.IsNullOrWhiteSpace(model.Controller))
+                    if (assetCodeForCompilation != null)
                     {
-                        //Non-code ("sprite") asset code is the Controller field and Metadata.Class is the base class.
-                        assetDynamicCode = model.Controller;
-                        interfaceType = typeof(IAeRuntimeCompiledSpriteAsset);
-                    }
-                    else if (baseType == AeBaseAssetType.Code)
-                    {
-                        //"Code" asset type code is in the Bytes field.
-                        assetDynamicCode = Encoding.UTF8.GetString(model.Bytes);
-                        interfaceType = typeof(IAeRuntimeCompiledCodeAsset);
-                    }
-
-                    if (assetDynamicCode != null && interfaceType != null)
-                    {
-                        //Compile user code for asset.
-                        var fullAssetDynamicCode = AeAssetCodeClassBuilder.Get(
-                            assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, assetDynamicCode, interfaceType, friendlyName);
-
                         try
                         {
-                            AeRuntimeCompiler.CompileToAssembly(fullAssetDynamicCode);
+                            AeRuntimeCompiler.CompileToAssembly(assetContainer.Metadata.AssetKey, assetCodeForCompilation, true, writeOutput);
 
                             //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
                             AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);

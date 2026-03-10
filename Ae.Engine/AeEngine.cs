@@ -1,4 +1,5 @@
 using Ae.Engine.AI;
+using Ae.Engine.DataModels;
 using Ae.Engine.ExtensionMethods;
 using Ae.Engine.Helpers;
 using Ae.Engine.Interrogation._Superclass;
@@ -6,7 +7,7 @@ using Ae.Engine.Manager;
 using Ae.Engine.Menu;
 using Ae.Engine.MultiPlay;
 using Ae.Engine.Rendering;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using Ae.Engine.TickController.PlayerSpriteTickController;
 using Ae.Engine.TickController.UnvectoredTickController;
 using Ae.Engine.Types;

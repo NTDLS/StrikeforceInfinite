@@ -3,7 +3,7 @@ using Ae.Engine.Interrogation;
 using Ae.Engine.Interrogation._Superclass;
 using Ae.Engine.Mathematics;
 using Ae.Engine.Rendering;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

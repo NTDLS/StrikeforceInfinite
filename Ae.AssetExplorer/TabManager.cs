@@ -134,6 +134,15 @@ namespace Ae.AssetExplorer
             return null;
         }
 
+        public AeTabPage? CurrentTab()
+        {
+            if (TabControl.SelectedTab is AeTabPage tabPage)
+            {
+                return tabPage;
+            }
+            return null;
+        }
+
         public bool SaveCurrentTab()
         {
             if (TabControl.SelectedTab is AeTabPage tabPage)
@@ -141,6 +150,17 @@ namespace Ae.AssetExplorer
                 return SaveTab(tabPage);
             }
             return false;
+        }
+
+        public void SaveAllTabs()
+        {
+            foreach (AeTabPage tab in TabControl.TabPages)
+            {
+                if (SaveTab(tab) == false)
+                {
+                    break;
+                }
+            }
         }
 
         public bool SaveTab(AeTabPage tabPage)

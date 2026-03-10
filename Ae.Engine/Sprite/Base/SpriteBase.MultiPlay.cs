@@ -2,7 +2,7 @@
 using System;
 using static Ae.Engine.AeConstants;
 
-namespace Ae.Engine.Sprite._Superclass._Root
+namespace Ae.Engine.Sprite.Base
 {
     public partial class SpriteBase
     {

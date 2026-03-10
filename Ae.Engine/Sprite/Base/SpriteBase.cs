@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Ae.Engine.Sprite._Superclass._Root
+namespace Ae.Engine.Sprite.Base
 {
     /// <summary>
     /// Represents a single item that can be rendered to the screen. All on-screen objects are derived from this class.

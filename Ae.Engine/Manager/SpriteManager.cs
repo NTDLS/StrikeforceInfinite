@@ -4,7 +4,7 @@ using Ae.Engine.Mathematics;
 using Ae.Engine.Mathematics.KinematicBody;
 using Ae.Engine.Menu;
 using Ae.Engine.Sprite;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using Ae.Engine.Sprite.Interactive;
 using Ae.Engine.Sprite.Interactive.Ship;
 using Ae.Engine.Sprite.Munition;

@@ -1,9 +1,10 @@
 using Ae.AssetExplorer.Controls;
 using Ae.AssetExplorer.Forms;
 using Ae.Engine;
+using Ae.Engine.Compiler;
 using Ae.Engine.ExtensionMethods;
-using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite.Animation;
+using Ae.Engine.Sprite.Base;
 using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
 using static Ae.Engine.AeConstants;
@@ -17,12 +18,13 @@ namespace Ae.AssetExplorer
         private readonly TreeManager _treeManager;
         private readonly PropertyListManager _propertyListManager;
         private readonly TabManager _tabManager;
+        private readonly AeCodeEditor _codeViewer;
 
         public FormMain()
         {
             InitializeComponent();
 
-            WriteOutput("Instanciating EngineCore.", AeLoggingLevel.Verbose);
+            WriteOutput("Instantiating EngineCore.", AeLoggingLevel.Verbose);
 
             drawingSurface.Parent.EnsureNotNull().Resize += Parent_Resize;
             Parent_Resize(null, new());
@@ -41,6 +43,9 @@ namespace Ae.AssetExplorer
 
             Shown += FormMain_Shown;
             drawingSurface.MouseDown += DrawingSurface_MouseDown;
+
+            _codeViewer = new AeCodeEditor(this, AeCodeType.CSharp);
+            tabPageCode.Controls.Add(_codeViewer);
         }
 
         private void PictureBoxPreview_MouseWheel(object? sender, MouseEventArgs e)
@@ -360,17 +365,42 @@ namespace Ae.AssetExplorer
 
         private void ToolStripButtonSaveAll_Click(object sender, EventArgs e)
         {
+            _tabManager.SaveAllTabs();
         }
 
         private void ToolStripButtonClose_Click(object sender, EventArgs e)
             => _tabManager.CloseCurrentTab();
 
-        #endregion
-
-        private void toolStripButtonAbout_Click(object sender, EventArgs e)
+        private void ToolStripButtonAbout_Click(object sender, EventArgs e)
         {
             using var formAbout = new FormAbout();
             formAbout.ShowDialog();
         }
+
+        private void ToolStripButtonBuild_Click(object sender, EventArgs e)
+        {
+            var tab = _tabManager.CurrentTab();
+            if (tab != null)
+            {
+                var codeToCompile = _engine.Assets.GetAssetCodeForCompilation(tab.AssetKey, WriteOutput);
+                _codeViewer.Text = codeToCompile ?? $"No code available for asset {tab.AssetKey}";
+
+                if (string.IsNullOrEmpty(codeToCompile) == false)
+                {
+                    try
+                    {
+                        AeRuntimeCompiler.CompileToAssembly(tab.AssetKey, codeToCompile, false, WriteOutput);
+                        WriteOutput("Successfully compiled.", AeLoggingLevel.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteOutput($"Failed to compile asset controller for asset with key: {tab.AssetKey}. Error: {ex.Message}", AeLoggingLevel.Error);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
     }
 }

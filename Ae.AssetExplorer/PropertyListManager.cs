@@ -2,7 +2,7 @@
 using Ae.Engine;
 using Ae.Engine.Helpers;
 using Ae.Engine.Metadata;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using NTDLS.Helpers;
 using System.Reflection;
 using static Ae.Engine.AeConstants;

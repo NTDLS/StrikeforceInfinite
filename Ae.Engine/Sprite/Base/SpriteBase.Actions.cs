@@ -5,7 +5,7 @@ using Ae.Engine.Sprite.Munition;
 using System.Linq;
 using static Ae.Engine.AeConstants;
 
-namespace Ae.Engine.Sprite._Superclass._Root
+namespace Ae.Engine.Sprite.Base
 {
     public partial class SpriteBase
     {

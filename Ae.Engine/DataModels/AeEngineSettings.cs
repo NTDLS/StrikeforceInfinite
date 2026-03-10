@@ -1,8 +1,8 @@
-﻿using Ae.Engine.Helpers;
+﻿using Ae.Engine.Mathematics;
 using System;
 using System.Drawing;
 
-namespace Ae.Engine
+namespace Ae.Engine.DataModels
 {
     /// <summary>
     /// This contains all of the engine settings.
@@ -13,7 +13,7 @@ namespace Ae.Engine
         public int ServerPort { get; set; } = 42719;
 
         public int GraphicsAdapterId { get; set; } = 0;
-        public int MunitionTraversalThreads { get; set; } = AeMathHelpers.LesserOf(Environment.ProcessorCount * 2, 16);
+        public int MunitionTraversalThreads { get; set; } = AeMath.LesserOf(Environment.ProcessorCount * 2, 16);
         public int WorldClockThreads { get; set; } = 10;
         public bool EnableSpriteInterrogation { get; set; } = false;
         public bool EnableDeveloperMode { get; set; } = false;

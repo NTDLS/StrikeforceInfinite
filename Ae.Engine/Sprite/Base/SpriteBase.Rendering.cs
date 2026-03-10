@@ -4,7 +4,7 @@ using SharpDX.Mathematics.Interop;
 using System.Drawing;
 using static Ae.Engine.AeConstants;
 
-namespace Ae.Engine.Sprite._Superclass._Root
+namespace Ae.Engine.Sprite.Base
 {
     /// <summary>
     /// Represents a single item that can be rendered to the screen. All on-screen objects are derived from this class.

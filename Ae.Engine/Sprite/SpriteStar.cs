@@ -1,7 +1,7 @@
 ﻿using Ae.Engine.Helpers;
 using Ae.Engine.Mathematics;
 using Ae.Engine.Metadata;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Sprite

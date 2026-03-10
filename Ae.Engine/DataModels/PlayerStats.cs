@@ -1,4 +1,4 @@
-﻿namespace Ae.Engine.Persistent
+﻿namespace Ae.Engine.DataModels
 {
     public class PlayerStats
     {

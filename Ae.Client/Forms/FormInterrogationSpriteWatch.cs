@@ -1,7 +1,7 @@
 ﻿using Ae.Engine;
 using Ae.Engine.Mathematics;
 using Ae.Engine.Sprite;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using Ae.Engine.Sprite.Interactive.Ship;
 using System;
 using System.Drawing;

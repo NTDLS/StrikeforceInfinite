@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ae.Engine.Sprite._Superclass._Root
+namespace Ae.Engine.Sprite.Base
 {
     public partial class SpriteBase
     {

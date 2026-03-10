@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Compiler
 {
@@ -42,10 +43,12 @@ namespace Ae.Engine.Compiler
             return references;
         }
 
-        public static Assembly CompileToAssembly(string sourceCode)
+        public static Assembly? CompileToAssembly(string assetKey, string sourceCode, bool loadAssembly, Action<string, AeLoggingLevel?>? writeOutput = null)
         {
+            var assetClassName = AssetKeyToClassName(assetKey);
+
             var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
-            var assemblyName = "Dynamic_" + Guid.NewGuid().ToString("N");
+            var assemblyName = $"Ae{assetClassName}_" + Guid.NewGuid().ToString("N");
             var references = GetTrustedReferences();
 
             var compilation = CSharpCompilation.Create(
@@ -70,7 +73,11 @@ namespace Ae.Engine.Compiler
             }
 
             peStream.Position = 0;
-            return Assembly.Load(peStream.ToArray());
+            if (loadAssembly)
+            {
+                return Assembly.Load(peStream.ToArray());
+            }
+            return null;
         }
     }
 }

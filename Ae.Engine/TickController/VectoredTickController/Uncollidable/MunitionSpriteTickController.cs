@@ -1,7 +1,7 @@
 ﻿using Ae.Engine.Manager;
 using Ae.Engine.Mathematics;
 using Ae.Engine.Sprite;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using Ae.Engine.Sprite.Interactive;
 using Ae.Engine.Sprite.Munition;
 using NTDLS.DelegateThreadPooling;

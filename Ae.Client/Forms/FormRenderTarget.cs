@@ -1,8 +1,8 @@
 using Ae.Client.Forms;
-using Ae.Client.Hardware;
 using Ae.Engine;
+using Ae.Engine.Hardware;
 using Ae.Engine.Mathematics;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

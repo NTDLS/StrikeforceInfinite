@@ -1,6 +1,6 @@
 ﻿using Ae.Engine.Manager;
 using Ae.Engine.Mathematics;
-using Ae.Engine.Sprite._Superclass._Root;
+using Ae.Engine.Sprite.Base;
 using NTDLS.Helpers;
 using System;
 using System.Collections.Generic;

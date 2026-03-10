@@ -1,5 +1,8 @@
 ﻿namespace Ae.Engine.DataModels
 {
+    /// <summary>
+    /// Model used for deserialization of the Assets table from the database.
+    /// </summary>
     public class AssetDatabaseModel
     {
         public string Key { get; set; } = string.Empty;

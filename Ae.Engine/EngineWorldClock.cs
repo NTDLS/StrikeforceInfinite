@@ -27,16 +27,10 @@ namespace Ae.Engine
 
         private readonly DelegateThreadPool _worldClockThreadPool;
 
-        private struct TickControllerMethod
+        private struct TickControllerMethod(object controller, MethodInfo method)
         {
-            public object Controller;
-            public MethodInfo Method;
-
-            public TickControllerMethod(object controller, MethodInfo method)
-            {
-                Controller = controller;
-                Method = method;
-            }
+            public object Controller = controller;
+            public MethodInfo Method = method;
         }
 
         private readonly List<TickControllerMethod> _vectoredTickControllers = new();
