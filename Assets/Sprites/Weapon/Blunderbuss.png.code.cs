@@ -2,7 +2,7 @@ public override bool Fire()
 {
     if (CanFire)
     {
-        FireSound?.Play();
+		Sounds?.OneOf()?.Play();
 
 		for (int i = -15; i < 15; i++) // Create an initial spread so the bullets don't come from the same point.
 		{

@@ -2,7 +2,7 @@ public override bool Fire()
 {
     if (CanFire)
     {
-        FireSound?.Play();
+		Sounds?.OneOf()?.Play();
 
 		var offsetRight = Owner.Orientation.RotatedBy(90) * new AeVector(5, 5);
 		Engine.Sprites.Munitions.Add(this, Owner.Location + offsetRight);

@@ -5,7 +5,7 @@ public override bool Fire()
     if (CanFire)
     {
         Engine.Rendering.AddScreenShake(4, 100);
-        FireSound?.Play();
+		Sounds?.OneOf()?.Play();
         MunitionQuantity--;
 
         if (_toggle)

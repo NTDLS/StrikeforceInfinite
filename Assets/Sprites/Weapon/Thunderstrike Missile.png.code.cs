@@ -4,7 +4,7 @@ public override bool Fire()
 {
     if (CanFire)
     {
-        FireSound?.Play();
+		Sounds?.OneOf()?.Play();
         MunitionQuantity--;
 
         var offset = Owner.Orientation.RotatedBy(90.Invert(_toggle)) * new AeVector(10, 10);
