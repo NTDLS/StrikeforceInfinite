@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Ae.Rendering
+namespace Ae.Engine.Rendering
 {
     public static class AeRenderingUtility
     {

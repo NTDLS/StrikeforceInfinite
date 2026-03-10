@@ -1,4 +1,4 @@
-﻿using Ae.Audio;
+﻿using Ae.Engine.Audio;
 using Ae.Engine.Metadata;
 using Ae.Library;
 using Ae.Library.Compiler;
@@ -86,11 +86,11 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
-        public AeAudioClip GetAudio(string assetKey)
+        public AudioClip GetAudio(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
             {
-                var audioClip = assetContainer.Object as AeAudioClip
+                var audioClip = assetContainer.Object as AudioClip
                     ?? throw new FileNotFoundException($"Asset could not be converted to audio: {assetKey}");
                 audioClip.SetInitialVolume(assetContainer.Metadata.SoundVolume ?? 1);
                 audioClip.SetLoopForever(assetContainer.Metadata.LoopSound ?? false);
@@ -156,14 +156,11 @@ namespace Ae.Engine.Manager
 
                     string? assetDynamicCode = null;
 
-                    if (model.Key.Contains("Sprites/Weapon/Vulcan Cannon"))
+                    if (baseType != AeBaseAssetType.Code
+                        && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
+                        && !string.IsNullOrWhiteSpace(model.Controller))
                     {
-                    }
-
-
-                    if (baseType == AeBaseAssetType.Image && !string.IsNullOrWhiteSpace(model.Controller))
-                    {
-                        //"Sprite" asset code is in the Class field.
+                        //Non-code ("sprite") asset code is the Controller field and Metadata.Class is the base class.
                         assetDynamicCode = model.Controller;
                     }
                     else if (baseType == AeBaseAssetType.Code)
@@ -270,7 +267,7 @@ namespace Ae.Engine.Manager
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         using var stream = new MemoryStream(bytes);
-                        var obj = new AeAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
+                        var obj = new AudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
 
                         return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }

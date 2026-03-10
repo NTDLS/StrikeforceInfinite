@@ -1,6 +1,6 @@
 ﻿using SharpDX.Direct2D1;
 
-namespace Ae.Rendering
+namespace Ae.Engine.Rendering
 {
     public class AeCriticalRenderTargets
     {

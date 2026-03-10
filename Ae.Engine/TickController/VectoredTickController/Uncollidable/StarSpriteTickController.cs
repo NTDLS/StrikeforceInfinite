@@ -4,7 +4,6 @@ using Ae.Engine.TickController._Superclass;
 using Ae.Library;
 using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
-using Ae.Rendering;
 using System;
 using System.Threading;
 

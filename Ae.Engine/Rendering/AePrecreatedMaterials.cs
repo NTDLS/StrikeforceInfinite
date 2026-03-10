@@ -1,7 +1,7 @@
 ﻿using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 
-namespace Ae.Rendering
+namespace Ae.Engine.Rendering
 {
     public class AePrecreatedMaterials
     {

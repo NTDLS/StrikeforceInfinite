@@ -68,10 +68,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Ae.Audio\Ae.Audio.csproj" />
 		<ProjectReference Include="..\Ae.Library\Ae.Library.csproj" />
 		<ProjectReference Include="..\Ae.MpClientToServerComms\Ae.MpClientToServerComms.csproj" />
-		<ProjectReference Include="..\Ae.Rendering\Ae.Rendering.csproj" />
 	</ItemGroup>
 
 </Project>

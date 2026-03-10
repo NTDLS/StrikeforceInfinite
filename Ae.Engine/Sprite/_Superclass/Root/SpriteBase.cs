@@ -1,4 +1,4 @@
-﻿using Ae.Audio;
+﻿using Ae.Engine.Audio;
 using Ae.Engine.Metadata;
 using Ae.Engine.Sprite._Superclass.Interactive;
 using Ae.Engine.Sprite._Superclass.Interactive.Ship;
@@ -20,7 +20,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
     {
         protected AeEngine Engine { get; private set; }
 
-        public List<AeAudioClip>? Sounds { get; private set; }
+        public List<AudioClip>? Sounds { get; private set; }
 
         public SharpDX.Direct2D1.Bitmap? SpriteBitmap { get; private set; }
         private bool _readyForDeletion;
@@ -64,7 +64,7 @@ namespace Ae.Engine.Sprite._Superclass._Root
 
             if (Metadata.SoundAssetKeys != null)
             {
-                Sounds = new List<AeAudioClip>();
+                Sounds = new List<AudioClip>();
                 foreach (var soundAssetKey in Metadata.SoundAssetKeys)
                 {
                     Sounds.Add(Engine.Assets.GetAudio(soundAssetKey));

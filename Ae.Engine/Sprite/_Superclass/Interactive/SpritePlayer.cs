@@ -1,4 +1,4 @@
-﻿using Ae.Audio;
+﻿using Ae.Engine.Audio;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Animation;
 using Ae.Engine.Sprite._Superclass.Munition;
@@ -21,19 +21,19 @@ namespace Ae.Engine.Sprite._Superclass.Interactive
     {
         public readonly string BoostResourceName = "SpritePlayerBase:Boost";
 
-        public AeAudioClip? AmmoLowSound { get; private set; }
-        public AeAudioClip? AmmoEmptySound { get; private set; }
-        public AeAudioClip? ShipEngineRoarSound { get; private set; }
-        public AeAudioClip? ShipEngineIdleSound { get; private set; }
-        public AeAudioClip? AllSystemsGoSound { get; private set; }
-        public AeAudioClip? ShieldFailSound { get; private set; }
-        public AeAudioClip? ShieldDownSound { get; private set; }
-        public AeAudioClip? ShieldMaxSound { get; private set; }
-        public AeAudioClip? ShieldNominalSound { get; private set; }
-        public AeAudioClip? SystemsFailingSound { get; private set; }
-        public AeAudioClip? HullBreachedSound { get; private set; }
-        public AeAudioClip? IntegrityLowSound { get; private set; }
-        public AeAudioClip? ShipEngineBoostSound { get; private set; }
+        public AudioClip? AmmoLowSound { get; private set; }
+        public AudioClip? AmmoEmptySound { get; private set; }
+        public AudioClip? ShipEngineRoarSound { get; private set; }
+        public AudioClip? ShipEngineIdleSound { get; private set; }
+        public AudioClip? AllSystemsGoSound { get; private set; }
+        public AudioClip? ShieldFailSound { get; private set; }
+        public AudioClip? ShieldDownSound { get; private set; }
+        public AudioClip? ShieldMaxSound { get; private set; }
+        public AudioClip? ShieldNominalSound { get; private set; }
+        public AudioClip? SystemsFailingSound { get; private set; }
+        public AudioClip? HullBreachedSound { get; private set; }
+        public AudioClip? IntegrityLowSound { get; private set; }
+        public AudioClip? ShipEngineBoostSound { get; private set; }
         public int MaxHullHealth { get; set; }
         public int MaxShieldPoints { get; set; }
         public SpriteAnimation? ThrusterAnimation { get; private set; }

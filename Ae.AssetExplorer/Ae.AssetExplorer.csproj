@@ -41,7 +41,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Ae.Engine\Ae.Engine.csproj" />
 		<ProjectReference Include="..\Ae.Library\Ae.Library.csproj" />
-		<ProjectReference Include="..\Ae.Rendering\Ae.Rendering.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

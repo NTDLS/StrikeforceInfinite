@@ -1,7 +1,7 @@
 ﻿using Ae.Library.Mathematics;
 using SharpDX.Mathematics.Interop;
 
-namespace Ae.Rendering
+namespace Ae.Engine.Rendering
 {
     public static class RawRectangleExtensions
     {

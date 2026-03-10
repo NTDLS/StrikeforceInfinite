@@ -1,10 +1,10 @@
 ﻿using Ae.Engine.Manager;
+using Ae.Engine.Rendering;
 using Ae.Engine.Sprite._Superclass;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.TickController._Superclass;
 using Ae.Library;
 using Ae.Library.Mathematics;
-using Ae.Rendering;
 using SharpDX;
 using System;
 using System.Drawing;

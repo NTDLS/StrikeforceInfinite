@@ -1,5 +1,5 @@
 ﻿using Ae.Engine.AI;
-using Ae.Engine.Sound;
+using Ae.Engine.Audio;
 using Ae.Engine.Sprite._Superclass;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Engine.Sprite._Superclass.Animation;
@@ -28,11 +28,11 @@ namespace Ae.Engine.Metadata
         public string? AssetKey { get; set; }
 
         [AssetMetadata("Sound Volume", "Volume of the sound expressed in percentages.", PropertyEditorGroup.Audio, PropertyEditorType.Float,
-            applicableTo: [typeof(SoundBase)], minValue: 0, maxValue: 1)]
+            applicableTo: [typeof(AudioClip)], minValue: 0, maxValue: 1)]
         public float? SoundVolume { get; set; }
 
         [AssetMetadata("Loop Sound", "Indicates whether the sound should loop when played.", PropertyEditorGroup.Audio, PropertyEditorType.Boolean,
-            applicableTo: [typeof(SoundBase)])]
+            applicableTo: [typeof(AudioClip)])]
         public bool? LoopSound { get; set; }
 
         [AssetMetadata("Class", "The class of the sprite which will be used to control the sprite.", PropertyEditorGroup.Base, PropertyEditorType.Class,

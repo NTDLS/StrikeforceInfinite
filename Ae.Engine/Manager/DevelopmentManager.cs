@@ -1,9 +1,9 @@
 ﻿using Ae.Engine.Interrogation;
 using Ae.Engine.Interrogation._Superclass;
+using Ae.Engine.Rendering;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Library;
 using Ae.Library.Mathematics;
-using Ae.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;

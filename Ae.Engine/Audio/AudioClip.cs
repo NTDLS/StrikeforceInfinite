@@ -1,14 +1,21 @@
-﻿using SharpDX.Multimedia;
+﻿using Ae.Library.Metadata;
+using SharpDX.Multimedia;
 using SharpDX.XAudio2;
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using static Ae.Library.AeConstants;
 
-namespace Ae.Audio
+namespace Ae.Engine.Audio
 {
     /// <summary>
     /// A single pre-loaded audio-clip.
     /// </summary>
-    public class AeAudioClip
+    [AssetClass("Sound", "", AeBaseAssetType.Sound, true)]
+    public class AudioClip
     {
-        private readonly XAudio2 _xaudio = new();
+        private readonly XAudio2 _audio = new();
         private readonly WaveFormat _waveFormat;
         private readonly AudioBuffer _buffer;
         private readonly SoundStream _soundStream;
@@ -33,12 +40,12 @@ namespace Ae.Audio
             _loopForever = loopForever;
         }
 
-        public AeAudioClip(Stream stream, float initialVolume = 1, bool loopForever = false)
+        public AudioClip(Stream stream, float initialVolume = 1, bool loopForever = false)
         {
             _loopForever = loopForever;
             InitialVolume = initialVolume;
 
-            _ = new MasteringVoice(_xaudio); //Yes, this is required.
+            _ = new MasteringVoice(_audio); //Yes, this is required.
 
             _soundStream = new SoundStream(stream);
 
@@ -73,7 +80,7 @@ namespace Ae.Audio
                         return;
                     }
 
-                    _singleSourceVoice = new SourceVoice(_xaudio, _waveFormat, true);
+                    _singleSourceVoice = new SourceVoice(_audio, _waveFormat, true);
                     _singleSourceVoice.SubmitSourceBuffer(_buffer, _soundStream.DecodedPacketsInfo);
                     _singleSourceVoice.SetVolume(InitialVolume);
                     _singleSourceVoice.Start();
@@ -82,7 +89,7 @@ namespace Ae.Audio
                 }
             }
 
-            var sourceVoice = new SourceVoice(_xaudio, _waveFormat, true);
+            var sourceVoice = new SourceVoice(_audio, _waveFormat, true);
             sourceVoice.SubmitSourceBuffer(_buffer, _soundStream.DecodedPacketsInfo);
             sourceVoice.SetVolume(InitialVolume);
             sourceVoice.Start();

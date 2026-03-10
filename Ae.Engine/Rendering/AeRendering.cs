@@ -12,7 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Ae.Rendering
+namespace Ae.Engine.Rendering
 {
     public class AeRendering : IDisposable
     {

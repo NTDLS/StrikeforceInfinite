@@ -1,6 +1,6 @@
 ﻿using SharpDX.DirectWrite;
 
-namespace Ae.Rendering
+namespace Ae.Engine.Rendering
 {
     public class AePrecreatedTextFormats
     {

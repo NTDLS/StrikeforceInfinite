@@ -1,4 +1,4 @@
-﻿namespace Ae.Rendering
+﻿namespace Ae.Engine.Rendering
 {
     public class AeGraphicsAdapter
     {

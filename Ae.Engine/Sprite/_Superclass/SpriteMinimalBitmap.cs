@@ -2,7 +2,6 @@
 using Ae.Library.ExtensionMethods;
 using Ae.Library.Mathematics;
 using Ae.Library.Metadata;
-using Ae.Rendering;
 using System;
 using static Ae.Library.AeConstants;
 

@@ -4,7 +4,7 @@ using SharpDX.Mathematics.Interop;
 using System;
 using System.Collections.Generic;
 
-namespace Ae.Rendering
+namespace Ae.Engine.Rendering
 {
     internal static class AeTransforms
     {
