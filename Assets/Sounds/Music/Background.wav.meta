@@ -1,5 +1,6 @@
 {
   "AssetKey": "Sounds/Music/Background",
   "SoundVolume": 1,
-  "LoopSound": true
+  "LoopSound": true,
+  "Class": "AudioClip"
 }

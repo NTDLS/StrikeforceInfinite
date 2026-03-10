@@ -1,5 +1,6 @@
 {
   "AssetKey": "Sounds/Weapons/Thunderstrike Missile",
   "SoundVolume": 0.5,
-  "LoopSound": false
+  "LoopSound": false,
+  "Class": "AudioClip"
 }

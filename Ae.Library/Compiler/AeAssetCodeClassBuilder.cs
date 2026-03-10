@@ -20,7 +20,7 @@
             { "SpriteWeapon", new ConstructorSignatures("AeEngine engine, SpriteBase owner, string assetKey", "engine, owner, assetKey") },
         };
 
-        public static string Get(string? baseClassName, string className, string userCode)
+        public static string Get(string? baseClassName, string className, string userCode, Type interfaceType, string friendlyName)
         {
             if (ConstructorSignaturesByBaseClass.TryGetValue(baseClassName ?? string.Empty, out var constructorSignature) == false)
             {
@@ -28,22 +28,24 @@
                 constructorSignature = new("AeEngine engine, string assetKey", "engine, assetKey");
             }
 
-            var imports = EmbeddedResource.Load("Compiler/Templates/DynamicCompileImports.cs");
+            var imports = EmbeddedResource.Load("Compiler/Templates/DynamicCompileImports.txt");
 
             string? codeTemplate;
 
             if (string.IsNullOrEmpty(baseClassName))
             {
-                codeTemplate = EmbeddedResource.Load("Compiler/Templates/SimpleClassWithoutBase.cs");
+                codeTemplate = EmbeddedResource.Load("Compiler/Templates/SimpleClassWithoutBase.txt");
             }
             else
             {
-                codeTemplate = EmbeddedResource.Load("Compiler/Templates/SimpleClassWithBase.cs");
+                codeTemplate = EmbeddedResource.Load("Compiler/Templates/SimpleClassWithBase.txt");
             }
 
             return codeTemplate.Replace("[[imports]]", imports)
                     .Replace("[[className]]", className)
                     .Replace("[[userCode]]", userCode)
+                    .Replace("[[friendlyName]]", friendlyName)
+                    .Replace("[[interfaceType]]", interfaceType.FullName)
                     .Replace("[[baseClassName]]", baseClassName)
                     .Replace("[[constructorSignature]]", constructorSignature.Signature)
                     .Replace("[[constructorParameters]]", constructorSignature.Parameters)

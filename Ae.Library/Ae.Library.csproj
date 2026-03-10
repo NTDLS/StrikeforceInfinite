@@ -16,9 +16,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Compiler\Templates\DynamicCompileImports.cs" />
-	  <Compile Remove="Compiler\Templates\SimpleClassWithBase.cs" />
-	  <Compile Remove="Compiler\Templates\SimpleClassWithoutBase.cs" />
+	  <Compile Remove="Compiler\Templates\AeRuntimeCompiledSpriteAsset.cs" />
+	  <Compile Remove="Compiler\Templates\IAeRuntimeCompiledCodeAsset.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -26,9 +25,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithoutBase.cs" />
-	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithBase.cs" />
-	  <EmbeddedResource Include="Compiler\Templates\DynamicCompileImports.cs" />
+	  <EmbeddedResource Include="Compiler\Templates\DynamicCompileImports.txt" />
+	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithBase.txt" />
+	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithoutBase.txt" />
 	</ItemGroup>
 
 	<ItemGroup>

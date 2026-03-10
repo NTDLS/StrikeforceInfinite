@@ -154,7 +154,11 @@ namespace Ae.Engine.Manager
                         else throw new Exception($"Asset metadata for asset with key: {model.Key} does not contain an AssetKey.");
                     }
 
+                    var friendlyName = assetContainer.Metadata.AssetKey.Split('/').LastOrDefault()
+                        ?? throw new Exception($"Asset metadata for asset with key: {model.Key} does not contain a valid AssetKey.");
+
                     string? assetDynamicCode = null;
+                    Type? interfaceType = null;
 
                     if (baseType != AeBaseAssetType.Code
                         && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
@@ -162,17 +166,20 @@ namespace Ae.Engine.Manager
                     {
                         //Non-code ("sprite") asset code is the Controller field and Metadata.Class is the base class.
                         assetDynamicCode = model.Controller;
+                        interfaceType = typeof(IAeRuntimeCompiledSpriteAsset);
                     }
                     else if (baseType == AeBaseAssetType.Code)
                     {
                         //"Code" asset type code is in the Bytes field.
                         assetDynamicCode = Encoding.UTF8.GetString(model.Bytes);
+                        interfaceType = typeof(IAeRuntimeCompiledCodeAsset);
                     }
 
-                    if (assetDynamicCode != null)
+                    if (assetDynamicCode != null && interfaceType != null)
                     {
                         //Compile user code for asset.
-                        var fullAssetDynamicCode = AeAssetCodeClassBuilder.Get(assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, assetDynamicCode);
+                        var fullAssetDynamicCode = AeAssetCodeClassBuilder.Get(
+                            assetContainer.Metadata.Class, assetContainer.Metadata.DynamicTypeName, assetDynamicCode, interfaceType, friendlyName);
 
                         try
                         {

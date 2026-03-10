@@ -1,4 +1,5 @@
 ﻿using Ae.Library;
+using Ae.Library.Compiler;
 using Ae.Library.Metadata;
 using System.Reflection;
 using static Ae.Library.AeConstants;
@@ -57,7 +58,7 @@ namespace Ae.AssetExplorer.Forms
                 .Where(x => x.Attribute != null
                     &&
                         //We do not show the dynamically compiled asset classes. These are the classes from the "Controller" field of an asset.
-                        x.Type.Name.StartsWith("AeAssetController_", StringComparison.InvariantCultureIgnoreCase) == false
+                        x.Type.IsAssignableTo(typeof(IAeRuntimeCompiledSpriteAsset)) == false
                     )
                 .Distinct()
                 .ToList();
@@ -71,7 +72,16 @@ namespace Ae.AssetExplorer.Forms
                     continue;
                 }
 
-                var text = $"{value.Type.Name} ({value.Attribute.FriendlyName})";
+                var text = $"{value.Attribute.FriendlyName} ({value.Type.Name})";
+
+                //AeReflection.GetStaticPropertyValue()
+
+                if (value.Type.IsAssignableTo(typeof(IAeRuntimeCompiledCodeAsset)))
+                {
+                    //This is compiled user code, so we want to show the user friendly name of the asset instead of the class name.
+                    text = $"{value.Attribute.FriendlyName} ({AeReflection.GetStaticPropertyValue(value.Type.Name, "AeFriendlyName")})";
+                }
+
                 if (text != null && text != string.Empty)
                 {
                     var item = new ComboboxItem(text, value.Type.Name);
@@ -83,6 +93,9 @@ namespace Ae.AssetExplorer.Forms
                     comboBoxWorking.Items.Add(item);
                 }
             }
+
+            comboBoxWorking.Sorted = true;
+
             if (selectedItem != null)
             {
                 comboBoxWorking.SelectedItem = selectedItem;

@@ -31,20 +31,20 @@ namespace Ae.AssetExplorer
                 .Select(p => new
                 {
                     Property = p,
-                    MetadataAttribute = p.GetCustomAttribute<AssetMetadataAttribute>()
+                    Attribute = p.GetCustomAttribute<AssetMetadataAttribute>()
                 })
-                .Where(x => x.MetadataAttribute != null)
+                .Where(x => x.Attribute != null)
                 .FirstOrDefault() ?? throw new ArgumentException($"Property '{propertyName}' not found in {metaData.GetType().Name} or does not have AssetMetadataAttribute.");
 
-            if (propertyInfo.MetadataAttribute == null)
+            if (propertyInfo.Attribute == null)
                 throw new ArgumentException($"Property '{propertyName}' does not have AssetMetadataAttribute.");
 
             Group = group;
             MetaData = metaData;
             PropertyName = propertyName;
             WorkingValue = AeReflection.GetPropertyValue(metaData, propertyName);
-            Attributes = propertyInfo.MetadataAttribute;
-            Text = propertyInfo.MetadataAttribute.FriendlyName;
+            Attributes = propertyInfo.Attribute;
+            Text = propertyInfo.Attribute.FriendlyName;
             SubItems.Add(PropertyStringifier(metaData, propertyName, WorkingValue));
         }
 

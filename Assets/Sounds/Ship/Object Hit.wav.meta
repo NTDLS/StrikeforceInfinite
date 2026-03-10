@@ -1,5 +1,6 @@
 {
   "AssetKey": "Sounds/Ship/Object Hit",
   "SoundVolume": 0.5,
-  "LoopSound": false
+  "LoopSound": false,
+  "Class": "AudioClip"
 }

@@ -3,6 +3,7 @@ using Ae.Engine;
 using Ae.Engine.Metadata;
 using Ae.Engine.Sprite._Superclass._Root;
 using Ae.Library;
+using NTDLS.Helpers;
 using System.Reflection;
 using static Ae.Library.AeConstants;
 
@@ -244,17 +245,28 @@ namespace Ae.AssetExplorer
                 _listView.Items.Clear();
                 _listView.Groups.Clear();
 
-                var metadataAttribs = typeof(AssetMetadata)
+                var assetClassType = Exceptions.Ignore(()
+                    => string.IsNullOrEmpty(sprite.Metadata.Class) ? null : AeReflection.GetTypeByName(sprite.Metadata.Class));
+
+                var metadataAttributes = typeof(AssetMetadata)
                     .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(p => p.CanRead)
                     .Select(p => new
                     {
+                        IsApplicable = true,
                         Property = p,
-                        MetadataAttribute = p.GetCustomAttribute<AssetMetadataAttribute>()
+                        Attributes = p.GetCustomAttribute<AssetMetadataAttribute>()
                     })
-                    .Where(x => x.MetadataAttribute != null).ToList();
+                    .Where(x => x.Attributes != null)
+                    .Where(x => (
+                            x.Attributes!.ApplicableTo == null
+                            // If ApplicableTo is null, it means the property is applicable to all asset types, so we include it.
+                            || x.Attributes!.ApplicableTo.Any(o => o.IsAssignableFrom(assetClassType)
+                        )
+                    ))
+                    .ToList();
 
-                var groups = metadataAttribs.Select(o => o.MetadataAttribute?.EditorGroup).Distinct().ToList();
+                var groups = metadataAttributes.Select(o => o.Attributes?.EditorGroup).Distinct().ToList();
 
                 //Add the groups to the ListView and keep track of them in a dictionary for easy access when adding items.
                 var groupMap = new Dictionary<PropertyEditorGroup, ListViewGroup>();
@@ -271,9 +283,9 @@ namespace Ae.AssetExplorer
                 try
                 {
                     _listView.BeginUpdate();
-                    foreach (var attrib in metadataAttribs)
+                    foreach (var attrib in metadataAttributes)
                     {
-                        if (groupMap.TryGetValue(attrib.MetadataAttribute!.EditorGroup, out var listViewGroup))
+                        if (groupMap.TryGetValue(attrib.Attributes!.EditorGroup, out var listViewGroup))
                         {
                             _listView.Items.Add(new PropertyItem(sprite.Metadata, attrib.Property.Name, listViewGroup));
                         }

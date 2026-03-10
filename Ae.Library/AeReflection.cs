@@ -70,7 +70,6 @@ namespace Ae.Library
             return allTypes;
         }
 
-        /*
         public static string GetStaticPropertyValue(string typeName, string propertyName)
         {
             string key = $"[{typeName}].[{propertyName}]";
@@ -91,7 +90,7 @@ namespace Ae.Library
 
             var type = GetTypeByName(typeName) ?? throw new Exception("Type not found.");
 
-            var propertyInfo = type.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            var propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Static);
             if (propertyInfo != null)
             {
                 _staticPropertyCache.Use(o => o.TryAdd(key, propertyInfo));
@@ -100,7 +99,7 @@ namespace Ae.Library
 
             throw new Exception("Static property not found: {typeName}->{propertyName}.");
         }
-        */
+
 
         public static T CreateInstanceFromType<T>(Type type, object[] constructorArgs)
         {

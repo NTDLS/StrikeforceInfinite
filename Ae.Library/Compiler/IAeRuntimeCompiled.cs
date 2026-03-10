@@ -2,6 +2,5 @@
 {
     public interface IAeRuntimeCompiled
     {
-        string AeGetClassName();
     }
 }

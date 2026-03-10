@@ -1,0 +1,10 @@
+﻿[[imports]]
+
+public class [[className]]([[constructorSignature]])
+    : [[baseClassName]]([[constructorParameters]]), [[interfaceType]]
+{
+    public static string AeClassName => "[[className]]";
+    public static string AeFriendlyName => "[[friendlyName]]";
+
+    [[userCode]]
+}

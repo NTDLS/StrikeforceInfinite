@@ -1,5 +1,6 @@
 {
   "AssetKey": "Sounds/Ship/Engine Idle",
   "SoundVolume": 0.5,
-  "LoopSound": true
+  "LoopSound": true,
+  "Class": "AudioClip"
 }

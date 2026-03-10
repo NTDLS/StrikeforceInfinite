@@ -1,5 +1,6 @@
 {
   "AssetKey": "Sounds/PowerUp/PowerUp1",
   "SoundVolume": 0.5,
-  "LoopSound": false
+  "LoopSound": false,
+  "Class": "AudioClip"
 }

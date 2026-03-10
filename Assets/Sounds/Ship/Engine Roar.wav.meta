@@ -1,5 +1,6 @@
 {
   "AssetKey": "Sounds/Ship/Engine Roar",
   "SoundVolume": 0.5,
-  "LoopSound": true
+  "LoopSound": true,
+  "Class": "AudioClip"
 }
