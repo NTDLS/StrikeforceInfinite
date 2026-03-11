@@ -38,6 +38,7 @@
  Source: "Fonts\Roboto-Regular.ttf";           DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Roboto";          Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\Roboto-Thin.ttf";              DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Roboto Th";       Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\visitor1.ttf";                 DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Visitor TT1 BRK"; Flags: onlyifdoesntexist uninsneveruninstall
+ Source: "Fonts\CascadiaCode.ttf";             DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Cascadia Code Bold"; Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\CascadiaCodeBold.ttf";         DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Cascadia Code Bold"; Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\CascadiaCodeExtraLight.ttf";   DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Cascadia Code ExtraLight"; Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\CascadiaCodeLight.ttf";        DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Cascadia Code Light"; Flags: onlyifdoesntexist uninsneveruninstall

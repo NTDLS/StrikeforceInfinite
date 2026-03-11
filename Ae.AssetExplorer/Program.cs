@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace Ae.AssetExplorer
 {
     internal static class Program
@@ -25,34 +27,24 @@ namespace Ae.AssetExplorer
 
             Settings.Save(); //Create a default persisted state if one does not exist.
 
-            //CreateMetaFiles(@"C:\NTDLS\StrikeforceInfinite\Assets");
-
             Application.Run(new FormMain());
         }
 
-        public static void CreateMetaFiles(string rootDirectory)
+        private static void PrintAeTypes()
         {
-            if (!Directory.Exists(rootDirectory))
-                throw new DirectoryNotFoundException(rootDirectory);
+            var types = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .SelectMany(a =>
+                {
+                    try { return a.GetTypes(); }
+                    catch (ReflectionTypeLoadException ex) { return ex.Types.Where(t => t != null)!; }
+                })
+                .Where(t => (t.IsClass || t.IsInterface) && (t.Name.StartsWith("Ae") || t.Name.StartsWith("IAe")))
+                .ToList();
 
-            foreach (var file in Directory.EnumerateFiles(rootDirectory, "*", SearchOption.AllDirectories))
+            foreach (var type in types)
             {
-                try
-                {
-                    if (file.EndsWith(".meta", StringComparison.OrdinalIgnoreCase))
-                        continue;
-
-                    string metaPath = file + ".meta";
-
-                    if (!File.Exists(metaPath))
-                    {
-                        using (File.Create(metaPath)) { }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Failed: {file} - {ex.Message}");
-                }
+                Console.WriteLine(type?.Name);
             }
         }
     }

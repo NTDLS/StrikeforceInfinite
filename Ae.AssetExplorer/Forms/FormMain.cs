@@ -13,8 +13,8 @@ namespace Ae.AssetExplorer
 {
     public partial class FormMain : Form
     {
-        private readonly AeEngine _engine;
         private bool _firstShown = true;
+        private readonly AeEngine _engine;
         private readonly TreeManager _treeManager;
         private readonly PropertyListManager _propertyListManager;
         private readonly TabManager _tabManager;

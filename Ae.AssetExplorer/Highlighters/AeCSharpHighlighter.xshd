@@ -2,13 +2,13 @@
 <SyntaxDefinition name="C#" extensions=".cs" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
 	<!-- The named colors 'Comment' and 'String' are used in SharpDevelop to detect if a line is inside a multiline string/comment -->
 	<Color name="Comment" foreground="Green" exampleText="// comment" />
-	<Color name="String" foreground="Blue" exampleText="string text = &quot;Hello, World!&quot;"/>
+	<Color name="String" foreground="Red" exampleText="string text = &quot;Hello, World!&quot;"/>
 	<Color name="StringInterpolation" foreground="Black" exampleText="string text = $&quot;Hello, {name}!&quot;"/>
 	<Color name="Char" foreground="Magenta" exampleText="char linefeed = '\n';"/>
 	<Color name="Preprocessor" foreground="Green" exampleText="#region Title" />
 	<Color name="Punctuation" exampleText="a(b.c);" />
-	<Color name="ValueTypeKeywords" fontWeight="bold" foreground="Red" exampleText="bool b = true;" />
-	<Color name="ReferenceTypeKeywords" foreground="Red" exampleText="object o;" />
+	<Color name="ValueTypeKeywords" fontWeight="bold" foreground="Purple" exampleText="bool b = true;" />
+	<Color name="ReferenceTypeKeywords" foreground="DarkRed" exampleText="object o;" />
 	<Color name="MethodCall" foreground="MidnightBlue" fontWeight="bold" exampleText="o.ToString();"/>
 	<Color name="NumberLiteral" foreground="DarkBlue" exampleText="3.1415f"/>
 	<Color name="ThisOrBaseReference" fontWeight="bold" exampleText="this.Do(); base.Do();"/>
@@ -28,6 +28,9 @@
 	<Color name="TrueFalse" fontWeight="bold" foreground="DarkCyan" exampleText="b = false; a = true;" />
 	<Color name="TypeKeywords" fontWeight="bold" foreground="DarkCyan" exampleText="if (x is int) { a = x as int; type = typeof(int); size = sizeof(int); c = new object(); }"/>
 	<Color name="SemanticKeywords" fontWeight="bold" foreground="DarkCyan" exampleText="if (args == null) throw new ArgumentNullException(nameof(args));" />
+
+	<Color name="AeConstants" foreground="DarkOrange" exampleText=""/>
+	<Color name="AeClasses" foreground="DarkOrange" fontWeight="bold" exampleText=""/>
 
 	<Property name="DocCommentMarker" value="///" />
 	
@@ -125,6 +128,144 @@
 		<Rule>
 			@[\w\d_]+
 		</Rule>
+		
+		<Keywords color="AeConstants">
+			<Word>AeAnimationPlayMode</Word>
+			<Word>AeAttachmentOrientationType</Word>
+			<Word>AeAttachmentPositionType</Word>
+			<Word>AeBaseAssetType</Word>
+			<Word>AeCardinalDirection</Word>
+			<Word>AeCodeType</Word>
+			<Word>AeConstants</Word>
+			<Word>AeDamageType</Word>
+			<Word>AeEngineExecutionMode</Word>
+			<Word>AeExplosionType</Word>
+			<Word>AeFiredFromType</Word>
+			<Word>AeLevelState</Word>
+			<Word>AeLogSeverity</Word>
+			<Word>AeLoggingLevel</Word>
+			<Word>AeMass</Word>
+			<Word>AeMenuItemType</Word>
+			<Word>AeParticleCleanupMode</Word>
+			<Word>AeParticleColorType</Word>
+			<Word>AeParticleShape</Word>
+			<Word>AeParticleVectorType</Word>
+			<Word>AePlayerKey</Word>
+			<Word>AePropertyEditorGroup</Word>
+			<Word>AePropertyEditorType</Word>
+			<Word>AeRenderScaleOrder</Word>
+			<Word>AeRotationDirection</Word>
+			<Word>AeSituationState</Word>
+			<Word>AeWeaponsLockType</Word>
+		</Keywords>
+		
+		<Keywords color="AeClasses">
+			<Word>AeAIParameterCollection</Word>
+			<Word>AeAIStateHandler</Word>
+			<Word>AeAIStateMachine</Word>
+			<Word>AeAssertException</Word>
+			<Word>AeAssetCodeClassBuilder</Word>
+			<Word>AeAudioClip</Word>
+			<Word>AeAxisAlignedBoundingBox</Word>
+			<Word>AeBitmapFragmenter</Word>
+			<Word>AeCache</Word>
+			<Word>AeCircularBuffer</Word>
+			<Word>AeCodeEditor</Word>
+			<Word>AeConstants</Word>
+			<Word>AeCriticalRenderTargets</Word>
+			<Word>AeDefermentEvent</Word>
+			<Word>AeEmbeddedTextResource</Word>
+			<Word>AeEngine</Word>
+			<Word>AeEngineSettings</Word>
+			<Word>AeExceptionBase</Word>
+			<Word>AeFloatExtensions</Word>
+			<Word>AeFrameCounter</Word>
+			<Word>AeGraphicsAdapter</Word>
+			<Word>AeIAIController</Word>
+			<Word>AeIntExtensions</Word>
+			<Word>AeLevel</Word>
+			<Word>AeLevelDebuggingGalore</Word>
+			<Word>AeLevelDebuggingStarbase</Word>
+			<Word>AeLevelFreeFlight</Word>
+			<Word>AeLevelPhoenixAmbush</Word>
+			<Word>AeLogListViewItem</Word>
+			<Word>AeMass</Word>
+			<Word>AeMath</Word>
+			<Word>AeMenu</Word>
+			<Word>AeMenuHostMultiplayer</Word>
+			<Word>AeMenuJoinMultiplayer</Word>
+			<Word>AeMenuSelectLoadout</Word>
+			<Word>AeMenuSituationSelect</Word>
+			<Word>AeMenuStartNewGame</Word>
+			<Word>AeNullException</Word>
+			<Word>AePolygon</Word>
+			<Word>AePrecreatedMaterials</Word>
+			<Word>AePrecreatedTextFormats</Word>
+			<Word>AeQuadrant</Word>
+			<Word>AeRandom</Word>
+			<Word>AeRange</Word>
+			<Word>AeRectangle</Word>
+			<Word>AeRectangleExtensions</Word>
+			<Word>AeRectangleFExtensions</Word>
+			<Word>AeReflection</Word>
+			<Word>AeRenderLoopInvocation</Word>
+			<Word>AeRendering</Word>
+			<Word>AeRenderingUtility</Word>
+			<Word>AeRenewableResources</Word>
+			<Word>AeRuntimeCompiler</Word>
+			<Word>AeSeparatingAxisTheorem</Word>
+			<Word>AeSequenceGenerator</Word>
+			<Word>AeServerSettings</Word>
+			<Word>AeSituation</Word>
+			<Word>AeSituationChallenge</Word>
+			<Word>AeSituationDebuggingGalore</Word>
+			<Word>AeSituationDebuggingStarbase</Word>
+			<Word>AeSituationFreeFlight</Word>
+			<Word>AeSprite</Word>
+			<Word>AeSpriteAction</Word>
+			<Word>AeSpriteActionCollection</Word>
+			<Word>AeSpriteActionDelete</Word>
+			<Word>AeSpriteActionExplode</Word>
+			<Word>AeSpriteActionHit</Word>
+			<Word>AeSpriteActionMotion</Word>
+			<Word>AeSpriteActionSpawn</Word>
+			<Word>AeSpriteAnimation</Word>
+			<Word>AeSpriteAttachment</Word>
+			<Word>AeSpriteDebug</Word>
+			<Word>AeSpriteEnemy</Word>
+			<Word>AeSpriteEnergyMunition</Word>
+			<Word>AeSpriteInteractive</Word>
+			<Word>AeSpriteInteractiveBitmap</Word>
+			<Word>AeSpriteLockingMunition</Word>
+			<Word>AeSpriteMenuItem</Word>
+			<Word>AeSpriteMenuSelectableTextInput</Word>
+			<Word>AeSpriteMinimalBitmap</Word>
+			<Word>AeSpriteMunition</Word>
+			<Word>AeSpriteParticle</Word>
+			<Word>AeSpritePlayer</Word>
+			<Word>AeSpritePowerup</Word>
+			<Word>AeSpriteProjectileMunition</Word>
+			<Word>AeSpriteRadarPositionIndicator</Word>
+			<Word>AeSpriteRadarPositionTextBlock</Word>
+			<Word>AeSpriteSeekingMunition</Word>
+			<Word>AeSpriteShip</Word>
+			<Word>AeSpriteSkyBox</Word>
+			<Word>AeSpriteStar</Word>
+			<Word>AeSpriteTextBlock</Word>
+			<Word>AeSpriteWeapon</Word>
+			<Word>AeSutherlandHodgmanPolygonIntersection</Word>
+			<Word>AeTabPage</Word>
+			<Word>AeThreading</Word>
+			<Word>AeTransforms</Word>
+			<Word>AeTreeNode</Word>
+			<Word>AeVector</Word>
+			<Word>AeVectorExtensions</Word>
+			<Word>AeVectorSpriteExtensions</Word>
+			<Word>IAeRuntimeCompiled</Word>
+			<Word>IAeRuntimeCompiledCodeAsset</Word>
+			<Word>IAeRuntimeCompiledSpriteAsset</Word>
+			<Word>IAeSprite</Word>
+		</Keywords>
 		
 		<Keywords color="ThisOrBaseReference">
 			<Word>this</Word>
