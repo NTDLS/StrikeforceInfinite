@@ -2,7 +2,6 @@
 using Ae.Engine;
 using Ae.Engine.Helpers;
 using Ae.Engine.Metadata;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {

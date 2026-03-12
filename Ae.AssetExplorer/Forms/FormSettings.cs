@@ -3,7 +3,6 @@ using Ae.Engine;
 using Ae.Engine.Helpers;
 using NTDLS.Persistence;
 using NTDLS.WinFormsHelpers;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {

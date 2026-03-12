@@ -6,7 +6,6 @@ using Ae.Engine.Metadata;
 using System.Text;
 using System.Text.Json;
 using Talkster.Client.Controls;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer
 {

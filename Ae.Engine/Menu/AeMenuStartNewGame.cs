@@ -13,9 +13,9 @@ namespace Ae.Engine.Menu
         public AeMenuStartNewGame(AeEngine engine)
             : base(engine)
         {
-            var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
+            var currentScaledScreenBounds = Engine.Display.GetCurrentScaledScreenBounds();
 
-            float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
+            float offsetX = Engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
             var itemTitle = AddTitleItem(new AeVector(offsetX, offsetY), "Axis Engine");
@@ -75,16 +75,16 @@ namespace Ae.Engine.Menu
             switch (item.SpriteTag)
             {
                 case "SINGLE_PLAYER":
-                    _engine.InitializeForSinglePlayer();
-                    _engine.Menus.Show(new AeMenuSituationSelect(_engine));
+                    Engine.InitializeForSinglePlayer();
+                    Engine.Menus.Show(new AeMenuSituationSelect(Engine));
                     break;
                 case "JOIN_MULTIPLAYER":
-                    _engine.InitializeForMultiplayer();
-                    _engine.Menus.Show(new AeMenuJoinMultiplayer(_engine));
+                    Engine.InitializeForMultiplayer();
+                    Engine.Menus.Show(new AeMenuJoinMultiplayer(Engine));
                     break;
                 case "HOST_MULTIPLAYER":
-                    _engine.InitializeForMultiplayer();
-                    _engine.Menus.Show(new AeMenuHostMultiplayer(_engine));
+                    Engine.InitializeForMultiplayer();
+                    Engine.Menus.Show(new AeMenuHostMultiplayer(Engine));
                     break;
                 default:
                     throw new System.NotImplementedException();

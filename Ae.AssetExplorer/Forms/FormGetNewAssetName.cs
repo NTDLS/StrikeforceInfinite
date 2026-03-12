@@ -1,5 +1,4 @@
 ﻿using Ae.Engine;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {

@@ -4,7 +4,13 @@ using static Ae.Engine.Interrogation.InterrogationCommandParameterPrototype;
 
 namespace Ae.Engine.Interrogation
 {
-    public class InterrogationCommandParameter
+    /// <summary>
+    /// Represents a parameter for an interrogation command, including its prototype and parsed value.
+    /// </summary>
+    /// <remarks>This class is intended for internal use in command processing scenarios. It encapsulates the
+    /// parameter's definition and its value, which may be converted to a specific type based on the prototype. The
+    /// parameter type determines how the raw value is parsed and validated.</remarks>
+    internal class InterrogationCommandParameter
     {
         public InterrogationCommandParameterPrototype Prototype { get; private set; }
         public object? RawValue { get; private set; }

@@ -2,7 +2,6 @@
 using Ae.Engine.Sprite.Munition;
 using SharpDX.Mathematics.Interop;
 using System.Drawing;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Sprite.Base
 {
@@ -11,7 +10,16 @@ namespace Ae.Engine.Sprite.Base
     /// </summary>
     public partial class AeSprite
     {
-        public virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
+        /// <summary>
+        /// Renders the sprite and its visual highlights onto the specified Direct2D render target for the given
+        /// animation epoch.
+        /// </summary>
+        /// <remarks>Highlights and motion rectangles are rendered if their respective flags are set. The
+        /// method does not perform rendering if the sprite is not visible or its bitmap is null.</remarks>
+        /// <param name="renderTarget">The Direct2D render target to which the sprite and its highlights are drawn.</param>
+        /// <param name="epoch">The animation epoch, in seconds, representing the current time frame for rendering. Negative values may be
+        /// used to account for motion that has already occurred.</param>
+        internal virtual void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
             if (_isVisible && SpriteBitmap != null)
             {
@@ -41,11 +49,11 @@ namespace Ae.Engine.Sprite.Base
             }
         }
 
-        public virtual void Render(Graphics dc)
+        internal virtual void Render(Graphics dc)
         {
         }
 
-        public void RenderRadar(SharpDX.Direct2D1.RenderTarget renderTarget, int x, int y)
+        internal void RenderRadar(SharpDX.Direct2D1.RenderTarget renderTarget, int x, int y)
         {
             if (_isVisible && SpriteBitmap != null)
             {
@@ -81,6 +89,15 @@ namespace Ae.Engine.Sprite.Base
             }
         }
 
+        /// <summary>
+        /// Draws the specified bitmap onto the given render target at the object's location, optionally rotated by the
+        /// specified angle in radians.
+        /// </summary>
+        /// <remarks>The bitmap is centered at the object's render location. Rotation is applied around
+        /// the center of the bitmap.</remarks>
+        /// <param name="renderTarget">The render target on which the bitmap will be drawn. Must not be null.</param>
+        /// <param name="bitmap">The bitmap image to draw. Must not be null.</param>
+        /// <param name="angleRadians">The angle, in radians, to rotate the bitmap when drawing. If null, the object's current orientation is used.</param>
         public void DrawImage(SharpDX.Direct2D1.RenderTarget renderTarget, SharpDX.Direct2D1.Bitmap bitmap, float? angleRadians = null)
         {
             float angle = (float)(angleRadians == null ? Orientation.RadiansSigned : angleRadians);

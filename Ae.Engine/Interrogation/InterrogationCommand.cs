@@ -4,7 +4,15 @@ using System.Linq;
 
 namespace Ae.Engine.Interrogation
 {
-    public class InterrogationCommand
+    /// <summary>
+    /// Represents a command definition for interrogation operations, including its name, parameters, and associated
+    /// function key.
+    /// </summary>
+    /// <remarks>This class encapsulates the metadata and parameter values for a specific interrogation
+    /// command. It provides access to the command's name, a collection of parameters, and a generated function key used
+    /// for handler identification. Use this type to manage and retrieve parameter values for interrogation commands in
+    /// a structured manner.</remarks>
+    internal class InterrogationCommand
     {
         public string Name { get; set; }
         public List<InterrogationCommandParameter> Parameters { get; private set; } = new();

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Manager
 {
@@ -22,10 +21,14 @@ namespace Ae.Engine.Manager
         private bool _collectDetailedKeyInformation = false;
         private readonly Dictionary<Key, bool> _allKeyStates = new();
 
-        public bool UseGamepad { get; private set; }
-        public DirectInput DxInput { get; private set; }
-        public Keyboard DxKeyboard { get; private set; }
-        public Controller DxController { get; private set; }
+        /// <summary>
+        /// Gets a value indicating whether gamepad input is enabled.
+        /// </summary>
+        internal bool UseGamepad { get; private set; }
+
+        internal DirectInput DxInput { get; private set; }
+        internal Keyboard DxKeyboard { get; private set; }
+        internal Controller DxController { get; private set; }
 
         /// <summary>
         /// Any string that was typed by the user. Must enable via a call to CollectDetailedKeyInformation().
@@ -47,6 +50,13 @@ namespace Ae.Engine.Manager
         //Controller controller;
         //Gamepad gamepad;
 
+        /// <summary>
+        /// Initializes a new instance of the InputManager class using the specified engine. Sets up input devices
+        /// including keyboard and gamepad based on their availability.
+        /// </summary>
+        /// <remarks>If a gamepad is connected, it will be available for input through this manager. The
+        /// keyboard is acquired immediately for input processing.</remarks>
+        /// <param name="engine">The engine instance used to configure input devices. Cannot be null.</param>
         public InputManager(AeEngine engine)
         {
             _engine = engine;
@@ -64,13 +74,19 @@ namespace Ae.Engine.Manager
 
         }
 
+        /// <summary>
+        /// Releases unmanaged resources used by the InputManager when the object is finalized.
+        /// </summary>
+        /// <remarks>This destructor is called automatically by the garbage collector when the
+        /// InputManager is no longer referenced. It ensures that associated input resources are properly disposed. For
+        /// deterministic cleanup, use the Dispose method instead of relying on finalization.</remarks>
         ~InputManager()
         {
             DxInput.Dispose();
             DxKeyboard.Dispose();
         }
 
-        public void CollectDetailedKeyInformation(bool state)
+        internal void CollectDetailedKeyInformation(bool state)
         {
             if (state != _collectDetailedKeyInformation) //Clear any residual state information.
             {
@@ -81,7 +97,7 @@ namespace Ae.Engine.Manager
             _collectDetailedKeyInformation = state;
         }
 
-        public bool IsModifierKey(Key key)
+        internal bool IsModifierKey(Key key)
         {
             return key == Key.LeftAlt || key == Key.RightAlt ||
                    key == Key.LeftControl || key == Key.RightControl ||
@@ -89,7 +105,7 @@ namespace Ae.Engine.Manager
                    key == Key.LeftWindowsKey || key == Key.RightWindowsKey;
         }
 
-        public void Snapshot()
+        internal void Snapshot()
         {
             if (_engine.ExecutionMode != AeEngineExecutionMode.Play)
             {
@@ -300,9 +316,7 @@ namespace Ae.Engine.Manager
         /// <summary>
         /// Returns the percentage of a key that is pressed. This is for gamepad analog and triggers.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public float GetAnalogValue(AePlayerKey key)
+        internal float GetAnalogValue(AePlayerKey key)
         {
             if (_playerKeyStates.ContainsKey(key))
             {
@@ -315,9 +329,7 @@ namespace Ae.Engine.Manager
         /// <summary>
         /// Returns the percentage of a key that is pressed and its opposite (e.g. left/right, forward/reverse). This is for gamepad analog and triggers.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public float GetAnalogAxisValue(AePlayerKey negativeAxisKey, AePlayerKey positiveAxisKey)
+        internal float GetAnalogAxisValue(AePlayerKey negativeAxisKey, AePlayerKey positiveAxisKey)
         {
             _playerKeyStates.TryGetValue(positiveAxisKey, out var value1);
             if (value1 != 0)
@@ -331,10 +343,7 @@ namespace Ae.Engine.Manager
         /// <summary>
         /// Returns true or false depending on whether the applied key amount is zero or non-zero.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-
-        public bool IsKeyPressed(AePlayerKey key)
+        internal bool IsKeyPressed(AePlayerKey key)
         {
             if (_playerKeyStates.ContainsKey(key))
             {
@@ -347,9 +356,7 @@ namespace Ae.Engine.Manager
         /// <summary>
         /// Allows the containing window to tell the engine about key press events.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="state"></param>
-        public void KeyStateChangedAmount(AePlayerKey key, float amount)
+        internal void KeyStateChangedAmount(AePlayerKey key, float amount)
         {
             if (_playerKeyStates.ContainsKey(key))
             {
@@ -364,9 +371,7 @@ namespace Ae.Engine.Manager
         /// <summary>
         /// Allows the containing window to tell the engine about key press events.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="state"></param>
-        public void KeyStateChangedHard(AePlayerKey key, bool state)
+        internal void KeyStateChangedHard(AePlayerKey key, bool state)
         {
             if (_playerKeyStates.ContainsKey(key))
             {
@@ -378,7 +383,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void AddAsteroidField(AeVector offset, int rowCount, int colCount)
+        internal void AddAsteroidField(AeVector offset, int rowCount, int colCount)
         {
             for (int row = 0; row < rowCount; row++)
             {
@@ -409,6 +414,15 @@ namespace Ae.Engine.Manager
             }
         }
 
+        /// <summary>
+        /// Handles a single key press event by executing the corresponding action within the game engine.
+        /// </summary>
+        /// <remarks>This method is typically used for debugging and development purposes, enabling quick
+        /// access to various engine features such as toggling pause, spawning objects, or advancing levels. Actions
+        /// triggered by specific keys may affect game state or visibility. Ensure that key handling is appropriate for
+        /// the current game context to avoid unintended side effects.</remarks>
+        /// <param name="key">The key that was pressed. Determines which action to perform. Must be a valid member of the Keys
+        /// enumeration.</param>
         public void HandleSingleKeyPress(Keys key)
         {
             if (key == Keys.Oem3)

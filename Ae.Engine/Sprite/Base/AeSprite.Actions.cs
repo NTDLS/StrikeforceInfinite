@@ -3,12 +3,26 @@ using Ae.Engine.Mathematics;
 using Ae.Engine.Sprite.Interactive;
 using Ae.Engine.Sprite.Munition;
 using System.Linq;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Sprite.Base
 {
+    /// <summary>
+    /// Represents a sprite entity in the game world that can interact with munitions, sustain damage, and undergo state
+    /// changes such as exploding or reviving.
+    /// </summary>
+    /// <remarks>AeSprite provides methods for handling hits from munitions, managing shield and hull health,
+    /// and controlling the sprite's lifecycle. The class supports extensibility through virtual methods, allowing
+    /// derived types to customize hit and explosion behavior. Attachments associated with the sprite are also managed
+    /// during explosion events. This class is intended to be used as a base for game objects that require collision,
+    /// damage, and destruction mechanics.</remarks>
     public partial class AeSprite
     {
+        /// <summary>
+        /// Restores the object to an active state if it has been marked as dead or exploded.
+        /// </summary>
+        /// <remarks>Call this method to reset the object's status after it has been deactivated due to
+        /// death or explosion. This enables further interactions or operations that require the object to be
+        /// active.</remarks>
         public void ReviveDeadOrExploded()
         {
             IsDeadOrExploded = false;
@@ -34,6 +48,13 @@ namespace Ae.Engine.Sprite.Base
             return false;
         }
 
+        /// <summary>
+        /// Processes the impact of a munition on the object, applying damage and triggering explosion if health is
+        /// depleted.
+        /// </summary>
+        /// <remarks>This method updates the object's state based on the munition's effect. If the
+        /// object's health reaches zero or below, an explosion is triggered.</remarks>
+        /// <param name="munition">The munition that has struck the object. Cannot be null.</param>
         public virtual void MunitionHit(AeSpriteMunition munition)
         {
             Hit(munition);
@@ -81,6 +102,12 @@ namespace Ae.Engine.Sprite.Base
             }
         }
 
+        /// <summary>
+        /// Triggers the explosion sequence for the object and its visible attachments.
+        /// </summary>
+        /// <remarks>After calling this method, the object is marked as exploded and becomes invisible.
+        /// All visible attachments are also exploded. If the object is not an attachment, it is queued for deletion.
+        /// The method raises the OnExplode event to notify subscribers.</remarks>
         public virtual void Explode()
         {
             foreach (var attachment in Attachments.Where(o => o._isVisible))
@@ -99,6 +126,11 @@ namespace Ae.Engine.Sprite.Base
             OnExplode?.Invoke(this);
         }
 
+        /// <summary>
+        /// Triggers a small fire explosion animation at the current object's location.
+        /// </summary>
+        /// <remarks>Use this method to visually indicate that the object has been hit or destroyed. The
+        /// explosion effect is randomly selected and may vary each time the method is called.</remarks>
         public virtual void HitExplosion()
         {
             Engine.Sprites.Animations.AddRandomSmallFireExplosionAt(this);

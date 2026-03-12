@@ -2,6 +2,13 @@
 
 namespace Ae.Engine.ExtensionMethods
 {
+    /// <summary>
+    /// Provides extension methods for integer values to perform mathematical operations such as conversion between
+    /// degrees and radians, sign inversion, and value clamping.
+    /// </summary>
+    /// <remarks>These extension methods enhance the functionality of the standard integer type, allowing for
+    /// concise and readable mathematical transformations commonly used in graphics, physics, and general computation
+    /// scenarios. All methods are static and can be called directly on integer instances.</remarks>
     public static class AeIntExtensions
     {
         /// <summary>

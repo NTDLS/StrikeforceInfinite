@@ -8,7 +8,7 @@ namespace Ae.Engine.Mathematics
     /// <summary>
     /// Used to keep track of the FPS that the world clock is executing at.
     /// </summary>
-    public class AeFrameCounter
+    internal class AeFrameCounter
     {
         private readonly Stopwatch _stopwatch = new Stopwatch();
         private readonly AeCircularBuffer<float> _samples = new(1000);

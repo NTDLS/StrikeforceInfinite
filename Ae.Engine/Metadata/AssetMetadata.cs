@@ -9,10 +9,20 @@ using Ae.Engine.Sprite.Munition;
 using Ae.Engine.Types;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Metadata
 {
+    /// <summary>
+    /// Represents metadata for an asset, including properties that describe its characteristics, behaviors, and
+    /// configuration for use in the game engine. This class provides a flexible structure for defining asset-specific
+    /// information such as type, appearance, physics, AI, audio, animation, and weapon attributes.
+    /// </summary>
+    /// <remarks>Asset metadata is used to configure and control various aspects of sprites, audio clips,
+    /// animations, weapons, and attachments within the game. Properties are grouped by functionality and may be
+    /// applicable to different asset types. Many properties are nullable to allow for optional configuration. Some
+    /// properties, such as attachments and AI controllers, reference other assets or classes to enable extensible
+    /// behaviors. When editing metadata, ensure that values meet any documented constraints or requirements for correct
+    /// operation. Thread safety is not guaranteed; concurrent modifications should be managed externally.</remarks>
     public class AssetMetadata
     {
         /// <summary>
@@ -21,31 +31,57 @@ namespace Ae.Engine.Metadata
         [JsonIgnore]
         public string DynamicTypeName => AeRuntimeCompiler.AssetKeyToClassName(AssetKey);
 
-
+        /// <summary>
+        /// Gets or sets the asset key associated with the attachment sprite.
+        /// </summary>
         [AssetMetadata("Asset Key", "The asset key of attachment sprite.", AePropertyEditorGroup.Base, AePropertyEditorType.Readonly,
             applicableTo: null)]
         public string? AssetKey { get; set; }
 
+        /// <summary>
+        /// Gets or sets the volume level of the sound, expressed as a percentage between 0 and 1.
+        /// </summary>
         [AssetMetadata("Sound Volume", "Volume of the sound expressed in percentages.", AePropertyEditorGroup.Audio, AePropertyEditorType.Float,
             applicableTo: [typeof(AeAudioClip)], minValue: 0, maxValue: 1)]
         public float? SoundVolume { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the sound should loop when played.
+        /// </summary>
         [AssetMetadata("Loop Sound", "Indicates whether the sound should loop when played.", AePropertyEditorGroup.Audio, AePropertyEditorType.Boolean,
             applicableTo: [typeof(AeAudioClip)])]
         public bool? LoopSound { get; set; }
 
+        /// <summary>
+        /// Gets or sets the class name used to control the sprite.
+        /// </summary>
+        /// <remarks>The class determines the behavior and control logic applied to the sprite. Assign a
+        /// valid class name to enable appropriate functionality. If the value is null or empty, default behavior may be
+        /// applied.</remarks>
         [AssetMetadata("Class", "The class of the sprite which will be used to control the sprite.", AePropertyEditorGroup.Base, AePropertyEditorType.Class,
             applicableTo: null)]
         public string? Class { get; set; }
 
+        /// <summary>
+        /// Gets or sets the name of the sprite used for identification and display purposes.
+        /// </summary>
         [AssetMetadata("Name", "The name of the sprite, used for identification and display purposes.", AePropertyEditorGroup.Base, AePropertyEditorType.String,
             applicableTo: null)]
         public string? Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets a brief description of the sprite.
+        /// </summary>
         [AssetMetadata("Description", "A brief description of the sprite.", AePropertyEditorGroup.Base, AePropertyEditorType.String,
             applicableTo: null)]
         public string? Description { get; set; }
 
+        /// <summary>
+        /// Gets or sets the coordinate of the sprite's attachment position relative to its owner.
+        /// </summary>
+        /// <remarks>This property should be set in the owning sprite's metadata rather than in the
+        /// attachment's own metadata. The value represents the position where the attachment is anchored relative to
+        /// the owner sprite, which can affect rendering and positioning behaviors.</remarks>
         //TODO: THIS NEED A NEW EDITOR.
         //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
         [AssetMetadata("Attachment Position", "The coordinate of the sprite's attachment position relative to its owner.",
@@ -53,18 +89,37 @@ namespace Ae.Engine.Metadata
             applicableTo: [typeof(AeSprite)])]
         public AeVector? AttachmentPosition { get; set; }
 
+        /// <summary>
+        /// Gets or sets the collection of AI controller class names available to this sprite.
+        /// </summary>
+        /// <remarks>Each entry represents a class that implements AI behavior for the sprite. Only
+        /// classes assignable from AeAIStateMachine are valid. This property is typically used to configure which AI
+        /// controllers can be selected or applied to interactive sprites.</remarks>
         [AssetMetadata("AI Controllers", "The AI controller classes that will be available to this sprite.",
             AePropertyEditorGroup.AI, AePropertyEditorType.MultipleSpritePicker,
-            applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeIAIController))]
+            applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeAIStateMachine))]
         public string[]? AIControllers { get; set; }
 
+        /// <summary>
+        /// Gets or sets the default AI controller class for the sprite.
+        /// </summary>
+        /// <remarks>The specified controller must be assignable from the type AeAIStateMachine and is
+        /// applicable to interactive sprites. Use this property to define the AI behavior for sprites that require
+        /// automated control.</remarks>
         [AssetMetadata("Default AI Controller", "The default AI controller class for the sprite.",
             AePropertyEditorGroup.AI, AePropertyEditorType.SingleSpritePicker,
-            applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeIAIController))]
+            applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeAIStateMachine))]
         public string? DefaultAIController { get; set; }
 
         #region InteractiveSpriteMetadata
 
+        /// <summary>
+        /// Gets or sets the orientation behavior for the attached sprite relative to its owner.
+        /// </summary>
+        /// <remarks>Set this property in the owning sprite's metadata to control whether the attachment
+        /// maintains a fixed orientation relative to its owner or operates independently. Use 'FixedToOwner' to keep
+        /// the attachment aligned with the owner's rotation, or 'Independent' to allow the attachment its own
+        /// orientation.</remarks>
         //TODO: THIS NEED A NEW EDITOR.
         //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
         [AssetMetadata("Orientation Type", "Determines how the attached sprite orientation is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant orientation relative to its owner, while 'Independent' allows the sprite to have its own orientation regardless of the owner's rotation.",
@@ -72,6 +127,13 @@ namespace Ae.Engine.Metadata
             applicableTo: [typeof(AeSprite)], enumType: typeof(AeAttachmentOrientationType))]
         public AeAttachmentOrientationType? AttachmentOrientationType { get; set; }
 
+        /// <summary>
+        /// Gets or sets the position type that determines how the attached sprite's position is affected by its owner.
+        /// </summary>
+        /// <remarks>Set this property in the owning sprite's metadata to control whether the attachment
+        /// maintains a fixed position relative to its owner or operates independently. Use 'FixedToOwner' to keep the
+        /// attachment aligned with the owner's movement, or 'Independent' to allow the attachment to move
+        /// separately.</remarks>
         //TODO: THIS NEED A NEW EDITOR.
         //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
         [AssetMetadata("Position Type", "Determines how the attached sprite position is affected by its owner. 'FixedToOwner' means the sprite will maintain a constant position relative to its owner, while 'Independent' allows the sprite to have its own position regardless of the owner's movement.",
@@ -79,34 +141,61 @@ namespace Ae.Engine.Metadata
             applicableTo: [typeof(AeSprite)], enumType: typeof(AeAttachmentPositionType))]
         public AeAttachmentPositionType? AttachmentPositionType { get; set; }
 
+        /// <summary>
+        /// Gets or sets the type of explosion effect applied to the sprite.
+        /// </summary>
         [AssetMetadata("Explosion Type", "Determines the type of explosion effect for the sprite.",
             AePropertyEditorGroup.Destroy, AePropertyEditorType.Enum,
             applicableTo: [typeof(AeSprite)], enumType: typeof(AeExplosionType))]
         public AeExplosionType? ExplosionType { get; set; }
 
+        /// <summary>
+        /// Gets or sets the range specifying the number of particles generated when the sprite explodes.
+        /// </summary>
+        /// <remarks>If the value is null, no particle blast will occur on explosion. The range determines
+        /// the minimum and maximum amount of particles created, allowing for variability in explosion
+        /// effects.</remarks>
         [AssetMetadata("Particle Blast On Explode Amount", "Specifies the amount of particles generated when the sprite explodes.",
             AePropertyEditorGroup.Destroy, AePropertyEditorType.RangeInt,
             applicableTo: [typeof(AeSprite)])]
         public AeRange<int>? ParticleBlastOnExplodeAmount { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the sprite should fragment when it explodes.
+        /// </summary>
         [AssetMetadata("Fragment On Explode", "Indicates whether the sprite should fragment upon explosion.",
             AePropertyEditorGroup.Destroy, AePropertyEditorType.Boolean,
             applicableTo: [typeof(AeSprite)])]
         public bool? FragmentOnExplode { get; set; }
 
+        /// <summary>
+        /// Gets or sets the intensity of the screen shake effect triggered when the sprite explodes.
+        /// </summary>
+        /// <remarks>A higher value results in a more pronounced screen shake. This property is applicable
+        /// only to sprites that support explosion effects.</remarks>
         [AssetMetadata("Screen Shake On Explode Amount", "Specifies the intensity of screen shake when the sprite explodes.",
             AePropertyEditorGroup.Destroy, AePropertyEditorType.RangeInt,
             applicableTo: [typeof(AeSprite)])]
         public AeRange<int>? ScreenShakeOnExplodeAmount { get; set; }
 
+        /// <summary>
+        /// Gets or sets the speed range for the sprite.
+        /// </summary>
         [AssetMetadata("Speed", "The speed of the sprite.", AePropertyEditorGroup.Momentum, AePropertyEditorType.RangeFloat,
             applicableTo: [typeof(AeSprite)])]
         public AeRange<float>? Speed { get; set; }
 
+        /// <summary>
+        /// Gets or sets the maximum throttle value for the sprite.
+        /// </summary>
         [AssetMetadata("Max Throttle", "The maximum throttle of the sprite.", AePropertyEditorGroup.Momentum, AePropertyEditorType.Float,
             applicableTo: [typeof(AeSprite)])]
         public float? MaxThrottle { get; set; }
 
+        /// <summary>
+        /// Gets or sets the throttle of the sprite, representing its current speed as a percentage of its maximum
+        /// speed.
+        /// </summary>
         [AssetMetadata("Throttle", "The throttle of the sprite, which determines its current speed as a percentage of its maximum speed.",
             AePropertyEditorGroup.Momentum, AePropertyEditorType.Float,
             applicableTo: [typeof(AeSprite)])]
@@ -186,6 +275,11 @@ namespace Ae.Engine.Metadata
             applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeSpriteWeapon))]
         public string? PrimaryWeaponAssetKey { get; set; }
 
+        /// <summary>
+        /// Gets or sets the collection of attachments associated with the sprite.
+        /// </summary>
+        /// <remarks>Attachments are intended to be managed within the sprite's metadata. Use this
+        /// property to access or modify the list of attachments for a given sprite.</remarks>
         //TODO: THIS NEED A NEW EDITOR.
         //Note that these are meant to be set in the owning sprite's metadata, not in the attachment's own metadata.
         [AssetMetadata("Attachments", "The list of attachments for the sprite.",
@@ -193,6 +287,11 @@ namespace Ae.Engine.Metadata
             applicableTo: [typeof(AeSprite)], requireAssignableFrom: typeof(AeSpriteAttachment))]
         public List<AssetMetadata>? Attachments { get; set; }
 
+        /// <summary>
+        /// Gets or sets the collection of asset keys representing the available weapons for the sprite.
+        /// </summary>
+        /// <remarks>Each asset key corresponds to a weapon that can be assigned to the sprite. The list
+        /// may be empty or null if no weapons are available.</remarks>
         [AssetMetadata("Weapon Assets", "The list of weapons for the sprite.",
             AePropertyEditorGroup.Weapons, AePropertyEditorType.MultipleSpritePicker,
             applicableTo: [typeof(AeSpriteInteractive)], requireAssignableFrom: typeof(AeSpriteWeapon))]
@@ -202,6 +301,9 @@ namespace Ae.Engine.Metadata
 
         #region InteractiveSpriteWeaponMetadata
 
+        /// <summary>
+        /// Gets or sets the number of munitions available for the weapon.
+        /// </summary>
         [AssetMetadata("Munition Count", "The number of munitions available for the weapon.",
             AePropertyEditorGroup.Munitions, AePropertyEditorType.Integer,
             applicableTo: [typeof(AeSpriteWeapon)])]
@@ -211,21 +313,33 @@ namespace Ae.Engine.Metadata
 
         #region SpriteAnimationMetadata
 
+        /// <summary>
+        /// Gets or sets the width, in pixels, of each frame in the sprite animation.
+        /// </summary>
         [AssetMetadata("Frame Width", "The width of each frame in the sprite animation.",
             AePropertyEditorGroup.Animation, AePropertyEditorType.Integer,
             applicableTo: [typeof(AeSpriteAnimation)])]
         public int? FrameWidth { get; set; }
 
+        /// <summary>
+        /// Gets or sets the height, in pixels, of each frame in the sprite animation.
+        /// </summary>
         [AssetMetadata("Frame Height", "The height of each frame in the sprite animation.",
             AePropertyEditorGroup.Animation, AePropertyEditorType.Integer,
             applicableTo: [typeof(AeSpriteAnimation)])]
         public int? FrameHeight { get; set; }
 
+        /// <summary>
+        /// Gets or sets the number of frames displayed per second in the sprite animation.
+        /// </summary>
         [AssetMetadata("Frames Per Second", "The number of frames displayed per second in the sprite animation.",
             AePropertyEditorGroup.Animation, AePropertyEditorType.RangeFloat,
             applicableTo: [typeof(AeSpriteAnimation)])]
         public AeRange<float>? FramesPerSecond { get; set; }
 
+        /// <summary>
+        /// Gets or sets the play mode for the sprite animation.
+        /// </summary>
         [AssetMetadata("Play Mode", "The play mode of the sprite animation.",
             AePropertyEditorGroup.Animation, AePropertyEditorType.Enum,
             applicableTo: [typeof(AeSpriteAnimation)], enumType: typeof(AeAnimationPlayMode))]
@@ -244,6 +358,11 @@ namespace Ae.Engine.Metadata
             requireAssignableFrom: typeof(AeSpriteMunition))]
         public string[]? MunitionAssetKeys { get; set; }
 
+        /// <summary>
+        /// Gets or sets the keys of sound assets associated with the sprite.
+        /// </summary>
+        /// <remarks>Each key corresponds to a sound asset file used for audio playback with the sprite.
+        /// The array may be null or empty if no sound assets are assigned.</remarks>
         [AssetMetadata("Sound Asset", "The sound asset file for the sprite.",
             AePropertyEditorGroup.Audio, AePropertyEditorType.String,
             applicableTo: [typeof(AeSprite)]/*, requireAssignableFrom: typeof(SpriteSound)*/)]
@@ -257,12 +376,17 @@ namespace Ae.Engine.Metadata
             applicableTo: [typeof(AeSpriteMunition)])]
         public float? AngleVarianceDegrees { get; set; }
 
-
+        /// <summary>
+        /// Gets or sets the delay, in milliseconds, between each shot fired by the weapon.
+        /// </summary>
         [AssetMetadata("Fire Delay", "The delay in milliseconds between each shot fired by the weapon.",
             AePropertyEditorGroup.Munitions, AePropertyEditorType.Integer,
             applicableTo: [typeof(AeSpriteWeapon)])]
         public int? FireDelayMilliseconds { get; set; }
 
+        /// <summary>
+        /// Gets or sets the range of damage dealt by the munition.
+        /// </summary>
         [AssetMetadata("Damage", "The amount of damage dealt by the munition.",
             AePropertyEditorGroup.Munitions, AePropertyEditorType.RangeInt,
             applicableTo: [typeof(AeSpriteMunition)])]
@@ -300,6 +424,9 @@ namespace Ae.Engine.Metadata
             applicableTo: [typeof(AeSpriteWeapon)])]
         public float? MaxLockDistance { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the munition explodes upon impact.
+        /// </summary>
         [AssetMetadata("Explodes On Impact", "Indicates whether the munition explodes on impact.",
             AePropertyEditorGroup.Munitions, AePropertyEditorType.Boolean,
             applicableTo: [typeof(AeSpriteMunition)])]

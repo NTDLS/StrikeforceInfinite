@@ -13,7 +13,7 @@ namespace Ae.Engine.Mathematics
     ///
     /// This polygon would represent the exact overlapping area.
     /// </summary>
-    public class AeSutherlandHodgmanPolygonIntersection
+    internal class AeSutherlandHodgmanPolygonIntersection
     {
         /// <summary>
         /// The intersection of two rotated rectangles is a convex polygon, not necessarily a rectangle.

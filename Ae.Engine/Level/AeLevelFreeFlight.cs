@@ -21,12 +21,12 @@ namespace Ae.Engine.Level
         {
             base.Begin();
 
-            AddSingleFireEvent(500, FirstShowPlayerCallback);
+            Engine.Events.Add(500, FirstShowPlayerCallback);
         }
 
         private void FirstShowPlayerCallback(AeDefermentEvent sender, object? refObj)
         {
-            _engine.Player.ResetAndShow();
+            Engine.Player.ResetAndShow();
         }
     }
 }

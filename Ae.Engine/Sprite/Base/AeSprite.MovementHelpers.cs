@@ -1,10 +1,17 @@
 ﻿using Ae.Engine.ExtensionMethods;
 using Ae.Engine.Mathematics;
 using System;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Sprite.Base
 {
+    /// <summary>
+    /// Represents a sprite with orientation and movement vector manipulation capabilities, providing methods to rotate
+    /// its orientation and movement vector based on various criteria.
+    /// </summary>
+    /// <remarks>AeSprite enables precise control over a sprite's direction and movement by offering rotation
+    /// methods that can be triggered conditionally or instantly. These methods are useful for implementing behaviors
+    /// such as steering, targeting, or aligning movement in 2D simulations or games. Thread safety and performance
+    /// considerations depend on the underlying implementation of orientation and movement vector updates.</remarks>
     public partial class AeSprite
     {
         /// <summary>
@@ -105,7 +112,7 @@ namespace Ae.Engine.Sprite.Base
         /// <summary>
         /// Rotates the objects movement vector by the given amount if it is pointing in the given direction then recalculates the Orientation.
         /// </summary>
-        /// <returns>Returns TRUE if rotation occurs, returns FALSE if the object is not pointing in the given direction.
+        /// <returns>Returns TRUE if rotation occurs, returns FALSE if the object is not pointing in the given direction.</returns>
         public bool RotateMovementVectorIfPointingAt(AeSprite obj, float rotationAmountDegrees, AeRotationDirection simpleDirection, float varianceDegrees, float epoch)
         {
             var deltaAngle = this.HeadingAngleToInSignedDegrees(obj);

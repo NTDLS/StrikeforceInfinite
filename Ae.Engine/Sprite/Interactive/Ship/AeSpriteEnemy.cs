@@ -1,6 +1,5 @@
 ﻿using Ae.Engine.Mathematics;
 using Ae.Engine.Metadata;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Sprite.Interactive.Ship
 {
@@ -11,6 +10,14 @@ namespace Ae.Engine.Sprite.Interactive.Ship
     public class AeSpriteEnemy
         : AeSpriteShip
     {
+        /// <summary>
+        /// Initializes a new instance of the AeSpriteEnemy class using the specified engine and asset key.
+        /// </summary>
+        /// <remarks>The constructor sets up the enemy's movement vector based on its orientation and
+        /// initializes radar indicators for position tracking. The radar position indicator is hidden by
+        /// default.</remarks>
+        /// <param name="engine">The engine instance that manages rendering and sprite operations for the enemy.</param>
+        /// <param name="assetKey">The key identifying the asset to use for the enemy's visual representation.</param>
         public AeSpriteEnemy(AeEngine engine, string assetKey)
             : base(engine, assetKey)
         {
@@ -24,8 +31,17 @@ namespace Ae.Engine.Sprite.Interactive.Ship
                 engine.Rendering.Materials.Brushes.Red, new AeVector());
         }
 
+        /// <summary>
+        /// Handles changes in device orientation by updating the location state.
+        /// </summary>
+        /// <remarks>This method is typically called when the device's orientation changes, ensuring that
+        /// any dependent location information is refreshed accordingly. Override this method to customize behavior when
+        /// orientation changes occur.</remarks>
         public override void OrientationChanged() => LocationChanged();
 
+        /// <summary>
+        /// Triggers the explosion behavior for the current object.
+        /// </summary>
         public override void Explode()
         {
             base.Explode();

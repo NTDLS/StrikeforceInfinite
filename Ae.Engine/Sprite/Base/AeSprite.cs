@@ -17,18 +17,41 @@ namespace Ae.Engine.Sprite.Base
     public partial class AeSprite
         : IAeSprite
     {
-        protected AeEngine Engine { get; private set; }
+        /// <summary>
+        /// Gets the instance of the underlying AeEngine used by the class.
+        /// </summary>
+        public AeEngine Engine { get; private set; }
 
+        /// <summary>
+        /// Gets the collection of audio clips associated with this instance.
+        /// </summary>
         public List<AeAudioClip>? Sounds { get; private set; }
 
+        /// <summary>
+        /// Gets the bitmap used to render the sprite image.
+        /// </summary>
         public SharpDX.Direct2D1.Bitmap? SpriteBitmap { get; private set; }
         private bool _readyForDeletion;
         private AeVector _location = new();
         private Size _size;
 
         private AssetMetadata? _metadata = null;
+
+        /// <summary>
+        /// Gets the metadata associated with the asset.
+        /// </summary>
+        /// <remarks>Throws a NullReferenceException if the metadata has not been initialized. Ensure that
+        /// the asset is properly loaded before accessing this property.</remarks>
         public AssetMetadata Metadata => _metadata ?? throw new NullReferenceException();
 
+        /// <summary>
+        /// Initializes a new instance of the AeSprite class using the specified engine and asset key.
+        /// </summary>
+        /// <remarks>The sprite's initial highlight state and orientation are determined by the engine's
+        /// settings. Asset metadata is loaded during construction.</remarks>
+        /// <param name="engine">The engine instance that manages the sprite's lifecycle and rendering context. Cannot be null.</param>
+        /// <param name="assetKey">The key identifying the asset to use for the sprite's image and metadata. If null, a default image may be
+        /// used.</param>
         public AeSprite(AeEngine engine, string? assetKey)
         {
             Engine = engine;
@@ -95,8 +118,8 @@ namespace Ae.Engine.Sprite.Base
                     {
                         //We take the orientation and position type of the attachment from the attachment section in the parent metadata if it is specified,
                         //   otherwise we use the default values set in the SpriteAttachment class.
-                        sprite.AttachmentOrientationType = attachment.AttachmentOrientationType ?? AeConstants.AeAttachmentOrientationType.Independent;
-                        sprite.AttachmentPositionType = attachment.AttachmentPositionType ?? AeConstants.AeAttachmentPositionType.Independent;
+                        sprite.AttachmentOrientationType = attachment.AttachmentOrientationType ?? AeAttachmentOrientationType.Independent;
+                        sprite.AttachmentPositionType = attachment.AttachmentPositionType ?? AeAttachmentPositionType.Independent;
                     });
                 });
             }
@@ -112,7 +135,12 @@ namespace Ae.Engine.Sprite.Base
             }
         }
 
-
+        /// <summary>
+        /// Marks the current object and its attachments for deletion and hides them from view.
+        /// </summary>
+        /// <remarks>Calling this method sets the object as ready for deletion, makes it invisible, and
+        /// recursively queues all attachments for deletion. The method also triggers the OnQueuedForDelete event if it
+        /// is subscribed. Once queued for deletion, the object should not be used for further operations.</remarks>
         public void QueueForDelete()
         {
             _readyForDeletion = true;
@@ -135,24 +163,48 @@ namespace Ae.Engine.Sprite.Base
             Y = Engine.Display.TotalCanvasSize.Height / 2 /*- Size.Height / 2*/;
         }
 
+        /// <summary>
+        /// Sets the hull health to the specified number of points.
+        /// </summary>
+        /// <param name="points">The number of health points to assign to the hull. Must be a non-negative value.</param>
         public void SetHullHealth(int points)
         {
             HullHealth = 0;
             AddHullHealth(points);
         }
 
+        /// <summary>
+        /// Adds the specified number of points to the hull health, ensuring the value remains within valid bounds.
+        /// </summary>
+        /// <param name="pointsToAdd">The number of health points to add to the hull. Can be negative to reduce health. The resulting hull health
+        /// will be clamped between zero and the maximum allowed value.</param>
         public virtual void AddHullHealth(int pointsToAdd)
             => HullHealth = (HullHealth + pointsToAdd).Clamp(0, Engine.Settings.MaxHullHealth);
 
+        /// <summary>
+        /// Sets the shield health to the specified number of points.
+        /// </summary>
+        /// <param name="points">The number of shield health points to assign. Must be a non-negative value.</param>
         public virtual void SetShieldHealth(int points)
         {
             ShieldHealth = 0;
             AddShieldHealth(points);
         }
 
+        /// <summary>
+        /// Adds the specified number of points to the shield health, ensuring the value remains within valid limits.
+        /// </summary>
+        /// <param name="pointsToAdd">The number of shield health points to add. Can be negative to reduce shield health. The resulting shield
+        /// health will be clamped between 0 and the maximum allowed by the engine settings.</param>
         public virtual void AddShieldHealth(int pointsToAdd)
             => ShieldHealth = (ShieldHealth + pointsToAdd).Clamp(0, Engine.Settings.MaxShieldHealth);
 
+        /// <summary>
+        /// Sets the bitmap used for rendering the sprite.
+        /// </summary>
+        /// <remarks>Calling this method updates the sprite's size to match the dimensions of the provided
+        /// bitmap.</remarks>
+        /// <param name="bitmap">The bitmap to associate with the sprite. Cannot be null.</param>
         public void SetBitmap(SharpDX.Direct2D1.Bitmap bitmap)
         {
             SpriteBitmap = bitmap;
@@ -169,7 +221,6 @@ namespace Ae.Engine.Sprite.Base
         /// <summary>
         /// Moves the sprite based on its movement vector and the epoch.
         /// </summary>
-        /// <param name="cameraDisplacement"></param>
         public virtual void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             //Perform any auto-rotation.
@@ -179,6 +230,14 @@ namespace Ae.Engine.Sprite.Base
             Location += MovementVector * epoch;
         }
 
+        /// <summary>
+        /// Performs cleanup operations for the current object, including hiding it and scheduling associated resources
+        /// for deletion.
+        /// </summary>
+        /// <remarks>Call this method to release resources and detach any attachments owned by the object.
+        /// After cleanup, the object will no longer be visible and its related sprites and attachments will be queued
+        /// for deletion. This method is intended to be overridden in derived classes to provide additional cleanup
+        /// logic as needed.</remarks>
         public virtual void Cleanup()
         {
             IsVisible = false;
@@ -191,6 +250,14 @@ namespace Ae.Engine.Sprite.Base
             }
         }
 
+        /// <summary>
+        /// Generates a formatted, multi-line string containing inspection details for the current sprite instance.
+        /// </summary>
+        /// <remarks>The returned string is intended for debugging or diagnostic purposes and provides a
+        /// snapshot of the sprite's current state. The format is suitable for display in logs or inspection
+        /// panels.</remarks>
+        /// <returns>A string representing the inspection information for the sprite, including identifiers, state, location, and
+        /// relevant properties. If the instance is an enemy sprite, additional AI controller information is included.</returns>
         public string GetInspectionText()
         {
             string extraInfo = string.Empty;

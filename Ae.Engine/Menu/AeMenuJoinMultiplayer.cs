@@ -8,7 +8,7 @@ using System.Linq;
 namespace Ae.Engine.Menu
 {
     /// <summary>
-    //// The menu is used to set the player name and select a lobby to join.
+    /// The menu is used to set the player name and select a lobby to join.
     /// </summary>
     internal class AeMenuJoinMultiplayer
         : AeMenu
@@ -20,9 +20,9 @@ namespace Ae.Engine.Menu
         {
             engine.CommsManager.EnsureNotNull();
 
-            var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
+            var currentScaledScreenBounds = Engine.Display.GetCurrentScaledScreenBounds();
 
-            float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
+            float offsetX = Engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
             var itemTitle = AddTitleItem(new AeVector(offsetX, offsetY), "Join Multiplayer");
@@ -41,23 +41,23 @@ namespace Ae.Engine.Menu
             offsetY += menuItem.Size.Height + 30;
 
             _boxTitle = AddTextBlock(new AeVector(offsetX, offsetY), "Lobbies");
-            _boxTitle.X = (_engine.Display.TotalCanvasSize.Width / 2) - (_boxTitle.Size.Width / 2);
+            _boxTitle.X = (Engine.Display.TotalCanvasSize.Width / 2) - (_boxTitle.Size.Width / 2);
             offsetY += _boxTitle.Size.Height + 20;
 
             var lobbies = engine.CommsManager.GetLobbiesPaged(1);
 
             var dbg = lobbies.Collection.ToList();
 
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
-            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = _engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
+            dbg.Add(new MpCommsMessages.Models.Lobby() { Name = Engine.Assets.GetRandomLobbyName(), CurrentPlayers = 5, MaxPlayers = 10 });
 
             foreach (var lobby in dbg /*lobbies.Collection*/)
             {
@@ -85,7 +85,7 @@ namespace Ae.Engine.Menu
                 case "????":
                     return false;
                 case "GO_BACK":
-                    _engine.Menus.Show(new AeMenuStartNewGame(_engine));
+                    Engine.Menus.Show(new AeMenuStartNewGame(Engine));
                     break;
                 default:
                     throw new System.NotImplementedException();
@@ -94,7 +94,7 @@ namespace Ae.Engine.Menu
             return true;
         }
 
-        public override void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
+        internal override void Render(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
             var lobbyMenuItems = AllMenuItemsByTag("LOBBY_ITEM");
             if (lobbyMenuItems.Any())
@@ -107,9 +107,9 @@ namespace Ae.Engine.Menu
 
                 var titleBox = fullBox.Clone();
                 titleBox.Bottom = _boxTitle.Bounds.Bottom + 10;
-                _engine.Rendering.DrawRectangle(renderTarget, titleBox, _engine.Rendering.Materials.Colors.Red, 2, 2, 0);
+                Engine.Rendering.DrawRectangle(renderTarget, titleBox, Engine.Rendering.Materials.Colors.Red, 2, 2, 0);
 
-                _engine.Rendering.DrawRectangle(renderTarget, fullBox, _engine.Rendering.Materials.Colors.Red, 2, 2, 0);
+                Engine.Rendering.DrawRectangle(renderTarget, fullBox, Engine.Rendering.Materials.Colors.Red, 2, 2, 0);
             }
 
             base.Render(renderTarget, epoch);

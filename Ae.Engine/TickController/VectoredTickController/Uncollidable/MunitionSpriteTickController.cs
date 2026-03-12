@@ -8,10 +8,18 @@ using NTDLS.DelegateThreadPooling;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
+    /// <summary>
+    /// Controls the ticking and collision handling of munition sprites within the game world. Manages their movement,
+    /// collision detection, and interaction with other sprites during each world clock tick.
+    /// </summary>
+    /// <remarks>This controller uses a thread pool to efficiently process munition movement and collision
+    /// checks in parallel, improving performance when handling large numbers of munitions. It distinguishes between
+    /// player-fired and enemy-fired munitions to determine valid collision targets. The controller ensures that
+    /// munitions are properly exploded and that hit events are recorded for multiplayer synchronization. Thread pool
+    /// resources are released automatically when the engine shuts down.</remarks>
     public class MunitionSpriteTickController
         : VectoredTickControllerBase<AeSpriteMunition>
     {
@@ -33,6 +41,14 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 
         private readonly DelegateThreadPool _munitionTraversalThreadPool;
 
+        /// <summary>
+        /// Initializes a new instance of the MunitionSpriteTickController class, managing sprite updates and traversal
+        /// for munitions within the engine.
+        /// </summary>
+        /// <remarks>The controller configures a thread pool for munition traversal based on engine
+        /// settings and ensures proper shutdown by stopping the thread pool when the engine shuts down.</remarks>
+        /// <param name="engine">The engine instance that provides configuration and lifecycle events for the controller.</param>
+        /// <param name="manager">The sprite manager responsible for handling sprite objects associated with munitions.</param>
         public MunitionSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
@@ -48,6 +64,17 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             };
         }
 
+        /// <summary>
+        /// Processes all visible munitions for the current world clock tick, applying their motion, intelligence, and
+        /// handling collisions with interactive sprites.
+        /// </summary>
+        /// <remarks>This method updates the state of munitions, detects collisions with interactive
+        /// objects, and triggers appropriate actions such as explosions and hit notifications. It uses multithreading
+        /// to optimize collision checks and munition updates. Only objects that are not dead or exploded are considered
+        /// for collision and hit processing.</remarks>
+        /// <param name="epoch">The current time value, in seconds, representing the world clock tick for which munitions are processed.</param>
+        /// <param name="cameraDisplacement">The vector representing the camera's displacement during this tick, used to adjust munition movement and
+        /// intelligence calculations.</param>
         public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
             var munitions = VisibleOfType<AeSpriteMunition>();
@@ -117,12 +144,21 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
+        /// <summary>
+        /// Adds a munition created from the specified weapon to the sprite manager.
+        /// </summary>
+        /// <param name="weapon">The weapon used to create the munition to be added. Cannot be null.</param>
         public void Add(AeSpriteWeapon weapon)
         {
             var obj = weapon.CreateMunition();
             SpriteManager.Insert(obj);
         }
 
+        /// <summary>
+        /// Adds a munition created from the specified weapon to the sprite manager at the given location.
+        /// </summary>
+        /// <param name="weapon">The weapon used to create the munition. Cannot be null.</param>
+        /// <param name="location">The location where the munition will be placed. If null, the default location is used.</param>
         public void Add(AeSpriteWeapon weapon, AeVector? location = null)
         {
             var obj = weapon.CreateMunition(location);
@@ -134,7 +170,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// </summary>
         /// <param name="weapon"></param>
         /// <param name="lockedTarget"></param>
-        /// <param name="xyOffset"></param>
+        /// <param name="location"></param>
         /// <returns></returns>
         public void AddLockedOnTo(AeSpriteWeapon weapon, AeSpriteInteractive lockedTarget, AeVector? location = null)
         {

@@ -1,7 +1,6 @@
 ﻿using Ae.AssetExplorer.Controls;
 using Ae.AssetExplorer.Properties;
 using Ae.Engine;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer
 {

@@ -22,12 +22,10 @@ namespace Ae.Engine.Sprite.Base
         /// <summary>
         /// Returns a list of all collisions the sprite made on is current movement vector, in the order in which they would be encountered.
         /// </summary>
-        /// <param name="objectsThatCanBeHit"></param>
-        /// <returns></returns>
         public List<AeSprite> FindReverseCollisionsAlongMovementVector(AeSprite[] objectsThatCanBeHit, float epoch)
         {
-            /// Takes the position of an object after it has been moved and tests each location
-            ///     between where it ended up and where it should have come from given its movement vector.
+            // Takes the position of an object after it has been moved and tests each location
+            //     between where it ended up and where it should have come from given its movement vector.
 
             var collisions = new List<AeSprite>();
 
@@ -73,12 +71,10 @@ namespace Ae.Engine.Sprite.Base
         /// Returns the first collision (if any) the sprite made on is current movement vector.
         /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
-        /// <param name="objectsThatCanBeHit"></param>
-        /// <returns></returns>
         public AeSprite? FindFirstReverseCollisionAlongMovementVectorAabb(AeSprite[] objectsThatCanBeHit, float epoch)
         {
-            /// Takes the position of an object after it has been moved and tests each location
-            ///     between where it ended up and where it should have come from given its movement vector.
+            // Takes the position of an object after it has been moved and tests each location
+            //     between where it ended up and where it should have come from given its movement vector.
 
             //Get the starting position of the sprite before it was last moved.
             var hitTestPosition = new AeVector(Location - (MovementVector * epoch));
@@ -132,12 +128,10 @@ namespace Ae.Engine.Sprite.Base
         /// Returns a list of all collisions the sprite will make on is current movement vector, in the order in which they would be encountered.
         /// AABB = Axis-Aligned Bounding Box.
         /// </summary>
-        /// <param name="objectsThatCanBeHit"></param>
-        /// <returns></returns>
         public List<AeSprite> FindForwardCollisionsAlongMovementVectorAabb(AeSprite[] objectsThatCanBeHit, float epoch)
         {
-            /// Takes the position of an object before it has been moved and tests each location
-            ///     between where it is and where it will end up given its movement vector.
+            // Takes the position of an object before it has been moved and tests each location
+            //     between where it is and where it will end up given its movement vector.
 
             var collisions = new List<AeSprite>();
 
@@ -174,19 +168,16 @@ namespace Ae.Engine.Sprite.Base
         /// <summary>
         /// Returns the first collision (if any) the sprite will make on is current movement vector.
         /// </summary>
-        /// <returns></returns>
         public AeSprite? FindFirstForwardCollisionAlongMovementVectorAabb(float epoch)
             => FindFirstForwardCollisionAlongMovementVectorAabb(Engine.Sprites.Visible(), epoch);
 
         /// <summary>
         /// Returns the first collision (if any) the sprite will make on is current movement vector.
         /// </summary>
-        /// <param name="objectsThatCanBeHit"></param>
-        /// <returns></returns>
         public AeSprite? FindFirstForwardCollisionAlongMovementVectorAabb(AeSprite[] objectsThatCanBeHit, float epoch)
         {
-            /// Takes the position of an object before it has been moved and tests each location
-            ///     between where it is and where it will end up given its movement vector.
+            // Takes the position of an object before it has been moved and tests each location
+            //     between where it is and where it will end up given its movement vector.
 
             var hitTestPosition = new AeVector(Location);
             var destinationPoint = new AeVector(Location + (MovementVector * epoch));
@@ -316,6 +307,16 @@ namespace Ae.Engine.Sprite.Base
             return false;
         }
 
+        /// <summary>
+        /// Determines whether the current object intersects with the trajectory of the specified sprite based on its
+        /// movement and orientation.
+        /// </summary>
+        /// <remarks>Both objects must be visible for the intersection check to be performed. The method
+        /// evaluates the path of the other sprite according to its speed and orientation, checking for intersection at
+        /// each step.</remarks>
+        /// <param name="otherObject">The sprite whose trajectory is evaluated for intersection with the current object. Must be visible for the
+        /// intersection check to occur.</param>
+        /// <returns>true if the current object intersects with the trajectory of the specified sprite; otherwise, false.</returns>
         public bool IntersectsWithTrajectory(AeSprite otherObject)
         {
             if (IsVisible && otherObject.IsVisible)

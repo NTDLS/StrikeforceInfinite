@@ -5,7 +5,6 @@ using Ae.Engine.Metadata;
 using Ae.Engine.Sprite.Base;
 using NTDLS.Helpers;
 using System.Reflection;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer
 {

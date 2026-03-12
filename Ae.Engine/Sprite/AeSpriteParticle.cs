@@ -7,10 +7,17 @@ using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
 using System.Drawing;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Sprite
 {
+    /// <summary>
+    /// Represents a particle sprite with customizable appearance, motion, and cleanup behavior for use in particle
+    /// systems.
+    /// </summary>
+    /// <remarks>AeSpriteParticle provides configurable options for color, shape, movement, and automatic
+    /// cleanup based on distance or fading. It supports both solid and gradient color patterns, multiple shapes, and
+    /// cleanup modes such as fading to black or removal when traveling beyond a specified distance. This class is
+    /// intended for use in visual effects and simulations where dynamic particle behavior is required.</remarks>
     [AssetClass("Particle", "", AeBaseAssetType.Image, true)]
     public class AeSpriteParticle
         : AeSprite
@@ -27,9 +34,28 @@ namespace Ae.Engine.Sprite
         /// This should be expressed as a number between 0-1 with 0 being no reduction per frame and 1 being 100% reduction per frame.
         /// </summary>
         public float FadeToBlackReductionAmount { get; set; } = 0.01f;
+
+        /// <summary>
+        /// Gets or sets the color pattern used for rendering particles.
+        /// </summary>
         public AeParticleColorType Pattern { get; set; } = AeParticleColorType.Solid;
+
+        /// <summary>
+        /// Gets or sets the type of vector representation used for the particle.
+        /// </summary>
         public AeParticleVectorType VectorType { get; set; } = AeParticleVectorType.Default;
+
+        /// <summary>
+        /// Gets or sets the shape used to render the particle.
+        /// </summary>
         public AeParticleShape Shape { get; set; } = AeParticleShape.FilledEllipse;
+
+        /// <summary>
+        /// Gets or sets the cleanup mode used for particle management.
+        /// </summary>
+        /// <remarks>Use this property to specify how particles are removed or retained during simulation.
+        /// The selected mode determines the criteria and timing for particle cleanup, which can affect performance and
+        /// visual results.</remarks>
         public AeParticleCleanupMode CleanupMode { get; set; } = AeParticleCleanupMode.None;
 
         /// <summary>
@@ -41,11 +67,21 @@ namespace Ae.Engine.Sprite
         /// The color of the particle when ColorType == Gradient;
         /// </summary>
         public Color4 GradientStartColor { get; set; }
+
         /// <summary>
         /// The color of the particle when ColorType == Gradient;
         /// </summary>
         public Color4 GradientEndColor { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the AeSpriteParticle class at the specified location, size, and color.
+        /// </summary>
+        /// <remarks>The particle is initialized with random rotation speed, speed, and orientation. The
+        /// throttle is set to 1 by default.</remarks>
+        /// <param name="engine">The engine instance used to manage rendering and particle behavior.</param>
+        /// <param name="location">The initial position of the particle in the engine's coordinate space.</param>
+        /// <param name="size">The size of the particle, specified as a System.Drawing.Size.</param>
+        /// <param name="color">The color of the particle. If null, the engine's default white color is used.</param>
         public AeSpriteParticle(AeEngine engine, AeVector location, Size size, Color4? color = null)
             : base(engine, null)
         {
@@ -61,6 +97,16 @@ namespace Ae.Engine.Sprite
             Throttle = 1;
         }
 
+        /// <summary>
+        /// Updates the particle's orientation, position, and color based on the specified time interval and camera
+        /// displacement. Applies cleanup logic to remove the particle if it meets fade or distance criteria.
+        /// </summary>
+        /// <remarks>Particles may be removed if their color fades below a threshold or if they move
+        /// beyond the maximum allowed distance from the visible canvas, depending on the configured cleanup
+        /// mode.</remarks>
+        /// <param name="epoch">The time interval, in seconds, over which to apply motion and effects to the particle.</param>
+        /// <param name="cameraDisplacement">The displacement vector representing the camera's movement, used to adjust the particle's position relative
+        /// to the camera.</param>
         public override void ApplyMotion(float epoch, AeVector cameraDisplacement)
         {
             Orientation.Degrees += RotationSpeed * epoch;
@@ -106,7 +152,7 @@ namespace Ae.Engine.Sprite
             }
         }
 
-        public override void Render(RenderTarget renderTarget, float epoch)
+        internal override void Render(RenderTarget renderTarget, float epoch)
         {
             if (IsVisible)
             {

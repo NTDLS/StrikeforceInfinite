@@ -15,7 +15,17 @@ using System.Windows.Forms;
 
 namespace Ae.Engine.Rendering
 {
-    public class AeRendering : IDisposable
+    /// <summary>
+    /// Provides rendering functionality for drawing bitmaps, shapes, text, and effects onto Direct2D surfaces. Manages
+    /// render targets, materials, and text formats for use in graphical operations.
+    /// </summary>
+    /// <remarks>AeRendering is responsible for coordinating drawing operations, including support for screen
+    /// shake effects and fragment generation. It encapsulates resource management for render targets and exposes
+    /// precreated materials and text formats for efficient rendering. The class is not thread-safe; all rendering
+    /// operations should be performed on the UI thread associated with the drawing surface. Dispose the instance when
+    /// finished to release underlying graphics resources.</remarks>
+    public class AeRendering
+        : IDisposable
     {
         private struct ScreenShake
         {
@@ -25,8 +35,16 @@ namespace Ae.Engine.Rendering
             public ScreenShake() { }
         }
 
-        public PessimisticCriticalResource<AeCriticalRenderTargets> RenderTargets { get; private set; } = new();
+        internal PessimisticCriticalResource<AeCriticalRenderTargets> RenderTargets { get; private set; } = new();
+
+        /// <summary>
+        /// Gets the collection of precreated materials available for use in the application.
+        /// </summary>
         public AePrecreatedMaterials Materials { get; private set; }
+
+        /// <summary>
+        /// Gets the collection of precreated text format settings used for rendering text elements.
+        /// </summary>
         public AePrecreatedTextFormats TextFormats { get; private set; }
 
         private readonly List<ScreenShake> _screenShakes = new();
@@ -36,6 +54,19 @@ namespace Ae.Engine.Rendering
         private Size _totalCanvasSize;
         private Size _drawingSurfaceSize;
 
+        /// <summary>
+        /// Initializes a new instance of the AeRendering class, configuring rendering targets and materials for drawing
+        /// operations based on the specified engine settings and canvas size.
+        /// </summary>
+        /// <remarks>The constructor sets up both screen and intermediate render targets, allowing for
+        /// efficient rendering and zooming capabilities. Anti-aliasing and presentation options are configured
+        /// according to the provided engine settings. The intermediate render target is sized to support zoom-out
+        /// scenarios for broader universe views.</remarks>
+        /// <param name="settings">The engine settings that determine rendering options such as vertical synchronization and anti-aliasing.</param>
+        /// <param name="drawingSurface">The control that serves as the drawing surface for rendering output. Must be a valid, initialized window
+        /// handle.</param>
+        /// <param name="totalCanvasSize">The total size of the canvas, in pixels, used to configure the intermediate render target for zooming and
+        /// universe visualization.</param>
         public AeRendering(AeEngineSettings settings, Control drawingSurface, Size totalCanvasSize)
         {
             _drawingSurfaceSize = drawingSurface.Size;
@@ -100,6 +131,11 @@ namespace Ae.Engine.Rendering
             AeTransforms.RegisterRenderTarget(renderTargets.IntermediateRenderTarget);
         }
 
+        /// <summary>
+        /// Releases all resources used by the current instance of the class.
+        /// </summary>
+        /// <remarks>Call this method when you are finished using the object to ensure that all associated
+        /// resources are properly released. After calling Dispose, the object should not be used further.</remarks>
         public void Dispose()
         {
             RenderTargets.Use(o =>
@@ -204,12 +240,36 @@ namespace Ae.Engine.Rendering
 
         #region Rending: Text.
 
+        /// <summary>
+        /// Calculates the bounding rectangle for the specified text at the given position using the provided text
+        /// format.
+        /// </summary>
+        /// <remarks>The returned rectangle includes the full width and height required to render the text
+        /// with the specified format. This method does not render the text; it only calculates the layout
+        /// bounds.</remarks>
+        /// <param name="x">The horizontal coordinate, in pixels, of the upper-left corner where the text is positioned.</param>
+        /// <param name="y">The vertical coordinate, in pixels, of the upper-left corner where the text is positioned.</param>
+        /// <param name="text">The text string for which the bounding rectangle is calculated. Cannot be null.</param>
+        /// <param name="format">The text format to apply when measuring the text. Cannot be null.</param>
+        /// <returns>A RawRectangleF structure representing the bounding rectangle of the text at the specified position. The
+        /// rectangle's width and height are determined by the measured size of the text.</returns>
         public RawRectangleF GetTextRect(float x, float y, string text, SharpDX.DirectWrite.TextFormat format)
         {
             using var textLayout = new SharpDX.DirectWrite.TextLayout(_directWriteFactory, text, format, float.MaxValue, float.MaxValue);
             return new RawRectangleF(x, y, (x + textLayout.Metrics.Width), (y + textLayout.Metrics.Height));
         }
 
+        /// <summary>
+        /// Calculates the size, in device-independent pixels, required to render the specified text using the given
+        /// text format.
+        /// </summary>
+        /// <remarks>The measurement accounts for potential trimming of trailing characters by the
+        /// underlying DirectWrite layout engine, ensuring accurate sizing for the provided text. Use this method to
+        /// determine layout requirements before rendering text.</remarks>
+        /// <param name="text">The text string to measure. May include any characters supported by the specified format.</param>
+        /// <param name="format">The text formatting options to apply when measuring the text, such as font family, size, and style.</param>
+        /// <returns>A SizeF structure representing the width and height needed to display the text with the specified format.
+        /// The width and height are measured in device-independent pixels.</returns>
         public SizeF GetTextSize(string text, SharpDX.DirectWrite.TextFormat format)
         {
             //We have to check the size with some ending characters because TextLayout() seems to want to trim the text before calculating the metrics.
@@ -244,6 +304,17 @@ namespace Ae.Engine.Rendering
 
         #region Rending: Lines.
 
+        /// <summary>
+        /// Draws a straight line between two points on the specified render target using the given brush and stroke
+        /// width.
+        /// </summary>
+        /// <param name="renderTarget">The render target on which the line will be drawn. Cannot be null.</param>
+        /// <param name="startPointX">The X-coordinate of the starting point of the line, in device-independent pixels.</param>
+        /// <param name="startPointY">The Y-coordinate of the starting point of the line, in device-independent pixels.</param>
+        /// <param name="endPointX">The X-coordinate of the ending point of the line, in device-independent pixels.</param>
+        /// <param name="endPointY">The Y-coordinate of the ending point of the line, in device-independent pixels.</param>
+        /// <param name="brush">The brush used to paint the line. Cannot be null.</param>
+        /// <param name="strokeWidth">The width of the line stroke, in device-independent pixels. Must be greater than zero. Defaults to 1.</param>
         public void DrawLine(RenderTarget renderTarget,
             float startPointX, float startPointY, float endPointX, float endPointY,
             SolidColorBrush brush, float strokeWidth = 1)
@@ -358,6 +429,21 @@ namespace Ae.Engine.Rendering
 
         #region Rending: Triangle.
 
+        /// <summary>
+        /// Draws a filled triangle on the specified render target at the given position, size, color, stroke width, and
+        /// rotation angle.
+        /// </summary>
+        /// <remarks>The triangle is centered at the specified (x, y) coordinates and rotated by the given
+        /// angle. The method applies both translation and rotation transforms before drawing. Stroke width affects the
+        /// outline thickness; the triangle is always filled.</remarks>
+        /// <param name="renderTarget">The render target on which the triangle will be drawn.</param>
+        /// <param name="x">The x-coordinate of the center position where the triangle will be rendered.</param>
+        /// <param name="y">The y-coordinate of the center position where the triangle will be rendered.</param>
+        /// <param name="height">The height of the triangle, in device-independent pixels.</param>
+        /// <param name="width">The width of the triangle, in device-independent pixels.</param>
+        /// <param name="color">The color used to fill and outline the triangle.</param>
+        /// <param name="strokeWidth">The width of the triangle's outline, in device-independent pixels. Defaults to 1.</param>
+        /// <param name="angleRadians">The rotation angle of the triangle, in radians. The triangle is rotated around its center. Defaults to 0.</param>
         public void DrawTriangle(RenderTarget renderTarget, float x, float y,
             float height, float width, Color4 color, float strokeWidth = 1, float angleRadians = 0)
         {
@@ -403,11 +489,32 @@ namespace Ae.Engine.Rendering
 
         #region Rending: Polygon.
 
+        /// <summary>
+        /// Draws a polygon defined by the specified points onto the given render target using the specified color and
+        /// stroke width.
+        /// </summary>
+        /// <param name="renderTarget">The render target on which the polygon will be drawn.</param>
+        /// <param name="points">An array of points that define the vertices of the polygon. The points must be ordered to represent the
+        /// desired shape.</param>
+        /// <param name="color">The color used to draw the outline of the polygon.</param>
+        /// <param name="strokeWidth">The width, in pixels, of the polygon's outline. Defaults to 1.0 if not specified.</param>
         public void DrawPolygon(RenderTarget renderTarget, PointF[] points, RawColor4 color, float strokeWidth = 1.0f)
         {
             DrawPolygon(renderTarget, 0, 0, points, color, strokeWidth);
         }
 
+        /// <summary>
+        /// Draws a closed polygon on the specified render target using the given points, color, and stroke width.
+        /// </summary>
+        /// <remarks>The polygon is drawn as a closed shape, connecting the last point to the first. The
+        /// points are offset by the specified x and y values before drawing. If the points array is empty, no polygon
+        /// is drawn.</remarks>
+        /// <param name="renderTarget">The render target on which the polygon will be drawn.</param>
+        /// <param name="x">The horizontal offset applied to each point in the polygon.</param>
+        /// <param name="y">The vertical offset applied to each point in the polygon.</param>
+        /// <param name="points">An array of points defining the vertices of the polygon. The array must contain at least one point.</param>
+        /// <param name="color">The color used to draw the outline of the polygon.</param>
+        /// <param name="strokeWidth">The width, in pixels, of the polygon's outline. Defaults to 1.0 if not specified.</param>
         public void DrawPolygon(RenderTarget renderTarget, float x, float y, PointF[] points, RawColor4 color, float strokeWidth = 1.0f)
         {
             if (points.Length == 0)
@@ -486,6 +593,22 @@ namespace Ae.Engine.Rendering
             RawColor4 color, float expand = 0, float angleRadians = 0)
             => DrawSolidRectangle(renderTarget, 0, 0, destRect, color, expand, angleRadians);
 
+        /// <summary>
+        /// Draws a solid rectangle on the specified render target with the given color, position, size, and optional
+        /// expansion and rotation.
+        /// </summary>
+        /// <remarks>The rectangle is filled with the specified color and transformed according to the
+        /// provided parameters. The returned rectangle reflects any modifications made by expansion and offset, but not
+        /// rotation. This method does not modify the original destRect parameter.</remarks>
+        /// <param name="renderTarget">The render target on which the rectangle will be drawn.</param>
+        /// <param name="x">The horizontal offset to apply to the rectangle's position. If nonzero, shifts the rectangle by this amount.</param>
+        /// <param name="y">The vertical offset to apply to the rectangle's position. If nonzero, shifts the rectangle by this amount.</param>
+        /// <param name="destRect">The destination rectangle specifying the initial position and size. This rectangle may be modified by
+        /// expansion and offset parameters.</param>
+        /// <param name="color">The color used to fill the rectangle.</param>
+        /// <param name="expand">The amount, in pixels, by which to expand the rectangle on all sides. If zero, no expansion is applied.</param>
+        /// <param name="angleRadians">The angle, in radians, to rotate the rectangle around its center. If zero, no rotation is applied.</param>
+        /// <returns>A RawRectangleF representing the final rectangle after applying expansion, offset, and rotation.</returns>
         public RawRectangleF DrawSolidRectangle(RenderTarget renderTarget, float x, float y, RawRectangleF destRect,
             Color4 color, float expand = 0, float angleRadians = 0)
         {
@@ -521,6 +644,23 @@ namespace Ae.Engine.Rendering
             Color4 startColor, Color4 endColor, float expand = 0, float angleRadians = 0)
             => DrawGradientRectangle(renderTarget, 0, 0, destRect, startColor, endColor, expand, angleRadians);
 
+        /// <summary>
+        /// Draws a rectangle filled with a linear gradient between two colors, applying optional expansion and rotation
+        /// transformations.
+        /// </summary>
+        /// <remarks>The gradient is applied vertically from the top to the bottom of the rectangle. The
+        /// rectangle is transformed before drawing, based on the specified expansion, offset, and rotation
+        /// parameters.</remarks>
+        /// <param name="renderTarget">The render target on which the rectangle will be drawn.</param>
+        /// <param name="x">The horizontal offset to apply to the rectangle's position. If nonzero, shifts the rectangle by this amount.</param>
+        /// <param name="y">The vertical offset to apply to the rectangle's position. If nonzero, shifts the rectangle by this amount.</param>
+        /// <param name="destRect">The destination rectangle specifying the area to fill. The rectangle may be modified by expansion and offset
+        /// parameters.</param>
+        /// <param name="startColor">The color used at the start of the gradient fill.</param>
+        /// <param name="endColor">The color used at the end of the gradient fill.</param>
+        /// <param name="expand">The amount, in pixels, by which to expand the rectangle on all sides. If zero, no expansion is applied.</param>
+        /// <param name="angleRadians">The angle, in radians, to rotate the rectangle. If zero, no rotation is applied.</param>
+        /// <returns>A RawRectangleF representing the final rectangle area after applying expansion and offset transformations.</returns>
         public RawRectangleF DrawGradientRectangle(RenderTarget renderTarget, float x, float y, RawRectangleF destRect,
             Color4 startColor, Color4 endColor, float expand = 0, float angleRadians = 0)
         {
@@ -570,12 +710,36 @@ namespace Ae.Engine.Rendering
 
         #endregion
 
+        /// <summary>
+        /// Generates a collection of irregular bitmap fragments from the specified original bitmap.
+        /// </summary>
+        /// <remarks>Each fragment is generated with a unique shape based on the specified vertex count.
+        /// The method does not modify the original bitmap. The returned fragments may overlap or leave gaps depending
+        /// on the fragmentation algorithm.</remarks>
+        /// <param name="originalBitmap">The source bitmap to be fragmented. Cannot be null.</param>
+        /// <param name="countOfFragments">The number of fragments to generate from the original bitmap. Must be greater than zero.</param>
+        /// <param name="countOfVertices">The number of vertices used to define the shape of each fragment. Must be greater than two. Defaults to 8.</param>
+        /// <returns>A list of bitmap fragments representing irregular portions of the original bitmap. The list contains exactly
+        /// the specified number of fragments.</returns>
         public List<SharpDX.Direct2D1.Bitmap> GenerateIrregularFragments(SharpDX.Direct2D1.Bitmap originalBitmap, int countOfFragments, int countOfVertices = 8)
             => AeBitmapFragmenter.GenerateIrregularFragments(this, originalBitmap, countOfFragments, countOfVertices);
 
+        /// <summary>
+        /// Generates a collection of irregular bitmap fragments from the specified original bitmap.
+        /// </summary>
+        /// <param name="originalBitmap">The source bitmap to be fragmented. Cannot be null.</param>
+        /// <returns>A list of bitmap fragments representing irregular portions of the original bitmap. The list will be empty if
+        /// no fragments are generated.</returns>
         public List<SharpDX.Direct2D1.Bitmap> GenerateIrregularFragments(SharpDX.Direct2D1.Bitmap originalBitmap)
             => AeBitmapFragmenter.GenerateIrregularFragments(this, originalBitmap);
 
+        /// <summary>
+        /// Adds a new screen shake effect with the specified intensity and duration.
+        /// </summary>
+        /// <remarks>Multiple screen shake effects can be active simultaneously. The overall shake may be
+        /// influenced by the combination of active effects.</remarks>
+        /// <param name="intensity">The strength of the screen shake effect. Must be a positive value to produce a visible shake.</param>
+        /// <param name="duration">The length of time, in seconds, that the screen shake effect will last. Must be greater than zero.</param>
         public void AddScreenShake(float intensity, float duration)
         {
             var screenShake = new ScreenShake
@@ -588,6 +752,16 @@ namespace Ae.Engine.Rendering
             _screenShakes.Add(screenShake);
         }
 
+        /// <summary>
+        /// Creates a Direct2D bitmap from the provided image stream using a 32bpp premultiplied BGRA pixel format.
+        /// </summary>
+        /// <remarks>The method loads the entire image from the stream and converts it to a format
+        /// compatible with Direct2D rendering. The caller is responsible for disposing the returned bitmap when it is
+        /// no longer needed.</remarks>
+        /// <param name="stream">The image data stream to decode. Must be a valid, readable stream containing image data in a supported
+        /// format.</param>
+        /// <returns>A Direct2D bitmap representing the decoded image. The bitmap will use a 32bpp premultiplied BGRA pixel
+        /// format.</returns>
         public SharpDX.Direct2D1.Bitmap BitmapStreamToD2DBitmap(Stream stream)
         {
             using var decoder = new BitmapDecoder(_wicFactory, stream, DecodeOptions.CacheOnLoad);

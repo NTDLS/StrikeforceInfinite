@@ -4,7 +4,6 @@ using Ae.Engine.Mathematics;
 using Ae.Engine.Sprite.Interactive;
 using System;
 using System.Diagnostics;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.TickController.PlayerSpriteTickController
 {
@@ -17,9 +16,23 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
         private readonly AeEngine _engine;
         private readonly Stopwatch _inputDelay = new();
 
+        /// <summary>
+        /// Gets or sets the statistics associated with the player.
+        /// </summary>
         public PlayerStats Stats { get; set; } = new(); //This should be saved.
+
+        /// <summary>
+        /// Gets or sets the sprite player used to render animated sprites.
+        /// </summary>
         public AeSpritePlayer Sprite { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the PlayerSpriteTickController class using the specified engine.
+        /// </summary>
+        /// <remarks>The player sprite is created and managed based on the engine's execution mode. In
+        /// play mode, the sprite is added to the engine's collection and is initially invisible. In edit mode, a
+        /// visible placeholder sprite is created but not added to the collection.</remarks>
+        /// <param name="engine">The engine instance used to manage game state and sprite operations. Cannot be null.</param>
         public PlayerSpriteTickController(AeEngine engine)
             : base(engine)
         {
@@ -49,6 +62,13 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             _inputDelay.Restart();
         }
 
+        /// <summary>
+        /// Replaces the current player sprite with a new instance using the specified asset key.
+        /// </summary>
+        /// <remarks>This method removes the existing player sprite from the collection and adds a new one
+        /// based on the provided asset key. The new sprite is initially invisible. Use this method to update or reset
+        /// the player sprite during gameplay.</remarks>
+        /// <param name="assetKey">The key identifying the asset to use for the new player sprite. Cannot be null or empty.</param>
         public void InstantiatePlayerClass(string assetKey)
         {
             //Remove the player from the sprite collection.
@@ -303,6 +323,13 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             return cameraDisplacement;
         }
 
+        /// <summary>
+        /// Resets the player sprite and displays relevant UI elements and sounds.
+        /// </summary>
+        /// <remarks>This method makes the player sprite and associated UI elements visible, and plays
+        /// status sounds if available. Use this method to reinitialize the player's state and ensure all related
+        /// visuals and audio cues are active. Calling this method is typically appropriate after a game reset or when
+        /// the player needs to be shown again.</remarks>
         public void ResetAndShow()
         {
             Sprite.Reset();
@@ -314,6 +341,12 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             Sprite.AllSystemsGoSound?.Play();
         }
 
+        /// <summary>
+        /// Displays the player sprite and associated UI elements, enabling relevant sounds and visual components.
+        /// </summary>
+        /// <remarks>Call this method to make the player sprite visible, show player statistics, render
+        /// the radar, and play system activation sounds. This method is typically used when transitioning the player
+        /// into an active or visible state within the game.</remarks>
         public void Show()
         {
             Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
@@ -323,6 +356,12 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             Sprite.AllSystemsGoSound?.Play();
         }
 
+        /// <summary>
+        /// Hides the player sprite and associated UI elements, disabling their visibility and stopping related sounds.
+        /// </summary>
+        /// <remarks>Call this method to remove the player sprite and its status display from view, and to
+        /// stop any engine sounds. This is typically used when the player should no longer be visible or active in the
+        /// game scene.</remarks>
         public void Hide()
         {
             Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = false;

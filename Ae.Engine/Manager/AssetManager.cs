@@ -17,20 +17,42 @@ using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Manager
 {
+    /// <summary>
+    /// Provides functionality for loading, managing, and accessing assets within the application. Supports asset
+    /// retrieval, metadata access, and asset modification operations, including reading, writing, and deleting assets
+    /// from the underlying database.
+    /// </summary>
+    /// <remarks>The asset manager maintains an in-memory collection of assets and uses caching to optimize
+    /// asset queries. Asset loading and modification operations update both the database and the in-memory collection.
+    /// Thread safety is ensured during asset collection updates. The manager supports various asset types, including
+    /// text, images, audio, and code, and provides specialized methods for common asset retrieval scenarios. Asset
+    /// modification methods are primarily intended for use in editor contexts.</remarks>
     public class AssetManager
     {
-        //public static string AssetPackagePath => _assetPackagePath;
+        /// <summary>
+        /// Specifies the relative path to the asset package database used during debugging builds.
+        /// </summary>
+        /// <remarks>This constant is only available in debug configurations. Use this path to locate the
+        /// asset package file when running or testing the application in a development environment.</remarks>
 #if DEBUG
         public const string AssetPackagePath = "../../../../Installer/Ae.Assets.db";
 #else
         public const string AssetPackagePath = "Ae.Assets.db";
 #endif
+
+        /// <summary>
+        /// Gets a value indicating whether the asset package has been successfully loaded.
+        /// </summary>
         public bool IsLoaded { get; private set; }
         private readonly AeEngine _engine;
         private readonly Dictionary<string, AssetContainer> _collection = new();
         private readonly SqliteManagedFactory _assetsDatabase = new($"Data Source={AssetPackagePath}");
         private readonly AeCache _cache = new(AeCache.CacheExpirationScheme.Sliding, TimeSpan.FromSeconds(600));
 
+        /// <summary>
+        /// Initializes a new instance of the AssetManager class using the specified engine.
+        /// </summary>
+        /// <param name="engine">The engine instance used to manage assets. Cannot be null.</param>
         public AssetManager(AeEngine engine)
         {
             _engine = engine;
@@ -59,6 +81,12 @@ namespace Ae.Engine.Manager
         public List<AssetContainer> GetAssets()
             => _collection.Values.ToList();
 
+        /// <summary>
+        /// Retrieves the asset container associated with the specified asset key.
+        /// </summary>
+        /// <param name="assetKey">The unique key identifying the asset to retrieve. Cannot be null or empty.</param>
+        /// <returns>The asset container corresponding to the specified asset key.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if no asset container exists for the specified asset key.</exception>
         public AssetContainer GetAsset(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
@@ -68,6 +96,12 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
+        /// <summary>
+        /// Retrieves the metadata associated with the specified asset key.
+        /// </summary>
+        /// <param name="assetKey">The unique key identifying the asset whose metadata is to be retrieved. Cannot be null or empty.</param>
+        /// <returns>The metadata for the asset identified by the specified key.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if no asset exists for the specified key.</exception>
         public AssetMetadata GetMetadata(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
@@ -77,6 +111,12 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
+        /// <summary>
+        /// Retrieves the text content associated with the specified asset key.
+        /// </summary>
+        /// <param name="assetKey">The unique identifier for the asset whose text content is to be retrieved. Cannot be null or empty.</param>
+        /// <returns>A string containing the text content of the asset associated with the specified key.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the asset is not found or cannot be converted to text.</exception>
         public string GetText(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
@@ -87,6 +127,16 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
+        /// <summary>
+        /// Retrieves an audio clip associated with the specified asset key.
+        /// </summary>
+        /// <remarks>The returned audio clip's volume and looping settings are initialized based on the
+        /// asset's metadata. If the asset is not found or is not an audio clip, a FileNotFoundException is
+        /// thrown.</remarks>
+        /// <param name="assetKey">The unique identifier for the audio asset to retrieve. Cannot be null or empty.</param>
+        /// <returns>An instance of AeAudioClip representing the requested audio asset. The clip will have its initial volume and
+        /// looping behavior set according to the asset's metadata.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the asset with the specified key does not exist or cannot be converted to an audio clip.</exception>
         public AeAudioClip GetAudio(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
@@ -100,6 +150,12 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
+        /// <summary>
+        /// Retrieves the bitmap asset associated with the specified asset key.
+        /// </summary>
+        /// <param name="assetKey">The unique key identifying the asset to retrieve. Cannot be null or empty.</param>
+        /// <returns>The bitmap asset corresponding to the specified asset key.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the asset is not found or cannot be converted to a bitmap.</exception>
         public SharpDX.Direct2D1.Bitmap GetBitmap(string assetKey)
         {
             if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
@@ -110,6 +166,19 @@ namespace Ae.Engine.Manager
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
+        /// <summary>
+        /// Retrieves the source code for the specified asset, formatted for runtime compilation.
+        /// </summary>
+        /// <remarks>The returned code is suitable for runtime compilation and depends on the asset's base
+        /// type. For code assets, the source is extracted from the asset's bytes; for non-code assets, the controller
+        /// field is used. If the asset cannot be compiled, null is returned.</remarks>
+        /// <param name="assetKey">The unique key identifying the asset whose code is to be retrieved. Cannot be null or empty.</param>
+        /// <param name="writeLog">An optional delegate used to log errors or informational messages during asset retrieval. If not provided,
+        /// exceptions will be thrown for unsupported asset types.</param>
+        /// <returns>A string containing the asset's source code formatted for compilation, or null if the asset cannot be
+        /// compiled.</returns>
+        /// <exception cref="Exception">Thrown if the asset is not found, the asset metadata does not contain a valid AssetKey, or the asset base
+        /// type is unsupported and no log delegate is provided.</exception>
         public string? GetAssetCodeForCompilation(string assetKey, WriteLogDelegate? writeLog = null)
         {
             var model = _assetsDatabase.QueryFirstOrDefault<AssetDatabaseModel>(
@@ -163,7 +232,7 @@ namespace Ae.Engine.Manager
             return null;
         }
 
-        public void LoadAllAssets(Action<string, float>? progressCallback, WriteLogDelegate? writeLog = null)
+        internal void LoadAllAssets(Action<string, float>? progressCallback, WriteLogDelegate? writeLog = null)
         {
             progressCallback?.Invoke("Loading assets...", 0);
 
@@ -253,6 +322,9 @@ namespace Ae.Engine.Manager
 
         #region Explicit helpers for common assets to avoid typos and ease refactoring.
 
+        /// <summary>
+        /// Helper method to get a random gamer tag from the "Text/GamerTags" text asset.
+        /// </summary>
         public string GetRandomGamerTag()
         {
             var gamerTagsText = GetText("Text/GamerTags");
@@ -262,6 +334,9 @@ namespace Ae.Engine.Manager
             return gamerTags[randomIndex];
         }
 
+        /// <summary>
+        /// Helper method to get a random lobby name from the "Text/LobbyNames" text asset.
+        /// </summary>
         public string GetRandomLobbyName()
         {
             var gamerTagsText = GetText("Text/LobbyNames");
@@ -273,7 +348,7 @@ namespace Ae.Engine.Manager
 
         #endregion
 
-        public AssetContainer DeserializeAssetContainer(AssetDatabaseModel model)
+        internal AssetContainer DeserializeAssetContainer(AssetDatabaseModel model)
         {
             switch (model.BaseType)
             {
@@ -516,6 +591,48 @@ namespace Ae.Engine.Manager
         {
             _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key",
                 new { Key = assetKey });
+        }
+
+        /// <summary>
+        /// Extracts the assets to a buildable Visual Studio project format on disk.
+        /// This is only intended for use in the editor and is not optimized for performance.
+        /// </summary>
+        public void ExtractProject(string path, WriteLogDelegate writeLog)
+        {
+            var database = new SqliteManagedFactory($"Data Source={AssetPackagePath}");
+
+            var assets = database.Query<AssetDatabaseModel>(
+                "SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets").ToList();
+
+            foreach (var asset in assets)
+            {
+                Console.WriteLine($"[{asset.Key}]");
+
+                Directory.CreateDirectory(Path.Combine(path, Path.GetDirectoryName(asset.Key) ?? string.Empty));
+
+                if (AeConstants.BaseAssetTypes.TryGetValue(asset.BaseType, out var baseType) == false)
+                {
+                    continue;
+                }
+
+                if (baseType == AeBaseAssetType.Code || baseType == AeBaseAssetType.Text)
+                {
+                    if (asset.IsCompressed)
+                    {
+                        File.WriteAllBytes(Path.Combine(path, asset.Key + "." + asset.BaseType), CompressionHelper.Decompress(asset.Bytes));
+                    }
+                    else
+                    {
+                        File.WriteAllBytes(Path.Combine(path, asset.Key + "." + asset.BaseType), asset.Bytes);
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(asset.Metadata))
+                    File.WriteAllText(Path.Combine(path, asset.Key + "." + asset.BaseType + ".meta"), asset.Metadata);
+
+                if (!string.IsNullOrWhiteSpace(asset.Controller))
+                    File.WriteAllText(Path.Combine(path, asset.Key + "." + asset.BaseType + ".code.cs"), asset.Controller);
+            }
         }
     }
 }

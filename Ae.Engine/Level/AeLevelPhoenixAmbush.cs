@@ -2,6 +2,7 @@
 using Ae.Engine.Sprite.Interactive.Ship;
 using Ae.Engine.Types;
 using System.Linq;
+using static Ae.Engine.Types.AeDefermentEvent;
 
 namespace Ae.Engine.Level
 {
@@ -24,21 +25,21 @@ namespace Ae.Engine.Level
         {
             base.Begin();
 
-            AddSingleFireEvent(500, FirstShowPlayerCallback);
-            AddRecuringFireEvent(5000, AddFreshEnemiesCallback);
+            Engine.Events.Add(500, FirstShowPlayerCallback);
+            Engine.Events.Add(5000, AddFreshEnemiesCallback, eventMode: SiDefermentEventMode.Recurring);
 
-            _engine.Player.Sprite.AddHullHealth(100);
-            _engine.Player.Sprite.AddShieldHealth(10);
+            Engine.Player.Sprite.AddHullHealth(100);
+            Engine.Player.Sprite.AddShieldHealth(10);
         }
 
         private void FirstShowPlayerCallback(AeDefermentEvent sender, object? refObj)
         {
-            _engine.Player.ResetAndShow();
+            Engine.Player.ResetAndShow();
         }
 
         private void AddFreshEnemiesCallback(AeDefermentEvent sender, object? refObj)
         {
-            if (_engine.Sprites.OfType<AeSpriteEnemy>().Count() == 0)
+            if (Engine.Sprites.OfType<AeSpriteEnemy>().Count() == 0)
             {
                 if (CurrentWave == TotalWaves)
                 {
@@ -50,10 +51,10 @@ namespace Ae.Engine.Level
 
                 for (int i = 0; i < enemyCount; i++)
                 {
-                    AddSingleFireEvent(AeRandom.Between(0, 800), AddEnemyCallback);
+                    Engine.Events.Add(AeRandom.Between(0, 800), AddEnemyCallback);
                 }
 
-                _engine.Audio.RadarBlipsSound?.Play();
+                Engine.Audio.RadarBlipsSound?.Play();
 
                 CurrentWave++;
             }

@@ -5,10 +5,26 @@ using System.Text;
 
 namespace Ae.Engine.Rendering
 {
+    /// <summary>
+    /// Represents a polygon defined by a collection of vertices in two-dimensional space.
+    /// </summary>
+    /// <remarks>The polygon is immutable; its vertices are set at construction and cannot be changed. Use
+    /// this type to perform geometric operations such as bounding box calculation, clipping, and visualization. Thread
+    /// safety is guaranteed for read-only operations.</remarks>
     public class AePolygon
     {
+        /// <summary>
+        /// Gets the collection of vertices that define the shape.
+        /// </summary>
+        /// <remarks>The array contains the coordinates of each vertex in the order they are used to
+        /// construct the shape. The array is read-only and cannot be modified directly.</remarks>
         public RawVector2[] Vertices { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the AePolygon class using the specified vertices.
+        /// </summary>
+        /// <param name="vertices">An array of RawVector2 objects representing the vertices of the polygon. The order of vertices determines
+        /// the shape and orientation of the polygon. Cannot be null or empty.</param>
         public AePolygon(RawVector2[] vertices)
         {
             Vertices = vertices;
@@ -58,6 +74,14 @@ namespace Ae.Engine.Rendering
             return new RawRectangleF(minX, minY, maxX, maxY);
         }
 
+        /// <summary>
+        /// Clips the polygon so that all vertices are constrained within the specified bitmap bounds.
+        /// </summary>
+        /// <remarks>Vertices outside the bounds are moved to the nearest valid position within the
+        /// bitmap. The original polygon is not modified.</remarks>
+        /// <param name="width">The width of the bitmap, in pixels. Must be greater than zero.</param>
+        /// <param name="height">The height of the bitmap, in pixels. Must be greater than zero.</param>
+        /// <returns>A new AePolygon instance with all vertices adjusted to fit within the specified width and height.</returns>
         public AePolygon Clip(int width, int height)
         {
             // Clip the polygon to ensure it fits within the bounds of the original bitmap

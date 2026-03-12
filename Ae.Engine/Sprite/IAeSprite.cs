@@ -13,10 +13,10 @@ namespace Ae.Engine.Sprite
         /// </summary>
         public AeVector Location { get; set; }
 
-        /// <summary>
-        /// Number or radians to rotate the sprite Orientation along its center at each call to ApplyMotion().
-        /// Negative for counter-clockwise, positive for clockwise.
-        /// </summary>
+        // <summary>
+        // Number or radians to rotate the sprite Orientation along its center at each call to ApplyMotion().
+        // Negative for counter-clockwise, positive for clockwise.
+        // </summary>
         //public float RotationSpeed { get; set; }
 
         /// <summary>

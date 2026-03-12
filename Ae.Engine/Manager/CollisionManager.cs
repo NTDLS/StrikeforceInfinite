@@ -16,16 +16,20 @@ namespace Ae.Engine.Manager
     public class CollisionManager
     {
         private readonly AeEngine _engine;
-        public Dictionary<string, OverlappingKinematicBodyPair> Detected { get; private set; } = new();
+        internal Dictionary<string, OverlappingKinematicBodyPair> Detected { get; private set; } = new();
 
-        public PredictedKinematicBody[] Collidables { get; private set; } = new PredictedKinematicBody[0];
+        internal PredictedKinematicBody[] Collidables { get; private set; } = new PredictedKinematicBody[0];
 
+        /// <summary>
+        /// Initializes a new instance of the CollisionManager class using the specified engine.
+        /// </summary>
+        /// <param name="engine">The engine instance that provides context and services for collision management. Cannot be null.</param>
         public CollisionManager(AeEngine engine)
         {
             _engine = engine;
         }
 
-        public OverlappingKinematicBodyPair Create(PredictedKinematicBody body1, PredictedKinematicBody body2)
+        internal OverlappingKinematicBodyPair Create(PredictedKinematicBody body1, PredictedKinematicBody body2)
         {
             var key = OverlappingKinematicBodyPair.MakeKey(body1.Sprite.UID, body2.Sprite.UID);
 
@@ -44,12 +48,12 @@ namespace Ae.Engine.Manager
             return collisionPair;
         }
 
-        public void Record(OverlappingKinematicBodyPair pair)
+        internal void Record(OverlappingKinematicBodyPair pair)
         {
             Detected.Add(pair.Key, pair);
         }
 
-        public OverlappingKinematicBodyPair CreateAndRecord(PredictedKinematicBody body1, PredictedKinematicBody body2)
+        internal OverlappingKinematicBodyPair CreateAndRecord(PredictedKinematicBody body1, PredictedKinematicBody body2)
         {
             var collisionPair = Create(body1, body2);
             Record(collisionPair);
@@ -62,16 +66,16 @@ namespace Ae.Engine.Manager
         ///     since that state can change between this recording and the collision calculation.
         /// </summary>
         /// <param name="epoch"></param>
-        public void SnapshotCollidables(float epoch)
+        internal void SnapshotCollidables(float epoch)
         {
             Collidables = _engine.Sprites.VisibleCollidablePredictiveMove(epoch);
             Detected.Clear();
         }
 
-        public bool IsAlreadyHandled(AeSpriteInteractive sprite1, AeSpriteInteractive sprite2)
+        internal bool IsAlreadyHandled(AeSpriteInteractive sprite1, AeSpriteInteractive sprite2)
             => Detected.ContainsKey(OverlappingKinematicBodyPair.MakeKey(sprite1.UID, sprite2.UID));
 
-        public bool IsAlreadyHandled(PredictedKinematicBody body1, PredictedKinematicBody body2)
+        internal bool IsAlreadyHandled(PredictedKinematicBody body1, PredictedKinematicBody body2)
             => Detected.ContainsKey(OverlappingKinematicBodyPair.MakeKey(body1.Sprite.UID, body2.Sprite.UID));
     }
 }

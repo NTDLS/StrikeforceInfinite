@@ -17,9 +17,9 @@ namespace Ae.Engine.Menu
         public AeMenuSituationSelect(AeEngine engine)
             : base(engine)
         {
-            var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
+            var currentScaledScreenBounds = Engine.Display.GetCurrentScaledScreenBounds();
 
-            float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
+            float offsetX = Engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
             var itemTitle = AddTitleItem(new AeVector(offsetX, offsetY), "Select a Situation");
@@ -65,7 +65,7 @@ namespace Ae.Engine.Menu
 
         private bool SpMenuSituationSelect_OnEscape()
         {
-            _engine.Menus.Show(new AeMenuStartNewGame(_engine));
+            Engine.Menus.Show(new AeMenuStartNewGame(Engine));
             return true;
         }
 
@@ -73,9 +73,9 @@ namespace Ae.Engine.Menu
         {
             if (item.UserData is AeSituation situation)
             {
-                _engine.ResetGame();
-                _engine.Situations.Select(situation.GetType().Name);
-                _engine.Menus.Show(new AeMenuSelectLoadout(_engine));
+                Engine.ResetGame();
+                Engine.Situations.Select(situation.GetType().Name);
+                Engine.Menus.Show(new AeMenuSelectLoadout(Engine));
             }
             return true;
         }

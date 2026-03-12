@@ -16,34 +16,91 @@ namespace Ae.Engine.Mathematics
     public partial class AeVector
         : IComparable<AeVector>
     {
+        /// <summary>
+        /// Represents a method that is called when an AeVector changes.
+        /// </summary>
+        /// <remarks>Use this delegate to subscribe to change notifications for AeVector instances. The
+        /// method assigned to this delegate will be invoked whenever the vector changes, allowing you to react to
+        /// updates in its state.</remarks>
+        /// <param name="vector">The AeVector instance that has changed. Cannot be null.</param>
         public delegate void OnChange(AeVector vector);
+        /// <summary>
+        /// Represents a method that is called when an AeVector changes.
+        /// </summary>
         public event OnChange? OnChangeEvent;
+
+        /// <summary>
+        /// Returns a vector whose components are all zero.
+        /// </summary>
+        /// <returns>An instance of AeVector with all components set to zero.</returns>
         public static AeVector Zero() => new();
+
+        /// <summary>
+        /// Returns a unit vector pointing in the positive X direction.
+        /// </summary>
+        /// <returns>An instance of AeVector representing the unit vector (1, 0) along the X axis.</returns>
         public static AeVector UnitOfX() => new(1f, 0f);
+
+        /// <summary>
+        /// Returns a unit vector pointing in the positive Y direction.
+        /// </summary>
+        /// <remarks>Use this method to obtain a standardized vector for operations requiring a direction
+        /// along the Y axis.</remarks>
+        /// <returns>An instance of AeVector representing the unit vector (0, 1).</returns>
         public static AeVector UnitOfY() => new(0f, 1f);
+
+        /// <summary>
+        /// Creates a vector whose components are all set to one.
+        /// </summary>
+        /// <returns>A new instance of AeVector with both components equal to one.</returns>
         public static AeVector One() => new(1f, 1f);
 
+        /// <summary>
+        /// Gets or sets the X-coordinate value.
+        /// </summary>
         public float X { get; set; }
+        /// <summary>
+        /// Gets or sets the Y-coordinate value.
+        /// </summary>
         public float Y { get; set; }
 
         #region ~Ctor. 
 
+        /// <summary>
+        /// Initializes a new instance of the AeVector class.
+        /// </summary>
         public AeVector()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the AeVector class using the specified angle in radians.
+        /// </summary>
+        /// <remarks>The X and Y components are computed as the cosine and sine of the specified angle,
+        /// respectively. This constructor is useful for creating unit vectors pointing in a given direction.</remarks>
+        /// <param name="radians">The angle, in radians, used to calculate the vector components. Represents the direction of the vector
+        /// relative to the positive X-axis.</param>
         public AeVector(float radians)
         {
             X = (float)Math.Cos(radians);
             Y = (float)Math.Sin(radians);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the AeVector structure with the specified X and Y components.
+        /// </summary>
+        /// <param name="x">The value to assign to the X component of the vector.</param>
+        /// <param name="y">The value to assign to the Y component of the vector.</param>
         public AeVector(float x, float y)
         {
             X = x;
             Y = y;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the AeVector class by copying the values from the specified vector.
+        /// </summary>
+        /// <param name="p">The vector whose X and Y values are used to initialize the new instance. Cannot be null.</param>
         public AeVector(AeVector p)
         {
             X = p.X;
@@ -52,10 +109,24 @@ namespace Ae.Engine.Mathematics
 
         #endregion
 
+        /// <summary>
+        /// Returns a string representation of the object using invariant culture formatting for the X and Y values.
+        /// </summary>
+        /// <remarks>The returned string uses the invariant culture, ensuring consistent formatting
+        /// regardless of the current locale.</remarks>
+        /// <returns>A string formatted as "x{X}:y{Y}", where X and Y are displayed with up to five decimal places and thousands
+        /// separators.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
             => string.Format(CultureInfo.InvariantCulture, "x{0:#,##0.#####}:y{1:#,##0.#####}", X, Y);
 
+        /// <summary>
+        /// Parses a string representation of an AeVector and returns the corresponding AeVector instance.
+        /// </summary>
+        /// <param name="text">The string containing the AeVector to parse. Must be in the correct format; otherwise, a FormatException is
+        /// thrown.</param>
+        /// <returns>An AeVector instance parsed from the specified string.</returns>
+        /// <exception cref="FormatException">Thrown if the provided string is not in the correct format for an AeVector.</exception>
         public static AeVector Parse(string text)
         {
             if (TryParse(text, out AeVector? vector))
@@ -65,6 +136,17 @@ namespace Ae.Engine.Mathematics
             throw new FormatException($"The provided string '{text}' is not in the correct format for parsing an SiVector.");
         }
 
+        /// <summary>
+        /// Attempts to parse a string representation of a vector in the format "x{value}:y{value}".
+        /// </summary>
+        /// <remarks>The method expects the input string to use the invariant culture and to specify both
+        /// x and y components, each prefixed with 'x' and 'y' respectively. Parsing fails if the format is incorrect or
+        /// if the values are not valid floating-point numbers.</remarks>
+        /// <param name="text">The input string containing the vector data to parse. Must be in the format "x{value}:y{value}" using
+        /// invariant culture.</param>
+        /// <param name="vector">When this method returns, contains the parsed vector if the operation succeeded; otherwise, contains <see
+        /// langword="null"/>.</param>
+        /// <returns>true if the string was successfully parsed into a vector; otherwise, false.</returns>
         public static bool TryParse(string text, [NotNullWhen(true)] out AeVector? vector)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -114,18 +196,43 @@ namespace Ae.Engine.Mathematics
 
         #region Valiatation helpers (not that I'mnot sure if these should use || or &&)
 
+        /// <summary>
+        /// Determines whether either coordinate of the current instance is not a number (NaN).
+        /// </summary>
+        /// <remarks>Use this method to check for invalid or uninitialized coordinate values before
+        /// performing calculations that require valid numeric input.</remarks>
+        /// <returns>true if either the X or Y coordinate is NaN; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNan()
                 => float.IsNaN(X) || float.IsNaN(Y);
 
+        /// <summary>
+        /// Determines whether either coordinate of the current instance is infinite.
+        /// </summary>
+        /// <remarks>Use this method to check for infinite values in either coordinate, which may indicate
+        /// invalid or unbounded results in mathematical operations.</remarks>
+        /// <returns>true if either the X or Y coordinate is positive or negative infinity; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsInfinity()
             => float.IsInfinity(X) || float.IsInfinity(Y);
 
+        /// <summary>
+        /// Determines whether any component of the vector is negative infinity.
+        /// </summary>
+        /// <remarks>Use this method to check for negative infinity values in vector components, which may
+        /// indicate invalid or uninitialized data resulting from mathematical operations.</remarks>
+        /// <returns>true if either the X or Y component is negative infinity; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNegativeInfinity()
             => float.IsNegativeInfinity(X) || float.IsNegativeInfinity(Y);
 
+        /// <summary>
+        /// Determines whether either component of the vector is considered near zero.
+        /// </summary>
+        /// <remarks>This method is useful for detecting vectors that are effectively aligned with an axis
+        /// or have negligible magnitude in one direction. The definition of "near zero" depends on the implementation
+        /// of the IsNearZero method for the component type.</remarks>
+        /// <returns>true if either the X or Y component is near zero; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearZero()
             => X.IsNearZero() || Y.IsNearZero();
@@ -134,49 +241,72 @@ namespace Ae.Engine.Mathematics
 
         #region Converters.
 
+        /// <summary>
+        /// Creates a new RectangleF instance using the current X and Y coordinates, with the specified width and
+        /// height.
+        /// </summary>
+        /// <param name="width">The width of the rectangle, in pixels. Must be a non-negative value.</param>
+        /// <param name="height">The height of the rectangle, in pixels. Must be a non-negative value.</param>
+        /// <returns>A RectangleF structure representing the rectangle at the current X and Y position with the specified width
+        /// and height.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RectangleF ToRectangleF(float width, float height)
             => new(X, Y, width, height);
 
+        /// <summary>
+        /// Creates a new RectangleF at the current X and Y coordinates with the specified size.
+        /// </summary>
+        /// <param name="size">The size, in floating-point units, to use for the width and height of the rectangle.</param>
+        /// <returns>A RectangleF instance positioned at the current X and Y coordinates with the given width and height.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RectangleF ToRectangleF(SizeF size)
             => new(X, Y, size.Width, size.Height);
 
+        /// <summary>
+        /// Creates a new rectangle at the current point with a width and height of 1.
+        /// </summary>
+        /// <remarks>This method is useful for representing a point as a rectangle with minimal area, such
+        /// as for hit testing or drawing operations.</remarks>
+        /// <returns>A <see cref="RectangleF"/> representing a unit rectangle positioned at the current coordinates.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RectangleF ToRectangleF() => new(X, Y, 1f, 1f);
 
+
         /// <summary>
-        /// Returns an SiVector from an angle in signed degrees.
+        /// Creates an instance of AeVector from a signed angle in degrees.
         /// </summary>
-        /// <param name="vector"></param>
-        /// <returns></returns>
+        /// <param name="angleInDegrees">The signed angle, in degrees, to convert. Positive values represent counterclockwise rotation; negative
+        /// values represent clockwise rotation.</param>
+        /// <returns>An AeVector representing the direction corresponding to the specified signed angle in degrees.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector FromSignedDegrees(float angleInDegrees)
             => new(AeMath.DegToRad(AeMath.SignedDegreesToUnsigned(angleInDegrees)));
 
         /// <summary>
-        /// Returns an SiVector from an angle in degrees.
+        /// Creates a new vector representing the specified unsigned angle in degrees.
         /// </summary>
-        /// <param name="vector"></param>
-        /// <returns></returns>
+        /// <param name="angleInDegrees">The angle, in degrees, to convert to a vector. Must be in the range [0, 360).</param>
+        /// <returns>A vector corresponding to the direction of the given angle in degrees.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector FromUnsignedDegrees(float angleInDegrees)
             => new(AeMath.DegToRad(angleInDegrees));
 
         /// <summary>
-        /// Returns an SiVector from an angle in degrees.
+        /// Creates a new vector instance from an unsigned angle measured in radians.
         /// </summary>
-        /// <param name="vector"></param>
-        /// <returns></returns>
+        /// <param name="angleInRadians">The angle, in radians, representing the direction of the vector. Must be non-negative.</param>
+        /// <returns>A vector corresponding to the specified unsigned angle in radians.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector FromUnsignedRadians(float angleInRadians)
             => new(angleInRadians);
 
+
         /// <summary>
-        /// Returns an SiVector from an angle in degrees.
+        /// Creates a new vector using the specified cardinal x and y components.
         /// </summary>
-        /// <param name="vector"></param>
-        /// <returns></returns>
+        /// <param name="x">The value of the x component of the vector.</param>
+        /// <param name="y">The value of the y component of the vector.</param>
+        /// <returns>A new AeVector instance with the specified x and y components.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector FromCardinal(float x, float y)
             => new(x, y);
@@ -185,18 +315,45 @@ namespace Ae.Engine.Mathematics
 
         #region Operator Overloads: Float first.
 
+        /// <summary>
+        /// Subtracts each component of the specified vector from the given scalar and returns the resulting vector.
+        /// </summary>
+        /// <param name="scalar">The scalar value from which each component of the vector will be subtracted.</param>
+        /// <param name="original">The vector whose components are subtracted from the scalar.</param>
+        /// <returns>A new vector whose components are the result of subtracting each component of the original vector from the
+        /// scalar.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator -(float scalar, AeVector original)
            => new AeVector(scalar - original.X, scalar - original.Y);
 
+        /// <summary>
+        /// Adds a scalar value to each component of the specified vector.
+        /// </summary>
+        /// <param name="scalar">The scalar value to add to each component of the vector.</param>
+        /// <param name="original">The vector whose components will be incremented by the scalar value.</param>
+        /// <returns>A new vector with each component increased by the specified scalar value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator +(float scalar, AeVector original)
             => new AeVector(original.X + scalar, original.Y + scalar);
 
+        /// <summary>
+        /// Scales the specified vector by the given scalar factor.
+        /// </summary>
+        /// <param name="scaleFactor">The scalar value by which to multiply each component of the vector.</param>
+        /// <param name="original">The vector to be scaled.</param>
+        /// <returns>A new vector whose components are the result of multiplying the original vector's components by the scale
+        /// factor.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator *(float scaleFactor, AeVector original)
             => new AeVector(original.X * scaleFactor, original.Y * scaleFactor);
 
+        /// <summary>
+        /// Divides each component of the specified vector by the given scale factor and returns the resulting vector.
+        /// </summary>
+        /// <param name="scaleFactor">The value by which each component of the vector is divided. If zero, the result is a zero vector.</param>
+        /// <param name="original">The vector whose components are to be divided by the scale factor.</param>
+        /// <returns>A new vector whose components are the result of dividing the scale factor by each component of the original
+        /// vector. If the scale factor is zero, returns a vector with both components set to zero.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator /(float scaleFactor, AeVector original)
         {
@@ -211,18 +368,45 @@ namespace Ae.Engine.Mathematics
 
         #region Operator Overloads: Float Second.
 
+        /// <summary>
+        /// Subtracts a scalar value from each component of the specified vector.
+        /// </summary>
+        /// <param name="original">The vector whose components will be reduced by the scalar value.</param>
+        /// <param name="scalar">The scalar value to subtract from each component of the vector.</param>
+        /// <returns>A new AeVector whose components are the result of subtracting the scalar value from the corresponding
+        /// components of the original vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator -(AeVector original, float scalar)
            => new AeVector(original.X - scalar, original.Y - scalar);
 
+        /// <summary>
+        /// Adds a scalar value to each component of the specified vector.
+        /// </summary>
+        /// <param name="original">The vector whose components will be incremented by the scalar value.</param>
+        /// <param name="scalar">The scalar value to add to each component of the vector.</param>
+        /// <returns>A new vector with each component equal to the sum of the corresponding component in the original vector and
+        /// the scalar value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator +(AeVector original, float scalar)
             => new AeVector(original.X + scalar, original.Y + scalar);
 
+        /// <summary>
+        /// Scales the specified vector by the given factor.
+        /// </summary>
+        /// <param name="original">The vector to be scaled.</param>
+        /// <param name="scaleFactor">The factor by which to scale the vector components.</param>
+        /// <returns>A new vector whose components are the original vector's components multiplied by the specified scale factor.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator *(AeVector original, float scaleFactor)
             => new AeVector(original.X * scaleFactor, original.Y * scaleFactor);
 
+        /// <summary>
+        /// Divides the components of the specified vector by the given scale factor.
+        /// </summary>
+        /// <param name="original">The vector whose components are to be divided.</param>
+        /// <param name="scaleFactor">The value by which each component of the vector is divided. If zero, the result is a zero vector.</param>
+        /// <returns>A new vector whose components are the result of dividing the original vector's components by the scale
+        /// factor. Returns a zero vector if the scale factor is zero.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator /(AeVector original, float scaleFactor)
             => scaleFactor == 0 ? Zero() : new AeVector(original.X / scaleFactor, original.Y / scaleFactor);
@@ -231,10 +415,24 @@ namespace Ae.Engine.Mathematics
 
         #region Operator Overloads: SizeF.
 
+        /// <summary>
+        /// Subtracts the specified vector from the given size, producing a new vector representing the difference.
+        /// </summary>
+        /// <param name="modifier">The size whose width and height are used as the minuend values in the subtraction.</param>
+        /// <param name="original">The vector whose X and Y components are subtracted from the size's width and height.</param>
+        /// <returns>A new vector whose X component is the result of subtracting the vector's X from the size's width, and whose
+        /// Y component is the result of subtracting the vector's Y from the negated size's height.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator -(SizeF modifier, AeVector original)
             => new AeVector(modifier.Width - original.X, -modifier.Height - original.Y);
 
+        /// <summary>
+        /// Subtracts the width and height of the specified modifier from the X and Y components of the original vector.
+        /// </summary>
+        /// <param name="original">The vector whose components are to be reduced.</param>
+        /// <param name="modifier">The size whose width and height are subtracted from the original vector's X and Y components, respectively.</param>
+        /// <returns>A new vector representing the result of subtracting the modifier's width and height from the original
+        /// vector's X and Y components.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator -(AeVector original, SizeF modifier)
             => new AeVector(original.X - modifier.Width, original.Y - modifier.Height);
@@ -243,10 +441,24 @@ namespace Ae.Engine.Mathematics
 
         #region Operator Overloads: Size.
 
+        /// <summary>
+        /// Subtracts the coordinates of the specified vector from the dimensions of the given size, returning a new
+        /// vector representing the result.
+        /// </summary>
+        /// <param name="modifier">The size whose width and height are used as the minuend values in the subtraction.</param>
+        /// <param name="original">The vector whose X and Y coordinates are subtracted from the size's width and height.</param>
+        /// <returns>A new vector whose X and Y values are the result of subtracting the original vector's coordinates from the
+        /// size's dimensions.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator -(Size modifier, AeVector original)
             => new AeVector(modifier.Width - original.X, modifier.Height - original.Y);
 
+        /// <summary>
+        /// Subtracts the width and height of a specified size from the X and Y components of the vector.
+        /// </summary>
+        /// <param name="original">The vector whose components are to be reduced.</param>
+        /// <param name="modifier">The size whose width and height are subtracted from the vector's X and Y components, respectively.</param>
+        /// <returns>A new vector with its X and Y components decreased by the width and height of the specified size.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator -(AeVector original, Size modifier)
             => new AeVector(original.X - modifier.Width, original.Y - modifier.Height);
@@ -255,6 +467,14 @@ namespace Ae.Engine.Mathematics
 
         #region Operator Overloads: Vector -> Vector.
 
+        /// <summary>
+        /// Determines whether two AeVector instances are equal.
+        /// </summary>
+        /// <remarks>Equality is determined by comparing the values of the two instances. If both are
+        /// null, they are considered equal.</remarks>
+        /// <param name="left">The first AeVector instance to compare. Can be null.</param>
+        /// <param name="right">The second AeVector instance to compare. Can be null.</param>
+        /// <returns>true if the two AeVector instances are equal; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator ==(AeVector? left, AeVector? right)
         {
@@ -271,30 +491,81 @@ namespace Ae.Engine.Mathematics
             return left.Equals(right);
         }
 
+        /// <summary>
+        /// Determines whether two AeVector instances are not equal.
+        /// </summary>
+        /// <param name="left">The first AeVector instance to compare. Can be null.</param>
+        /// <param name="right">The second AeVector instance to compare. Can be null.</param>
+        /// <returns>true if the specified AeVector instances are not equal; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator !=(AeVector? left, AeVector? right)
             => !(left == right);
 
+        /// <summary>
+        /// Subtracts the components of one vector from another and returns the resulting vector.
+        /// </summary>
+        /// <param name="original">The vector whose components are to be subtracted from.</param>
+        /// <param name="modifier">The vector whose components are subtracted from the original vector.</param>
+        /// <returns>A new vector representing the difference between the original and modifier vectors.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator -(AeVector original, AeVector modifier)
             => new AeVector(original.X - modifier.X, original.Y - modifier.Y);
 
+        /// <summary>
+        /// Adds two vectors and returns the result as a new vector.
+        /// </summary>
+        /// <param name="original">The first vector to add.</param>
+        /// <param name="modifier">The second vector to add.</param>
+        /// <returns>A new vector representing the sum of the two input vectors.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator +(AeVector original, AeVector modifier)
             => new AeVector(original.X + modifier.X, original.Y + modifier.Y);
 
+        /// <summary>
+        /// Multiplies each component of the specified vector by the corresponding component of another vector.
+        /// </summary>
+        /// <param name="original">The vector whose components are to be multiplied.</param>
+        /// <param name="scaleFactor">The vector providing the scale factors for each component.</param>
+        /// <returns>A new vector whose components are the products of the corresponding components of the input vectors.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator *(AeVector original, AeVector scaleFactor)
             => new AeVector(original.X * scaleFactor.X, original.Y * scaleFactor.Y);
 
+        /// <summary>
+        /// Determines whether the magnitude of the first vector is greater than the magnitude of the second vector.
+        /// </summary>
+        /// <remarks>This operator compares the lengths of the vectors, not their individual
+        /// components.</remarks>
+        /// <param name="v1">The first vector to compare.</param>
+        /// <param name="v2">The second vector to compare.</param>
+        /// <returns>true if the magnitude of v1 is greater than the magnitude of v2; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator >(AeVector v1, AeVector v2)
             => v1.Magnitude() > v2.Magnitude();
 
+        /// <summary>
+        /// Determines whether the magnitude of the first vector is less than the magnitude of the second vector.
+        /// </summary>
+        /// <remarks>This operator compares the lengths of the vectors, not their individual
+        /// components.</remarks>
+        /// <param name="v1">The first vector to compare.</param>
+        /// <param name="v2">The second vector to compare.</param>
+        /// <returns>true if the magnitude of v1 is less than the magnitude of v2; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator <(AeVector v1, AeVector v2)
             => v1.Magnitude() < v2.Magnitude();
 
+        /// <summary>
+        /// Divides each component of the specified vector by the corresponding component of another vector.
+        /// </summary>
+        /// <remarks>If both components of the scale factor are zero, the method returns a unit vector
+        /// instead of performing division by zero. This behavior prevents exceptions and ensures a valid
+        /// result.</remarks>
+        /// <param name="original">The vector whose components are to be divided.</param>
+        /// <param name="scaleFactor">The vector whose components are used as divisors for the corresponding components of the original vector.</param>
+        /// <returns>A new vector containing the result of dividing each component of the original vector by the corresponding
+        /// component of the scale factor vector. If both components of the scale factor are zero, returns a unit
+        /// vector.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector operator /(AeVector original, AeVector scaleFactor)
             => scaleFactor.X == 0.0 && scaleFactor.Y == 0.0 ? One() :
@@ -304,13 +575,38 @@ namespace Ae.Engine.Mathematics
 
         #region IComparible.
 
+        /// <summary>
+        /// Serves as the default hash function for the object.
+        /// </summary>
+        /// <remarks>The hash code is based on the string representation of the object. Use caution when
+        /// relying on hash codes for objects whose string representation may change, as this can affect hash-based
+        /// collections.</remarks>
+        /// <returns>A 32-bit signed integer hash code representing the current object.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => ToString().GetHashCode();
 
+        /// <summary>
+        /// Determines whether the specified object is equal to the current vector, comparing the X and Y components
+        /// rounded to four decimal places.
+        /// </summary>
+        /// <remarks>This method performs a comparison of the X and Y components after rounding them to
+        /// four decimal places. This can help mitigate minor floating-point differences when determining
+        /// equality.</remarks>
+        /// <param name="o">The object to compare with the current vector. Can be null or an instance of AeVector.</param>
+        /// <returns>true if the specified object is an AeVector and its X and Y components, rounded to four decimal places, are
+        /// equal to those of the current vector; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object? o)
             => Math.Round(((AeVector?)o)?.X ?? float.NaN, 4) == X && Math.Round(((AeVector?)o)?.Y ?? float.NaN, 4) == Y;
 
+        /// <summary>
+        /// Compares the magnitude of this vector to another vector and returns a value indicating their relative order.
+        /// </summary>
+        /// <remarks>Comparison is based on the Euclidean magnitude of each vector. This method can be
+        /// used to sort vectors by their length.</remarks>
+        /// <param name="other">The vector to compare with this instance. If null, this instance is considered greater.</param>
+        /// <returns>A value less than zero if this vector is less than the other; zero if they are equal; greater than zero if
+        /// this vector is greater than the other.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int CompareTo(AeVector? other)
         {
@@ -475,8 +771,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns a normalized vector, with a length of 1 but maintain its direction. Useful for velocity or direction vectors.
         /// </summary>
-        /// <param name="vector"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AeVector Normalize()
         {
@@ -484,6 +778,13 @@ namespace Ae.Engine.Mathematics
             return new AeVector(X / magnitude, Y / magnitude);
         }
 
+        /// <summary>
+        /// Calculates the orientation angle of the vector in radians relative to the positive X-axis.
+        /// </summary>
+        /// <remarks>The returned angle is measured in the counterclockwise direction from the positive
+        /// X-axis. If both X and Y are zero, the result is zero.</remarks>
+        /// <returns>A single-precision floating-point value representing the angle, in radians, between the vector and the
+        /// positive X-axis. The value ranges from -π to π.</returns>
         public float OrientationInRadians()
             => (float)Math.Atan2(Y, X);
 
@@ -497,8 +798,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Calculate the dot product of two vectors.This is useful for determining the angle between vectors or projecting one vector onto another.
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float Dot(AeVector vector)
@@ -521,9 +820,6 @@ namespace Ae.Engine.Mathematics
         /// distance (magnitude) isn't necessary. Calculating the square root (as in the magnitude) is computationally expensive, so using
         /// length squared can save resources when comparing distances or checking thresholds.
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float LengthSquared()
             => X * X + Y * Y;
@@ -531,9 +827,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns the X + Y;
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float Sum()
             => X + Y;
@@ -541,9 +834,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns the Abs(X) + Abs(Y), useful for determining when a vector is non-zero.
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float SumAbs()
             => Math.Abs(X) + Math.Abs(Y);
@@ -551,8 +841,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Calculates the Euclidean distance between two points in a 2D space (slower and precise, but not compatible with DistanceSquaredTo(...)).
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float DistanceTo(AeVector to)
         {
@@ -564,8 +852,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Calculates the distance squared between two points in a 2D space (faster and but not compatible with DistanceTo(...)).
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float DistanceSquaredTo(AeVector to)
         {
@@ -574,6 +860,15 @@ namespace Ae.Engine.Mathematics
             return deltaX * deltaX + deltaY * deltaY;
         }
 
+        /// <summary>
+        /// Returns a new vector with each component clamped to the specified minimum and maximum values.
+        /// </summary>
+        /// <remarks>The returned vector will have its X and Y components set to minValue if they are less
+        /// than minValue, or to maxValue if they are greater than maxValue. The original vector instance is not
+        /// modified.</remarks>
+        /// <param name="minValue">The minimum value to which each component of the vector will be clamped.</param>
+        /// <param name="maxValue">The maximum value to which each component of the vector will be clamped.</param>
+        /// <returns>A new vector whose X and Y components are constrained within the specified range.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AeVector Clamp(float minValue, float maxValue)
         {
@@ -604,7 +899,6 @@ namespace Ae.Engine.Mathematics
         /// Returns the delta angle from this to another expressed in degrees from 180--180, positive
         /// figures indicate right (starboard) side and negative indicate left-hand (port) side of the object.
         /// </summary>
-        /// <param name="from">The object from which the calculation is based.</param>
         /// <param name="toLocation">The location to which the calculation is based.</param>
         /// <param name="offsetAngle">-90 degrees would be looking off the left-hand (port) side of the object,
         /// positive indicated right (starboard) side.</param>
@@ -620,7 +914,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns the delta angle from this vector to another expressed in degrees from 0-360.
         /// </summary>
-        /// <param name="from">The object from which the calculation is based.</param>
         /// <param name="toLocation">The location to which the calculation is based.</param>
         /// <param name="offsetAngle">-90 degrees would be looking off the left-hand (port) side of the object,
         /// positive indicated right (starboard) side.</param>
@@ -638,7 +931,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns true if the object is pointing AT another, taking into account the tolerance in degrees.
         /// </summary>
-        /// <param name="from">The object from which the calculation is based.</param>
         /// <param name="at">The object to which the calculation is based.</param>
         /// <param name="toleranceDegrees"></param>
         /// <returns>True if the object is pointing away from the other given the constraints.</returns>
@@ -652,7 +944,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns true if the object is pointing AWAY another, taking into account the tolerance in degrees.
         /// </summary>
-        /// <param name="from">The object from which the calculation is based.</param>
         /// <param name="at">The object to which the calculation is based.</param>
         /// <param name="toleranceDegrees"></param>
         /// <param name="maxDistance"></param>
@@ -664,7 +955,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns true if the object is pointing AT another, taking into account the tolerance in degrees.
         /// </summary>
-        /// <param name="from">The object from which the calculation is based.</param>
         /// <param name="at">The object to which the calculation is based.</param>
         /// <param name="toleranceDegrees"></param>
         /// <returns>True if the object is pointing at the other given the constraints.</returns>
@@ -678,7 +968,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns true if the object is pointing AT another, taking into account the tolerance in degrees.
         /// </summary>
-        /// <param name="from">The object from which the calculation is based.</param>
         /// <param name="at">The object to which the calculation is based.</param>
         /// <param name="toleranceDegrees">The angle in degrees to consider the object to pointing at the other.</param>
         /// <param name="maxDistance">The distance in consider the object to pointing at the other.</param>
@@ -699,7 +988,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns the delta angle from one object to another expressed in degrees from 180--180, positive figures indicate right (starboard) side and negative indicate left-hand (port) side of the object.
         /// </summary>
-        /// <param name="from">The object from which the calculation is based.</param>
         /// <param name="to">The object to which the calculation is based.</param>
         /// <param name="offsetAngle">-90 degrees would be looking off the left-hand (port) side of the object, positive indicated right (starboard) side.</param>
         /// <returns>The calculated angle in the range of 180--180.</returns>
@@ -720,7 +1008,6 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Returns the delta angle from one object to another expressed in degrees from 0-360.
         /// </summary>
-        /// <param name="from">The object from which the calculation is based.</param>
         /// <param name="to">The object to which the calculation is based.</param>
         /// <param name="offsetAngle">-90 degrees would be looking off the left-hand (port) side of the object, positive indicated right (starboard) side.</param>
         /// <returns>The calculated angle in the range of 0-360.</returns>

@@ -16,7 +16,6 @@ namespace Ae.Engine.Rendering
             _transformStack.Add(renderTarget, new Stack<Matrix3x2>());
         }
 
-
         public static Matrix3x2 CreateOffsetTransform(float x, float y)
         {
             // Create a translation transform to move the drawing to the desired position;

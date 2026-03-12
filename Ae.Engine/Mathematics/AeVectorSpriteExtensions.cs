@@ -5,6 +5,17 @@ using System.Runtime.CompilerServices;
 
 namespace Ae.Engine.Mathematics
 {
+    /// <summary>
+    /// Provides extension methods for calculating angles, distances, and directional relationships between sprites and
+    /// locations in a 2D vector space. These methods enable determining orientation, proximity, and whether a sprite is
+    /// pointing toward or away from another object, using both degrees and radians.
+    /// </summary>
+    /// <remarks>The extension methods in this class are designed for use with IAeSprite and AeVector types,
+    /// supporting common operations in sprite-based systems such as games or simulations. Methods include angle
+    /// calculations (signed and unsigned, in degrees and radians), heading adjustments, and checks for directional
+    /// alignment within specified tolerances and distances. All calculations assume a 2D coordinate system and are
+    /// optimized for performance. Thread safety depends on the underlying IAeSprite and AeVector
+    /// implementations.</remarks>
     public static class AeVectorSpriteExtensions
     {
         /// <summary>

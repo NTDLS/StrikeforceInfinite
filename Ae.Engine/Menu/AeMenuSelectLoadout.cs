@@ -32,9 +32,9 @@ namespace Ae.Engine.Menu
         public AeMenuSelectLoadout(AeEngine engine)
             : base(engine)
         {
-            var currentScaledScreenBounds = _engine.Display.GetCurrentScaledScreenBounds();
+            var currentScaledScreenBounds = Engine.Display.GetCurrentScaledScreenBounds();
 
-            float offsetX = _engine.Display.TotalCanvasSize.Width / 2;
+            float offsetX = Engine.Display.TotalCanvasSize.Width / 2;
             float offsetY = currentScaledScreenBounds.Y + 100;
 
             var itemTitle = AddTitleItem(new AeVector(offsetX, offsetY), "Select a Loadout");
@@ -101,13 +101,13 @@ namespace Ae.Engine.Menu
 
         private bool SpMenuSelectLoadout_OnEscape()
         {
-            _engine.Menus.Show(new AeMenuSituationSelect(_engine));
+            Engine.Menus.Show(new AeMenuSituationSelect(Engine));
             return true;
         }
 
         private void PlayerLoadoutMenu_OnCleanup()
         {
-            _engine.Sprites.QueueAllForDeletionByTag("MENU_SHIP_SELECT");
+            Engine.Sprites.QueueAllForDeletionByTag("MENU_SHIP_SELECT");
         }
 
         private bool PlayerLoadoutMenu_OnExecuteSelection(AeSpriteMenuItem item)
@@ -117,8 +117,8 @@ namespace Ae.Engine.Menu
 
             if (item.UserData is SelectedSprite selectedSprite)
             {
-                _engine.Player.InstantiatePlayerClass(selectedSprite.AssetKey);
-                _engine.StartGame();
+                Engine.Player.InstantiatePlayerClass(selectedSprite.AssetKey);
+                Engine.StartGame();
             }
 
             return true;

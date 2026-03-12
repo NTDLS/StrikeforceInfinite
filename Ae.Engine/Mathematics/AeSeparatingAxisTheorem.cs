@@ -176,6 +176,14 @@ namespace Ae.Engine.Mathematics
         public static float Dot(PointF a, PointF axis)
             => a.X * axis.X + a.Y * axis.Y;
 
+        /// <summary>
+        /// Calculates the smallest axis-aligned bounding box that contains all specified corner points.
+        /// </summary>
+        /// <remarks>The bounding box is aligned with the coordinate axes and may not match the
+        /// orientation of the original shape. If the input array is empty, the method will throw an
+        /// exception.</remarks>
+        /// <param name="corners">An array of points representing the corners to be enclosed by the bounding box. Cannot be null or empty.</param>
+        /// <returns>A RectangleF representing the axis-aligned bounding box that fully contains all provided corner points.</returns>
         public static RectangleF GetAxisAlignedBoundingBox(PointF[] corners)
         {
             float minX = corners.Min(c => c.X);

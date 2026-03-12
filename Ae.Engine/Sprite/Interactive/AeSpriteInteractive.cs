@@ -11,7 +11,6 @@ using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Sprite.Interactive
 {
@@ -30,7 +29,16 @@ namespace Ae.Engine.Sprite.Interactive
         /// This is just graphics candy, the sprite would be subject of a foreign weapons lock, but the other foreign weapon owner has too many locks.
         /// </summary>
         public bool IsLockedOnSoft { get; set; }
+        /// <summary>
+        /// Represents the image associated with the locked-on state. May be null if no image is set.
+        /// </summary>
+        /// <remarks>This field is intended for use by derived classes to manage or display a locked-on
+        /// visual indicator. Access should be controlled to ensure thread safety if used in multi-threaded
+        /// scenarios.</remarks>
         protected Bitmap? _lockedOnImage;
+        /// <summary>
+        /// Represents the bitmap instance currently locked for operations on the soft image.
+        /// </summary>
         protected Bitmap? _lockedOnSoftImage;
         private bool _isLockedOn = false;
 
@@ -53,16 +61,27 @@ namespace Ae.Engine.Sprite.Interactive
 
         #endregion
 
+        /// <summary>
+        /// Gets or sets the mass of the object - defaults from the metadata but can be changed at any time.
+        /// This is used for collision response calculations.
+        /// </summary>
         public float Mass { get; set; }
 
+        /// <summary>
+        /// Gets or sets the collection of renewable resources associated with the entity.
+        /// </summary>
         public AeRenewableResources RenewableResources { get; set; } = new();
+
+        /// <summary>
+        /// Gets the collection of weapons associated with the sprite.
+        /// </summary>
         public List<AeSpriteWeapon> Weapons { get; private set; } = new();
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the AeSpriteInteractive class using the specified engine and asset key.
         /// </summary>
-        /// <param name="engine"></param>
-        /// <param name="assetKey"></param>
+        /// <param name="engine">The engine instance that manages game state and resources for this sprite.</param>
+        /// <param name="assetKey">The asset key identifying the sprite's visual resources. Can be null to use default assets.</param>
         public AeSpriteInteractive(AeEngine engine, string? assetKey)
             : base(engine, assetKey)
         {
@@ -76,6 +95,13 @@ namespace Ae.Engine.Sprite.Interactive
             SetupAIControllers();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the AeSpriteInteractive class with the specified engine and bitmap.
+        /// </summary>
+        /// <remarks>If the engine's assets are already loaded, additional images related to sprite
+        /// locking are initialized. The constructor also sets up AI controllers for the sprite.</remarks>
+        /// <param name="engine">The engine instance used to manage assets and game logic for this sprite.</param>
+        /// <param name="bitmap">The bitmap image to be used as the visual representation of the sprite.</param>
         public AeSpriteInteractive(AeEngine engine, Bitmap bitmap)
             : base(engine, null)
         {
@@ -94,14 +120,14 @@ namespace Ae.Engine.Sprite.Interactive
         /// <summary>
         /// The current AI controller that is controlling the sprite's ApplyIntelligence() behavior, this can be switched at any time to change the sprite's behavior.
         /// </summary>
-        public AeIAIController? CurrentAIController { get; private set; }
+        public AeAIStateMachine? CurrentAIController { get; private set; }
 
         /// <summary>
         /// Dictionary of AI controller AssetKeys and their instances.
         /// </summary>
-        private readonly Dictionary<string, AeIAIController> _aiControllers = new();
+        private readonly Dictionary<string, AeAIStateMachine> _aiControllers = new();
 
-        public void SetupAIControllers()
+        private void SetupAIControllers()
         {
             if (Metadata.AIControllers != null)
             {
@@ -112,7 +138,7 @@ namespace Ae.Engine.Sprite.Interactive
                     var aiControllerType = AeReflection.GetTypeByName(aiControllerMetadata.DynamicTypeName ??
                         throw new Exception($"The AI controller '{aiControllerAssetKey}' does not have a DynamicTypeName defined in its metadata."));
 
-                    var aiController = Activator.CreateInstance(aiControllerType, [Engine, this]) as AeIAIController
+                    var aiController = Activator.CreateInstance(aiControllerType, [Engine, this]) as AeAIStateMachine
                         ?? throw new Exception($"The AI controller class '{aiControllerAssetKey}' could not be instantiated for sprite '{Metadata.AssetKey}'.");
 
                     _aiControllers.Add(aiControllerAssetKey, aiController);
@@ -156,8 +182,6 @@ namespace Ae.Engine.Sprite.Interactive
         /// <summary>
         /// The total velocity multiplied by the given mass.
         /// </summary>
-        /// <param name="mass"></param>
-        /// <returns></returns>
         public float TotalMomentum()
             => TotalVelocity * Mass;
 
@@ -170,8 +194,6 @@ namespace Ae.Engine.Sprite.Interactive
         /// <summary>
         /// The total velocity multiplied by the given mass, except for the mass is returned when the velocity is 0;
         /// </summary>
-        /// <param name="mass"></param>
-        /// <returns></returns>
         public float TotalMomentumWithRestingMass()
         {
             var totalRelativeVelocity = TotalVelocity;
@@ -184,8 +206,22 @@ namespace Ae.Engine.Sprite.Interactive
 
         #region Weapons selection and evaluation.
 
+        /// <summary>
+        /// Removes all weapons from the collection.
+        /// </summary>
+        /// <remarks>Use this method to reset the weapons list to an empty state. After calling this
+        /// method, the collection will contain no items.</remarks>
         public void ClearWeapons() => Weapons.Clear();
 
+        /// <summary>
+        /// Adds a weapon to the collection using the specified asset key and munition count. If the weapon already
+        /// exists, increases its munition quantity.
+        /// </summary>
+        /// <param name="assetKey">The unique key identifying the weapon asset to add. Must correspond to a valid asset in the engine's asset
+        /// collection.</param>
+        /// <param name="munitionCount">The number of munitions to assign to the weapon. Must be a non-negative integer.</param>
+        /// <exception cref="Exception">Thrown if the asset metadata for the specified asset key does not exist, or if the asset does not have a
+        /// class or controller defined in its metadata.</exception>
         public void AddWeapon(string assetKey, int munitionCount)
         {
             var asset = Engine.Assets.GetAsset(assetKey)
@@ -208,18 +244,52 @@ namespace Ae.Engine.Sprite.Interactive
             }
         }
 
+        /// <summary>
+        /// Calculates the total quantity of available munitions across all weapons.
+        /// </summary>
+        /// <returns>The sum of munitions available for all weapons. Returns 0 if no weapons are present.</returns>
         public int TotalAvailableWeaponMunitions() => (from o in Weapons select o.MunitionQuantity).Sum();
+
+        /// <summary>
+        /// Calculates the total number of munitions fired by all weapons.
+        /// </summary>
+        /// <returns>The sum of munitions fired across all weapons. Returns 0 if there are no weapons.</returns>
         public int TotalWeaponFiredMunitions() => (from o in Weapons select o.MunitionsFired).Sum();
 
+        /// <summary>
+        /// Determines whether the collection contains a weapon with the specified asset key.
+        /// </summary>
+        /// <param name="assetKey">The unique asset key identifying the weapon to search for. Cannot be null.</param>
+        /// <returns>true if a weapon with the specified asset key exists in the collection; otherwise, false.</returns>
         public bool HasWeapon(string assetKey)
             => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey) != null;
 
+        /// <summary>
+        /// Determines whether the specified weapon exists and has available ammunition.
+        /// </summary>
+        /// <param name="assetKey">The asset key identifying the weapon to check. Cannot be null.</param>
+        /// <returns>true if the weapon with the specified asset key exists and has ammunition; otherwise, false.</returns>
         public bool HasWeaponAndAmmo(string assetKey)
             => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey)?.MunitionQuantity > 0;
 
+        /// <summary>
+        /// Attempts to fire the weapon associated with the specified asset key.
+        /// </summary>
+        /// <remarks>If no weapon with the specified asset key exists, or if the weapon cannot be fired,
+        /// the method returns false. This method does not throw an exception if the asset key is not found.</remarks>
+        /// <param name="assetKey">The unique asset key identifying the weapon to fire. Cannot be null or empty.</param>
+        /// <returns>true if the weapon was found and successfully fired; otherwise, false.</returns>
         public bool FireWeapon(string assetKey)
             => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey)?.Fire() == true;
 
+        /// <summary>
+        /// Attempts to fire the weapon identified by the specified asset key at the given location.
+        /// </summary>
+        /// <remarks>If no weapon matching the specified asset key is found, or if the weapon cannot be
+        /// fired at the given location, the method returns false.</remarks>
+        /// <param name="assetKey">The unique asset key that identifies the weapon to fire. Cannot be null.</param>
+        /// <param name="location">The target location where the weapon should be fired.</param>
+        /// <returns>true if the weapon was successfully fired; otherwise, false.</returns>
         public bool FireWeapon(string assetKey, AeVector location)
             => Weapons.SingleOrDefault(o => o.Metadata?.AssetKey == assetKey)?.Fire(location) == true;
 
@@ -242,7 +312,7 @@ namespace Ae.Engine.Sprite.Interactive
 
         #endregion
 
-        public override void Render(RenderTarget renderTarget, float epoch)
+        internal override void Render(RenderTarget renderTarget, float epoch)
         {
             base.Render(renderTarget, epoch);
 
@@ -259,6 +329,15 @@ namespace Ae.Engine.Sprite.Interactive
             }
         }
 
+        /// <summary>
+        /// Attempts to register a hit on the object by the specified munition at the given position.
+        /// </summary>
+        /// <remarks>If the hit is successful and the object's hull health reaches zero or below, the
+        /// object will explode. This method does not throw exceptions for invalid input; callers should ensure
+        /// parameters are valid.</remarks>
+        /// <param name="munition">The munition attempting to hit the object. Must not be null.</param>
+        /// <param name="hitTestPosition">The position to test for a hit, typically representing the impact location.</param>
+        /// <returns>true if the munition successfully hits the object; otherwise, false.</returns>
         public override bool TryMunitionHit(AeSpriteMunition munition, AeVector hitTestPosition)
         {
             if (IntersectsAabb(hitTestPosition))
@@ -273,6 +352,14 @@ namespace Ae.Engine.Sprite.Interactive
             return false;
         }
 
+        /// <summary>
+        /// Triggers the explosion effects for this object, including visual, audio, and particle effects based on its
+        /// metadata.
+        /// </summary>
+        /// <remarks>Explosion effects are determined by the object's metadata, such as explosion type,
+        /// particle blast amount, fragment creation, and screen shake intensity. This method schedules the explosion
+        /// effects to occur and invokes the base implementation. The effects may include random explosion animations,
+        /// particle blasts, fragment creation, screen shake, and explosion sounds.</remarks>
         public override void Explode()
         {
             Engine.Events.Add(() =>
@@ -318,7 +405,6 @@ namespace Ae.Engine.Sprite.Interactive
         /// <param name="cameraDisplacement"></param>
         public virtual void ApplyIntelligence(float epoch, AeVector cameraDisplacement)
         {
-            CurrentAIController?.ApplyIntelligence(epoch, cameraDisplacement);
             Weapons?.ForEach(o => o.ApplyIntelligence(epoch));
         }
 
@@ -355,9 +441,9 @@ namespace Ae.Engine.Sprite.Interactive
 
             var thisCollidable = new PredictedKinematicBody(this, Engine.Display.CameraPosition, epoch);
 
-            /// It is important to remeber that need to verify the visibility of sprites that are colliding
-            ///     because the collection of collidables is a snapshot from the start of the tick and the
-            ///     visibility can change between that snapshot and this calculation.
+            // It is important to remeber that need to verify the visibility of sprites that are colliding
+            //     because the collection of collidables is a snapshot from the start of the tick and the
+            //     visibility can change between that snapshot and this calculation.
             foreach (var other in Engine.Collisions.Collidables.Where(o => o.Sprite.IsVisible))
             {
                 if (thisCollidable.Sprite == other.Sprite || Engine.Collisions.IsAlreadyHandled(thisCollidable.Sprite, other.Sprite))
@@ -381,7 +467,7 @@ namespace Ae.Engine.Sprite.Interactive
         /// Changes the movement vector of two sprites involved in a collision.
         /// </summary>
         /// <param name="collisionPair"></param>
-        public void RespondToCollisions(OverlappingKinematicBodyPair collisionPair)
+        internal void RespondToCollisions(OverlappingKinematicBodyPair collisionPair)
         {
             var A = collisionPair.Body1.Sprite;
             var B = collisionPair.Body2.Sprite;

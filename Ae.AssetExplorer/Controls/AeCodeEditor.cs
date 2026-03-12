@@ -1,10 +1,10 @@
-﻿using Ae.Engine.Helpers;
+﻿using Ae.Engine;
+using Ae.Engine.Helpers;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using System.ComponentModel;
 using System.Xml;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer.Controls
 {

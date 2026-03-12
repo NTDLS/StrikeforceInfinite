@@ -78,10 +78,25 @@ namespace Ae.Engine.Manager
         private readonly Stack<string> _commandStack = new();
         private readonly IInterrogationForm _interrogationForm;
 
+        /// <summary>
+        /// Gets the parser used to interpret and validate interrogation commands based on predefined prototypes.
+        /// </summary>
+        /// <remarks>Use this property to access the command parser for processing and analyzing
+        /// interrogation command inputs. The parser is initialized with the set of command prototypes and is ready for
+        /// immediate use.</remarks>
         public InterrogationCommandParser CommandParser { get; } = new(_commandPrototypes);
         private readonly List<MethodInfo> _concreteFunctions;
+
+        /// <summary>
+        /// Gets a value indicating whether the element is currently visible.
+        /// </summary>
         public bool IsVisible { get; private set; } = false;
 
+        /// <summary>
+        /// Initializes a new instance of the DevelopmentManager class with the specified engine and interrogation form.
+        /// </summary>
+        /// <param name="engine">The engine instance used to coordinate development operations.</param>
+        /// <param name="interrogationForm">The interrogation form that provides user input and interaction capabilities.</param>
         public DevelopmentManager(AeEngine engine, IInterrogationForm interrogationForm)
         {
             _engine = engine;
@@ -89,8 +104,17 @@ namespace Ae.Engine.Manager
             _concreteFunctions = GetFunctionsWithOnlyInterrogationCommandParameter();
         }
 
+        /// <summary>
+        /// Adds a command to the stack for later execution.
+        /// </summary>
+        /// <param name="command">The command string to enqueue. Cannot be null.</param>
         public void EnqueueCommand(string command) => _commandStack.Push(command);
 
+        /// <summary>
+        /// Ensures that the interrogation form is visible to the user.
+        /// </summary>
+        /// <remarks>If the form is not currently visible, this method displays it. This method can be
+        /// used to guarantee that the form is shown when required by application logic.</remarks>
         public void EnsureVisibility()
         {
             if (!IsVisible)
@@ -99,6 +123,13 @@ namespace Ae.Engine.Manager
             }
         }
 
+        /// <summary>
+        /// Toggles the visibility of the interrogation form. If the form is currently visible, it will be hidden;
+        /// otherwise, it will be shown.
+        /// </summary>
+        /// <remarks>This method changes the state of the form's visibility each time it is called. Use
+        /// this method to alternate between showing and hiding the form in response to user actions or application
+        /// events.</remarks>
         public void ToggleVisibility()
         {
             IsVisible = !IsVisible;
@@ -113,7 +144,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void ProcessCommand()
+        internal void ProcessCommand()
         {
             if (_commandStack.TryPop(out var command))
             {
@@ -137,7 +168,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public List<MethodInfo> GetFunctionsWithOnlyInterrogationCommandParameter()
+        internal List<MethodInfo> GetFunctionsWithOnlyInterrogationCommandParameter()
         {
             var methods = new List<MethodInfo>();
             var allMethods = typeof(DevelopmentManager)
@@ -157,18 +188,18 @@ namespace Ae.Engine.Manager
 
         #region Function command handlers.
 
-        public void CommandHandler_Display_RenderWindowPosition_Get(InterrogationCommand command)
+        internal void CommandHandler_Display_RenderWindowPosition_Get(InterrogationCommand command)
         {
             _interrogationForm.WriteLine($"\t{_engine.Display.CameraPosition}", System.Drawing.Color.Black);
         }
 
-        public void CommandHandler_Display_RenderWindowPosition_Set(InterrogationCommand command)
+        internal void CommandHandler_Display_RenderWindowPosition_Set(InterrogationCommand command)
         {
             _engine.Display.CameraPosition.X = command.ParameterValue<float>("x");
             _engine.Display.CameraPosition.Y = command.ParameterValue<float>("y");
         }
 
-        public void CommandHandler_Display_RenderWindowPosition_CenterOn(InterrogationCommand command)
+        internal void CommandHandler_Display_RenderWindowPosition_CenterOn(InterrogationCommand command)
         {
             _engine.Sprites.DeveloperOnlyAccess(o =>
             {
@@ -182,13 +213,13 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Display_Adapters(InterrogationCommand command)
+        internal void CommandHandler_Display_Adapters(InterrogationCommand command)
         {
             var text = AeRenderingUtility.GetGraphicsAdaptersDescriptions();
             _interrogationForm.Write(text, System.Drawing.Color.Black);
         }
 
-        public void CommandHandler_Sprite_Enemies_DeleteAll(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Enemies_DeleteAll(InterrogationCommand command)
         {
             foreach (var sprite in _engine.Sprites.Enemies.All())
             {
@@ -196,7 +227,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void CommandHandler_Sprite_Enemies_ExplodeAll(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Enemies_ExplodeAll(InterrogationCommand command)
         {
             foreach (var sprite in _engine.Sprites.Enemies.All())
             {
@@ -204,17 +235,17 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void CommandHandler_Sprite_Player_Explode(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Player_Explode(InterrogationCommand command)
         {
             _engine.Player.Sprite.Explode();
         }
 
-        public void CommandHandler_Cls(InterrogationCommand command)
+        internal void CommandHandler_Cls(InterrogationCommand command)
         {
             _interrogationForm.ClearText();
         }
 
-        public void CommandHandler_Help(InterrogationCommand command)
+        internal void CommandHandler_Help(InterrogationCommand command)
         {
             var commands = CommandParser.Commands.OrderBy(o => o.Name).ToList();
 
@@ -260,7 +291,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void CommandHandler_Display_Metrics(InterrogationCommand command)
+        internal void CommandHandler_Display_Metrics(InterrogationCommand command)
         {
             var infoText =
                   $"\t         Background Offset: {_engine.Display.CameraPosition}\r\n"
@@ -274,42 +305,42 @@ namespace Ae.Engine.Manager
             _interrogationForm.WriteLine(infoText, System.Drawing.Color.Black);
         }
 
-        public void CommandHandler_Display_SpeedZoomScaling(InterrogationCommand command)
+        internal void CommandHandler_Display_SpeedZoomScaling(InterrogationCommand command)
         {
             var state = command.ParameterValue<bool>("state");
             _engine.Settings.EnableSpeedScaleFactoring = state;
         }
 
-        public void CommandHandler_Display_HighlightNaturalBounds(InterrogationCommand command)
+        internal void CommandHandler_Display_HighlightNaturalBounds(InterrogationCommand command)
         {
             var state = command.ParameterValue<bool>("state");
             _engine.Settings.HighlightNaturalBounds = state;
         }
 
-        public void CommandHandler_Display_FineTuneFramerate(InterrogationCommand command)
+        internal void CommandHandler_Display_FineTuneFramerate(InterrogationCommand command)
         {
             var state = command.ParameterValue<bool>("state");
             _engine.Settings.FineTuneFramerate = state;
         }
 
-        public void CommandHandler_Display_HighlightCollisions(InterrogationCommand command)
+        internal void CommandHandler_Display_HighlightCollisions(InterrogationCommand command)
         {
             var state = command.ParameterValue<bool>("state");
             _engine.Settings.HighlightCollisions = state;
         }
 
-        public void CommandHandler_Display_HighlightAll(InterrogationCommand command)
+        internal void CommandHandler_Display_HighlightAll(InterrogationCommand command)
         {
             var state = command.ParameterValue<bool>("state");
             _engine.Settings.HighlightAllSprites = state;
         }
 
-        public void CommandHandler_Display_Zoom_Get(InterrogationCommand command)
+        internal void CommandHandler_Display_Zoom_Get(InterrogationCommand command)
         {
             _interrogationForm.WriteLine($"\t{_engine.Display.SpeedOrientedFrameScalingFactor():n4}", System.Drawing.Color.Black);
         }
 
-        public void CommandHandler_Engine_Pause(InterrogationCommand command)
+        internal void CommandHandler_Engine_Pause(InterrogationCommand command)
         {
             var state = command.ParameterValue<bool>("state");
 
@@ -323,7 +354,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void CommandHandler_Display_Framerate(InterrogationCommand command)
+        internal void CommandHandler_Display_Framerate(InterrogationCommand command)
         {
             var infoText =
                   $"\t Target: {_engine.Settings.TargetFrameRate:n4}\r\n"
@@ -333,7 +364,7 @@ namespace Ae.Engine.Manager
             _interrogationForm.WriteLine(infoText, System.Drawing.Color.Black);
         }
 
-        public void CommandHandler_Sprite_ListTypes(InterrogationCommand command)
+        internal void CommandHandler_Sprite_ListTypes(InterrogationCommand command)
         {
             var spriteTypes = AeReflection.GetSubClassesOf<AeSprite>();
 
@@ -347,7 +378,7 @@ namespace Ae.Engine.Manager
             _interrogationForm.WriteLine(text.ToString(), System.Drawing.Color.Black);
         }
 
-        public void CommandHandler_Sprite_Create(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Create(InterrogationCommand command)
         {
             var assetKey = command.ParameterValue<string>("assetKey");
             if (assetKey == null)
@@ -366,7 +397,7 @@ namespace Ae.Engine.Manager
             _interrogationForm.WriteLine($"\tCreatedUID: {sprite.UID}", System.Drawing.Color.Black);
         }
 
-        public void CommandHandler_Sprite_Player_Reflect_List(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Player_Reflect_List(InterrogationCommand command)
         {
             var reflectionType = _engine.Player.Sprite.GetType();
             var properties = reflectionType.GetProperties().OrderBy(o => o.Name).ToList();
@@ -377,7 +408,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void CommandHandler_Sprite_Player_Reflect_Set(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Player_Reflect_Set(InterrogationCommand command)
         {
             var propertyName = command.ParameterValue<string>("property");
             if (propertyName == null)
@@ -403,7 +434,7 @@ namespace Ae.Engine.Manager
             }
         }
 
-        public void CommandHandler_Sprite_Reflect_List(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Reflect_List(InterrogationCommand command)
         {
             _engine.Sprites.DeveloperOnlyAccess(o =>
             {
@@ -422,7 +453,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Reflect_Set(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Reflect_Set(InterrogationCommand command)
         {
             var propertyName = command.ParameterValue<string>("property");
             if (propertyName == null)
@@ -456,12 +487,12 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Player_Inspect(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Player_Inspect(InterrogationCommand command)
         {
             _interrogationForm.WriteLine(_engine.Player.Sprite.GetInspectionText(), System.Drawing.Color.Black);
         }
 
-        public void CommandHandler_Sprite_Inspect(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Inspect(InterrogationCommand command)
         {
             _engine.Sprites.DeveloperOnlyAccess(o =>
             {
@@ -474,7 +505,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Explode(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Explode(InterrogationCommand command)
         {
             _engine.Sprites.DeveloperOnlyAccess(o =>
             {
@@ -487,7 +518,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_IsPointingAt(InterrogationCommand command)
+        internal void CommandHandler_Sprite_IsPointingAt(InterrogationCommand command)
         {
             var baseSpriteUID = command.ParameterValue<uint>("baseSpriteUID");
             var targetSpriteUID = command.ParameterValue<uint>("targetSpriteUID");
@@ -507,7 +538,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_IsPointingAway(InterrogationCommand command)
+        internal void CommandHandler_Sprite_IsPointingAway(InterrogationCommand command)
         {
             var baseSpriteUID = command.ParameterValue<uint>("baseSpriteUID");
             var targetSpriteUID = command.ParameterValue<uint>("targetSpriteUID");
@@ -528,7 +559,7 @@ namespace Ae.Engine.Manager
         }
 
 
-        public void CommandHandler_Sprite_DistanceTo(InterrogationCommand command)
+        internal void CommandHandler_Sprite_DistanceTo(InterrogationCommand command)
         {
             var baseSpriteUID = command.ParameterValue<uint>("baseSpriteUID");
             var targetSpriteUID = command.ParameterValue<uint>("targetSpriteUID");
@@ -546,7 +577,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_AngleTo(InterrogationCommand command)
+        internal void CommandHandler_Sprite_AngleTo(InterrogationCommand command)
         {
             var baseSpriteUID = command.ParameterValue<uint>("baseSpriteUID");
             var targetSpriteUID = command.ParameterValue<uint>("targetSpriteUID");
@@ -564,7 +595,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Watch(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Watch(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
             _engine.Sprites.DeveloperOnlyAccess(o =>
@@ -581,7 +612,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_AngleInDegrees(InterrogationCommand command)
+        internal void CommandHandler_Sprite_AngleInDegrees(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
             _engine.Sprites.DeveloperOnlyAccess(o =>
@@ -594,7 +625,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Boost(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Boost(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
 
@@ -608,7 +639,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_SpeedThrottle(InterrogationCommand command)
+        internal void CommandHandler_Sprite_SpeedThrottle(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
 
@@ -622,7 +653,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_BoostThrottle(InterrogationCommand command)
+        internal void CommandHandler_Sprite_BoostThrottle(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
 
@@ -636,7 +667,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Speed(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Speed(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
 
@@ -650,7 +681,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Highlight(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Highlight(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
 
@@ -664,7 +695,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Visible(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Visible(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
 
@@ -678,7 +709,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Move(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Move(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
 
@@ -693,7 +724,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_Move_Center(InterrogationCommand command)
+        internal void CommandHandler_Sprite_Move_Center(InterrogationCommand command)
         {
             var uid = command.ParameterValue<uint>("uid");
 
@@ -708,7 +739,7 @@ namespace Ae.Engine.Manager
             });
         }
 
-        public void CommandHandler_Sprite_List(InterrogationCommand command)
+        internal void CommandHandler_Sprite_List(InterrogationCommand command)
         {
             _engine.Sprites.DeveloperOnlyAccess(o =>
             {

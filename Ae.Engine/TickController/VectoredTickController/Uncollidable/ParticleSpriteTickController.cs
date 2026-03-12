@@ -7,18 +7,40 @@ using Ae.Engine.Sprite.Base;
 using SharpDX;
 using System;
 using System.Drawing;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
 {
+    /// <summary>
+    /// Controls the creation, emission, and motion of sprite-based particles within the game world, providing methods
+    /// for generating particle effects such as blasts, cones, and clouds.
+    /// </summary>
+    /// <remarks>Use this controller to add, emit, or animate particles for visual effects. Supports
+    /// configurable emission patterns, colors, sizes, and cleanup modes. Designed for integration with multiplayer
+    /// action recording and advanced particle behaviors. Thread safety and performance depend on the underlying engine
+    /// and sprite manager implementations.</remarks>
     public class ParticleSpriteTickController
         : VectoredTickControllerBase<AeSpriteParticle>
     {
+        /// <summary>
+        /// Initializes a new instance of the ParticleSpriteTickController class to manage particle sprite updates
+        /// within the specified engine and sprite manager.
+        /// </summary>
+        /// <param name="engine">The engine instance that provides the context for particle sprite operations. Cannot be null.</param>
+        /// <param name="manager">The sprite manager responsible for handling sprite objects. Cannot be null.</param>
         public ParticleSpriteTickController(AeEngine engine, SpriteManager manager)
             : base(engine, manager)
         {
         }
 
+        /// <summary>
+        /// Updates the motion state of all visible particles for the current world clock tick and records their
+        /// multiplayer action vectors.
+        /// </summary>
+        /// <remarks>This method applies motion updates to each visible particle and records their action
+        /// vectors for multiplayer synchronization. It should be called once per world clock tick to ensure consistent
+        /// state across clients.</remarks>
+        /// <param name="epoch">The current time value, in seconds, representing the world clock tick to apply motion updates.</param>
+        /// <param name="cameraDisplacement">The displacement vector of the camera, used to adjust particle motion calculations for the current tick.</param>
         public override void ExecuteWorldClockTick(float epoch, AeVector cameraDisplacement)
         {
             foreach (var particle in Visible())
@@ -28,6 +50,17 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
+        /// <summary>
+        /// Adds multiple items at or near the specified location with the given color and optional size.
+        /// </summary>
+        /// <remarks>Each item is placed at a randomly offset position within a range of -20 to 20 units
+        /// from the base location. This method is useful for adding clusters of items with slight positional
+        /// variation.</remarks>
+        /// <param name="location">The base location where items will be added. Each item will be placed at a position offset randomly from
+        /// this location.</param>
+        /// <param name="color">The color to apply to each added item.</param>
+        /// <param name="count">The number of items to add. Must be non-negative.</param>
+        /// <param name="size">The optional size to apply to each item. If not specified, a default size will be used.</param>
         public void AddAt(AeVector location, Color4 color, int count, Size? size = null)
         {
             for (int i = 0; i < count; i++)
@@ -36,6 +69,15 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
+        /// <summary>
+        /// Adds multiple sprites at randomized locations near the specified sprite's position.
+        /// </summary>
+        /// <remarks>Each sprite is placed at a location offset randomly within a range of -20 to 20 units
+        /// from the base sprite's position.</remarks>
+        /// <param name="sprite">The sprite whose location is used as the base for placement.</param>
+        /// <param name="color">The color to apply to each added sprite.</param>
+        /// <param name="count">The number of sprites to add.</param>
+        /// <param name="size">The optional size to assign to each sprite. If null, the default size is used.</param>
         public void AddAt(AeSprite sprite, Color4 color, int count, Size? size = null)
         {
             for (int i = 0; i < count; i++)
@@ -44,6 +86,14 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
+        /// <summary>
+        /// Creates and inserts a new sprite particle at the location of the specified sprite with the given color and
+        /// optional size.
+        /// </summary>
+        /// <param name="sprite">The sprite whose location will be used for the new particle. Cannot be null.</param>
+        /// <param name="color">The color to apply to the new particle.</param>
+        /// <param name="size">The size of the new particle. If null, a default size of 1x1 is used.</param>
+        /// <returns>A new instance of AeSpriteParticle representing the inserted particle.</returns>
         public AeSpriteParticle AddAt(AeSprite sprite, Color4 color, Size? size = null)
         {
             var obj = new AeSpriteParticle(Engine, sprite.Location, size ?? new Size(1, 1), color);
@@ -51,6 +101,13 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
+        /// <summary>
+        /// Creates and adds a new sprite particle at the specified location with the given color and optional size.
+        /// </summary>
+        /// <param name="location">The position where the sprite particle will be placed.</param>
+        /// <param name="color">The color to apply to the sprite particle.</param>
+        /// <param name="size">The size of the sprite particle. If null, a default size of 1x1 is used.</param>
+        /// <returns>The newly created sprite particle instance.</returns>
         public AeSpriteParticle AddAt(AeVector location, Color4 color, Size? size = null)
         {
             var obj = new AeSpriteParticle(Engine, location, size ?? new Size(1, 1), color)
@@ -61,6 +118,14 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
+        /// <summary>
+        /// Creates and adds a new sprite particle at the specified location with an optional size.
+        /// </summary>
+        /// <remarks>The created sprite particle is immediately visible and managed by the sprite
+        /// manager.</remarks>
+        /// <param name="location">The position where the sprite particle will be placed.</param>
+        /// <param name="size">The size of the sprite particle. If null, a default size of 1x1 is used.</param>
+        /// <returns>The newly created sprite particle instance positioned at the specified location.</returns>
         public AeSpriteParticle AddAt(AeVector location, Size? size = null)
         {
             var obj = new AeSpriteParticle(Engine, location, size ?? new Size(1, 1))
@@ -71,6 +136,11 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             return obj;
         }
 
+        /// <summary>
+        /// Triggers a particle blast effect at the specified sprite's location with a maximum number of particles.
+        /// </summary>
+        /// <param name="at">The sprite whose location will be used as the origin for the particle blast.</param>
+        /// <param name="maxParticleCount">The maximum number of particles to generate for the blast effect.</param>
         public void ParticleBlastAt(AeSprite at, int maxParticleCount)
         {
             Engine.Events.Add(() => ParticleBlastAt(at.Location, maxParticleCount));
@@ -79,8 +149,6 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// <summary>
         /// Creates a random number of blasts consisting of "hot" colored particles at a given location.
         /// </summary>
-        /// <param name="maxParticleCount"></param>
-        /// <param name="at"></param>
         public void ParticleBlastAt(AeVector location, int maxParticleCount)
         {
             for (int i = 0; i < AeRandom.Between(maxParticleCount / 2, maxParticleCount); i++)
@@ -153,9 +221,22 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             }
         }
 
+        /// <summary>
+        /// Creates a cloud of particles at the location of the specified sprite.
+        /// </summary>
+        /// <param name="particleCount">The number of particles to generate in the cloud. Must be a non-negative integer.</param>
+        /// <param name="at">The sprite whose location will be used as the origin for the particle cloud. Cannot be null.</param>
         public void ParticleCloud(int particleCount, AeSprite at)
             => ParticleCloud(particleCount, at.Location);
 
+        /// <summary>
+        /// Creates a cloud of particles at the specified location with randomized appearance and movement properties.
+        /// </summary>
+        /// <remarks>Each particle is assigned a random shape, color, orientation, speed, and rotation.
+        /// Particles fade to black over time. This method is useful for visual effects requiring a burst or cluster of
+        /// particles.</remarks>
+        /// <param name="particleCount">The number of particles to generate in the cloud. Must be non-negative.</param>
+        /// <param name="location">The location at which the particle cloud is created.</param>
         public void ParticleCloud(int particleCount, AeVector location)
         {
             for (int i = 0; i < particleCount; i++)

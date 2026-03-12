@@ -3,7 +3,6 @@ using Ae.Engine.Compiler;
 using Ae.Engine.Helpers;
 using Ae.Engine.Metadata;
 using System.Reflection;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer.Forms
 {

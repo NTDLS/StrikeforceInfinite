@@ -1,5 +1,12 @@
 ﻿namespace Ae.Engine.DataModels
 {
+    /// <summary>
+    /// Represents configuration settings for an AE server, including network, logging, and connection management
+    /// options.
+    /// </summary>
+    /// <remarks>Use this class to specify server parameters such as data port, log directory, and connection
+    /// timeouts. These settings control how the server exchanges data, manages logs, and handles client connections.
+    /// Changes to these properties affect server behavior and performance.</remarks>
     public class AeServerSettings
     {
         /// <summary>

@@ -1,7 +1,6 @@
 ﻿using Ae.Engine.Level;
 using Ae.Engine.Types;
 using System.Collections.Generic;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Situation
 {
@@ -10,26 +9,62 @@ namespace Ae.Engine.Situation
     /// </summary>
     public class AeSituation
     {
-        protected AeEngine _engine;
+        /// <summary>
+        /// Gets the engine instance used to execute automation tasks.
+        /// </summary>
+        public AeEngine Engine { get; private set; }
+
+        /// <summary>
+        /// Stores the collection of deferment events associated with the current instance.
+        /// </summary>
         protected List<AeDefermentEvent> Events = new();
 
+        /// <summary>
+        /// Gets or sets the current AE level for the operation.
+        /// </summary>
         public AeLevel? CurrentLevel { get; protected set; }
         private int _currentLevelIndex = 0;
 
+        /// <summary>
+        /// Gets or sets the name associated with the object.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the textual description associated with the object.
+        /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets the current state of the situation.
+        /// </summary>
         public AeSituationState State { get; protected set; } = AeSituationState.NotYetStarted;
 
+        /// <summary>
+        /// Gets the collection of levels associated with the current instance.
+        /// </summary>
         public List<AeLevel> Levels { get; protected set; } = new();
 
+        /// <summary>
+        /// Initializes a new instance of the AeSituation class with the specified engine, name, and description.
+        /// </summary>
+        /// <param name="engine">The engine instance associated with this situation. Cannot be null.</param>
+        /// <param name="name">The name that uniquely identifies the situation. Cannot be null or empty.</param>
+        /// <param name="description">A description providing additional context or details about the situation. Cannot be null.</param>
         public AeSituation(AeEngine engine, string name, string description)
         {
-            _engine = engine;
+            Engine = engine;
             Name = name;
             Description = description;
             State = AeSituationState.NotYetStarted;
         }
 
+        /// <summary>
+        /// Ends the current level and updates the situation state to indicate completion.
+        /// </summary>
+        /// <remarks>This method finalizes all levels by invoking their end operations and resets the
+        /// current level state. It should be called when the situation is ready to be concluded. Calling this method
+        /// when no current level is active has no effect.</remarks>
         public void End()
         {
             if (CurrentLevel != null)
@@ -59,7 +94,7 @@ namespace Ae.Engine.Situation
             {
                 if (_currentLevelIndex < Levels.Count)
                 {
-                    _engine.Player.Hide();
+                    Engine.Player.Hide();
                     CurrentLevel = Levels[_currentLevelIndex];
                     CurrentLevel.Begin();
                     _currentLevelIndex++;

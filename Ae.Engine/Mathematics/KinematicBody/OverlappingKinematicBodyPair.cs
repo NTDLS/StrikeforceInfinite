@@ -8,7 +8,7 @@ namespace Ae.Engine.Mathematics.KinematicBody
     /// An object that contains both the location (position) and the velocity (vector indicating both
     /// speed and direction) of another object is commonly referred to as a "Kinematic" object.
     /// </summary>
-    public struct OverlappingKinematicBodyPair
+    internal struct OverlappingKinematicBodyPair
     {
         /// <summary>
         /// Creates a unique string key for a pair of sprites regardless of their order.

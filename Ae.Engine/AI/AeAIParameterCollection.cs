@@ -2,6 +2,9 @@
 
 namespace Ae.Engine.AI
 {
+    /// <summary>
+    /// Represents a collection of named parameters for storing and retrieving values by key.
+    /// </summary>
     public class AeAIParameterCollection
     {
         private Dictionary<string, object> _parameters = new();
@@ -40,6 +43,9 @@ namespace Ae.Engine.AI
             _parameters[key] = value;
         }
 
+        /// <summary>
+        /// Gets an existing value from the collection.
+        /// </summary>
         public T Get<T>(string key)
         {
             if (_parameters.TryGetValue(key, out var value) && value is T typedValue)
@@ -49,6 +55,9 @@ namespace Ae.Engine.AI
             throw new KeyNotFoundException($"Parameter with key '{key}' not found or is not of type {typeof(T).Name}.");
         }
 
+        /// <summary>
+        /// Gets a value from the collection, returning a default value if the key does not exist or if the value is not of the expected type.
+        /// </summary>
         public T? Get<T>(string key, T? defaultValue = default)
         {
             if (_parameters.TryGetValue(key, out var value) && value is T typedValue)

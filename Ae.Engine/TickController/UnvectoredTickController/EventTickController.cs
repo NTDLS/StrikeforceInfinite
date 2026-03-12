@@ -6,6 +6,15 @@ using static Ae.Engine.Types.AeDefermentEvent;
 
 namespace Ae.Engine.TickController.UnvectoredTickController
 {
+    /// <summary>
+    /// Provides control and management for deferred event execution within the game engine, allowing events to be
+    /// scheduled, triggered, and deleted based on timing and conditions.
+    /// </summary>
+    /// <remarks>EventTickController enables flexible scheduling of one-time or recurring events, supporting
+    /// both synchronous and asynchronous execution models. Events can be added with custom callbacks and parameters,
+    /// and are managed in a thread-safe collection. This controller is typically used to coordinate game logic that
+    /// depends on timed actions or state changes. Thread safety is ensured for event collection operations. Use the
+    /// provided factory methods to schedule events and manage their lifecycle.</remarks>
     public class EventTickController
         : UnvectoredTickControllerBase<AeDefermentEvent>
     {
@@ -18,11 +27,22 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <param name="parameter">An object passed by the user code</param>
         public delegate void SiDefermentSimpleExecuteCallbackT<T>(T parameter);
 
+        /// <summary>
+        /// Initializes a new instance of the EventTickController class using the specified engine.
+        /// </summary>
+        /// <param name="engine">The engine instance used to coordinate event ticks. Cannot be null.</param>
         public EventTickController(AeEngine engine)
             : base(engine)
         {
         }
 
+        /// <summary>
+        /// Processes scheduled engine events for the current world clock tick, triggering events that are not queued
+        /// for deletion.
+        /// </summary>
+        /// <remarks>This method iterates through the collection of engine events and checks each event
+        /// for activation if it is not marked for deletion. It is typically called once per world clock tick to ensure
+        /// timely event processing.</remarks>
         public override void ExecuteWorldClockTick()
         {
             _collection.Use(o =>
@@ -52,36 +72,101 @@ namespace Ae.Engine.TickController.UnvectoredTickController
 
         #region Factories.
 
+        /// <summary>
+        /// Creates a new deferment event that executes a callback once after a specified delay.
+        /// </summary>
+        /// <remarks>Use this method to schedule a single execution of a callback after a delay. The event
+        /// is added to the internal collection and will be triggered according to the specified threading
+        /// model.</remarks>
+        /// <param name="delayMs">The delay, in milliseconds, before the callback is executed. Must be non-negative.</param>
+        /// <param name="executionCallback">The callback to execute when the deferment event triggers. Receives the event instance and an optional
+        /// reference object.</param>
+        /// <param name="threadModel">Specifies the threading model to use for event execution. Defaults to Synchronous if not specified.</param>
+        /// <returns>An instance of AeDefermentEvent representing the scheduled one-time execution.</returns>
+        public AeDefermentEvent Once(int delayMs, SiDefermentExecuteCallback executionCallback,
+            SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
+        {
+            return _collection.Use(o =>
+            {
+                var obj = new AeDefermentEvent(delayMs, (AeDefermentEvent sender, object? refObj) => executionCallback(sender, refObj));
+                o.Add(obj);
+                return obj;
+            });
+        }
+
+        /// <summary>
+        /// Schedules a single deferred event to execute the specified callback after a delay.
+        /// </summary>
+        /// <remarks>The event will execute only once after the specified delay. Use the returned
+        /// AeDefermentEvent to manage or cancel the scheduled event as needed.</remarks>
+        /// <param name="delayMs">The delay, in milliseconds, before the callback is executed. Must be non-negative.</param>
+        /// <param name="executionCallback">The callback to execute when the deferred event is triggered.</param>
+        /// <param name="threadModel">Specifies the threading model to use for event execution. Defaults to Synchronous.</param>
+        /// <returns>An instance of AeDefermentEvent representing the scheduled deferred event.</returns>
+        public AeDefermentEvent Once(int delayMs, SiDefermentSimpleExecuteCallback executionCallback,
+            SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
+        {
+            return _collection.Use(o =>
+            {
+                var obj = new AeDefermentEvent(delayMs, (AeDefermentEvent sender, object? refObj) => executionCallback());
+                o.Add(obj);
+                return obj;
+            });
+        }
+
+        /// <summary>
+        /// Creates a new deferment event that executes the specified callback once, using the provided thread model.
+        /// </summary>
+        /// <remarks>Use this method to schedule a one-time execution of a callback within the deferment
+        /// event system. The event is added to the internal collection and will be executed according to the specified
+        /// thread model.</remarks>
+        /// <param name="executionCallback">The callback to execute when the event is triggered. Cannot be null.</param>
+        /// <param name="threadModel">Specifies the threading model to use for event execution. Defaults to <see
+        /// cref="SiDefermentEventThreadModel.Synchronous"/>.</param>
+        /// <returns>An <see cref="AeDefermentEvent"/> instance representing the created event. The event will execute the
+        /// callback a single time when triggered.</returns>
         public AeDefermentEvent Once(SiDefermentSimpleExecuteCallback executionCallback,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {
             return _collection.Use(o =>
             {
-                var obj = new AeDefermentEvent(0,
-                    (AeDefermentEvent sender, object? refObj) =>
-                    {
-                        executionCallback();
-                    });
+                var obj = new AeDefermentEvent(0, (AeDefermentEvent sender, object? refObj) => executionCallback());
                 o.Add(obj);
                 return obj;
             });
         }
 
+        /// <summary>
+        /// Creates a deferment event that executes the specified callback once with the provided parameter.
+        /// </summary>
+        /// <remarks>The event is added to the internal collection and will execute only once. Use the
+        /// threadModel parameter to control whether the callback runs synchronously or asynchronously.</remarks>
+        /// <typeparam name="T">The type of the parameter passed to the execution callback.</typeparam>
+        /// <param name="executionCallback">A callback to be executed when the event is triggered. Cannot be null.</param>
+        /// <param name="parameter">The parameter to pass to the execution callback.</param>
+        /// <param name="threadModel">Specifies the threading model to use for event execution. Defaults to Synchronous.</param>
+        /// <returns>An instance of AeDefermentEvent representing the created event. The event will execute the callback once
+        /// when triggered.</returns>
         public AeDefermentEvent Once<T>(SiDefermentSimpleExecuteCallbackT<T> executionCallback, T parameter,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {
             return _collection.Use(o =>
             {
-                var obj = new AeDefermentEvent(0,
-                    (AeDefermentEvent sender, object? refObj) =>
-                    {
-                        executionCallback(parameter);
-                    });
+                var obj = new AeDefermentEvent(0, (AeDefermentEvent sender, object? refObj) => executionCallback(parameter));
                 o.Add(obj);
                 return obj;
             });
         }
 
+        /// <summary>
+        /// Creates a one-time deferment event that executes the specified callback when triggered.
+        /// </summary>
+        /// <remarks>Use this method to schedule a callback for deferred execution. The event will execute
+        /// only once and will be removed from the collection after execution.</remarks>
+        /// <param name="executionCallback">The callback to execute when the event is triggered. Cannot be null.</param>
+        /// <param name="parameter">An optional parameter to pass to the callback when the event is executed. May be null.</param>
+        /// <param name="threadModel">Specifies the threading model to use when executing the callback. Defaults to Synchronous if not specified.</param>
+        /// <returns>An instance of AeDefermentEvent representing the created one-time event.</returns>
         public AeDefermentEvent Once(SiDefermentExecuteCallback executionCallback, object? parameter = null,
             SiDefermentEventThreadModel threadModel = SiDefermentEventThreadModel.Synchronous)
         {
@@ -226,7 +311,6 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <summary>
         /// Creates a new single threaded, single-fire event.
         /// </summary>
-        /// <param name="timeoutMilliseconds">Time until the event is fired.</param>
         /// <param name="executionCallback">The callback function that will be called when the timeout expires.</param>
         /// <returns></returns>
         public AeDefermentEvent Add(SiDefermentSimpleExecuteCallback executionCallback)
@@ -242,8 +326,6 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// <summary>
         /// Adds an existing even to the collection.
         /// </summary>
-        /// <param name="SiDefermentEvent">An existing event to add.</param>
-        /// <returns></returns>
         public AeDefermentEvent Add(AeDefermentEvent obj)
         {
             return _collection.Use(o =>

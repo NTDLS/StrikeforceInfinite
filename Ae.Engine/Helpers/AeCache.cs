@@ -9,7 +9,7 @@ namespace Ae.Engine.Helpers
     /// Implements a cache where we do not allow the caching of null values. This allows us to use the TryGet pattern for
     /// retrieving items from the cache without having to worry about distinguishing between a cached null value and a cache miss.
     /// </summary>
-    public class AeCache
+    internal class AeCache
     {
         private readonly MemoryCache _memCache;
 

@@ -14,6 +14,16 @@ namespace Ae.Engine.Helpers
     {
         private static readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
+        /// <summary>
+        /// Loads the text content of an embedded resource from the specified resource path.
+        /// </summary>
+        /// <remarks>The method searches all loaded assemblies for the resource and uses an internal cache
+        /// to improve performance on repeated calls. If the resource is not found, an exception is thrown rather than
+        /// returning null.</remarks>
+        /// <param name="resourcePath">The path to the embedded resource to load. The path is case-insensitive and should use dot-separated
+        /// namespace notation or file path format.</param>
+        /// <returns>A string containing the text content of the embedded resource if found.</returns>
+        /// <exception cref="Exception">Thrown if the embedded resource cannot be found at the specified path.</exception>
         public static string Load(string resourcePath)
         {
             string cacheKey = $":{resourcePath.ToLowerInvariant()}".Replace('.', ':').Replace('\\', ':').Replace('/', ':');

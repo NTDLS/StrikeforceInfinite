@@ -6,7 +6,6 @@ using SharpDX.Mathematics.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.Engine.Sprite.Base
 {
@@ -105,22 +104,76 @@ namespace Ae.Engine.Sprite.Base
             }
         }
 
+        /// <summary>
+        /// Retrieves the bitmap image associated with the sprite, if available.
+        /// </summary>
+        /// <returns>A <see cref="SharpDX.Direct2D1.Bitmap"/> representing the sprite's image; <see langword="null"/> if no image
+        /// is associated.</returns>
         public SharpDX.Direct2D1.Bitmap? GetImage() => SpriteBitmap;
+
+        /// <summary>
+        /// Gets or sets the tag associated with the sprite.
+        /// </summary>
         public string? SpriteTag { get; set; }
+
+        /// <summary>
+        /// Gets the unique identifier assigned to this instance.
+        /// </summary>
         public uint UID { get; private set; } = AeSequenceGenerator.Next();
+
+        /// <summary>
+        /// Gets or sets the unique identifier of the owner associated with this entity.
+        /// </summary>
         public uint OwnerUID { get; set; }
+
+        /// <summary>
+        /// Gets the collection of attachments associated with the sprite.
+        /// </summary>
         public List<AeSpriteAttachment> Attachments { get; private set; } = new();
+
+        /// <summary>
+        /// Gets or sets the size of the radar dot as a vector.
+        /// </summary>
         public AeVector RadarDotSize { get; set; } = new AeVector(4, 4);
+
+        /// <summary>
+        /// Gets a value indicating whether the object's render bounds intersect with the current scaled screen bounds.
+        /// </summary>
+        /// <remarks>Use this property to determine if the object is visible within the current display
+        /// area, accounting for any scaling applied to the screen. This can be useful for optimizing rendering or
+        /// handling visibility-related logic.</remarks>
         public bool IsWithinCurrentScaledScreenBounds => Engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the item is visually highlighted.
+        /// </summary>
         public bool IsHighlighted { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the swept motion rectangle should be visually highlighted.
+        /// </summary>
         public bool HighlightSweptMotionRect { get; set; } = false;
+
+        /// <summary>
+        /// Gets the current hull health of the ship.
+        /// </summary>
         public int HullHealth { get; private set; } = 0; //Ship hit-points.
+
+        /// <summary>
+        /// Gets the current shield health value, representing the number of hit points remaining for the shield.
+        /// </summary>
+        /// <remarks>Shield health determines how much damage the shield can absorb before it is depleted.
+        /// Damage to the shield is reduced by half compared to regular health.</remarks>
         public int ShieldHealth { get; private set; } = 0; //Shield hit-points, these take 1/2 damage.
 
         /// <summary>
         /// The sprite still exists, but is not functional (e.g. its been shot and exploded).
         /// </summary>
         public bool IsDeadOrExploded { get; private set; } = false;
+
+        /// <summary>
+        /// Gets a value indicating whether the item is scheduled to be deleted.
+        /// </summary>
         public bool IsQueuedForDeletion => _readyForDeletion;
 
         /// <summary>
@@ -251,10 +304,18 @@ namespace Ae.Engine.Sprite.Base
             }
         }
 
-        // The Z location. Given that this is a 2d engine, the Z order is just a render order.
+        /// <summary>
+        /// The Z location. Given that this is a 2d engine, the Z order is just a render order.
+        /// </summary>
         public int Z { get; set; } = 0;
 
         private bool _isVisible = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the item is currently visible.
+        /// </summary>
+        /// <remarks>Changing this property triggers visibility change notifications. The item is
+        /// considered visible only if it is not marked for deletion.</remarks>
         public bool IsVisible
         {
             get => _isVisible && !_readyForDeletion;

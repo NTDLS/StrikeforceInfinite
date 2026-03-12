@@ -19,7 +19,13 @@ namespace Ae.Engine.Mathematics
             /// When a resource reaches 0, it must renew bac to to this value before it can be used.
             /// </summary>
             public float CooldownFloor { get; set; } = 0;
+            /// <summary>
+            /// Gets or sets the number of rebuild operations allowed per second.
+            /// </summary>
             public float RebuildRatePerSecond { get; set; }
+            /// <summary>
+            /// Gets or sets the maximum allowable value for the property.
+            /// </summary>
             public float MaxValue { get; set; }
 
             private bool _isCoolingDown = false;
@@ -39,6 +45,11 @@ namespace Ae.Engine.Mathematics
             }
 
             private float _availableResource = 0;
+            /// <summary>
+            /// Gets the amount of resource currently available for use.
+            /// </summary>
+            /// <remarks>If the system is cooling down, this property returns 0 regardless of the
+            /// underlying resource value.</remarks>
             public float AvailableResource
             {
                 get => IsCoolingDown == true ? 0 : _availableResource;
@@ -55,7 +66,7 @@ namespace Ae.Engine.Mathematics
             /// </summary>
             /// <param name="maxValue">The maximum value the resource can build to.</param>
             /// <param name="startingValue">The starting value of the resource.</param>
-            /// <param name="RebuildRatePerSecond">The amount of resource to add per-second.</param>
+            /// <param name="rebuildRatePerSecond">The amount of resource to add per-second.</param>
             public RenewableResource(float maxValue, float startingValue, float rebuildRatePerSecond)
             {
                 MaxValue = maxValue;
@@ -68,7 +79,7 @@ namespace Ae.Engine.Mathematics
             /// </summary>
             /// <param name="maxValue">The maximum value the resource can build to.</param>
             /// <param name="startingValue">The starting value of the resource.</param>
-            /// <param name="RebuildRatePerSecond">The amount of resource to add per-second.</param>
+            /// <param name="rebuildRatePerSecond">The amount of resource to add per-second.</param>
             /// <param name="cooldownFloor"> When a resource reaches 0, it must renew bac to to this value before it can be used.</param>
             public RenewableResource(float maxValue, float startingValue, float rebuildRatePerSecond, float cooldownFloor)
             {
@@ -107,7 +118,7 @@ namespace Ae.Engine.Mathematics
             }
 
             /// <summary>
-            /// Accumulates new resources given the resources newable rate.
+            /// Accumulates new resources given the resources renewable rate.
             /// </summary>
             public void RenewResource(float epoch)
             {
@@ -119,8 +130,19 @@ namespace Ae.Engine.Mathematics
 
         #endregion
 
+        /// <summary>
+        /// Gets or sets the collection of renewable resources, indexed by their unique names.
+        /// </summary>
+        /// <remarks>Each entry in the dictionary represents a renewable resource identified by its string
+        /// key. Modifying the collection affects the set of available resources. The property is read-write, allowing
+        /// callers to retrieve or replace the entire collection as needed.</remarks>
         public Dictionary<string, RenewableResource> Resources { get; set; } = new();
 
+        /// <summary>
+        /// Adds a renewable resource to the collection using the specified key.
+        /// </summary>
+        /// <param name="key">The unique identifier for the resource. The key is case-insensitive and will be converted to lowercase.</param>
+        /// <param name="renewableResource">The renewable resource to add to the collection. Cannot be null.</param>
         public void Create(string key, RenewableResource renewableResource)
             => Resources.Add(key.ToLower(), renewableResource);
 
@@ -149,7 +171,6 @@ namespace Ae.Engine.Mathematics
         /// Gets the instance of the renewable resource.
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="amount"></param>
         /// <returns></returns>
         public RenewableResource Snapshot(string key) => Resources[key.ToLower()];
 

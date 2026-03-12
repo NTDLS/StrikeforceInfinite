@@ -2,7 +2,7 @@
 
 namespace Ae.Engine.Mathematics
 {
-    public static class AeAxisAlignedBoundingBox
+    internal static class AeAxisAlignedBoundingBox
     {
         /// <summary>
         /// Calculates the axis-aligned bounding box (AABB) that fully contains the motion of an object between two

@@ -30,22 +30,22 @@ namespace Ae.Engine.Level
         {
             base.Begin();
 
-            AddSingleFireEvent(500, FirstShowPlayerCallback);
-            //AddRecuringFireEvent(5000, AddFreshEnemiesCallback);
+            Engine.Events.Add(500, FirstShowPlayerCallback);
+            //Engine.Events.Add(5000, AddFreshEnemiesCallback);
 
-            _engine.Player.Sprite.AddHullHealth(100);
-            _engine.Player.Sprite.AddShieldHealth(10);
+            Engine.Player.Sprite.AddHullHealth(100);
+            Engine.Player.Sprite.AddShieldHealth(10);
         }
 
         private void FirstShowPlayerCallback(AeDefermentEvent sender, object? refObj)
         {
-            _engine.Player.ResetAndShow();
-            AddSingleFireEvent(AeRandom.Between(0, 800), AddFreshEnemiesCallback);
+            Engine.Player.ResetAndShow();
+            Engine.Events.Add(AeRandom.Between(0, 800), AddFreshEnemiesCallback);
         }
 
         private void AddFreshEnemiesCallback(AeDefermentEvent sender, object? refObj)
         {
-            if (_engine.Sprites.OfType<AeSpriteEnemy>().Count() == 0)
+            if (Engine.Sprites.OfType<AeSpriteEnemy>().Count() == 0)
             {
                 if (CurrentWave == TotalWaves)
                 {
@@ -61,7 +61,7 @@ namespace Ae.Engine.Level
                     AddEnemies();
                 }
 
-                _engine.Audio.RadarBlipsSound?.Play();
+                Engine.Audio.RadarBlipsSound?.Play();
 
                 CurrentWave++;
             }
@@ -69,7 +69,7 @@ namespace Ae.Engine.Level
 
         private void AddEnemies()
         {
-            _engine.Sprites.Enemies.Add("Sprites/Enemy/Peon/Phoenix");
+            Engine.Sprites.Enemies.Add("Sprites/Enemy/Peon/Phoenix");
 
             /*
             _engine.Sprites.Enemies.Add("Sprites/Enemy/Boss/Devastator/Hull", (sprite) =>
@@ -236,7 +236,7 @@ namespace Ae.Engine.Level
 
         public void AddSingleAsteroid()
         {
-            var asteroid = _engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{AeRandom.Between(0, 0)}.png");
+            var asteroid = Engine.Sprites.InteractiveBitmaps.Add($@"Sprites\Asteroid\{AeRandom.Between(0, 0)}.png");
 
             asteroid.Location = new AeVector(800, 800);
             asteroid.Speed = 1.0f;
@@ -251,7 +251,7 @@ namespace Ae.Engine.Level
             {
                 for (int col = 0; col < colCount; col++)
                 {
-                    var asteroid = _engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{AeRandom.Between(0, 23)}");
+                    var asteroid = Engine.Sprites.InteractiveBitmaps.Add($"Sprites/Asteroid/{AeRandom.Between(0, 23)}");
 
                     var asteroidSize = asteroid.Size.Width + asteroid.Size.Height;
 

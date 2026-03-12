@@ -3,6 +3,16 @@ using System.Runtime.CompilerServices;
 
 namespace Ae.Engine.Mathematics
 {
+    /// <summary>
+    /// Provides a collection of static mathematical utility methods and constants for common operations, including
+    /// angle conversions, interpolation, clamping, wrapping, and Gaussian calculations. Supports multiple units of
+    /// angle measurement such as degrees, radians, revolutions, and gradians, facilitating physics simulations and
+    /// general-purpose math tasks.
+    /// </summary>
+    /// <remarks>The class includes constants for π and related values, as well as conversion methods between
+    /// angle units. It is designed for use in scenarios such as physics simulations, animations, and general
+    /// mathematical computations where precise and convenient handling of angles and values is required. All members
+    /// are thread-safe due to their static and stateless nature.</remarks>
     public static class AeMath
     {
         /* Notes, because I have the memory of a goldfish:
@@ -66,18 +76,42 @@ namespace Ae.Engine.Mathematics
         /// </summary>
         public const float PiOverFour = Pi / 4.0f;
 
+        /// <summary>
+        /// Represents the tolerance value used to determine when two floating-point numbers are considered equal.
+        /// </summary>
+        /// <remarks>This constant is commonly used in numerical comparisons to account for precision
+        /// errors inherent in floating-point arithmetic. Use this value when checking for equality or near-equality
+        /// between floating-point values to avoid issues caused by rounding.</remarks>
         public const float ZeroTolerance = 0.000001f;
 
+        /// <summary>
+        /// Represents the conversion factor from degrees to radians.
+        /// </summary>
+        /// <remarks>Multiply a value in degrees by this constant to obtain the equivalent value in
+        /// radians.</remarks>
         public const float RadiansPerDegree = Pi / 180.0f;
+
+        /// <summary>
+        /// Represents the number of degrees in one radian.
+        /// </summary>
+        /// <remarks>Use this constant to convert angles from radians to degrees by multiplying the radian
+        /// value by this factor.</remarks>
         public const float DegreesPerRadian = 180.0f / Pi;
 
+        /// <summary>
+        /// Converts a signed angle in degrees to its equivalent unsigned angle in the range [0, 360).
+        /// </summary>
+        /// <remarks>This method is useful for normalizing angles to a standard range, such as when
+        /// working with rotation values in graphics or geometry calculations.</remarks>
+        /// <param name="signedAngle">The signed angle, in degrees, to convert. Positive or negative values are accepted.</param>
+        /// <returns>A float representing the unsigned angle in degrees, normalized to the range [0, 360).</returns>
         public static float SignedDegreesToUnsigned(float signedAngle)
             => (signedAngle % 360f + 360f) % 360f;
 
         /// <summary>
         /// Converts radians to degrees
         /// </summary>
-        /// <param name="rad">Given radians to convert to degrees.</param>
+        /// <param name="radians">Given radians to convert to degrees.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float RadToDeg(float radians)
@@ -86,7 +120,7 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Converts degrees to radians.
         /// </summary>
-        /// <param name="deg">Given degrees to convert to radians.</param>
+        /// <param name="degrees">Given degrees to convert to radians.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float DegToRad(float degrees)
@@ -112,6 +146,13 @@ namespace Ae.Engine.Mathematics
         public static float CardinalToRad(float x, float y)
             => (float)Math.Atan2(y, x);
 
+        /// <summary>
+        /// Normalizes an angle in degrees to the range [0, 360).
+        /// </summary>
+        /// <remarks>This method is useful for ensuring that degree values are within a standard unsigned
+        /// range, which can simplify angle comparisons and calculations.</remarks>
+        /// <param name="degrees">The angle, in degrees, to normalize. Can be any finite value.</param>
+        /// <returns>A value in the range [0, 360) representing the normalized angle in degrees.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float WrapDegreesUnsigned(float degrees)
         {
@@ -120,6 +161,13 @@ namespace Ae.Engine.Mathematics
             return degrees; // [0, 360)
         }
 
+        /// <summary>
+        /// Normalizes an angle in degrees to the range [-180, 180).
+        /// </summary>
+        /// <remarks>This method is useful for ensuring angles are represented within a standard signed
+        /// range, which can simplify calculations involving rotations or direction comparisons.</remarks>
+        /// <param name="degrees">The angle, in degrees, to normalize. Can be any finite value.</param>
+        /// <returns>A value in the range [-180, 180) representing the normalized angle in degrees.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float WrapDegreesSigned(float degrees)
         {
@@ -139,7 +187,7 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Converts degrees to cardinal x,y.
         /// </summary>
-        /// <param name="radians"></param>
+        /// <param name="degrees"></param>
         /// <returns></returns>
         public static (float X, float Y) DegToCardinal(float degrees)
         {
@@ -160,8 +208,8 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Interpolate between two points or values.Useful for animations, smoothing movements, or gradual transitions.
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
         /// <param name="amount"></param>
         /// <returns></returns>
         public static float Lerp(float from, float to, float amount)
@@ -382,15 +430,40 @@ namespace Ae.Engine.Mathematics
             return (float)(amplitude * Math.Exp(-(componentX + componentY)));
         }
 
+        /// <summary>
+        /// Returns the greater of two specified integer values.
+        /// </summary>
+        /// <param name="one">The first integer to compare.</param>
+        /// <param name="two">The second integer to compare.</param>
+        /// <returns>The greater of the two specified integers. If the values are equal, returns either value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GreaterOf(int one, int two) => (one > two) ? one : two;
 
+        /// <summary>
+        /// Returns the lesser of two specified integer values.
+        /// </summary>
+        /// <param name="one">The first integer to compare.</param>
+        /// <param name="two">The second integer to compare.</param>
+        /// <returns>The smaller of the two specified integers. If both values are equal, returns either value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int LesserOf(int one, int two) => (one < two) ? one : two;
 
+        /// <summary>
+        /// Returns the greater of two unsigned integer values.
+        /// </summary>
+        /// <param name="one">The first unsigned integer to compare.</param>
+        /// <param name="two">The second unsigned integer to compare.</param>
+        /// <returns>The greater value of <paramref name="one"/> and <paramref name="two"/>. If the values are equal, either
+        /// value is returned.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint GreaterOf(uint one, uint two) => (one > two) ? one : two;
 
+        /// <summary>
+        /// Returns the lesser of two unsigned integer values.
+        /// </summary>
+        /// <param name="one">The first value to compare.</param>
+        /// <param name="two">The second value to compare.</param>
+        /// <returns>The smaller of the two specified unsigned integers. If the values are equal, returns either value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint LesserOf(uint one, uint two) => (one < two) ? one : two;
 

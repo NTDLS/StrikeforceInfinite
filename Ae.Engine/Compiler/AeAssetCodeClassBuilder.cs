@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Ae.Engine.Compiler
 {
-    public static class AeAssetCodeClassBuilder
+    internal static class AeAssetCodeClassBuilder
     {
         private class ConstructorSignatures
         {

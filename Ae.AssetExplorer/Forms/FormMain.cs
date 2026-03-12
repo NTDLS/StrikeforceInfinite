@@ -7,7 +7,6 @@ using Ae.Engine.Sprite;
 using Ae.Engine.Sprite.Base;
 using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
-using static Ae.Engine.AeConstants;
 
 namespace Ae.AssetExplorer
 {
@@ -31,7 +30,7 @@ namespace Ae.AssetExplorer
 
             drawingSurface.MouseWheel += PictureBoxPreview_MouseWheel;
 
-            _engine = new AeEngine(drawingSurface, AeConstants.AeEngineExecutionMode.Edit, new Size(1000, 1000));
+            _engine = new AeEngine(drawingSurface, AeEngineExecutionMode.Edit, new Size(1000, 1000));
             _engine.Display.ZoomOverride = 0.1f; // Start zoomed out to show the whole sprite.
             _engine.OnInitializationComplete += EngineCore_OnInitializationComplete;
 
@@ -403,5 +402,28 @@ namespace Ae.AssetExplorer
 
         #endregion
 
+        #region Menu items.
+
+        private void extractProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var dialog = new FolderBrowserDialog();
+                dialog.Description = "Select the project output folder";
+                dialog.UseDescriptionForTitle = true;
+                dialog.ShowNewFolderButton = true;
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    _engine.Assets.ExtractProject(dialog.SelectedPath, WriteLog);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+            }
+        }
+
+        #endregion
     }
 }

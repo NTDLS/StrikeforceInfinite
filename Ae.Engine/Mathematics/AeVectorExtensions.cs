@@ -5,6 +5,14 @@ using System.Runtime.CompilerServices;
 
 namespace Ae.Engine.Mathematics
 {
+    /// <summary>
+    /// Provides extension methods for the AeVector type to perform common vector operations such as rotation,
+    /// reflection, random point generation within an annulus, and angle calculations between points.
+    /// </summary>
+    /// <remarks>These methods are designed to simplify vector mathematics in scenarios such as game
+    /// development, physics simulations, and geometric computations. All methods operate on AeVector instances and
+    /// return new vectors or calculated values, leaving the original vectors unchanged. Thread safety is ensured as the
+    /// methods do not modify shared state.</remarks>
     public static class AeVectorExtensions
     {
         /// <summary>
@@ -71,7 +79,7 @@ namespace Ae.Engine.Mathematics
         /// Returns a new vector which has been rotated by the given radians.
         /// </summary>
         /// <param name="vector"></param>
-        /// <param name="radians"></param>
+        /// <param name="degrees"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AeVector RotatedBy(this AeVector vector, float degrees)
@@ -122,7 +130,7 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Calculate the angle between two points in signed radians.
         /// </summary>
-        /// <param name="point1"></param>
+        /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -132,7 +140,7 @@ namespace Ae.Engine.Mathematics
         /// <summary>
         /// Calculate the angle between two points in unsigned radians.
         /// </summary>
-        /// <param name="point1"></param>
+        /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -9,6 +9,9 @@ namespace Ae.Engine.Types
     /// </summary>
     public class AeDefermentEvent
     {
+        /// <summary>
+        /// Gets or sets the name associated with the current instance.
+        /// </summary>
         public string? Name { get; set; }
         private readonly object? _parameter = null;
         private readonly int _timeoutMilliseconds;
@@ -18,14 +21,19 @@ namespace Ae.Engine.Types
         private readonly SiDefermentEventThreadModel _threadModel;
         private DateTime _eventTriggerBaseTime;
 
+        /// <summary>
+        /// Gets the unique identifier for this instance.
+        /// </summary>
         public Guid UID { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether the item is scheduled to be deleted.
+        /// </summary>
         public bool IsQueuedForDeletion { get; private set; } = false;
 
         /// <summary>
         /// Delegate for the event execution callback.
         /// </summary>
-        /// <param name="core">Engine core</param>
         /// <param name="sender">The event that is being triggered</param>
         /// <param name="parameter">An optional object passed by the user code</param>
         public delegate void SiDefermentExecuteCallback(AeDefermentEvent sender, object? parameter);
@@ -35,15 +43,39 @@ namespace Ae.Engine.Types
         /// </summary>
         public delegate void SiDefermentSimpleExecuteCallback();
 
+        /// <summary>
+        /// Specifies the mode for deferment events, indicating whether the event occurs one time or on a recurring
+        /// basis.
+        /// </summary>
+        /// <remarks>Use this enumeration to distinguish between single-occurrence and repeated deferment
+        /// event scheduling. The value affects how the event is processed and managed within the system.</remarks>
         public enum SiDefermentEventMode
         {
+            /// <summary>
+            /// Specifies that the associated operation or event occurs only once.
+            /// </summary>
             OneTime,
+            /// <summary>
+            /// Specifies that the associated operation or event recurs.
+            /// </summary>
             Recurring
         }
 
+        /// <summary>
+        /// Specifies the threading model used for deferment event processing.
+        /// </summary>
+        /// <remarks>Use this enumeration to indicate whether deferment events are handled synchronously
+        /// or asynchronously. Selecting the appropriate threading model can affect responsiveness and concurrency in
+        /// event handling scenarios.</remarks>
         public enum SiDefermentEventThreadModel
         {
+            /// <summary>
+            /// Gets or sets a value indicating whether operations are performed synchronously.
+            /// </summary>
             Synchronous,
+            /// <summary>
+            /// Gets or sets a value indicating whether operations are performed asynchronously.
+            /// </summary>
             Asynchronous
         }
 
@@ -96,6 +128,12 @@ namespace Ae.Engine.Types
             UID = Guid.NewGuid();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the AeDefermentEvent class with the specified timeout and execution callback.
+        /// </summary>
+        /// <param name="timeoutMilliseconds">The maximum duration, in milliseconds, to wait before the deferment event is triggered. Must be a
+        /// non-negative value.</param>
+        /// <param name="simpleExecutionCallback">The callback to execute when the deferment event is triggered. Cannot be null.</param>
         public AeDefermentEvent(int timeoutMilliseconds, SiDefermentSimpleExecuteCallback simpleExecutionCallback)
         {
             _timeoutMilliseconds = timeoutMilliseconds;
@@ -104,11 +142,22 @@ namespace Ae.Engine.Types
             UID = Guid.NewGuid();
         }
 
+        /// <summary>
+        /// Marks the current object as queued for deletion.
+        /// </summary>
         public void QueueForDeletion()
         {
             IsQueuedForDeletion = true;
         }
 
+        /// <summary>
+        /// Checks whether the event trigger condition has been met and executes the associated callbacks if triggered.
+        /// </summary>
+        /// <remarks>This method is thread-safe and may queue the event for deletion if the event mode is
+        /// one-time. For asynchronous thread models, callbacks are executed on a background thread. For recurring
+        /// events, the trigger base time is reset after execution.</remarks>
+        /// <returns>A value indicating whether the trigger condition was met and the callbacks were executed. Returns <see
+        /// langword="true"/> if the event was triggered; otherwise, <see langword="false"/>.</returns>
         public bool CheckForTrigger()
         {
             lock (this)

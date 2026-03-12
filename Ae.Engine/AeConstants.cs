@@ -7,17 +7,41 @@ using System.Threading;
 
 namespace Ae.Engine
 {
+    /// <summary>
+    /// Represents a method that handles writing a log message with a specified severity level and optional asset key.
+    /// </summary>
+    /// <remarks>Use this delegate to provide custom logging behavior for messages at various severity levels.
+    /// The asset key can be used to correlate log entries with specific assets when applicable.</remarks>
+    /// <param name="message">The log message to write. Cannot be null.</param>
+    /// <param name="level">The severity level of the log message.</param>
+    /// <param name="assetKey">An optional key identifying the related asset. If null, the log entry is not associated with a specific asset.</param>
+    public delegate void WriteLogDelegate(string message, AeLoggingLevel level, string? assetKey = null);
+
+    /// <summary>
+    /// Provides application-wide constants and utility members for the Axis Engine.
+    /// </summary>
+    /// <remarks>This class contains string, numeric, and type constants, as well as helper methods and
+    /// configuration options used throughout the Axis Engine. It is intended for use by consumers who need access to
+    /// standard values or supported asset types. The class cannot be instantiated.</remarks>
     public static class AeConstants
     {
-        public delegate void WriteLogDelegate(string message, AeLoggingLevel level, string? assetKey = null);
-
-        public static Lock SharedLock { get; private set; } = new Lock();
+        /// <summary>
+        /// Represents the user-friendly display name for the Axis Engine.
+        /// </summary>
         public const string FriendlyName = "Axis Engine";
-        public const string MultiplayServerAddress = "127.0.0.1";
-        public const int MultiplayServerTCPPort = 6785;
-        public const int MinimumCompressionRatio = 1;
-        public static readonly string[] ImageTypes = ["png", "bmp"];
 
+        internal static Lock SharedLock { get; private set; } = new Lock();
+        internal const string MultiplayServerAddress = "127.0.0.1";
+        internal const int MultiplayServerTCPPort = 6785;
+        internal const int MinimumCompressionRatio = 1;
+        internal static readonly string[] ImageTypes = ["png", "bmp"];
+
+        /// <summary>
+        /// Provides a mapping of common file extensions to their corresponding base asset types.
+        /// </summary>
+        /// <remarks>This dictionary can be used to determine the base asset type for a given file
+        /// extension, such as "png" for images or "wav" for sounds. The mapping is case-sensitive and only includes a
+        /// predefined set of extensions.</remarks>
         public static readonly Dictionary<string, AeBaseAssetType> BaseAssetTypes = new()
         {
             ["png"] = AeBaseAssetType.Image,
@@ -28,6 +52,15 @@ namespace Ae.Engine
             ["txt"] = AeBaseAssetType.Text
         };
 
+        /// <summary>
+        /// Builds a file filter string suitable for use with file open dialogs, including filters for all supported
+        /// asset types and a general 'All Files' option.
+        /// </summary>
+        /// <remarks>The returned filter string can be assigned to the Filter property of an
+        /// OpenFileDialog to allow users to select files of supported types. Each filter entry groups files by asset
+        /// type and extension.</remarks>
+        /// <returns>A filter string that lists supported asset types by file extension, formatted for use with file open
+        /// dialogs. The string includes an 'All Files' filter as the final option.</returns>
         public static string GetSupportedOpenFileFilterString()
         {
             var filter = new StringBuilder();
@@ -44,6 +77,12 @@ namespace Ae.Engine
         }
 
         private static JsonSerializerOptions? _JsonSerializationOptions;
+        /// <summary>
+        /// Gets the default options used for JSON serialization and deserialization throughout the application.
+        /// </summary>
+        /// <remarks>The returned options configure serialization to ignore null values, write indented
+        /// JSON, and serialize enums as strings. The same instance is reused for all operations, ensuring consistent
+        /// behavior.</remarks>
         public static JsonSerializerOptions JsonSerializerOptions
         {
             get
@@ -67,296 +106,38 @@ namespace Ae.Engine
             }
         }
 
-        public enum AeLoggingLevel
-        {
-            Default,
-            Verbose,
-            Information,
-            Warning,
-            Error
-        }
-
-        public enum AeBaseAssetType
-        {
-            Text,
-            Code,
-            Sound,
-            Image
-        }
-
-        public enum AeCodeType
-        {
-            Text,
-            CSharp,
-            JSON,
-            XML,
-            MarkDown
-        }
-
-        public enum AePropertyEditorGroup
-        {
-            Base,
-            Attachment,
-            Destroy,
-            Health,
-            Collision,
-            Momentum,
-            Animation,
-            Weapons,
-            Munitions,
-            AI,
-            Audio
-        }
-
-        public enum AePropertyEditorType
-        {
-            Readonly,
-            String,
-            Text,
-            Integer,
-            Float,
-            Boolean,
-            RangeInt,
-            RangeFloat,
-            Vector,
-            /// <summary>
-            /// Can pick a class from the enumerated list of that have the AssetClassAttribute.
-            /// </summary>
-            Class,
-            /// <summary>
-            /// Values from an enum type will be displayed as options.
-            /// </summary>
-            Enum,
-            /// <summary>
-            /// Values from a pre-defined list will be displayed as options.
-            /// </summary>
-            Picker,
-            /// <summary>
-            /// Can select multiple sprites.
-            /// </summary>
-            MultipleSpritePicker,
-            /// <summary>
-            /// Can select a single sprite.
-            /// </summary>
-            SingleSpritePicker
-        }
-
+        /// <summary>
+        /// Provides predefined mass constants representing commonly used mass categories in arbitrary units.
+        /// </summary>
+        /// <remarks>These constants can be used to standardize mass values across the application, such
+        /// as for categorizing objects or specifying default mass values. The units are application-defined and
+        /// intended for relative comparison rather than representing a specific measurement system.</remarks>
         public static class AeMass
         {
+            /// <summary>
+            /// Very small mass, suitable for lightweight objects or particles. Represents a mass that is negligible in most calculations.
+            /// </summary>
             public const float Minuscule = 0.1f;
+            /// <summary>
+            /// Represents a small constant value of 1.0.
+            /// </summary>
             public const float Tiny = 1f;
+            /// <summary>
+            /// Represents a Small constant value of 10.0.
+            /// </summary>
             public const float Small = 10f;
+            /// <summary>
+            /// Represents a Medium constant value of 10.0.
+            /// </summary>
             public const float Medium = 100f;
+            /// <summary>
+            /// Represents a Large constant value of 10.0.
+            /// </summary>
             public const float Large = 1000f;
+            /// <summary>
+            /// Represents a Huge constant value of 10.0.
+            /// </summary>
             public const float Huge = 10000f;
-        }
-
-        public enum AeRotationDirection
-        {
-            None,
-            Clockwise,
-            CounterClockwise
-        }
-
-        public enum AeLogSeverity
-        {
-            Trace = 0, //Super-verbose, debug-like information.
-            Verbose = 1, //General status messages.
-            Warning = 2, //Something the user might want to be aware of.
-            Exception = 3 //An actual exception has been thrown.
-        }
-
-        /// <summary>
-        /// Determines the behavior of a attachment sprite's position.
-        /// </summary>
-        public enum AeAttachmentPositionType
-        {
-            /// <summary>
-            /// The attached sprite's position will automatically stay at a fixed position on the owner sprite, even when the owner moves and rotates.
-            /// Managed in ApplyMotion().
-            /// </summary>
-            FixedToOwner,
-
-            /// <summary>
-            /// The attached sprite's position will not be automatically managed by ApplyMotion().
-            /// </summary>
-            Independent
-        }
-
-        public enum AeExplosionType
-        {
-            MediumFire,
-            LargeFire,
-            SmallFire,
-            MicroFire,
-            Energy
-        }
-
-        /// <summary>
-        /// Determines the behavior of a attachment sprite's orientation.
-        /// </summary>
-        public enum AeAttachmentOrientationType
-        {
-            /// <summary>
-            /// The attached sprite should always face the direction of the owner sprite. Managed in ApplyMotion().
-            /// </summary>
-            FixedToOwner,
-
-            /// <summary>
-            /// The attached sprite's orientation will not be automatically managed by ApplyMotion().
-            /// </summary>
-            Independent
-        }
-
-        public enum AeEngineExecutionMode
-        {
-            None,
-            Play,
-            Edit,
-            /// <summary>
-            /// The engine instance is intended to run a level on the server for multiplayer games.
-            /// </summary>
-            ServerHost,
-            /// <summary>
-            /// This engine instance is intended to be shared content only, not to run a level.
-            /// </summary>
-            SharedEngineContent
-        }
-
-        public enum AeWeaponsLockType
-        {
-            None,
-            Hard,
-            Soft
-        }
-
-        public enum AeParticleCleanupMode
-        {
-            None,
-            FadeToBlack,
-            DistanceOffScreen
-        }
-
-        public enum AeParticleShape
-        {
-            FilledEllipse,
-            HollowEllipse,
-            HollowRectangle,
-            FilledRectangle,
-            Triangle
-        }
-
-        public enum AeParticleColorType
-        {
-            Solid,
-            Gradient
-        }
-
-        public enum AeParticleVectorType
-        {
-            /// <summary>
-            /// The sprite will travel in the direction determined by it's MovementVector.
-            /// </summary>
-            Default,
-            /// <summary>
-            /// The sprite will travel in the direction in which is is oriented.
-            /// </summary>
-            FollowOrientation
-        }
-
-        public enum AeRenderScaleOrder
-        {
-            /// <summary>
-            /// Render this sprite before scaling the screen based on speed (the sprite will be scaled).
-            /// </summary>
-            PreScale,
-            /// <summary>
-            /// Render this sprite after scaling the screen based on speed (the sprite will not be scaled).
-            /// </summary>
-            PostScale
-        }
-
-        public enum AeLevelState
-        {
-            NotYetStarted,
-            Started,
-            Ended
-        }
-
-        public enum AeSituationState
-        {
-            NotYetStarted,
-            Started,
-            Ended
-        }
-
-        public enum AeCardinalDirection
-        {
-            None,
-            North,
-            East,
-            South,
-            West
-        }
-
-        public enum AeMenuItemType
-        {
-            Undefined,
-            Title,
-            TextBlock,
-            SelectableItem,
-            SelectableTextInput
-        }
-
-        public enum AeAnimationPlayMode
-        {
-            /// <summary>
-            /// The animation will be played once and can be replayed by calling Play().
-            /// </summary>
-            Single,
-            /// <summary>
-            /// The animation will be played once then will be deleted.
-            /// </summary>
-            DeleteAfterPlay,
-            /// <summary>
-            /// The animation will loop until manually deleted or hidden.
-            /// </summary>
-            Infinite
-        };
-
-        public enum AeDamageType
-        {
-            Unspecified,
-            Shield,
-            Hull
-        }
-
-        public enum AeFiredFromType
-        {
-            Unspecified,
-            Player,
-            Enemy
-        }
-
-        public enum AePlayerKey
-        {
-            SwitchWeaponLeft,
-            SwitchWeaponRight,
-            StrafeRight,
-            StrafeLeft,
-            SpeedBoost,
-            Forward,
-            Reverse,
-            PrimaryFire,
-            SecondaryFire,
-            RotateCounterClockwise,
-            RotateClockwise,
-            Escape,
-            Left,
-            Right,
-            Up,
-            Down,
-            Enter
         }
     }
 }

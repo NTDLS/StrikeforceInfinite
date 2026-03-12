@@ -5,10 +5,30 @@ using static Ae.Engine.Interrogation.InterrogationCommandParameterPrototype;
 
 namespace Ae.Engine.Interrogation
 {
+    /// <summary>
+    /// Provides functionality for parsing interrogation command prototypes and constructing command definitions from
+    /// prototype strings.
+    /// </summary>
+    /// <remarks>This class is typically used to initialize a set of supported interrogation commands from
+    /// prototype definitions. Each prototype string must follow the expected format; otherwise, an exception is thrown
+    /// during initialization. The parser supports commands with required and optional parameters, and maintains a
+    /// collection of parsed command prototypes for later use.</remarks>
     public class InterrogationCommandParser
     {
+        /// <summary>
+        /// Gets the collection of interrogation command prototypes associated with this instance.
+        /// </summary>
         public List<InterrogationCommandPrototype> Commands { get; private set; } = new();
 
+        /// <summary>
+        /// Initializes a new instance of the InterrogationCommandParser class using the specified command prototypes.
+        /// </summary>
+        /// <remarks>Each command prototype string must follow the format:
+        /// 'CommandName|ParameterList|Description'. ParameterList is a comma-separated list of parameters, each
+        /// formatted as 'ParameterName:RequiredOrOptional[=DefaultValue]:ParameterType'.</remarks>
+        /// <param name="prototypes">An array of strings representing command prototypes. Each prototype must be formatted as a pipe-delimited
+        /// string with three segments: command name, parameters, and description.</param>
+        /// <exception cref="Exception">Thrown if any command prototype or parameter is malformed and does not conform to the expected format.</exception>
         public InterrogationCommandParser(string[] prototypes)
         {
             foreach (var prototype in prototypes)
@@ -55,7 +75,17 @@ namespace Ae.Engine.Interrogation
             }
         }
 
-        public InterrogationCommand Parse(string commandText)
+        /// <summary>
+        /// Parses the specified command text and constructs an interrogation command with its parameters.
+        /// </summary>
+        /// <remarks>Parameter values are assigned in order as specified in the command text. Optional
+        /// parameters not supplied are set to null. The parsing is case-insensitive for command names.</remarks>
+        /// <param name="commandText">The command text to parse. Must contain a valid command name and, optionally, a comma-separated list of
+        /// parameters.</param>
+        /// <returns>An instance of InterrogationCommand representing the parsed command and its parameters.</returns>
+        /// <exception cref="Exception">Thrown if the command name is unknown, if too many parameters are supplied, or if a required parameter is
+        /// missing.</exception>
+        internal InterrogationCommand Parse(string commandText)
         {
             int paramStartIndex = commandText.IndexOf(' ');
 

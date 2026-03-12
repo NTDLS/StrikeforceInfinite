@@ -61,6 +61,9 @@ namespace Ae.AssetExplorer
             toolStripButtonBuild = new ToolStripButton();
             toolStripSeparator4 = new ToolStripSeparator();
             toolStripButtonAbout = new ToolStripButton();
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            extractProjectToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
@@ -81,6 +84,7 @@ namespace Ae.AssetExplorer
             tabControlOutput.SuspendLayout();
             tabPageOutput.SuspendLayout();
             toolStrip1.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainerLeft
@@ -97,7 +101,7 @@ namespace Ae.AssetExplorer
             // splitContainerLeft.Panel2
             // 
             splitContainerLeft.Panel2.Controls.Add(splitContainerRight);
-            splitContainerLeft.Size = new Size(800, 429);
+            splitContainerLeft.Size = new Size(800, 411);
             splitContainerLeft.SplitterDistance = 273;
             splitContainerLeft.TabIndex = 0;
             // 
@@ -106,7 +110,7 @@ namespace Ae.AssetExplorer
             treeViewAssets.Dock = DockStyle.Fill;
             treeViewAssets.Location = new Point(0, 0);
             treeViewAssets.Name = "treeViewAssets";
-            treeViewAssets.Size = new Size(273, 429);
+            treeViewAssets.Size = new Size(273, 411);
             treeViewAssets.TabIndex = 0;
             // 
             // splitContainerRight
@@ -123,7 +127,7 @@ namespace Ae.AssetExplorer
             // splitContainerRight.Panel2
             // 
             splitContainerRight.Panel2.Controls.Add(splitContainerProperties);
-            splitContainerRight.Size = new Size(523, 429);
+            splitContainerRight.Size = new Size(523, 411);
             splitContainerRight.SplitterDistance = 259;
             splitContainerRight.TabIndex = 0;
             // 
@@ -133,7 +137,7 @@ namespace Ae.AssetExplorer
             tabControlCode.Location = new Point(0, 0);
             tabControlCode.Name = "tabControlCode";
             tabControlCode.SelectedIndex = 0;
-            tabControlCode.Size = new Size(259, 429);
+            tabControlCode.Size = new Size(259, 411);
             tabControlCode.TabIndex = 0;
             // 
             // splitContainerProperties
@@ -150,8 +154,8 @@ namespace Ae.AssetExplorer
             // splitContainerProperties.Panel2
             // 
             splitContainerProperties.Panel2.Controls.Add(listViewProperties);
-            splitContainerProperties.Size = new Size(260, 429);
-            splitContainerProperties.SplitterDistance = 168;
+            splitContainerProperties.Size = new Size(260, 411);
+            splitContainerProperties.SplitterDistance = 160;
             splitContainerProperties.TabIndex = 0;
             // 
             // drawingSurface
@@ -169,7 +173,7 @@ namespace Ae.AssetExplorer
             listViewProperties.Dock = DockStyle.Fill;
             listViewProperties.Location = new Point(0, 0);
             listViewProperties.Name = "listViewProperties";
-            listViewProperties.Size = new Size(260, 257);
+            listViewProperties.Size = new Size(260, 247);
             listViewProperties.TabIndex = 0;
             listViewProperties.UseCompatibleStateImageBehavior = false;
             listViewProperties.View = View.Details;
@@ -177,7 +181,7 @@ namespace Ae.AssetExplorer
             // splitContainerBottom
             // 
             splitContainerBottom.Dock = DockStyle.Fill;
-            splitContainerBottom.Location = new Point(0, 25);
+            splitContainerBottom.Location = new Point(0, 49);
             splitContainerBottom.Name = "splitContainerBottom";
             splitContainerBottom.Orientation = Orientation.Horizontal;
             // 
@@ -188,8 +192,8 @@ namespace Ae.AssetExplorer
             // splitContainerBottom.Panel2
             // 
             splitContainerBottom.Panel2.Controls.Add(tabControlOutput);
-            splitContainerBottom.Size = new Size(800, 600);
-            splitContainerBottom.SplitterDistance = 429;
+            splitContainerBottom.Size = new Size(800, 576);
+            splitContainerBottom.SplitterDistance = 411;
             splitContainerBottom.TabIndex = 1;
             // 
             // tabControlOutput
@@ -200,7 +204,7 @@ namespace Ae.AssetExplorer
             tabControlOutput.Location = new Point(0, 0);
             tabControlOutput.Name = "tabControlOutput";
             tabControlOutput.SelectedIndex = 0;
-            tabControlOutput.Size = new Size(800, 167);
+            tabControlOutput.Size = new Size(800, 161);
             tabControlOutput.TabIndex = 1;
             // 
             // tabPageOutput
@@ -209,7 +213,7 @@ namespace Ae.AssetExplorer
             tabPageOutput.Location = new Point(4, 24);
             tabPageOutput.Name = "tabPageOutput";
             tabPageOutput.Padding = new Padding(3);
-            tabPageOutput.Size = new Size(792, 139);
+            tabPageOutput.Size = new Size(792, 133);
             tabPageOutput.TabIndex = 0;
             tabPageOutput.Text = "Output";
             tabPageOutput.UseVisualStyleBackColor = true;
@@ -223,7 +227,7 @@ namespace Ae.AssetExplorer
             listViewOutput.MultiSelect = false;
             listViewOutput.Name = "listViewOutput";
             listViewOutput.ShowGroups = false;
-            listViewOutput.Size = new Size(786, 133);
+            listViewOutput.Size = new Size(786, 127);
             listViewOutput.TabIndex = 0;
             listViewOutput.UseCompatibleStateImageBehavior = false;
             listViewOutput.View = View.Details;
@@ -257,7 +261,7 @@ namespace Ae.AssetExplorer
             // 
             toolStrip1.Font = new Font("Segoe UI", 9F);
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole, toolStripSeparator1, toolStripButtonSave, toolStripButtonSaveAll, toolStripButtonClose, toolStripSeparator2, toolStripButtonToggleAssets, toolStripButtonToggleOutput, toolStripButtonToggleProperties, toolStripSeparator3, toolStripButtonBuild, toolStripSeparator4, toolStripButtonAbout });
-            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Location = new Point(0, 24);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 25);
             toolStrip1.TabIndex = 3;
@@ -386,6 +390,29 @@ namespace Ae.AssetExplorer
             toolStripButtonAbout.Text = "About";
             toolStripButtonAbout.Click += ToolStripButtonAbout_Click;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.TabIndex = 4;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { extractProjectToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // extractProjectToolStripMenuItem
+            // 
+            extractProjectToolStripMenuItem.Name = "extractProjectToolStripMenuItem";
+            extractProjectToolStripMenuItem.Size = new Size(180, 22);
+            extractProjectToolStripMenuItem.Text = "Extract Project";
+            extractProjectToolStripMenuItem.Click += extractProjectToolStripMenuItem_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -393,7 +420,9 @@ namespace Ae.AssetExplorer
             ClientSize = new Size(800, 625);
             Controls.Add(splitContainerBottom);
             Controls.Add(toolStrip1);
+            Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip1;
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Asset Explorer";
@@ -419,6 +448,8 @@ namespace Ae.AssetExplorer
             tabPageOutput.ResumeLayout(false);
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -455,5 +486,8 @@ namespace Ae.AssetExplorer
         private ColumnHeader columnHeaderSeverity;
         private ColumnHeader columnHeaderAsset;
         private ColumnHeader columnHeaderText;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem extractProjectToolStripMenuItem;
     }
 }
