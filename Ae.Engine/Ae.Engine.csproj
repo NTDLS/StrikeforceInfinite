@@ -4,7 +4,7 @@
 		<Title>Axis Engine</Title>
 		<Company>NetworkDLS</Company>
 		<Copyright>Copyright © 2026 NetworkDLS</Copyright>
-		<Version>0.0.37</Version>
+		<Version>0.0.38</Version>
 		<Authors>NetworkDLS</Authors>
 
 		<Nullable>enable</Nullable>
@@ -81,6 +81,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Ae.MpClientToServerComms\Ae.MpClientToServerComms.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -96,18 +100,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Ae.MpClientToServerComms\Ae.MpClientToServerComms.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="Logo.png">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	  <None Update="README.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+		<None Include="..\Logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 
 </Project>

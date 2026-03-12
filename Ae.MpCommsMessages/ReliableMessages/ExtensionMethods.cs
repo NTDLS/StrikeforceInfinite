@@ -1,5 +1,15 @@
-﻿namespace Ae.MpCommsMessages.ReliableMessages
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Ae.MpCommsMessages.ReliableMessages
 {
+    /// <summary>
+    /// Provides extension methods for validating and handling asynchronous query operations.
+    /// </summary>
+    /// <remarks>This static class contains extension methods that assist in ensuring the success of
+    /// asynchronous query tasks and handling their results. The methods are intended to simplify error checking and
+    /// result retrieval for tasks representing query operations. Use these methods to streamline validation and error
+    /// handling when working with query replies that implement the IMultiPlayQueryReply interface.</remarks>
     public static class ExtensionMethods
     {
         /// <summary>

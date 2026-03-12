@@ -4,17 +4,52 @@
 		<Title>Axis Engine</Title>
 		<Company>NetworkDLS</Company>
 		<Copyright>Copyright © 2026 NetworkDLS</Copyright>
-		<Version>0.0.37</Version>
+		<Version>0.0.38</Version>
 		<Authors>NetworkDLS</Authors>
-		
-		<TargetFramework>net10.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
+
 		<Nullable>enable</Nullable>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<AssemblyName>Ae.MpCommsMessages</AssemblyName>
+		<RootNamespace>Ae.MpCommsMessages</RootNamespace>
 		<ApplicationIcon>AeIcon.ico</ApplicationIcon>
+
+		<TargetFrameworks></TargetFrameworks>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Description>
+
+		</Description>
+		<PackageProjectUrl>https://github.com/NTDLS/AxisEngine</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/NTDLS/AxisEngine</RepositoryUrl>
+		<PackageTags>game-engnie</PackageTags>
+		<PackageReleaseNotes>
+			Initial release, super alpha.
+		</PackageReleaseNotes>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Authors>NetworkDLS</Authors>
+		<Company>NetworkDLS</Company>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageIcon>Logo.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Content Include="AeIcon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\Logo.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
