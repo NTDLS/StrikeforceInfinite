@@ -15,7 +15,6 @@
 		<RootNamespace>Ae.Engine</RootNamespace>
 		<ApplicationIcon>AeIcon.ico</ApplicationIcon>
 
-
 		<TargetFrameworks></TargetFrameworks>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
