@@ -54,10 +54,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Compiler\Templates\AeDebugProjectTemplate.zip" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="AeIcon.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Compiler\Templates\AeDebugProjectTemplate.zip" />
 	  <EmbeddedResource Include="Compiler\Templates\DynamicCompileImports.txt" />
 	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithBase.txt" />
 	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithoutBase.txt" />

@@ -23,7 +23,7 @@ namespace Ae.AssetExplorer.Forms
             checkBoxLineNumbers.Checked = Settings.Instance.EditorShowLineNumbers;
             checkBoxWordWrap.Checked = Settings.Instance.EditorWordWrap;
 
-            var sampleText = AeEmbeddedTextResource.Load("Samples/CSharpTextSample.txt");
+            var sampleText = AeEmbeddedResourceReader.LoadText("Samples/CSharpTextSample.txt");
 
             _fontSampleTextbox = new AeCodeEditor(panelFontSampleParent, AeCodeType.CSharp, sampleText);
 

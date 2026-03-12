@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Ae.Engine.Helpers
 {
     /// <summary>
     /// Used to read EmbeddedResources from assemblies.
     /// </summary>
-    public static class AeEmbeddedTextResource
+    public static class AeEmbeddedResourceReader
     {
         private static readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
@@ -24,23 +25,38 @@ namespace Ae.Engine.Helpers
         /// namespace notation or file path format.</param>
         /// <returns>A string containing the text content of the embedded resource if found.</returns>
         /// <exception cref="Exception">Thrown if the embedded resource cannot be found at the specified path.</exception>
-        public static string Load(string resourcePath)
+        public static string LoadText(string resourcePath)
+        {
+            var bytes = LoadBytes(resourcePath);
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        /// <summary>
+        /// Retrieves the embedded resource as a byte array from the specified resource path.
+        /// </summary>
+        /// <remarks>The method searches all loaded assemblies for the resource and uses an internal cache
+        /// to improve performance on repeated calls. The resource path is normalized for lookup.</remarks>
+        /// <param name="resourcePath">The path to the embedded resource to load. The path is case-insensitive and may use either '/' or '\' as
+        /// separators.</param>
+        /// <returns>A byte array containing the contents of the embedded resource. Returns the cached value if available.</returns>
+        /// <exception cref="Exception">Thrown if the embedded resource cannot be found at the specified path.</exception>
+        public static byte[] LoadBytes(string resourcePath)
         {
             string cacheKey = $":{resourcePath.ToLowerInvariant()}".Replace('.', ':').Replace('\\', ':').Replace('/', ':');
 
-            if (_cache.Get(cacheKey) is string cachedResourceText)
+            if (_cache.Get(cacheKey) is byte[] cachedResourceBytes)
             {
-                return cachedResourceText;
+                return cachedResourceBytes;
             }
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
             foreach (var assembly in assemblies)
             {
-                var resourceText = SearchAssembly(assembly, cacheKey, resourcePath);
-                if (resourceText != null)
+                var resourceBytes = SearchAssembly(assembly, cacheKey, resourcePath);
+                if (resourceBytes != null)
                 {
-                    return resourceText;
+                    return resourceBytes;
                 }
             }
 
@@ -50,7 +66,7 @@ namespace Ae.Engine.Helpers
         /// <summary>
         /// Searches the given assembly for a file.
         /// </summary>
-        private static string? SearchAssembly(Assembly assembly, string resourceCacheKey, string resourceName)
+        private static byte[]? SearchAssembly(Assembly assembly, string resourceCacheKey, string resourceName)
         {
             var assemblyCacheKey = $"EmbeddedResources:SearchAssembly:{assembly.FullName}";
 
@@ -79,15 +95,16 @@ namespace Ae.Engine.Helpers
                 using var stream = assembly.GetManifestResourceStream(resource.Single().Replace(':', '.').Trim(['.']))
                     ?? throw new InvalidOperationException($"Resource not found: [{resourceName}].");
 
-                using var reader = new StreamReader(stream);
-                var resourceText = reader.ReadToEnd();
+                using var ms = new MemoryStream();
+                stream.CopyTo(ms);
+                byte[] bytes = ms.ToArray();
 
-                _cache.Set(resourceCacheKey, resourceText, new MemoryCacheEntryOptions
+                _cache.Set(resourceCacheKey, bytes, new MemoryCacheEntryOptions
                 {
                     SlidingExpiration = TimeSpan.FromHours(1)
                 });
 
-                return resourceText;
+                return bytes;
             }
 
             return null;

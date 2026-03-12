@@ -32,17 +32,17 @@ namespace Ae.Engine.Compiler
                 constructorSignature = new("AeEngine engine, string assetKey", "engine, assetKey");
             }
 
-            var imports = AeEmbeddedTextResource.Load("Compiler/Templates/DynamicCompileImports.txt");
+            var imports = AeEmbeddedResourceReader.LoadText("Compiler/Templates/DynamicCompileImports.txt");
 
             string? codeTemplate;
 
             if (string.IsNullOrEmpty(baseClassName))
             {
-                codeTemplate = AeEmbeddedTextResource.Load("Compiler/Templates/SimpleClassWithoutBase.txt");
+                codeTemplate = AeEmbeddedResourceReader.LoadText("Compiler/Templates/SimpleClassWithoutBase.txt");
             }
             else
             {
-                codeTemplate = AeEmbeddedTextResource.Load("Compiler/Templates/SimpleClassWithBase.txt");
+                codeTemplate = AeEmbeddedResourceReader.LoadText("Compiler/Templates/SimpleClassWithBase.txt");
             }
 
             return codeTemplate.Replace("[[imports]]", imports)

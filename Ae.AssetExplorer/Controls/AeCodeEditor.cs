@@ -75,10 +75,10 @@ namespace Ae.AssetExplorer.Controls
 
             var highlighterText = codeType switch
             {
-                AeCodeType.CSharp => AeEmbeddedTextResource.Load("Highlighters/AeCSharpHighlighter.xshd"),
-                AeCodeType.JSON => AeEmbeddedTextResource.Load("Highlighters/AeJsonHighlighter.xshd"),
-                AeCodeType.MarkDown => AeEmbeddedTextResource.Load("Highlighters/AeMarkDownHighlighter.xshd"),
-                AeCodeType.XML => AeEmbeddedTextResource.Load("Highlighters/AeXmlHighlighter.xshd"),
+                AeCodeType.CSharp => AeEmbeddedResourceReader.LoadText("Highlighters/AeCSharpHighlighter.xshd"),
+                AeCodeType.JSON => AeEmbeddedResourceReader.LoadText("Highlighters/AeJsonHighlighter.xshd"),
+                AeCodeType.MarkDown => AeEmbeddedResourceReader.LoadText("Highlighters/AeMarkDownHighlighter.xshd"),
+                AeCodeType.XML => AeEmbeddedResourceReader.LoadText("Highlighters/AeXmlHighlighter.xshd"),
                 _ => null
             };
 
