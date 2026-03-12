@@ -43,7 +43,7 @@ namespace Ae.Engine
         /// <remarks>This constant is only available in debug configurations. Use this path to locate the
         /// asset package file when running or testing the application in a development environment.</remarks>
 #if DEBUG
-        //public string AssetPackagePath { get; set; } = "../../../../Installer/Ae.Assets.db";
+        public string AssetPackagePath { get; set; } = "../../../../Installer/Ae.Assets.db";
 #else
         public string AssetPackagePath { get; set; } = "./Ae.Assets.db";
 #endif

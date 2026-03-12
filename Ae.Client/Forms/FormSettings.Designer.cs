@@ -55,8 +55,13 @@
             checkBoxHighlightAllSprites = new System.Windows.Forms.CheckBox();
             checkBoxHighlightNaturalBounds = new System.Windows.Forms.CheckBox();
             tabPageAdvanced = new System.Windows.Forms.TabPage();
+            labelMunitionTraversalThreads = new System.Windows.Forms.Label();
+            labelWorldClockThreads = new System.Windows.Forms.Label();
+            textBoxWorldClockThreads = new System.Windows.Forms.TextBox();
+            textBoxMunitionTraversalThreads = new System.Windows.Forms.TextBox();
+            checkBoxYieldRemainingFrameTime = new System.Windows.Forms.CheckBox();
+            checkBoxMultithreadedWorldClock = new System.Windows.Forms.CheckBox();
             checkBoxElevatedWorldClockThreadPriority = new System.Windows.Forms.CheckBox();
-            checkBoxPreCacheAllAssets = new System.Windows.Forms.CheckBox();
             tabPageAudio = new System.Windows.Forms.TabPage();
             checkBoxPlayMusic = new System.Windows.Forms.CheckBox();
             buttonCancel = new System.Windows.Forms.Button();
@@ -325,8 +330,13 @@
             // 
             // tabPageAdvanced
             // 
+            tabPageAdvanced.Controls.Add(labelMunitionTraversalThreads);
+            tabPageAdvanced.Controls.Add(labelWorldClockThreads);
+            tabPageAdvanced.Controls.Add(textBoxWorldClockThreads);
+            tabPageAdvanced.Controls.Add(textBoxMunitionTraversalThreads);
+            tabPageAdvanced.Controls.Add(checkBoxYieldRemainingFrameTime);
+            tabPageAdvanced.Controls.Add(checkBoxMultithreadedWorldClock);
             tabPageAdvanced.Controls.Add(checkBoxElevatedWorldClockThreadPriority);
-            tabPageAdvanced.Controls.Add(checkBoxPreCacheAllAssets);
             tabPageAdvanced.Location = new System.Drawing.Point(4, 24);
             tabPageAdvanced.Name = "tabPageAdvanced";
             tabPageAdvanced.Padding = new System.Windows.Forms.Padding(3);
@@ -335,25 +345,67 @@
             tabPageAdvanced.Text = "Advanced";
             tabPageAdvanced.UseVisualStyleBackColor = true;
             // 
+            // labelMunitionTraversalThreads
+            // 
+            labelMunitionTraversalThreads.AutoSize = true;
+            labelMunitionTraversalThreads.Location = new System.Drawing.Point(6, 93);
+            labelMunitionTraversalThreads.Name = "labelMunitionTraversalThreads";
+            labelMunitionTraversalThreads.Size = new System.Drawing.Size(145, 15);
+            labelMunitionTraversalThreads.TabIndex = 3;
+            labelMunitionTraversalThreads.Text = "Munition traversal threads";
+            // 
+            // labelWorldClockThreads
+            // 
+            labelWorldClockThreads.AutoSize = true;
+            labelWorldClockThreads.Location = new System.Drawing.Point(8, 139);
+            labelWorldClockThreads.Name = "labelWorldClockThreads";
+            labelWorldClockThreads.Size = new System.Drawing.Size(112, 15);
+            labelWorldClockThreads.TabIndex = 5;
+            labelWorldClockThreads.Text = "World clock threads";
+            // 
+            // textBoxWorldClockThreads
+            // 
+            textBoxWorldClockThreads.Location = new System.Drawing.Point(8, 157);
+            textBoxWorldClockThreads.Name = "textBoxWorldClockThreads";
+            textBoxWorldClockThreads.Size = new System.Drawing.Size(178, 23);
+            textBoxWorldClockThreads.TabIndex = 6;
+            // 
+            // textBoxMunitionTraversalThreads
+            // 
+            textBoxMunitionTraversalThreads.Location = new System.Drawing.Point(8, 111);
+            textBoxMunitionTraversalThreads.Name = "textBoxMunitionTraversalThreads";
+            textBoxMunitionTraversalThreads.Size = new System.Drawing.Size(178, 23);
+            textBoxMunitionTraversalThreads.TabIndex = 4;
+            // 
+            // checkBoxYieldRemainingFrameTime
+            // 
+            checkBoxYieldRemainingFrameTime.AutoSize = true;
+            checkBoxYieldRemainingFrameTime.Location = new System.Drawing.Point(8, 56);
+            checkBoxYieldRemainingFrameTime.Name = "checkBoxYieldRemainingFrameTime";
+            checkBoxYieldRemainingFrameTime.Size = new System.Drawing.Size(178, 19);
+            checkBoxYieldRemainingFrameTime.TabIndex = 2;
+            checkBoxYieldRemainingFrameTime.Text = "Yield remaining frame Time?";
+            checkBoxYieldRemainingFrameTime.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMultithreadedWorldClock
+            // 
+            checkBoxMultithreadedWorldClock.AutoSize = true;
+            checkBoxMultithreadedWorldClock.Location = new System.Drawing.Point(8, 31);
+            checkBoxMultithreadedWorldClock.Name = "checkBoxMultithreadedWorldClock";
+            checkBoxMultithreadedWorldClock.Size = new System.Drawing.Size(175, 19);
+            checkBoxMultithreadedWorldClock.TabIndex = 1;
+            checkBoxMultithreadedWorldClock.Text = "Multi-threaded world clock?";
+            checkBoxMultithreadedWorldClock.UseVisualStyleBackColor = true;
+            // 
             // checkBoxElevatedWorldClockThreadPriority
             // 
             checkBoxElevatedWorldClockThreadPriority.AutoSize = true;
-            checkBoxElevatedWorldClockThreadPriority.Location = new System.Drawing.Point(6, 31);
+            checkBoxElevatedWorldClockThreadPriority.Location = new System.Drawing.Point(8, 6);
             checkBoxElevatedWorldClockThreadPriority.Name = "checkBoxElevatedWorldClockThreadPriority";
             checkBoxElevatedWorldClockThreadPriority.Size = new System.Drawing.Size(180, 19);
-            checkBoxElevatedWorldClockThreadPriority.TabIndex = 2;
+            checkBoxElevatedWorldClockThreadPriority.TabIndex = 0;
             checkBoxElevatedWorldClockThreadPriority.Text = "Elevated world clock priority?";
             checkBoxElevatedWorldClockThreadPriority.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxPreCacheAllAssets
-            // 
-            checkBoxPreCacheAllAssets.AutoSize = true;
-            checkBoxPreCacheAllAssets.Location = new System.Drawing.Point(6, 6);
-            checkBoxPreCacheAllAssets.Name = "checkBoxPreCacheAllAssets";
-            checkBoxPreCacheAllAssets.Size = new System.Drawing.Size(133, 19);
-            checkBoxPreCacheAllAssets.TabIndex = 1;
-            checkBoxPreCacheAllAssets.Text = "Pre-cache all assets?";
-            checkBoxPreCacheAllAssets.UseVisualStyleBackColor = true;
             // 
             // tabPageAudio
             // 
@@ -450,7 +502,6 @@
         private System.Windows.Forms.CheckBox checkBoxHighlightAllSprites;
         private System.Windows.Forms.CheckBox checkBoxHighlightNaturalBounds;
         private System.Windows.Forms.TabPage tabPageAdvanced;
-        private System.Windows.Forms.CheckBox checkBoxPreCacheAllAssets;
         private System.Windows.Forms.Label labelGraphicsAdapter;
         private System.Windows.Forms.ComboBox comboBoxGraphicsAdapter;
         private System.Windows.Forms.CheckBox checkBoxEnableAntiAliasing;
@@ -460,5 +511,11 @@
         private System.Windows.Forms.CheckBox checkBoxEnableVerticalSync;
         private System.Windows.Forms.CheckBox checkBoxEnableDeveloperMode;
         private System.Windows.Forms.CheckBox checkBoxElevatedWorldClockThreadPriority;
+        private System.Windows.Forms.CheckBox checkBoxMultithreadedWorldClock;
+        private System.Windows.Forms.CheckBox checkBoxYieldRemainingFrameTime;
+        private System.Windows.Forms.Label labelMunitionTraversalThreads;
+        private System.Windows.Forms.Label labelWorldClockThreads;
+        private System.Windows.Forms.TextBox textBoxWorldClockThreads;
+        private System.Windows.Forms.TextBox textBoxMunitionTraversalThreads;
     }
 }

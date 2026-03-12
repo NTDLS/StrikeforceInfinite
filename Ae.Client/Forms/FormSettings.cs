@@ -25,6 +25,11 @@ namespace Ae.Client
 
             var settings = AeEngine.LoadSettings();
 
+            checkBoxMultithreadedWorldClock.Checked = settings.MultithreadedWorldClock;
+            checkBoxYieldRemainingFrameTime.Checked = settings.YieldRemainingFrameTime;
+            textBoxMunitionTraversalThreads.Text = $"{settings.MunitionTraversalThreads:n0}";
+            textBoxWorldClockThreads.Text = $"{settings.WorldClockThreads:n0}";
+
             checkBoxFineTuneFrameRate.Checked = settings.FineTuneFramerate;
             checkBoxPlayMusic.Checked = settings.PlayMusic;
             checkBoxEnableAntiAliasing.Checked = settings.AntiAliasing;
@@ -138,6 +143,11 @@ namespace Ae.Client
             try
             {
                 var settings = AeEngine.LoadSettings();
+
+                settings.MultithreadedWorldClock = checkBoxMultithreadedWorldClock.Checked;
+                settings.YieldRemainingFrameTime = checkBoxYieldRemainingFrameTime.Checked;
+                settings.MunitionTraversalThreads = GetAndValidate(textBoxMunitionTraversalThreads, 0, 1024, "Munition Traversal Threads");
+                settings.WorldClockThreads = GetAndValidate(textBoxWorldClockThreads, 0, 1024, "World Clock Threads");
 
                 settings.FineTuneFramerate = checkBoxFineTuneFrameRate.Checked;
                 settings.PlayMusic = checkBoxPlayMusic.Checked;
