@@ -8,7 +8,9 @@ rd output /q /s
 md output
 md publish
 
-dotnet publish ..\Ae.Client -c Release -o publish --runtime win-x64 --self-contained false
+dotnet publish ..\Ae.Client -c Release -o publish\Client --runtime win-x64 --self-contained false
+dotnet publish ..\Ae.AssetExplorer -c Release -o publish\AssetExplorer --runtime win-x64 --self-contained false
+
 del publish\*.pdb /q
 
 iscc Setup.Iss

@@ -16,3 +16,9 @@ Ae.Game/Properties/launchSettings.json
 Installer/AssetPacker/
 
 Installer/Ae.Assets.db
+
+\@Installer/AssetPacker/
+
+\@Installer/NugetPublish/
+
+\@Installer/Ae.Assets.db
