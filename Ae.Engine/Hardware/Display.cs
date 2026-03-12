@@ -129,7 +129,7 @@ namespace Ae.Engine.Hardware
             form.StartPosition = FormStartPosition.Manual;
             form.ShowInTaskbar = true;
 #if !DEBUG
-                form.TopMost = true; //This is a total pain for debugging.
+            form.TopMost = true; //This is a total pain for debugging.
 #endif
             // Set the form's location and size to match the target monitor
             form.Bounds = targetMonitor.Bounds;
