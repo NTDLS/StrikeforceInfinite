@@ -5,10 +5,6 @@ public override void OnMaterialized()
 {
     Orientation.Degrees = AeRandom.Between(0, 359);
 
-    //AddAIController(new AILogisticsHostileEngagement(Engine, this, [Engine.Player.Sprite]));
-
-    //SetCurrentAIController<AILogisticsHostileEngagement>();
-
     _thrusterLeft = Attachments.Single(o => o.AssetKey == "Sprites/Enemy/Boss/Devastator/Jet.Left");
     _thrusterRight = Attachments.Single(o => o.AssetKey == "Sprites/Enemy/Boss/Devastator/Jet.Right");
 

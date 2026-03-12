@@ -20,7 +20,7 @@ public override void OnMaterialized()
 #region AI States.
 
 private class GotoRadiusOfObservedObject
-    : AeAIStateHandler
+    : IAeAIStateHandler
 {
     private readonly AeAIStateMachine _stateMachine;
     private AeRotationDirection _rotateDirection;
@@ -61,7 +61,7 @@ private class GotoRadiusOfObservedObject
 }
 
 private class SteadyOnCurrentPath
-    : AeAIStateHandler
+    : IAeAIStateHandler
 {
     private readonly AeAIStateMachine _stateMachine;
     private float _burndownEpochs = 3;

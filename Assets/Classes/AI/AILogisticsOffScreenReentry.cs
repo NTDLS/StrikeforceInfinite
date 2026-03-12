@@ -7,7 +7,7 @@ public override void OnMaterialized()
 /// Exit the screen at a high speed, then change state to start swooping back in.
 /// </summary>
 private class ExitScreen(AeAIStateMachine stateMachine)
-    : AeAIStateHandler
+    : IAeAIStateHandler
 {
     private int _lastHullHealth = stateMachine.Owner.HullHealth;
     private AeRotationDirection _rotateDirection = AeRandom.FlipCoin() ? AeRotationDirection.Clockwise : AeRotationDirection.CounterClockwise;
@@ -48,7 +48,7 @@ private class ExitScreen(AeAIStateMachine stateMachine)
 /// After exiting the screen, rotate to face the center of the screen.
 /// </summary>
 private class RotateToCenterScene(AeAIStateMachine stateMachine)
-    : AeAIStateHandler
+    : IAeAIStateHandler
 {
     private readonly AeRotationDirection _rotateDirection = AeRandom.FlipCoin() ? AeRotationDirection.Clockwise : AeRotationDirection.CounterClockwise;
     private readonly float _rotationDegreesPerSec = AeRandom.Between(20, 50);
@@ -72,7 +72,7 @@ private class RotateToCenterScene(AeAIStateMachine stateMachine)
 }
 
 private class ApproachTarget(AeAIStateMachine stateMachine)
-    : AeAIStateHandler
+    : IAeAIStateHandler
 {
     private float _lastDistance = stateMachine.Owner.DistanceTo(stateMachine.Engine.Display.CenterOfCurrentScreen);
     private int _lastHullHealth = stateMachine.Owner.HullHealth;

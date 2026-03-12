@@ -13,7 +13,7 @@ public override bool Fire()
 
         if (LockedTargets?.Count > 0)
         {
-            foreach (var weaponLock in LockedTargets.Where(o => o.LockType == AeConstants.AeWeaponsLockType.Hard))
+            foreach (var weaponLock in LockedTargets.Where(o => o.LockType == AeWeaponsLockType.Hard))
             {
                 Engine.Sprites.Munitions.AddLockedOnTo(this, weaponLock.Sprite, Owner.Location + offset);
             }
@@ -25,5 +25,6 @@ public override bool Fire()
 
         return true;
     }
+    
     return false;
 }

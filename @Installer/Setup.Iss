@@ -49,7 +49,8 @@
  Source: "Fonts\CascadiaCodeSemiLight.ttf";    DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Cascadia Code SemiLight"; Flags: onlyifdoesntexist uninsneveruninstall
 
 [Icons]
- Name: "{group}\Axis Engine"; Filename: "{app}\Ae.Client.exe"; Components: Client;
+ Name: "{group}\Axis Engine";   Filename: "{app}\Ae.Client.exe";        Components: Client;
+ Name: "{group}\Axis Explorer"; Filename: "{app}\Ae.AssetExplorer.exe"; Components: Explorer;
 
 [Run]
  Filename: "{app}\Ae.Client.exe"; Description: "Run Axis Engine now?"; Flags: postinstall nowait skipifsilent shellexec; Components: Client;
