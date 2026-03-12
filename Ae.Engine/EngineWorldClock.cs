@@ -149,7 +149,9 @@ namespace Ae.Engine
                 _engine.Development?.ProcessCommand();
 
                 //We only render if we are in play or edit mode.
-                if (_engine.ExecutionMode == AeEngineExecutionMode.Play || _engine.ExecutionMode == AeEngineExecutionMode.Edit)
+                if (_engine.ExecutionMode == AeEngineExecutionMode.Play
+                    || _engine.ExecutionMode == AeEngineExecutionMode.Edit
+                    || _engine.ExecutionMode == AeEngineExecutionMode.AttachedDebugging)
                 {
                     _engine.RenderEverything(elapsedEpochMilliseconds / 1000.0f);
                 }

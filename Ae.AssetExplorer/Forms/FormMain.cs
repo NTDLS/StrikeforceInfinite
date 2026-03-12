@@ -7,6 +7,7 @@ using Ae.Engine.Sprite;
 using Ae.Engine.Sprite.Base;
 using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
+using System.Reflection;
 
 namespace Ae.AssetExplorer
 {
@@ -404,18 +405,57 @@ namespace Ae.AssetExplorer
 
         #region Menu items.
 
-        private void extractProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExtractProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                using var dialog = new FolderBrowserDialog();
-                dialog.Description = "Select the project output folder";
-                dialog.UseDescriptionForTitle = true;
-                dialog.ShowNewFolderButton = true;
+                using var dialog = new SaveFileDialog
+                {
+                    Title = "Save Asset",
+                    Filter = $"C# Project File (*.csproj)|*.csproj|All Files (*.*)|*.*",
+                    FileName = $"extractedProject.csproj",
+                    DefaultExt = "csproj",
+                    AddExtension = true,
+                    OverwritePrompt = true
+                };
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    _engine.Assets.ExtractProject(dialog.SelectedPath, WriteLog);
+                    var selectedFileName = dialog.FileName;
+
+                    var fileName = Path.GetFileNameWithoutExtension(selectedFileName)
+                        ?? throw new Exception("Could not determine project name from file path.");
+
+                    var directory = Path.GetDirectoryName(selectedFileName)
+                        ?? throw new Exception("Could not determine directory from file path.");
+
+                    //Create a directory with the same name as the project to extract the files to, to avoid cluttering the user-selected directory with multiple files.
+                    Directory.CreateDirectory(Path.Combine(directory, fileName));
+
+                    selectedFileName = Path.Combine(directory, fileName, Path.GetFileName(selectedFileName));
+
+                    directory = Path.GetDirectoryName(selectedFileName)
+                        ?? throw new Exception("Could not determine directory from file path.");
+
+                    var projectName = AeRuntimeCompiler.AssetKeyToClassName(fileName);
+                    var version = string.Join('.', (Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0").Split('.').Take(3));
+
+                    var projectFileText = $@"<Project Sdk=""Microsoft.NET.Sdk"">
+                              <PropertyGroup>
+                                <TargetFramework>net10.0-windows</TargetFramework>
+                                <ImplicitUsings>enable</ImplicitUsings>
+                                <Nullable>enable</Nullable>
+                                <RootNamespace>Ae.Engine</RootNamespace>
+                                <AssemblyName>Ae.Engine</AssemblyName>
+                              </PropertyGroup>
+                              <ItemGroup>
+                                <PackageReference Include=""Ae.Engine"" Version=""{version}"" />
+                              </ItemGroup>
+                            </Project>";
+
+                    File.WriteAllText(selectedFileName, projectFileText);
+
+                    _engine.Assets.ExtractProject(directory, WriteLog);
                 }
             }
             catch (Exception ex)

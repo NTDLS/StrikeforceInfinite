@@ -41,7 +41,8 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             engine.OnInitializationComplete += (AeEngine engine) =>
             {
                 //This is where the player is created.
-                if (engine.ExecutionMode == AeEngineExecutionMode.Play)
+                if (engine.ExecutionMode == AeEngineExecutionMode.Play
+                    || engine.ExecutionMode == AeEngineExecutionMode.AttachedDebugging)
                 {
                     Sprite = engine.Sprites.Add<AeSpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
                     {

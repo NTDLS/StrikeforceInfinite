@@ -30,23 +30,15 @@ namespace Ae.Engine.Manager
     public class AssetManager
     {
         /// <summary>
-        /// Specifies the relative path to the asset package database used during debugging builds.
-        /// </summary>
-        /// <remarks>This constant is only available in debug configurations. Use this path to locate the
-        /// asset package file when running or testing the application in a development environment.</remarks>
-#if DEBUG
-        public const string AssetPackagePath = "../../../../Installer/Ae.Assets.db";
-#else
-        public const string AssetPackagePath = "Ae.Assets.db";
-#endif
-
-        /// <summary>
         /// Gets a value indicating whether the asset package has been successfully loaded.
         /// </summary>
         public bool IsLoaded { get; private set; }
-        private readonly AeEngine _engine;
+        /// <summary>
+        /// Gets the engine instance used to execute and manage workflow operations.
+        /// </summary>
+        public AeEngine Engine { get; private set; }
         private readonly Dictionary<string, AssetContainer> _collection = new();
-        private readonly SqliteManagedFactory _assetsDatabase = new($"Data Source={AssetPackagePath}");
+        private readonly SqliteManagedFactory _assetsDatabase;
         private readonly AeCache _cache = new(AeCache.CacheExpirationScheme.Sliding, TimeSpan.FromSeconds(600));
 
         /// <summary>
@@ -55,7 +47,8 @@ namespace Ae.Engine.Manager
         /// <param name="engine">The engine instance used to manage assets. Cannot be null.</param>
         public AssetManager(AeEngine engine)
         {
-            _engine = engine;
+            Engine = engine;
+            _assetsDatabase = new($"Data Source={engine.AssetPackagePath}");
         }
 
         /// <summary>
@@ -283,8 +276,17 @@ namespace Ae.Engine.Manager
                     {
                         try
                         {
-                            if (!AeRuntimeCompiler.CompileToAssembly(assetContainer.Metadata.AssetKey, assetCodeForCompilation, true, writeLog))
-                                throw new Exception($"Failed to compile asset code for asset with key: {model.Key}. No assembly was returned from the compiler.");
+                            //When running in AttachedDebugging mode, the compiled assemblies are expected to be injected.
+                            //So we skip compilation.
+                            if (Engine.ExecutionMode != AeEngineExecutionMode.AttachedDebugging)
+                            {
+                                if (!AeRuntimeCompiler.CompileToAssembly(assetContainer.Metadata.AssetKey, assetCodeForCompilation, true, writeLog))
+                                    throw new Exception($"Failed to compile asset code for asset with key: {model.Key}. No assembly was returned from the compiler.");
+                            }
+
+                            //Save the name of the class that was compiled for this asset so that it can be instantiated later when the asset is requested.
+                            // Note that this may also simply be inferred if running in debug mode with "injected" assets.
+                            assetContainer.ControllerName = AeRuntimeCompiler.AssetKeyToClassName(assetContainer.Metadata.AssetKey);
 
                             //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
                             AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);
@@ -371,7 +373,7 @@ namespace Ae.Engine.Manager
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         using var stream = new MemoryStream(bytes);
-                        var obj = _engine.Rendering.BitmapStreamToD2DBitmap(stream);
+                        var obj = Engine.Rendering.BitmapStreamToD2DBitmap(stream);
 
                         return new AssetContainer(model.Key, model.BaseType, metaData, obj);
                     }
@@ -599,7 +601,7 @@ namespace Ae.Engine.Manager
         /// </summary>
         public void ExtractProject(string path, WriteLogDelegate writeLog)
         {
-            var database = new SqliteManagedFactory($"Data Source={AssetPackagePath}");
+            var database = new SqliteManagedFactory($"Data Source={Engine.AssetPackagePath}");
 
             var assets = database.Query<AssetDatabaseModel>(
                 "SELECT Key, BaseType, Controller, Bytes, IsCompressed, Metadata FROM Assets").ToList();
@@ -615,7 +617,7 @@ namespace Ae.Engine.Manager
                     continue;
                 }
 
-                if (baseType == AeBaseAssetType.Code || baseType == AeBaseAssetType.Text)
+                if (baseType == AeBaseAssetType.Text)
                 {
                     if (asset.IsCompressed)
                     {
@@ -627,11 +629,21 @@ namespace Ae.Engine.Manager
                     }
                 }
 
+                if (baseType == AeBaseAssetType.Code)
+                {
+                    var codeToCompile = Engine.Assets.GetAssetCodeForCompilation(asset.Key, writeLog);
+                    File.WriteAllText(Path.Combine(path, asset.Key + "." + asset.BaseType), codeToCompile);
+                }
+
                 if (!string.IsNullOrWhiteSpace(asset.Metadata))
                     File.WriteAllText(Path.Combine(path, asset.Key + "." + asset.BaseType + ".meta"), asset.Metadata);
 
                 if (!string.IsNullOrWhiteSpace(asset.Controller))
-                    File.WriteAllText(Path.Combine(path, asset.Key + "." + asset.BaseType + ".code.cs"), asset.Controller);
+                {
+                    var codeToCompile = Engine.Assets.GetAssetCodeForCompilation(asset.Key, writeLog);
+                    File.WriteAllText(Path.Combine(path, asset.Key + "." + asset.BaseType + ".code.cs"), codeToCompile);
+
+                }
             }
         }
     }

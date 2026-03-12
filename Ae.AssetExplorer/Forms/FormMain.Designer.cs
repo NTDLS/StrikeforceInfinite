@@ -411,7 +411,7 @@ namespace Ae.AssetExplorer
             extractProjectToolStripMenuItem.Name = "extractProjectToolStripMenuItem";
             extractProjectToolStripMenuItem.Size = new Size(180, 22);
             extractProjectToolStripMenuItem.Text = "Extract Project";
-            extractProjectToolStripMenuItem.Click += extractProjectToolStripMenuItem_Click;
+            extractProjectToolStripMenuItem.Click += ExtractProjectToolStripMenuItem_Click;
             // 
             // FormMain
             // 

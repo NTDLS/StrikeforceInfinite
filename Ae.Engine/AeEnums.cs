@@ -297,7 +297,11 @@
         /// <summary>
         /// This engine instance is intended to be shared content only, not to run a level.
         /// </summary>
-        SharedEngineContent
+        SharedEngineContent,
+        /// <summary>
+        /// Tells the engine that it is being used for debugging purposes, and not to compile any assets as those are going to be injected.
+        /// </summary>
+        AttachedDebugging
     }
 
     /// <summary>

@@ -37,6 +37,17 @@ namespace Ae.Engine
 
         #region Public properties.
 
+        /// <summary>
+        /// Specifies the relative path to the asset package database used during debugging builds.
+        /// </summary>
+        /// <remarks>This constant is only available in debug configurations. Use this path to locate the
+        /// asset package file when running or testing the application in a development environment.</remarks>
+#if DEBUG
+        public string AssetPackagePath { get; set; } = "../../../../Installer/Ae.Assets.db";
+#else
+        public string AssetPackagePath  { get; set; }= "Ae.Assets.db";
+#endif
+
         internal MpCommsManager? CommsManager { get; set; }
 
         internal AeEngineExecutionMode ExecutionMode { get; private set; }
@@ -203,13 +214,18 @@ namespace Ae.Engine
         /// the rendering and asset management, and then each game instance runs in server host mode and shares the
         /// rendering and asset management of the shared engine.
         /// </summary>
-        public AeEngine(AeEngineExecutionMode executionMode = AeEngineExecutionMode.SharedEngineContent)
+        public AeEngine(AeEngineExecutionMode executionMode = AeEngineExecutionMode.SharedEngineContent, string? assetPackagePath = null)
         {
             ExecutionMode = executionMode;
 
             if (ExecutionMode != AeEngineExecutionMode.SharedEngineContent)
             {
                 throw new Exception("This constructor is only meant for shared engine content mode.");
+            }
+
+            if (assetPackagePath != null)
+            {
+                AssetPackagePath = assetPackagePath;
             }
 
             Settings = LoadSettings();
@@ -241,7 +257,7 @@ namespace Ae.Engine
         /// Initializes a new instance of the game engine for server host mode, which shares rendering and asset
         /// management with another instance of the engine (the "shared engine") that is running in shared engine content mode.
         /// </summary>
-        public AeEngine(ManagedLobby lobby, AeEngine sharedEngine, AeEngineExecutionMode executionMode)
+        public AeEngine(ManagedLobby lobby, AeEngine sharedEngine, AeEngineExecutionMode executionMode, string? assetPackagePath = null)
         {
             MultiplayLobby = lobby;
             ExecutionMode = executionMode;
@@ -249,6 +265,11 @@ namespace Ae.Engine
             if (ExecutionMode != AeEngineExecutionMode.ServerHost)
             {
                 throw new Exception("This constructor is only meant for server host mode.");
+            }
+
+            if (assetPackagePath != null)
+            {
+                AssetPackagePath = assetPackagePath;
             }
 
             Settings = LoadSettings();
@@ -285,17 +306,23 @@ namespace Ae.Engine
         /// scenarios.</remarks>
         /// <param name="drawingSurface">The control used as the drawing surface for rendering engine output. Must not be null.</param>
         /// <param name="executionMode">The execution mode for the engine. Must be either Play or Edit.</param>
-        /// <param name="sizeOverride">An optional size override for the drawing surface. If specified, determines the canvas size used for
-        /// rendering.</param>
+        /// <param name="sizeOverride">An optional size override for the drawing surface. If specified, determines the canvas size used for rendering.</param>
+        /// <param name="assetPackagePath">An optional override for the assets path.</param>
         /// <exception cref="Exception">Thrown if executionMode is not Play or Edit.</exception>
-        public AeEngine(Control drawingSurface, AeEngineExecutionMode executionMode, Size? sizeOverride = null)
+        public AeEngine(Control drawingSurface, AeEngineExecutionMode executionMode, Size? sizeOverride = null, string? assetPackagePath = null)
         {
             ExecutionMode = executionMode;
 
             if (ExecutionMode != AeEngineExecutionMode.Play
-                && ExecutionMode != AeEngineExecutionMode.Edit)
+                && ExecutionMode != AeEngineExecutionMode.Edit
+                && ExecutionMode != AeEngineExecutionMode.AttachedDebugging)
             {
                 throw new Exception("This constructor is only meant for play and edit modes.");
+            }
+
+            if (assetPackagePath != null)
+            {
+                AssetPackagePath = assetPackagePath;
             }
 
             Settings = LoadSettings();
@@ -408,7 +435,7 @@ namespace Ae.Engine
 
                         o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Red);
 
-                        if (ExecutionMode == AeEngineExecutionMode.Play)
+                        if (ExecutionMode == AeEngineExecutionMode.Play || ExecutionMode == AeEngineExecutionMode.AttachedDebugging)
                         {
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.Black);
                         }
@@ -509,31 +536,22 @@ namespace Ae.Engine
 
             if (ExecutionMode == AeEngineExecutionMode.Play
                 || ExecutionMode == AeEngineExecutionMode.Edit
-                || ExecutionMode == AeEngineExecutionMode.ServerHost)
+                || ExecutionMode == AeEngineExecutionMode.ServerHost
+                || ExecutionMode == AeEngineExecutionMode.AttachedDebugging)
             {
                 _worldClock?.Start();
             }
 
-            if (ExecutionMode == AeEngineExecutionMode.Play)
-            {
-                IsInitializing = true;
+            IsInitializing = true;
 
-                HydrateCache(progressCallback, writeLog);
-            }
-            else if (ExecutionMode == AeEngineExecutionMode.SharedEngineContent)
-            {
-                HydrateCache(progressCallback, writeLog);
-            }
-            else if (ExecutionMode == AeEngineExecutionMode.Edit)
-            {
-                HydrateCache(progressCallback, writeLog);
-            }
+            HydrateCache(progressCallback, writeLog);
 
             OnInitializationComplete?.Invoke(this);
 
             IsInitializing = false;
 
-            if (ExecutionMode == AeEngineExecutionMode.Play)
+            if (ExecutionMode == AeEngineExecutionMode.Play
+                || ExecutionMode == AeEngineExecutionMode.AttachedDebugging)
             {
                 //Add initial stars.
                 for (int i = 0; i < Settings.InitialFrameStarCount; i++)

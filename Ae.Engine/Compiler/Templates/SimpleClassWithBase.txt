@@ -6,5 +6,9 @@ public class [[className]]([[constructorSignature]])
     public static string AeClassName => "[[className]]";
     public static string AeFriendlyName => "[[friendlyName]]";
 
+    /*--BEGIN USER CODE--*/
+
     [[userCode]]
+
+    /*--END USER CODE--*/
 }

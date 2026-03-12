@@ -107,7 +107,8 @@ namespace Ae.Engine.Manager
 
         internal void Snapshot()
         {
-            if (_engine.ExecutionMode != AeEngineExecutionMode.Play)
+            if (_engine.ExecutionMode != AeEngineExecutionMode.Play
+                && _engine.ExecutionMode != AeEngineExecutionMode.AttachedDebugging)
             {
                 _playerKeyStates.Clear();
                 return;

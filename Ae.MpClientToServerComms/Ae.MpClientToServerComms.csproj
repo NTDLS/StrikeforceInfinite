@@ -19,7 +19,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>
-
+			Axis Engine is a 2D game engine written in C# and rendered with DirectX.
 		</Description>
 		<PackageProjectUrl>https://github.com/NTDLS/AxisEngine</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/NTDLS/AxisEngine</RepositoryUrl>
