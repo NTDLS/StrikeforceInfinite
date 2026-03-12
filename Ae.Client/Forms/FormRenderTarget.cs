@@ -286,7 +286,7 @@ namespace Ae.Client
                 {
                     _engine.Pause();
 
-                    if (MessageBox.Show("Are you sure you want to quit?", "Afraid to go on?",
+                    if (MessageBox.Show("Are you sure you want to quit?", AeConstants.FriendlyName,
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         Close();
