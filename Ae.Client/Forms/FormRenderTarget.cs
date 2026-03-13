@@ -119,10 +119,6 @@ namespace Ae.Client
                 highlightedSprites.Clear();
 
                 var sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, AeVector.One()).ToList();
-                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, AeVector.One()))
-                {
-                    sprites.Add(_engine.Player.Sprite);
-                }
 
                 foreach (var sprite in sprites.Where(o => o.IsHighlighted == false))
                 {
@@ -141,11 +137,6 @@ namespace Ae.Client
             _engine.Invoke(() =>
             {
                 sprites = _engine.Sprites.RenderLocationIntersections(translatedPosition, AeVector.One(), true).ToList();
-                if (_engine.Player.Sprite.RenderLocationIntersectsAABB(translatedPosition, AeVector.One()))
-                {
-                    //TODO: WHAT?!
-                    sprites.Add(_engine.Player.Sprite);
-                }
             }).Wait();
 
             if (sprites?.Count > 0)

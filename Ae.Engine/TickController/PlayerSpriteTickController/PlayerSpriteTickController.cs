@@ -51,7 +51,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
                 }
                 else
                 {
-                    // In edit mode, the player is just a placeholder and is not added to the collecton.
+                    // In edit mode, the player is just a placeholder and is not added to the collection.
                     Sprite = engine.Sprites.Create<AeSpritePlayer>("Sprites/Player/Ships/Debug", (o) =>
                     {
                         o.IsVisible = true;
@@ -79,7 +79,6 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             {
                 o.IsVisible = false;
             });
-            _engine.Sprites.Insert(Sprite); //Add the player back to the sprite collection.
         }
 
         private float _forwardVelocity = 0;
@@ -94,7 +93,7 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
         {
             if (_engine.ExecutionMode == AeEngineExecutionMode.Edit)
             {
-                //We dont want the player to move at all in edit mode, so just return a zero vector.
+                //We don't want the player to move at all in edit mode, so just return a zero vector.
                 //Otherwise this can also cause micro-changes to the camera position.
                 return AeVector.Zero();
             }

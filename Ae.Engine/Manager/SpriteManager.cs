@@ -691,17 +691,6 @@ namespace Ae.Engine.Manager
             return objects.ToArray();
         }
 
-        /// <summary>
-        /// Adds the specified sprite player to the collection.
-        /// </summary>
-        /// <param name="sprite">The sprite player to add. Cannot be null.</param>
-        /// <returns>The sprite player that was added to the collection.</returns>
-        public AeSpritePlayer AddPlayer(AeSpritePlayer sprite)
-        {
-            Insert(sprite);
-            return sprite;
-        }
-
         internal void RenderPostScaling(SharpDX.Direct2D1.RenderTarget renderTarget, float epoch)
         {
             foreach (var sprite in _collection.Where(o => o.IsVisible == true && o.RenderScaleOrder == AeRenderScaleOrder.PostScale).OrderBy(o => o.Z))
