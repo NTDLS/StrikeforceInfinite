@@ -417,7 +417,7 @@ namespace Ae.AssetExplorer
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    _engine.Assets.ExtractProject(Path.Combine(dialog.SelectedPath, "Ae.Engine.Debug"), WriteLog);
+                    ProjectExtractor.ExtractProject(_engine, Path.Combine(dialog.SelectedPath, "Ae.Engine.Debug"), WriteLog);
                 }
             }
             catch (Exception ex)
@@ -426,6 +426,86 @@ namespace Ae.AssetExplorer
             }
         }
 
+
+        /*
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = "devenv.exe",
+                Arguments = $"\"{csprojPath}\"",
+                UseShellExecute = true
+            });
+
+            // Wait until the process exits
+            process?.WaitForExit();
+
+            CleanupTemporaryFiles();
+         * */
+
         #endregion
+
+        private void ToolStripButtonRun_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonDebug_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonBreak_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonComment_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonUncomment_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonCopy_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonCut_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonPaste_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonDecreaseIndent_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonIncreaseIndent_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonFind_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonReplace_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripButtonGoToLine_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

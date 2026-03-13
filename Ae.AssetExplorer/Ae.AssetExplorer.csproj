@@ -4,7 +4,7 @@
 		<Title>Axis Engine</Title>
 		<Company>NetworkDLS</Company>
 		<Copyright>Copyright © 2026 NetworkDLS</Copyright>
-		<Version>0.0.41</Version>
+		<Version>0.0.42</Version>
 		<Authors>NetworkDLS</Authors>
 
 		<OutputType>Exe</OutputType>
@@ -29,6 +29,7 @@
 		<EmbeddedResource Include="Highlighters\AeMarkDownHighlighter.xshd" />
 		<EmbeddedResource Include="Highlighters\AeXmlHighlighter.xshd" />
 		<EmbeddedResource Include="Samples\CSharpTextSample.txt" />
+		<EmbeddedResource Include="Templates\AeDebugProjectTemplate.zip" />
 	</ItemGroup>
 
 	<ItemGroup>

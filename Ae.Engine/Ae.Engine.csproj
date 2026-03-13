@@ -4,7 +4,7 @@
 		<Title>Axis Engine</Title>
 		<Company>NetworkDLS</Company>
 		<Copyright>Copyright © 2026 NetworkDLS</Copyright>
-		<Version>0.0.41</Version>
+		<Version>0.0.42</Version>
 		<Authors>NetworkDLS</Authors>
 
 		<Nullable>enable</Nullable>
@@ -54,15 +54,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Compiler\Templates\AeDebugProjectTemplate.zip" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Include="AeIcon.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Compiler\Templates\AeDebugProjectTemplate.zip" />
 	  <EmbeddedResource Include="Compiler\Templates\DynamicCompileImports.txt" />
 	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithBase.txt" />
 	  <EmbeddedResource Include="Compiler\Templates\SimpleClassWithoutBase.txt" />

@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{AB4BD3BA-2122-4876-8FD5-3AF65A233D1A}"
 	ProjectSection(SolutionItems) = preProject
-		Installer\Setup.Iss = Installer\Setup.Iss
+		@Installer\Setup.Iss = @Installer\Setup.Iss
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ae.Client", "Ae.Client\Ae.Client.csproj", "{1CE2CAE3-1522-4AD8-AF32-BFAEC6069069}"
