@@ -74,7 +74,6 @@ namespace Ae.AssetExplorer
             toolStripSeparator9 = new ToolStripSeparator();
             toolStripButtonFind = new ToolStripButton();
             toolStripButtonReplace = new ToolStripButton();
-            toolStripButtonGoToLine = new ToolStripButton();
             toolStripSeparator10 = new ToolStripSeparator();
             toolStripButtonToggleAssets = new ToolStripButton();
             toolStripButtonToggleOutput = new ToolStripButton();
@@ -280,7 +279,7 @@ namespace Ae.AssetExplorer
             // toolStrip
             // 
             toolStrip.Font = new Font("Segoe UI", 9F);
-            toolStrip.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole, toolStripSeparator1, toolStripButtonSave, toolStripButtonSaveAll, toolStripButtonClose, toolStripSeparator2, toolStripButtonUndo, toolStripButtonRedo, toolStripSeparator5, toolStripButtonBuild, toolStripButtonRun, toolStripButtonDebug, toolStripButtonBreak, toolStripSeparator6, toolStripButtonComment, toolStripButtonUncomment, toolStripSeparator7, toolStripButtonCopy, toolStripButtonCut, toolStripButtonPaste, toolStripSeparator8, toolStripButtonDecreaseIndent, toolStripButtonIncreaseIndent, toolStripSeparator9, toolStripButtonFind, toolStripButtonReplace, toolStripButtonGoToLine, toolStripSeparator10, toolStripButtonToggleAssets, toolStripButtonToggleOutput, toolStripButtonToggleProperties, toolStripSeparator4, toolStripButtonAbout });
+            toolStrip.Items.AddRange(new ToolStripItem[] { toolStripButtonSettings, toolStripButtonDeveloperConsole, toolStripSeparator1, toolStripButtonSave, toolStripButtonSaveAll, toolStripButtonClose, toolStripSeparator2, toolStripButtonUndo, toolStripButtonRedo, toolStripSeparator5, toolStripButtonBuild, toolStripButtonRun, toolStripButtonDebug, toolStripButtonBreak, toolStripSeparator6, toolStripButtonComment, toolStripButtonUncomment, toolStripSeparator7, toolStripButtonCopy, toolStripButtonCut, toolStripButtonPaste, toolStripSeparator8, toolStripButtonDecreaseIndent, toolStripButtonIncreaseIndent, toolStripSeparator9, toolStripButtonFind, toolStripButtonReplace, toolStripSeparator10, toolStripButtonToggleAssets, toolStripButtonToggleOutput, toolStripButtonToggleProperties, toolStripSeparator4, toolStripButtonAbout });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(800, 25);
@@ -391,6 +390,7 @@ namespace Ae.AssetExplorer
             toolStripButtonRun.Name = "toolStripButtonRun";
             toolStripButtonRun.Size = new Size(23, 22);
             toolStripButtonRun.Text = "Run";
+            toolStripButtonRun.Visible = false;
             toolStripButtonRun.Click += ToolStripButtonRun_Click;
             // 
             // toolStripButtonDebug
@@ -411,6 +411,7 @@ namespace Ae.AssetExplorer
             toolStripButtonBreak.Name = "toolStripButtonBreak";
             toolStripButtonBreak.Size = new Size(23, 22);
             toolStripButtonBreak.Text = "Break";
+            toolStripButtonBreak.Visible = false;
             toolStripButtonBreak.Click += ToolStripButtonBreak_Click;
             // 
             // toolStripSeparator6
@@ -522,16 +523,6 @@ namespace Ae.AssetExplorer
             toolStripButtonReplace.Size = new Size(23, 22);
             toolStripButtonReplace.Text = "Replace";
             toolStripButtonReplace.Click += ToolStripButtonReplace_Click;
-            // 
-            // toolStripButtonGoToLine
-            // 
-            toolStripButtonGoToLine.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButtonGoToLine.Image = (Image)resources.GetObject("toolStripButtonGoToLine.Image");
-            toolStripButtonGoToLine.ImageTransparentColor = Color.Magenta;
-            toolStripButtonGoToLine.Name = "toolStripButtonGoToLine";
-            toolStripButtonGoToLine.Size = new Size(23, 22);
-            toolStripButtonGoToLine.Text = "Go to Line";
-            toolStripButtonGoToLine.Click += ToolStripButtonGoToLine_Click;
             // 
             // toolStripSeparator10
             // 
@@ -693,7 +684,6 @@ namespace Ae.AssetExplorer
         private ToolStripButton toolStripButtonIncreaseIndent;
         private ToolStripButton toolStripButtonFind;
         private ToolStripButton toolStripButtonReplace;
-        private ToolStripButton toolStripButtonGoToLine;
         private ToolStripButton toolStripButtonRedo;
         private ToolStripButton toolStripButtonUndo;
         private ToolStripSeparator toolStripSeparator5;

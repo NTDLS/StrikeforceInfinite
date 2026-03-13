@@ -10,9 +10,11 @@ namespace Ae.AssetExplorer
         private readonly Action<AeTabPage> _tabSelected;
         private readonly AeEngine _engine;
         private AeTabPage? _lastSelectedTab; //Just so that we dont keep reloading the same tab on selection.
+        private readonly FormMain _formMain;
 
-        public TabManager(AeEngine engine, TabControl tabControl, Action<AeTabPage> tabSelected)
+        public TabManager(FormMain formMain, AeEngine engine, TabControl tabControl, Action<AeTabPage> tabSelected)
         {
+            _formMain = formMain;
             _tabSelected = tabSelected;
             TabControl = tabControl;
             _engine = engine;
@@ -114,7 +116,7 @@ namespace Ae.AssetExplorer
                     break;
             }
 
-            var tabPage = new AeTabPage(node.AssetKey, textContent ?? string.Empty, baseType, codeType);
+            var tabPage = new AeTabPage(_formMain, node.AssetKey, textContent ?? string.Empty, baseType, codeType);
             TabControl.TabPages.Add(tabPage);
             TabControl.SelectedTab = tabPage;
             InvokeTabChanged(tabPage);
@@ -168,14 +170,14 @@ namespace Ae.AssetExplorer
             {
                 case AeBaseAssetType.Image:
                     //Images are sprites, and when we edit those we are editing their controller - not their bytes.
-                    _engine.Assets.WriteAssetControllerFromText(tabPage.AssetKey, tabPage.Editor.Text);
-                    tabPage.Editor.SetUnmodified();
+                    _engine.Assets.WriteAssetControllerFromText(tabPage.AssetKey, tabPage.EditorHost.Text);
+                    tabPage.EditorHost.SetUnmodified();
                     break;
                 case AeBaseAssetType.Text:
                 case AeBaseAssetType.Code:
                     //Text type assets are written to the bytes as that is their native type.
-                    _engine.Assets.WriteAssetBytesFromText(tabPage.AssetKey, tabPage.Editor.Text);
-                    tabPage.Editor.SetUnmodified();
+                    _engine.Assets.WriteAssetBytesFromText(tabPage.AssetKey, tabPage.EditorHost.Text);
+                    tabPage.EditorHost.SetUnmodified();
                     break;
                 case AeBaseAssetType.Sound:
                     break;
@@ -208,7 +210,7 @@ namespace Ae.AssetExplorer
 
         public bool CloseTab(AeTabPage tabPage)
         {
-            if (tabPage.Editor.TextHasChanged)
+            if (tabPage.EditorHost.TextHasChanged)
             {
                 var saveAnswer = MessageBox.Show($"Save '{tabPage.AssetKey}' before closing?",
                     AeConstants.FriendlyName, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
@@ -264,5 +266,45 @@ namespace Ae.AssetExplorer
         {
             TabControl.TabPages.Clear();
         }
+
+        #region Text editor stuff.
+
+        public void IncreaseCurrentTabIndent()
+            => CurrentTab()?.EditorHost.IncreaseCurrentTabIndent();
+
+        public void DecreaseCurrentTabIndent()
+            => CurrentTab()?.EditorHost.DecreaseCurrentTabIndent();
+
+        public void CommentSelection()
+            => CurrentTab()?.EditorHost.CommentSelection();
+
+        public void UncommentSelection()
+            => CurrentTab()?.EditorHost.UncommentSelection();
+
+        public void Redo()
+            => CurrentTab()?.EditorHost.Editor.Redo();
+
+        public void Undo()
+            => CurrentTab()?.EditorHost.Editor.Undo();
+
+        public void Cut()
+            => CurrentTab()?.EditorHost.Editor.Cut();
+
+        public void Copy()
+            => CurrentTab()?.EditorHost.Editor.Copy();
+
+        public void Paste()
+            => CurrentTab()?.EditorHost.Editor.Paste();
+
+        public bool FindNext(string searchText, bool caseSensitive)
+            => CurrentTab()?.EditorHost.FindNext(searchText, caseSensitive) == true;
+
+        public void FindReplace(string searchText, string replaceWith, bool caseSensitive)
+            => CurrentTab()?.EditorHost.FindReplace(searchText, replaceWith, caseSensitive);
+
+        public void FindReplaceAll(string searchText, string replaceWith, bool caseSensitive)
+            => CurrentTab()?.EditorHost.FindReplaceAll(searchText, replaceWith, caseSensitive);
+
+        #endregion
     }
 }

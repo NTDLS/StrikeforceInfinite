@@ -2,11 +2,8 @@
 using Ae.Engine.DataModels;
 using Ae.Engine.Helpers;
 using NTDLS.SqliteDapperWrapper;
-using System;
-using System.Collections.Generic;
 using System.IO.Compression;
 using System.Reflection;
-using System.Text;
 
 namespace Ae.AssetExplorer
 {
@@ -16,8 +13,10 @@ namespace Ae.AssetExplorer
         /// Extracts the assets to a buildable Visual Studio project format on disk.
         /// This is only intended for use in the editor and is not optimized for performance.
         /// </summary>
-        public static void ExtractProject(AeEngine engine, string extractPath, WriteLogDelegate writeLog)
+        public static string? ExtractProject(AeEngine engine, string extractPath, WriteLogDelegate writeLog)
         {
+            string? foundProjectFile = null;
+
             var archiveBytes = AeEmbeddedResourceReader.LoadBytes("Templates/AeDebugProjectTemplate.zip");
 
             using var ms = new MemoryStream(archiveBytes);
@@ -47,6 +46,16 @@ namespace Ae.AssetExplorer
 
                 using var entryStream = entry.Open();
 
+                if (Path.GetExtension(entry.Name).Equals(".csproj", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (foundProjectFile != null)
+                    {
+                        throw new InvalidOperationException("Multiple .csproj files found in the template. This is not supported.");
+                    }
+
+                    foundProjectFile = destinationPath;
+                }
+
                 // Handle C# files with macro replacement
                 if (Path.GetExtension(entry.Name).Equals(".cs", StringComparison.OrdinalIgnoreCase)
                     || Path.GetExtension(entry.Name).Equals(".csproj", StringComparison.OrdinalIgnoreCase))
@@ -74,8 +83,6 @@ namespace Ae.AssetExplorer
 
             foreach (var asset in assets)
             {
-                Console.WriteLine($"[{asset.Key}]");
-
                 Directory.CreateDirectory(Path.Combine(extractPath, Path.GetDirectoryName(asset.Key) ?? string.Empty));
 
                 if (AeConstants.BaseAssetTypes.TryGetValue(asset.BaseType, out var baseType) == false)
@@ -111,6 +118,8 @@ namespace Ae.AssetExplorer
 
                 }
             }
+
+            return foundProjectFile;
         }
     }
 }

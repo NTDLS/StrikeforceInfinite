@@ -7,6 +7,8 @@ using Ae.Engine.Sprite;
 using Ae.Engine.Sprite.Base;
 using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
+using System.Diagnostics;
+using System.Management;
 
 namespace Ae.AssetExplorer
 {
@@ -16,7 +18,7 @@ namespace Ae.AssetExplorer
         private readonly AeEngine _engine;
         private readonly TreeManager _treeManager;
         private readonly PropertyListManager _propertyListManager;
-        private readonly TabManager _tabManager;
+        internal TabManager TabManager { get; private set; }
         private readonly AeCodeEditor _codeViewer;
 
         public FormMain()
@@ -36,14 +38,14 @@ namespace Ae.AssetExplorer
 
             _treeManager = new TreeManager(treeViewAssets, _engine, WriteLog, LoadSelectedTreeNode);
             _propertyListManager = new PropertyListManager(listViewProperties, _engine, WriteLog, PropertiesEdited);
-            _tabManager = new TabManager(_engine, tabControlCode, TabSelected);
+            TabManager = new TabManager(this, _engine, tabControlCode, TabSelected);
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
             Shown += FormMain_Shown;
             drawingSurface.MouseDown += DrawingSurface_MouseDown;
 
-            _codeViewer = new AeCodeEditor(this, AeCodeType.CSharp);
+            _codeViewer = new AeCodeEditor(this, null, AeCodeType.CSharp);
             tabPageCode.Controls.Add(_codeViewer);
 
 
@@ -268,7 +270,7 @@ namespace Ae.AssetExplorer
         {
             try
             {
-                _tabManager.AddTab(node);
+                TabManager.AddTab(node);
             }
             catch (Exception ex)
             {
@@ -325,6 +327,32 @@ namespace Ae.AssetExplorer
             listViewOutput.EnsureVisible(listViewOutput.Items.Count - 1);
         }
 
+        #region Menu items.
+
+        private void ExtractProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var dialog = new FolderBrowserDialog
+                {
+                    Description = "Select a folder",
+                    UseDescriptionForTitle = true,
+                    ShowNewFolderButton = true
+                };
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    ProjectExtractor.ExtractProject(_engine, Path.Combine(dialog.SelectedPath, "Ae.Engine.Debug"), WriteLog);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+            }
+        }
+
+        #endregion
+
         #region Toolstrip buttons
 
         private void ToolStripButtonSettings_Click(object sender, EventArgs e)
@@ -354,16 +382,16 @@ namespace Ae.AssetExplorer
 
         private void ToolStripButtonSave_Click(object sender, EventArgs e)
         {
-            _tabManager.SaveCurrentTab();
+            TabManager.SaveCurrentTab();
         }
 
         private void ToolStripButtonSaveAll_Click(object sender, EventArgs e)
         {
-            _tabManager.SaveAllTabs();
+            TabManager.SaveAllTabs();
         }
 
         private void ToolStripButtonClose_Click(object sender, EventArgs e)
-            => _tabManager.CloseCurrentTab();
+            => TabManager.CloseCurrentTab();
 
         private void ToolStripButtonAbout_Click(object sender, EventArgs e)
         {
@@ -373,11 +401,11 @@ namespace Ae.AssetExplorer
 
         private void ToolStripButtonBuild_Click(object sender, EventArgs e)
         {
-            if (!_tabManager.SaveCurrentTab())
+            if (!TabManager.SaveCurrentTab())
             {
                 return;
             }
-            var tab = _tabManager.CurrentTab();
+            var tab = TabManager.CurrentTab();
             if (tab != null)
             {
                 var codeToCompile = _engine.Assets.GetAssetCodeForCompilation(tab.AssetKey, WriteLog);
@@ -400,25 +428,74 @@ namespace Ae.AssetExplorer
             }
         }
 
-        #endregion
+        private void ToolStripButtonComment_Click(object sender, EventArgs e)
+            => TabManager.CommentSelection();
 
-        #region Menu items.
+        private void ToolStripButtonUncomment_Click(object sender, EventArgs e)
+            => TabManager.UncommentSelection();
 
-        private void ExtractProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolStripButtonCopy_Click(object sender, EventArgs e)
+            => TabManager.Copy();
+
+        private void ToolStripButtonCut_Click(object sender, EventArgs e)
+            => TabManager.Cut();
+
+        private void ToolStripButtonPaste_Click(object sender, EventArgs e)
+            => TabManager.Paste();
+
+        private void ToolStripButtonDecreaseIndent_Click(object sender, EventArgs e)
+            => TabManager.DecreaseCurrentTabIndent();
+
+        private void ToolStripButtonIncreaseIndent_Click(object sender, EventArgs e)
+            => TabManager.IncreaseCurrentTabIndent();
+
+        private void ToolStripButtonFind_Click(object sender, EventArgs e)
+            => ShowFind(TabManager.CurrentTab()?.EditorHost.Editor.SelectedText);
+
+        private void ToolStripButtonReplace_Click(object sender, EventArgs e)
+            => ShowReplace(TabManager.CurrentTab()?.EditorHost.Editor.SelectedText);
+
+        private void ToolStripButtonDebug_Click(object sender, EventArgs e)
         {
             try
             {
-                using var dialog = new FolderBrowserDialog
-                {
-                    Description = "Select a folder",
-                    UseDescriptionForTitle = true,
-                    ShowNewFolderButton = true
-                };
+                string tempPath = Path.Combine(Path.GetTempPath(), AeConstants.FriendlyName, "ProjectExtract", Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(tempPath);
+                var projectFile = ProjectExtractor.ExtractProject(_engine, tempPath, WriteLog)
+                    ?? throw new Exception("Project extraction failed.");
 
-                if (dialog.ShowDialog() == DialogResult.OK)
+                _ = Process.Start(new ProcessStartInfo
                 {
-                    ProjectExtractor.ExtractProject(_engine, Path.Combine(dialog.SelectedPath, "Ae.Engine.Debug"), WriteLog);
-                }
+                    FileName = "devenv.exe",
+                    Arguments = $"\"{projectFile}\"",
+                    UseShellExecute = true
+                });
+
+                Task.Run(() =>
+                {
+                    Task.Delay(1000);
+
+                    //Find the instance of VS that we launched by searching for one with our extracted project in the commandline.
+                    //We do this in case VS used a previously launched instance instead of opening a new one, or used the VS version selector dialog.
+                    var searcher = new ManagementObjectSearcher(
+                    "SELECT ProcessId, CommandLine FROM Win32_Process WHERE Name = 'devenv.exe'");
+
+                    foreach (var obj in searcher.Get().Cast<ManagementObject>())
+                    {
+                        if (obj["CommandLine"]?.ToString()?.Contains(projectFile, StringComparison.OrdinalIgnoreCase) == true)
+                        {
+                            int pid = Convert.ToInt32(obj["ProcessId"]);
+                            var process = Process.GetProcessById(pid);
+
+                            process.WaitForExit();
+                            Directory.Delete(tempPath, true);
+                            return;
+                        }
+                    }
+                    Directory.Delete(tempPath, true);
+
+                    WriteLog("Could not find the Visual Studio process that was launched for debugging.", AeLoggingLevel.Warning);
+                });
             }
             catch (Exception ex)
             {
@@ -426,86 +503,87 @@ namespace Ae.AssetExplorer
             }
         }
 
-
-        /*
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = "devenv.exe",
-                Arguments = $"\"{csprojPath}\"",
-                UseShellExecute = true
-            });
-
-            // Wait until the process exits
-            process?.WaitForExit();
-
-            CleanupTemporaryFiles();
-         * */
-
-        #endregion
-
         private void ToolStripButtonRun_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void ToolStripButtonDebug_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void ToolStripButtonBreak_Click(object sender, EventArgs e)
         {
-
         }
 
-        private void ToolStripButtonComment_Click(object sender, EventArgs e)
+        #endregion
+
+
+
+        #region Find and Replace.
+
+        private FormFindReplace? _findReplaceForm;
+        private string _lastSearchText = string.Empty;
+        private bool _lastSearchCaseSensitive = false;
+        private string _lastReplaceText = string.Empty;
+
+        public void ShowFind(string? selectedText)
         {
+            if (_findReplaceForm == null || _findReplaceForm.IsDisposed)
+            {
+                _findReplaceForm = new FormFindReplace(this, _lastSearchText, _lastReplaceText);
+            }
 
+            _findReplaceForm.Show(FormFindReplace.FindType.Find, selectedText);
+            _findReplaceForm.BringToFront();
         }
 
-        private void ToolStripButtonUncomment_Click(object sender, EventArgs e)
+        public void ShowReplace(string? selectedText)
         {
+            if (_findReplaceForm == null || _findReplaceForm.IsDisposed)
+            {
+                _findReplaceForm = new FormFindReplace(this, _lastSearchText, _lastReplaceText);
+            }
 
+            _findReplaceForm.Show(FormFindReplace.FindType.Replace, selectedText);
+            _findReplaceForm.BringToFront();
         }
 
-        private void ToolStripButtonCopy_Click(object sender, EventArgs e)
+        public void FindNext()
         {
-
+            var info = TabManager.CurrentTab();
+            if (info != null)
+            {
+                if (string.IsNullOrEmpty(_lastSearchText))
+                {
+                    ShowFind(TabManager.CurrentTab()?.EditorHost.Editor.SelectedText);
+                }
+                else
+                {
+                    TabManager.CurrentTab()?.EditorHost.FindNext(_lastSearchText, _lastSearchCaseSensitive);
+                }
+            }
         }
 
-        private void ToolStripButtonCut_Click(object sender, EventArgs e)
+        public void FindNext(string searchText, bool caseSensitive)
         {
-
+            _lastSearchText = searchText;
+            _lastSearchCaseSensitive = caseSensitive;
+            TabManager.CurrentTab()?.EditorHost.FindNext(searchText, caseSensitive);
         }
 
-        private void ToolStripButtonPaste_Click(object sender, EventArgs e)
+        public void FindReplace(string searchText, string replaceWith, bool caseSensitive)
         {
-
+            _lastSearchText = searchText;
+            _lastReplaceText = replaceWith;
+            _lastSearchCaseSensitive = caseSensitive;
+            TabManager.CurrentTab()?.EditorHost.FindReplace(searchText, replaceWith, caseSensitive);
         }
 
-        private void ToolStripButtonDecreaseIndent_Click(object sender, EventArgs e)
+        public void FindReplaceAll(string searchText, string replaceWith, bool caseSensitive)
         {
+            _lastSearchText = searchText;
+            _lastReplaceText = replaceWith;
+            _lastSearchCaseSensitive = caseSensitive;
 
+            TabManager.CurrentTab()?.EditorHost.FindReplaceAll(searchText, replaceWith, caseSensitive);
         }
 
-        private void ToolStripButtonIncreaseIndent_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ToolStripButtonFind_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ToolStripButtonReplace_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ToolStripButtonGoToLine_Click(object sender, EventArgs e)
-        {
-
-        }
+        #endregion
     }
 }
