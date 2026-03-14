@@ -251,7 +251,7 @@ namespace Ae.Engine.Helpers
                 {
                     if (writeLog != null)
                     {
-                        writeLog?.Invoke($"Failed to cache type {item.Name}: {ex.Message}", AeLoggingLevel.Error);
+                        writeLog?.Invoke($"Failed to cache type {item.Name}: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
                     }
                     else throw;
                 }

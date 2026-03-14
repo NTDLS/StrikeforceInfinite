@@ -212,6 +212,14 @@ namespace Ae.Engine.Manager
             {
                 //"Code" asset type code is in the Bytes field.
                 assetDynamicCode = Encoding.UTF8.GetString(model.Bytes);
+
+                if (string.IsNullOrEmpty(assetContainer.Metadata.Class))
+                {
+                    //This is user code and no base class has been defined. That means that this is not an extension of built in classes.
+                    //This is pure user code and is not meant to be fleshed out with one of our C# templates.
+                    return assetDynamicCode;
+                }
+
                 interfaceType = typeof(IAeRuntimeCompiledCodeAsset);
             }
 
@@ -284,20 +292,31 @@ namespace Ae.Engine.Manager
                                     throw new Exception($"Failed to compile asset code for asset with key: {model.Key}. No assembly was returned from the compiler.");
                             }
 
-                            //Save the name of the class that was compiled for this asset so that it can be instantiated later when the asset is requested.
-                            // Note that this may also simply be inferred if running in debug mode with "injected" assets.
-                            assetContainer.ControllerName = AeRuntimeCompiler.AssetKeyToClassName(assetContainer.Metadata.AssetKey);
+                            if (string.IsNullOrEmpty(assetContainer.Metadata.Class))
+                            {
+                                //This is user code and no base class has been defined. That means that this is not an extension of built in classes.
+                                //This is pure user code and is not meant to be fleshed out with one of our C# templates.
 
-                            //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
-                            AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);
+                                assetContainer.ControllerName = null;
+                                assetContainer.Metadata.Class = null;
+                            }
+                            else
+                            {
+                                //Save the name of the class that was compiled for this asset so that it can be instantiated later when the asset is requested.
+                                // Note that this may also simply be inferred if running in debug mode with "injected" assets.
+                                assetContainer.ControllerName = AeRuntimeCompiler.AssetKeyToClassName(assetContainer.Metadata.AssetKey);
+
+                                //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
+                                AeReflection.GetTypeByName(assetContainer.Metadata.DynamicTypeName);
+                            }
                         }
                         catch (Exception ex)
                         {
                             if (writeLog != null)
                             {
-                                writeLog($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}", AeLoggingLevel.Error, model.Key);
+                                writeLog($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error, model.Key);
                             }
-                            else throw new Exception($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.Message}");
+                            else throw new Exception($"Failed to compile asset controller for asset with key: {model.Key}. Error: {ex.GetBaseException().Message}");
                         }
                     }
 
@@ -593,6 +612,9 @@ namespace Ae.Engine.Manager
         {
             _assetsDatabase.Execute("DELETE FROM Assets WHERE Key = @Key",
                 new { Key = assetKey });
+
+            _collection.Remove(assetKey);
+            _cache.Clear();
         }
     }
 }

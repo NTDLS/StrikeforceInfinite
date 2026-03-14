@@ -207,6 +207,7 @@ namespace Ae.AssetExplorer
                 AeConstants.FriendlyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 _engine.Assets.DeleteAsset(node.AssetKey);
+                _treeView.Nodes.Remove(node);
             }
         }
 

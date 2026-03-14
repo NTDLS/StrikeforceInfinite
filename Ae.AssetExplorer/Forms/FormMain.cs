@@ -9,6 +9,7 @@ using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
 using System.Diagnostics;
 using System.Management;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Ae.AssetExplorer
 {
@@ -288,25 +289,32 @@ namespace Ae.AssetExplorer
             {
                 _engine.Events.Once(() =>
                 {
-                    _engine.Sprites.QueueAllForDeletion();
-                    _engine.Sprites.HardDeleteAllQueuedDeletions();
-
-                    var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, WriteLog, (o) =>
+                    try
                     {
-                        if (o is AeSpriteAnimation spriteAnimation)
+                        _engine.Sprites.QueueAllForDeletion();
+                        _engine.Sprites.HardDeleteAllQueuedDeletions();
+
+                        var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, WriteLog, (o) =>
                         {
-                            spriteAnimation.PlayMode = AeAnimationPlayMode.Infinite;
-                        }
+                            if (o is AeSpriteAnimation spriteAnimation)
+                            {
+                                spriteAnimation.PlayMode = AeAnimationPlayMode.Infinite;
+                            }
 
-                        o.Orientation.Degrees = 0;
-                        o.IsVisible = true;
-                        o.Location = _engine.Display.CenterCanvas;
-                        o.RotationSpeed = 0f;
-                        o.Speed = 0;
-                        o.Throttle = 0;
-                    });
+                            o.Orientation.Degrees = 0;
+                            o.IsVisible = true;
+                            o.Location = _engine.Display.CenterCanvas;
+                            o.RotationSpeed = 0f;
+                            o.Speed = 0;
+                            o.Throttle = 0;
+                        });
 
-                    _propertyListManager.PopulateProperties(tab.AssetKey, sprite);
+                        _propertyListManager.PopulateProperties(tab.AssetKey, sprite);
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                    }
                 });
             }
             catch (Exception ex)
@@ -329,20 +337,45 @@ namespace Ae.AssetExplorer
 
         #region Menu items.
 
-        private void ExtractProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void IngestProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var dialog = new FolderBrowserDialog
                 {
-                    Description = "Select a folder",
+                    Description = "Select a previously extracted Visual Studio project.",
                     UseDescriptionForTitle = true,
                     ShowNewFolderButton = true
                 };
 
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    ProjectExtractor.ExtractProject(_engine, Path.Combine(dialog.SelectedPath, "Ae.Engine.Debug"), WriteLog);
+                    if (ProjectMerger.IngestVsProject(_engine, dialog.SelectedPath, WriteLog).Count > 0)
+                    {
+                        _treeManager.Repopulate();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+            }
+        }
+
+        private void ExtractProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var dialog = new FolderBrowserDialog
+                {
+                    Description = "Select a folder for the extracted Visual Studio project.",
+                    UseDescriptionForTitle = true,
+                    ShowNewFolderButton = true
+                };
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    ProjectMerger.ExtractVsProject(_engine, Path.Combine(dialog.SelectedPath, "Ae.Engine.Debug"), WriteLog);
                 }
             }
             catch (Exception ex)
@@ -422,7 +455,7 @@ namespace Ae.AssetExplorer
                     }
                     catch (Exception ex)
                     {
-                        WriteLog($"Failed to compile asset controller for asset with key: {tab.AssetKey}. Error: {ex.Message}", AeLoggingLevel.Error);
+                        WriteLog($"Failed to compile asset controller for asset with key: {tab.AssetKey}. Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
                     }
                 }
             }
@@ -459,9 +492,11 @@ namespace Ae.AssetExplorer
         {
             try
             {
+                TabManager.SaveAllTabs();
+
                 string tempPath = Path.Combine(Path.GetTempPath(), AeConstants.FriendlyName, "ProjectExtract", Guid.NewGuid().ToString("N"));
                 Directory.CreateDirectory(tempPath);
-                var projectFile = ProjectExtractor.ExtractProject(_engine, tempPath, WriteLog)
+                var projectFile = ProjectMerger.ExtractVsProject(_engine, tempPath, WriteLog)
                     ?? throw new Exception("Project extraction failed.");
 
                 _ = Process.Start(new ProcessStartInfo
@@ -488,6 +523,18 @@ namespace Ae.AssetExplorer
                             var process = Process.GetProcessById(pid);
 
                             process.WaitForExit();
+
+                            Invoke(() =>
+                            {
+                                if (MessageBox.Show(this, "Would you like to merge any changes made back into this library? If not, any changes you made in Visual Studio will be lost.", AeConstants.FriendlyName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                {
+                                    if (ProjectMerger.IngestVsProject(_engine, tempPath, WriteLog).Count > 0)
+                                    {
+                                        _treeManager.Repopulate();
+                                    }
+                                }
+                            });
+
                             Directory.Delete(tempPath, true);
                             return;
                         }
@@ -585,5 +632,6 @@ namespace Ae.AssetExplorer
         }
 
         #endregion
+
     }
 }

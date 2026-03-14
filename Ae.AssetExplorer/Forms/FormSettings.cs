@@ -92,7 +92,7 @@ namespace Ae.AssetExplorer.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.GetBaseException().Message, AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

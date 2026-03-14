@@ -29,7 +29,30 @@ namespace Ae.Engine.Metadata
         /// The name of the type that was dynamically compiled for this asset.
         /// </summary>
         [JsonIgnore]
-        public string DynamicTypeName => AeRuntimeCompiler.AssetKeyToClassName(AssetKey);
+        private string? _dynamicTypeName;
+
+        /// <summary>
+        /// The name of the type that was dynamically compiled for this asset.
+        /// </summary>
+        [JsonIgnore]
+        public string DynamicTypeName
+        {
+            get
+            {
+                if (_dynamicTypeName == null)
+                {
+                    lock (this)
+                    {
+                        _dynamicTypeName ??= AeRuntimeCompiler.AssetKeyToClassName(AssetKey);
+                    }
+                }
+                return _dynamicTypeName;
+            }
+            set
+            {
+                _dynamicTypeName = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the asset key associated with the attachment sprite.

@@ -6,9 +6,16 @@ public class [[className]] (AeEngine engine, string assetKey)
     public static string AeClassName => "[[className]]";
     public static string AeFriendlyName => "[[friendlyName]]";
 
-    /*--BEGIN USER CODE--*/
+    // ----------------------------------------------------------------------
+    // Code above this line is ignored by the engine during ingestion.
+    // ----------------------------------------------------------------------
+    // <ae-user-code>
 
     [[userCode]]
 
-    /*--END USER CODE--*/
+    // </ae-user-code>
+    // ----------------------------------------------------------------------
+    // END USER CODE
+    // Code below this line is ignored by the engine during ingestion.
+    // ----------------------------------------------------------------------
 }

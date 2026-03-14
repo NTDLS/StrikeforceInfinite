@@ -162,7 +162,7 @@ namespace Ae.Engine.Manager
                 }
                 catch (Exception ex)
                 {
-                    _interrogationForm.WriteLine($"\t{ex.Message}", System.Drawing.Color.DarkRed);
+                    _interrogationForm.WriteLine($"\t{ex.GetBaseException().Message}", System.Drawing.Color.DarkRed);
                 }
                 _interrogationForm.WriteLine($"}} ← Complete", System.Drawing.Color.Blue);
             }

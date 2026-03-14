@@ -308,7 +308,7 @@ namespace Ae.Engine.Manager
             }
             catch (Exception ex)
             {
-                writeLog?.Invoke($"Error creating sprite with asset key {assetKey}: {ex.Message}", AeLoggingLevel.Error);
+                writeLog?.Invoke($"Error creating sprite with asset key {assetKey}: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
             }
 
             return new AeSprite(_engine, assetKey);

@@ -83,6 +83,7 @@ namespace Ae.AssetExplorer
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             extractProjectToolStripMenuItem = new ToolStripMenuItem();
+            ingestProjectToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).BeginInit();
             splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
@@ -585,7 +586,7 @@ namespace Ae.AssetExplorer
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { extractProjectToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { extractProjectToolStripMenuItem, ingestProjectToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
@@ -593,9 +594,16 @@ namespace Ae.AssetExplorer
             // extractProjectToolStripMenuItem
             // 
             extractProjectToolStripMenuItem.Name = "extractProjectToolStripMenuItem";
-            extractProjectToolStripMenuItem.Size = new Size(149, 22);
+            extractProjectToolStripMenuItem.Size = new Size(180, 22);
             extractProjectToolStripMenuItem.Text = "Extract Project";
             extractProjectToolStripMenuItem.Click += ExtractProjectToolStripMenuItem_Click;
+            // 
+            // ingestProjectToolStripMenuItem
+            // 
+            ingestProjectToolStripMenuItem.Name = "ingestProjectToolStripMenuItem";
+            ingestProjectToolStripMenuItem.Size = new Size(180, 22);
+            ingestProjectToolStripMenuItem.Text = "Ingest Project";
+            ingestProjectToolStripMenuItem.Click += IngestProjectToolStripMenuItem_Click;
             // 
             // FormMain
             // 
@@ -692,5 +700,6 @@ namespace Ae.AssetExplorer
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripSeparator toolStripSeparator9;
         private ToolStripSeparator toolStripSeparator10;
+        private ToolStripMenuItem ingestProjectToolStripMenuItem;
     }
 }

@@ -261,14 +261,17 @@ namespace Ae.AssetExplorer.Forms
             }
             else
             {
-                if (treeViewAssets.SelectedNode is not AeTreeNode node)
-                {
-                    MessageBox.Show("Please select an asset.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 _selectedAssetKeys.Clear();
-                _selectedAssetKeys.Add(node.AssetKey);
+
+                if (treeViewAssets.SelectedNode != null)
+                {
+                    if (treeViewAssets.SelectedNode is not AeTreeNode node)
+                    {
+                        MessageBox.Show("Select an asset.", AeConstants.FriendlyName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    _selectedAssetKeys.Add(node.AssetKey);
+                }
             }
 
             DialogResult = DialogResult.OK;
