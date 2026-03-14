@@ -228,6 +228,12 @@ namespace Ae.AssetExplorer
             }
         }
 
+        public void Clear()
+        {
+            _listView.Items.Clear();
+            _listView.Groups.Clear();
+        }
+
         public void PopulateProperties(string assetKey, AeSprite sprite)
         {
             try

@@ -33,6 +33,9 @@ namespace Ae.AssetExplorer
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             splitContainerLeft = new SplitContainer();
             treeViewAssets = new DoubleBufferedTreeView();
+            panelSearch = new Panel();
+            textBoxSearch = new TextBox();
+            buttonClearSearch = new Button();
             splitContainerRight = new SplitContainer();
             tabControlCode = new TabControl();
             splitContainerProperties = new SplitContainer();
@@ -88,6 +91,7 @@ namespace Ae.AssetExplorer
             splitContainerLeft.Panel1.SuspendLayout();
             splitContainerLeft.Panel2.SuspendLayout();
             splitContainerLeft.SuspendLayout();
+            panelSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).BeginInit();
             splitContainerRight.Panel1.SuspendLayout();
             splitContainerRight.Panel2.SuspendLayout();
@@ -117,6 +121,7 @@ namespace Ae.AssetExplorer
             // splitContainerLeft.Panel1
             // 
             splitContainerLeft.Panel1.Controls.Add(treeViewAssets);
+            splitContainerLeft.Panel1.Controls.Add(panelSearch);
             // 
             // splitContainerLeft.Panel2
             // 
@@ -128,10 +133,38 @@ namespace Ae.AssetExplorer
             // treeViewAssets
             // 
             treeViewAssets.Dock = DockStyle.Fill;
-            treeViewAssets.Location = new Point(0, 0);
+            treeViewAssets.Location = new Point(0, 24);
             treeViewAssets.Name = "treeViewAssets";
-            treeViewAssets.Size = new Size(273, 411);
+            treeViewAssets.Size = new Size(273, 387);
             treeViewAssets.TabIndex = 0;
+            // 
+            // panelSearch
+            // 
+            panelSearch.Controls.Add(textBoxSearch);
+            panelSearch.Controls.Add(buttonClearSearch);
+            panelSearch.Dock = DockStyle.Top;
+            panelSearch.Location = new Point(0, 0);
+            panelSearch.Name = "panelSearch";
+            panelSearch.Size = new Size(273, 24);
+            panelSearch.TabIndex = 3;
+            // 
+            // textBoxSearch
+            // 
+            textBoxSearch.Dock = DockStyle.Top;
+            textBoxSearch.Location = new Point(0, 0);
+            textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.Size = new Size(243, 23);
+            textBoxSearch.TabIndex = 1;
+            // 
+            // buttonClearSearch
+            // 
+            buttonClearSearch.Dock = DockStyle.Right;
+            buttonClearSearch.Location = new Point(243, 0);
+            buttonClearSearch.Name = "buttonClearSearch";
+            buttonClearSearch.Size = new Size(30, 24);
+            buttonClearSearch.TabIndex = 2;
+            buttonClearSearch.Text = "X";
+            buttonClearSearch.UseVisualStyleBackColor = true;
             // 
             // splitContainerRight
             // 
@@ -594,14 +627,14 @@ namespace Ae.AssetExplorer
             // extractProjectToolStripMenuItem
             // 
             extractProjectToolStripMenuItem.Name = "extractProjectToolStripMenuItem";
-            extractProjectToolStripMenuItem.Size = new Size(180, 22);
+            extractProjectToolStripMenuItem.Size = new Size(149, 22);
             extractProjectToolStripMenuItem.Text = "Extract Project";
             extractProjectToolStripMenuItem.Click += ExtractProjectToolStripMenuItem_Click;
             // 
             // ingestProjectToolStripMenuItem
             // 
             ingestProjectToolStripMenuItem.Name = "ingestProjectToolStripMenuItem";
-            ingestProjectToolStripMenuItem.Size = new Size(180, 22);
+            ingestProjectToolStripMenuItem.Size = new Size(149, 22);
             ingestProjectToolStripMenuItem.Text = "Ingest Project";
             ingestProjectToolStripMenuItem.Click += IngestProjectToolStripMenuItem_Click;
             // 
@@ -622,6 +655,8 @@ namespace Ae.AssetExplorer
             splitContainerLeft.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerLeft).EndInit();
             splitContainerLeft.ResumeLayout(false);
+            panelSearch.ResumeLayout(false);
+            panelSearch.PerformLayout();
             splitContainerRight.Panel1.ResumeLayout(false);
             splitContainerRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerRight).EndInit();
@@ -701,5 +736,8 @@ namespace Ae.AssetExplorer
         private ToolStripSeparator toolStripSeparator9;
         private ToolStripSeparator toolStripSeparator10;
         private ToolStripMenuItem ingestProjectToolStripMenuItem;
+        private TextBox textBoxSearch;
+        private Panel panelSearch;
+        private Button buttonClearSearch;
     }
 }

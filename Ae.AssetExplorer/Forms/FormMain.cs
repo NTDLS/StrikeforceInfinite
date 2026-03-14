@@ -9,7 +9,6 @@ using NTDLS.Helpers;
 using NTDLS.WinFormsHelpers;
 using System.Diagnostics;
 using System.Management;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Ae.AssetExplorer
 {
@@ -39,7 +38,10 @@ namespace Ae.AssetExplorer
 
             _treeManager = new TreeManager(treeViewAssets, _engine, WriteLog, LoadSelectedTreeNode);
             _propertyListManager = new PropertyListManager(listViewProperties, _engine, WriteLog, PropertiesEdited);
-            TabManager = new TabManager(this, _engine, tabControlCode, TabSelected);
+            TabManager = new TabManager(this, _engine, tabControlCode);
+
+            TabManager.TabSelected += TabManager_TabSelected;
+            TabManager.TabCollectionModified += (TabManager tabManager, AeTabPage tabPage) => UpdateToolBarStates(tabManager.TabControl.TabPages.Count > 0); ;
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
@@ -52,6 +54,37 @@ namespace Ae.AssetExplorer
 
             listViewOutput.MouseDoubleClick += ListViewOutput_MouseDoubleClick;
 
+            panelSearch.Height = textBoxSearch.Height + 2;
+            textBoxSearch.KeyUp += (object? sender, KeyEventArgs e) => _treeManager.SearchTextChange(textBoxSearch.Text);
+            buttonClearSearch.Click += (object? sender, EventArgs e) =>
+            {
+                textBoxSearch.Text = string.Empty;
+                _treeManager.SearchTextChange(string.Empty);
+            };
+
+            UpdateToolBarStates(false);
+        }
+
+        private void UpdateToolBarStates(bool hasTabs)
+        {
+            toolStripButtonSave.Enabled = hasTabs;
+            toolStripButtonSaveAll.Enabled = hasTabs;
+            toolStripButtonClose.Enabled = hasTabs;
+            toolStripButtonUndo.Enabled = hasTabs;
+            toolStripButtonRedo.Enabled = hasTabs;
+            toolStripButtonBuild.Enabled = hasTabs;
+            toolStripButtonRun.Enabled = true;
+            toolStripButtonDebug.Enabled = true;
+            toolStripButtonBreak.Enabled = hasTabs;
+            toolStripButtonComment.Enabled = hasTabs;
+            toolStripButtonUncomment.Enabled = hasTabs;
+            toolStripButtonCopy.Enabled = hasTabs;
+            toolStripButtonCut.Enabled = hasTabs;
+            toolStripButtonPaste.Enabled = hasTabs;
+            toolStripButtonDecreaseIndent.Enabled = hasTabs;
+            toolStripButtonIncreaseIndent.Enabled = hasTabs;
+            toolStripButtonFind.Enabled = hasTabs;
+            toolStripButtonReplace.Enabled = hasTabs;
         }
 
         private void ListViewOutput_MouseDoubleClick(object? sender, MouseEventArgs e)
@@ -283,18 +316,25 @@ namespace Ae.AssetExplorer
         /// A tab page was selected.
         /// </summary>
         /// <param name="tab"></param>
-        private void TabSelected(AeTabPage tab)
+        private void TabManager_TabSelected(TabManager tabManager, AeTabPage? tabPage)
         {
             try
             {
-                _engine.Events.Once(() =>
+                if (tabPage == null)
                 {
-                    try
-                    {
-                        _engine.Sprites.QueueAllForDeletion();
-                        _engine.Sprites.HardDeleteAllQueuedDeletions();
+                    _propertyListManager.Clear();
+                }
 
-                        var sprite = _engine.Sprites.EditorAdd(tab.AssetKey, WriteLog, (o) =>
+                _engine.Events.Once(() =>
+            {
+                try
+                {
+                    _engine.Sprites.QueueAllForDeletion();
+                    _engine.Sprites.HardDeleteAllQueuedDeletions();
+
+                    if (tabPage != null)
+                    {
+                        var sprite = _engine.Sprites.EditorAdd(tabPage.AssetKey, WriteLog, (o) =>
                         {
                             if (o is AeSpriteAnimation spriteAnimation)
                             {
@@ -309,13 +349,14 @@ namespace Ae.AssetExplorer
                             o.Throttle = 0;
                         });
 
-                        _propertyListManager.PopulateProperties(tab.AssetKey, sprite);
+                        _propertyListManager.PopulateProperties(tabPage.AssetKey, sprite);
                     }
-                    catch (Exception ex)
-                    {
-                        WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
-                    }
-                });
+                }
+                catch (Exception ex)
+                {
+                    WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                }
+            });
             }
             catch (Exception ex)
             {
@@ -559,8 +600,6 @@ namespace Ae.AssetExplorer
         }
 
         #endregion
-
-
 
         #region Find and Replace.
 

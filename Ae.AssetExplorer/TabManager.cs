@@ -2,39 +2,36 @@
 using Ae.AssetExplorer.Properties;
 using Ae.Engine;
 
+
 namespace Ae.AssetExplorer
 {
     internal class TabManager
     {
         public TabControl TabControl { get; private set; }
-        private readonly Action<AeTabPage> _tabSelected;
         private readonly AeEngine _engine;
-        private AeTabPage? _lastSelectedTab; //Just so that we dont keep reloading the same tab on selection.
+        private AeTabPage? _lastSelectedTab; //Just so that we don't keep reloading the same tab on selection.
         private readonly FormMain _formMain;
 
-        public TabManager(FormMain formMain, AeEngine engine, TabControl tabControl, Action<AeTabPage> tabSelected)
-        {
-            _formMain = formMain;
-            _tabSelected = tabSelected;
-            TabControl = tabControl;
-            _engine = engine;
+        public delegate void TabCollectionModifiedEventHandler(TabManager tabManager, AeTabPage tabPage);
+        public event TabCollectionModifiedEventHandler? TabCollectionModified;
 
-            TabControl.MouseUp += TabControl_MouseUp;
-            tabControl.Selected += (object? sender, TabControlEventArgs e) => InvokeTabChanged(tabControl.SelectedTab as AeTabPage);
-        }
-
+        public delegate void TabSelectedEventHandler(TabManager tabManager, AeTabPage? tabPage);
         /// <summary>
         /// Tells the owner form that a tab has been selected, so that it can update the property grid and other UI elements accordingly.
         /// Guards against re-invoking the event if the same tab is selected again, to avoid unnecessary UI updates.
         /// </summary>
-        private void InvokeTabChanged(AeTabPage? tabPage)
+        public event TabSelectedEventHandler? TabSelected;
+
+        public TabManager(FormMain formMain, AeEngine engine, TabControl tabControl)
         {
-            if (tabPage != null && tabPage != _lastSelectedTab)
-            {
-                _lastSelectedTab = tabPage;
-                _tabSelected.Invoke(tabPage);
-            }
+            _formMain = formMain;
+            TabControl = tabControl;
+            _engine = engine;
+
+            TabControl.MouseUp += TabControl_MouseUp;
+            tabControl.Selected += (object? sender, TabControlEventArgs e) => TabSelected?.Invoke(this, tabControl.SelectedTab as AeTabPage);
         }
+
 
         private void TabControl_MouseUp(object? sender, MouseEventArgs e)
         {
@@ -71,7 +68,8 @@ namespace Ae.AssetExplorer
             if (existingTab != null)
             {
                 TabControl.SelectedTab = existingTab;
-                InvokeTabChanged(existingTab);
+                TabCollectionModified?.Invoke(this, existingTab);
+                TabSelected?.Invoke(this, existingTab);
                 return existingTab;
             }
 
@@ -119,7 +117,8 @@ namespace Ae.AssetExplorer
             var tabPage = new AeTabPage(_formMain, node.AssetKey, textContent ?? string.Empty, baseType, codeType);
             TabControl.TabPages.Add(tabPage);
             TabControl.SelectedTab = tabPage;
-            InvokeTabChanged(tabPage);
+            TabCollectionModified?.Invoke(this, tabPage);
+            TabSelected?.Invoke(this, tabPage);
             return tabPage;
         }
 
@@ -139,6 +138,7 @@ namespace Ae.AssetExplorer
         {
             if (TabControl.SelectedTab is AeTabPage tabPage)
             {
+                TabCollectionModified?.Invoke(this, tabPage);
                 return tabPage;
             }
             return null;
@@ -184,6 +184,8 @@ namespace Ae.AssetExplorer
                 default:
                     throw new Exception("Unsupported asset type: " + tabPage.BaseType);
             }
+
+            TabCollectionModified?.Invoke(this, tabPage);
 
             return true;
         }
@@ -233,6 +235,7 @@ namespace Ae.AssetExplorer
             }
 
             TabControl.TabPages.Remove(tabPage);
+            TabCollectionModified?.Invoke(this, tabPage);
             return true;
         }
 
@@ -255,16 +258,6 @@ namespace Ae.AssetExplorer
                     break;
                 }
             }
-        }
-
-        public void RemoveTab(AeTabPage tabPage)
-        {
-            TabControl.TabPages.Remove(tabPage);
-        }
-
-        public void ClearTabs()
-        {
-            TabControl.TabPages.Clear();
         }
 
         #region Text editor stuff.

@@ -57,7 +57,186 @@ namespace Ae.AssetExplorer
                 SelectedImageKey = "folder"
             };
             _treeView.Nodes.Add(_rootNode);
+
+            _debounceTimer.Interval = 300; // ms
+            _debounceTimer.Tick += (object? sender, EventArgs e) =>
+            {
+                _debounceTimer.Stop();
+                PerformSearch();
+            };
         }
+
+        #region Search Functionality.
+
+        private readonly System.Windows.Forms.Timer _debounceTimer = new();
+        private readonly List<AeTreeNode> _detachedRoots = new();
+        private string _currentSearchText = string.Empty;
+
+        private void PerformSearch()
+        {
+            if (string.IsNullOrWhiteSpace(_currentSearchText))
+            {
+                ReattachRootNodes();
+                return;
+            }
+
+            DetachRootNodes();
+
+            _treeView.Nodes.Clear();
+
+            var matches = FindMatchingNodes(_detachedRoots, _currentSearchText).ToList();
+
+            foreach (var match in matches)
+            {
+                UpsertSearchTreeNode(match);
+            }
+
+            foreach (AeTreeNode node in _treeView.Nodes)
+            {
+                node.ExpandAll();
+            }
+        }
+
+        private IEnumerable<AeTreeNode> FindMatchingNodes(IEnumerable<AeTreeNode> nodes, string searchText)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.Text.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    yield return node;
+                }
+
+                foreach (AeTreeNode child in node.Nodes)
+                {
+                    foreach (var match in FindMatchingNodes([child], searchText))
+                    {
+                        yield return match;
+                    }
+                }
+            }
+        }
+
+        private AeTreeNode? FindNodeByUID(TreeNodeCollection nodes, Guid uid)
+        {
+            foreach (AeTreeNode node in nodes)
+            {
+                if (node.UID == uid)
+                    return node;
+
+                var found = FindNodeByUID(node.Nodes, uid);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        private void UpsertSearchTreeNode(AeTreeNode originalNode)
+        {
+            try
+            {
+                if (_treeView.InvokeRequired)
+                {
+                    _treeView.Invoke(new Action<AeTreeNode>(UpsertSearchTreeNode), originalNode);
+                    return;
+                }
+
+                var flatOriginalNodes = new List<AeTreeNode>();
+
+                var node = originalNode as AeTreeNode;
+                while (node != null)
+                {
+                    flatOriginalNodes.Add(node);
+                    node = node.Parent as AeTreeNode;
+                }
+
+                flatOriginalNodes.Reverse();
+
+                var nodeCollection = _treeView.Nodes;
+
+                var touchedNodes = new List<AeTreeNode>();
+
+                foreach (var flatNode in flatOriginalNodes)
+                {
+                    //Search on UID.
+                    var foundNode = FindNodeByUID(nodeCollection, flatNode.UID);
+                    if (foundNode == null)
+                    {
+                        var newNode = new AeTreeNode(flatNode.Name, flatNode.Text, flatNode.AssetKey, flatNode.NodeType)
+                        {
+                            ImageKey = flatNode.ImageKey,
+                            SelectedImageKey = flatNode.SelectedImageKey,
+                            UID = flatNode.UID
+                        };
+                        nodeCollection.Add(newNode);
+                        nodeCollection = newNode.Nodes;
+                        touchedNodes.Add(newNode);
+                    }
+                    else
+                    {
+                        touchedNodes.Add(foundNode);
+                        nodeCollection = foundNode.Nodes;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _writeLog?.Invoke($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+            }
+        }
+
+        void DetachRootNodes()
+        {
+            if (_detachedRoots.Count > 0)
+            {
+                //If we already have detached nodes, we shouldn't try to detach again without reattaching first,
+                //otherwise we might lose references to the detached nodes and end up with an empty tree view
+                //with no way to get the nodes back.
+                return;
+            }
+
+            _detachedRoots.Clear();
+
+            foreach (AeTreeNode node in _treeView.Nodes)
+            {
+                _detachedRoots.Add(node);
+            }
+
+            _treeView.Nodes.Clear();
+        }
+
+        void ReattachRootNodes()
+        {
+            if (_detachedRoots.Count == 0)
+            {
+                //Make sure we have something to reattach before trying to do so,
+                //otherwise we might end up with an empty tree view and no way to get the nodes back.
+                return;
+            }
+
+            _treeView.BeginUpdate();
+            _treeView.Nodes.Clear();
+
+            foreach (var node in _detachedRoots)
+            {
+                _treeView.Nodes.Add(node);
+            }
+
+            _detachedRoots.Clear();
+
+            _treeView.EndUpdate();
+        }
+
+        public void SearchTextChange(string text)
+        {
+            _currentSearchText = text;
+            _debounceTimer.Stop();
+            _debounceTimer.Start();
+        }
+
+        #endregion
 
         public void HighlightItem(string assetKey)
         {
@@ -107,22 +286,24 @@ namespace Ae.AssetExplorer
 
                     var menu = new ContextMenuStrip();
 
+                    var enableAlterActions = _detachedRoots.Count == 0;
+
                     if (node.NodeType == AeTreeNodeType.Asset)
                     {
                         menu.Items.Add("Replace", null, (s, e) => ReplaceAsset(node));
                         menu.Items.Add("Export", null, (s, e) => ExportAsset(node, false));
                         menu.Items.Add("Export with Metadata", null, (s, e) => ExportAsset(node, true));
-                        menu.Items.Add("Delete", null, (s, e) => DeleteAsset(node));
+                        menu.Items.Add("Delete", null, (s, e) => DeleteAsset(node)).Enabled = enableAlterActions;
                     }
                     else if (node.NodeType == AeTreeNodeType.Folder)
                     {
                         var createMenu = new ToolStripMenuItem("Create");
-                        createMenu.DropDownItems.Add("Folder", Resources.AssetTypeFolder, (s, e) => CreateFolder(node));
+                        createMenu.DropDownItems.Add("Folder", Resources.AssetTypeFolder, (s, e) => CreateFolder(node)).Enabled = enableAlterActions;
                         menu.Items.Add(new ToolStripSeparator());
-                        createMenu.DropDownItems.Add("Text file", Resources.AssetTypeText, (s, e) => CreateFile(node, "txt"));
-                        createMenu.DropDownItems.Add("JSON file", Resources.AssetTypeJson, (s, e) => CreateFile(node, "json"));
-                        createMenu.DropDownItems.Add("XML file", Resources.AssetTypeXml, (s, e) => CreateFile(node, "xml"));
-                        createMenu.DropDownItems.Add("Code file", Resources.AssetTypeCode, (s, e) => CreateFile(node, "cs"));
+                        createMenu.DropDownItems.Add("Text file", Resources.AssetTypeText, (s, e) => CreateFile(node, "txt")).Enabled = enableAlterActions;
+                        createMenu.DropDownItems.Add("JSON file", Resources.AssetTypeJson, (s, e) => CreateFile(node, "json")).Enabled = enableAlterActions;
+                        createMenu.DropDownItems.Add("XML file", Resources.AssetTypeXml, (s, e) => CreateFile(node, "xml")).Enabled = enableAlterActions;
+                        createMenu.DropDownItems.Add("Code file", Resources.AssetTypeCode, (s, e) => CreateFile(node, "cs")).Enabled = enableAlterActions;
                         //menu.Items.Add(new ToolStripSeparator());
                         //createMenu.DropDownItems.Add("Sprite", null, (s, e) => CreateFile(node, "cs"));
                         menu.Items.Add(createMenu);
