@@ -230,7 +230,7 @@ namespace Ae.AssetExplorer
             {
                 WriteLog("Engine initialization complete.", AeLoggingLevel.Verbose);
 
-                engine.Events.Once(() =>
+                engine.Invoke(() =>
                 {
                     _engine.Sprites.QueueAllForDeletion();
                     _engine.Sprites.HardDeleteAllQueuedDeletions();

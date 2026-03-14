@@ -101,7 +101,7 @@ namespace Ae.Engine
             _shutdown = false;
             _worldClockThread.Start();
 
-            _engine.Events.Add(10, UpdateStatusText, AeDefermentEvent.SiDefermentEventMode.Recurring);
+            _engine.Events.Add(10, UpdateStatusText, SiDefermentEventMode.Recurring);
         }
 
         public void Dispose()

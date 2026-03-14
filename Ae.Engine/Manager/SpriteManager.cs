@@ -381,7 +381,7 @@ namespace Ae.Engine.Manager
                 throw new Exception("NULL sprites cannot be added to the manager.");
             }
 
-            _engine.Events.Once(() =>
+            _engine.Invoke(() =>
             {
                 _collection.Add(sprite);
                 sprite.OnMaterialized();

@@ -17,7 +17,6 @@ using NTDLS.Semaphore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -589,7 +588,7 @@ namespace Ae.Engine
                 //Sprites.SkyBoxes.AddAtCenterUniverse();
 
                 //Events.Add(1, () => AddDemoSprites());
-                Events.Once(() => Menus.Show(new AeMenuStartNewGame(this)));
+                Invoke(() => Menus.Show(new AeMenuStartNewGame(this)));
             }
         }
 

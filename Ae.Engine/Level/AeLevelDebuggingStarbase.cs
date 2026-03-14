@@ -2,7 +2,6 @@
 using Ae.Engine.Sprite.Interactive.Ship;
 using Ae.Engine.Types;
 using System.Linq;
-using static Ae.Engine.Types.AeDefermentEvent;
 
 namespace Ae.Engine.Level
 {

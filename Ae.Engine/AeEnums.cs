@@ -646,4 +646,40 @@
         /// </summary>
         Enter
     }
+
+    /// <summary>
+    /// Specifies the mode for deferment events, indicating whether the event occurs one time or on a recurring
+    /// basis.
+    /// </summary>
+    /// <remarks>Use this enumeration to distinguish between single-occurrence and repeated deferment
+    /// event scheduling. The value affects how the event is processed and managed within the system.</remarks>
+    public enum SiDefermentEventMode
+    {
+        /// <summary>
+        /// Specifies that the associated operation or event occurs only once.
+        /// </summary>
+        OneTime,
+        /// <summary>
+        /// Specifies that the associated operation or event recurs.
+        /// </summary>
+        Recurring
+    }
+
+    /// <summary>
+    /// Specifies the threading model used for deferment event processing.
+    /// </summary>
+    /// <remarks>Use this enumeration to indicate whether deferment events are handled synchronously
+    /// or asynchronously. Selecting the appropriate threading model can affect responsiveness and concurrency in
+    /// event handling scenarios.</remarks>
+    public enum SiDefermentEventThreadModel
+    {
+        /// <summary>
+        /// Gets or sets a value indicating whether operations are performed synchronously.
+        /// </summary>
+        Synchronous,
+        /// <summary>
+        /// Gets or sets a value indicating whether operations are performed asynchronously.
+        /// </summary>
+        Asynchronous
+    }
 }
