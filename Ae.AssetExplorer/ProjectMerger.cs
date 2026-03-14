@@ -220,7 +220,7 @@ namespace Ae.AssetExplorer
 
             var assetsFullPath = Path.GetFullPath(engine.AssetPackagePath);
 
-            Dictionary<string, string> replacements = new()
+             Dictionary<string, string> replacements = new()
             {
                 { "##PROJECT_NAME##", "Ae.Engine.Debug" },
                 { "##SDK_NAME##", "Microsoft.NET.Sdk" },

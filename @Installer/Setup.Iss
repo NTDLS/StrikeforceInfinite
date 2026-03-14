@@ -1,4 +1,4 @@
-#define Version "0.0.44"
+#define Version "0.0.45"
 
 [Setup]
 ;-- Main Setup Information
@@ -32,7 +32,7 @@
  [Files]
  Source: "publish\Client\*.*";                 DestDir: "{app}"; Components: Client;   Flags: IgnoreVersion; 
  Source: "publish\AssetExplorer\*.*";          DestDir: "{app}"; Components: Explorer; Flags: IgnoreVersion; 
- Source: "Ae.Assets.db";                       DestDir: "{app}"; Components: Assets;   Flags: IgnoreVersion recursesubdirs;
+ Source: "Ae.Assets.db";                       DestDir: "{commonappdata}\Axis Engine"; Components: Assets;   Flags: IgnoreVersion recursesubdirs;
 
  Source: "Fonts\Digital-7 (Mono).ttf";         DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "Digital-7 Mono";  Flags: onlyifdoesntexist uninsneveruninstall
  Source: "Fonts\Digital-7.ttf";                DestDir: "{commonfonts}"; Components: FontAsset; FontInstall: "digital-7";       Flags: onlyifdoesntexist uninsneveruninstall

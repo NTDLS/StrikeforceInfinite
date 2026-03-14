@@ -17,6 +17,7 @@ using NTDLS.Semaphore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -42,11 +43,7 @@ namespace Ae.Engine
         /// </summary>
         /// <remarks>This constant is only available in debug configurations. Use this path to locate the
         /// asset package file when running or testing the application in a development environment.</remarks>
-#if DEBUG
-        public string AssetPackagePath { get; set; } = "../../../../@Installer/Ae.Assets.db";
-#else
-        public string AssetPackagePath { get; set; } = "./Ae.Assets.db";
-#endif
+        public string AssetPackagePath { get; set; }
 
         internal MpCommsManager? CommsManager { get; set; }
 
@@ -227,6 +224,14 @@ namespace Ae.Engine
             {
                 AssetPackagePath = assetPackagePath;
             }
+            else
+            {
+#if DEBUG
+                AssetPackagePath = "../../../../@Installer/Ae.Assets.db";
+#else
+                AssetPackagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), AeConstants.FriendlyName, "Ae.Assets.db");
+#endif
+            }
 
             Settings = LoadSettings();
 
@@ -270,6 +275,14 @@ namespace Ae.Engine
             if (string.IsNullOrEmpty(assetPackagePath) == false)
             {
                 AssetPackagePath = assetPackagePath;
+            }
+            else
+            {
+#if DEBUG
+                AssetPackagePath = "../../../../@Installer/Ae.Assets.db";
+#else
+                AssetPackagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), AeConstants.FriendlyName, "Ae.Assets.db");
+#endif            
             }
 
             Settings = LoadSettings();
@@ -323,6 +336,14 @@ namespace Ae.Engine
             if (string.IsNullOrEmpty(assetPackagePath) == false)
             {
                 AssetPackagePath = assetPackagePath;
+            }
+            else
+            {
+#if DEBUG
+                AssetPackagePath = "../../../../@Installer/Ae.Assets.db";
+#else
+                AssetPackagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), AeConstants.FriendlyName, "Ae.Assets.db");
+#endif
             }
 
             Settings = LoadSettings();
