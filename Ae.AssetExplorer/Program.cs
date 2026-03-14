@@ -30,6 +30,7 @@ namespace Ae.AssetExplorer
             Application.Run(new FormMain());
         }
 
+        /*
         private static void PrintAeTypes()
         {
             var types = AppDomain.CurrentDomain
@@ -47,5 +48,6 @@ namespace Ae.AssetExplorer
                 Console.WriteLine(type?.Name);
             }
         }
+        */
     }
 }
