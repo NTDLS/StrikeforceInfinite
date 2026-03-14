@@ -41,7 +41,6 @@ namespace Ae.AssetExplorer
             TabManager = new TabManager(this, _engine, tabControlCode);
 
             TabManager.TabSelected += TabManager_TabSelected;
-            TabManager.TabCollectionModified += (TabManager tabManager, AeTabPage tabPage) => UpdateToolBarStates(tabManager.TabControl.TabPages.Count > 0); ;
 
             _engine.EnableDevelopment(new FormInterrogation(_engine));
 
@@ -50,7 +49,6 @@ namespace Ae.AssetExplorer
 
             _codeViewer = new AeCodeEditor(this, null, AeCodeType.CSharp);
             tabPageCode.Controls.Add(_codeViewer);
-
 
             listViewOutput.MouseDoubleClick += ListViewOutput_MouseDoubleClick;
 
@@ -320,43 +318,50 @@ namespace Ae.AssetExplorer
         {
             try
             {
+                UpdateToolBarStates(tabManager.TabControl.TabPages.Count > 0);
+
                 if (tabPage == null)
                 {
                     _propertyListManager.Clear();
                 }
 
-                _engine.Events.Once(() =>
-            {
-                try
-                {
-                    _engine.Sprites.QueueAllForDeletion();
-                    _engine.Sprites.HardDeleteAllQueuedDeletions();
+                AeSprite? sprite = null;
 
-                    if (tabPage != null)
+                _engine.Invoke(() =>
+                {
+                    try
                     {
-                        var sprite = _engine.Sprites.EditorAdd(tabPage.AssetKey, WriteLog, (o) =>
+                        _engine.Sprites.QueueAllForDeletion();
+                        _engine.Sprites.HardDeleteAllQueuedDeletions();
+
+                        if (tabPage != null)
                         {
-                            if (o is AeSpriteAnimation spriteAnimation)
+                            sprite = _engine.Sprites.EditorAdd(tabPage.AssetKey, WriteLog, (o) =>
                             {
-                                spriteAnimation.PlayMode = AeAnimationPlayMode.Infinite;
-                            }
+                                if (o is AeSpriteAnimation spriteAnimation)
+                                {
+                                    spriteAnimation.PlayMode = AeAnimationPlayMode.Infinite;
+                                }
 
-                            o.Orientation.Degrees = 0;
-                            o.IsVisible = true;
-                            o.Location = _engine.Display.CenterCanvas;
-                            o.RotationSpeed = 0f;
-                            o.Speed = 0;
-                            o.Throttle = 0;
-                        });
-
-                        _propertyListManager.PopulateProperties(tabPage.AssetKey, sprite);
+                                o.Orientation.Degrees = 0;
+                                o.IsVisible = true;
+                                o.Location = _engine.Display.CenterCanvas;
+                                o.RotationSpeed = 0f;
+                                o.Speed = 0;
+                                o.Throttle = 0;
+                            });
+                        }
                     }
-                }
-                catch (Exception ex)
+                    catch (Exception ex)
+                    {
+                        WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                    }
+                }).Wait();
+
+                if (tabPage != null && sprite != null)
                 {
-                    WriteLog($"Error: {ex.GetBaseException().Message}", AeLoggingLevel.Error);
+                    _propertyListManager.PopulateProperties(tabPage.AssetKey, sprite);
                 }
-            });
             }
             catch (Exception ex)
             {

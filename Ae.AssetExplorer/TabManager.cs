@@ -2,7 +2,6 @@
 using Ae.AssetExplorer.Properties;
 using Ae.Engine;
 
-
 namespace Ae.AssetExplorer
 {
     internal class TabManager
@@ -11,9 +10,6 @@ namespace Ae.AssetExplorer
         private readonly AeEngine _engine;
         private AeTabPage? _lastSelectedTab; //Just so that we don't keep reloading the same tab on selection.
         private readonly FormMain _formMain;
-
-        public delegate void TabCollectionModifiedEventHandler(TabManager tabManager, AeTabPage tabPage);
-        public event TabCollectionModifiedEventHandler? TabCollectionModified;
 
         public delegate void TabSelectedEventHandler(TabManager tabManager, AeTabPage? tabPage);
         /// <summary>
@@ -29,9 +25,9 @@ namespace Ae.AssetExplorer
             _engine = engine;
 
             TabControl.MouseUp += TabControl_MouseUp;
-            tabControl.Selected += (object? sender, TabControlEventArgs e) => TabSelected?.Invoke(this, tabControl.SelectedTab as AeTabPage);
+            tabControl.Selected += (object? sender, TabControlEventArgs e)
+                => TabSelected?.Invoke(this, tabControl.SelectedTab as AeTabPage);
         }
-
 
         private void TabControl_MouseUp(object? sender, MouseEventArgs e)
         {
@@ -68,7 +64,6 @@ namespace Ae.AssetExplorer
             if (existingTab != null)
             {
                 TabControl.SelectedTab = existingTab;
-                TabCollectionModified?.Invoke(this, existingTab);
                 TabSelected?.Invoke(this, existingTab);
                 return existingTab;
             }
@@ -117,7 +112,6 @@ namespace Ae.AssetExplorer
             var tabPage = new AeTabPage(_formMain, node.AssetKey, textContent ?? string.Empty, baseType, codeType);
             TabControl.TabPages.Add(tabPage);
             TabControl.SelectedTab = tabPage;
-            TabCollectionModified?.Invoke(this, tabPage);
             TabSelected?.Invoke(this, tabPage);
             return tabPage;
         }
@@ -138,7 +132,6 @@ namespace Ae.AssetExplorer
         {
             if (TabControl.SelectedTab is AeTabPage tabPage)
             {
-                TabCollectionModified?.Invoke(this, tabPage);
                 return tabPage;
             }
             return null;
@@ -185,7 +178,7 @@ namespace Ae.AssetExplorer
                     throw new Exception("Unsupported asset type: " + tabPage.BaseType);
             }
 
-            TabCollectionModified?.Invoke(this, tabPage);
+            TabSelected?.Invoke(this, tabPage);
 
             return true;
         }
@@ -235,7 +228,7 @@ namespace Ae.AssetExplorer
             }
 
             TabControl.TabPages.Remove(tabPage);
-            TabCollectionModified?.Invoke(this, tabPage);
+            TabSelected?.Invoke(this, null);
             return true;
         }
 
