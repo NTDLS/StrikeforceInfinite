@@ -61,7 +61,7 @@ namespace Ae.Engine.Level
                     AddEnemies();
                 }
 
-                Engine.Audio.RadarBlipsSound?.Play();
+                Engine.Audio.RadarBlipsSound();
 
                 CurrentWave++;
             }

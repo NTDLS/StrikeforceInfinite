@@ -53,7 +53,7 @@ namespace Ae.Engine.Level
                     Engine.Events.Add(AeRandom.Between(0, 800), AddEnemyCallback);
                 }
 
-                Engine.Audio.RadarBlipsSound?.Play();
+                Engine.Audio.RadarBlipsSound();
 
                 CurrentWave++;
             }

@@ -190,6 +190,8 @@ namespace Ae.Engine.Manager
         /// </summary>
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
+            _collection.Clear();
         }
 
         /// <summary>
@@ -223,6 +225,7 @@ namespace Ae.Engine.Manager
 
             var className = (string.IsNullOrEmpty(asset.ControllerName) ? asset.Metadata.Class : asset.ControllerName)
                 ?? throw new Exception($"The sprite {assetKey} does not have a class or controller defined in its metadata.");
+
             var type = AeReflection.GetTypeByName(className);
             var sprite = (T)Activator.CreateInstance(type, [_engine, assetKey]).EnsureNotNull();
             initializationProc?.Invoke(sprite);

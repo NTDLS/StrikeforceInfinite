@@ -65,7 +65,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         {
             Add(4, (sender, parameter) =>
             {
-                Engine.Audio.DoorIsAjarSound?.Play();
+                Engine.Audio.DoorIsAjarSound();
                 Engine.Menus.Show(new AeMenuStartNewGame(Engine));
             });
         }

@@ -1,5 +1,5 @@
-﻿using Ae.Engine.Audio;
-using Ae.Engine.Helpers;
+﻿using Ae.Engine.Helpers;
+using SharpDX.XAudio2;
 
 namespace Ae.Engine.Manager
 {
@@ -11,25 +11,35 @@ namespace Ae.Engine.Manager
         private readonly AeEngine _engine;
 
         /// <summary>
+        /// Gets the XAudio2 audio engine instance used for audio processing and playback.
+        /// </summary>
+        public XAudio2 AudioEngine { get; private set; } = new();
+
+        /// <summary>
+        /// Gets the mastering voice used for audio output.
+        /// </summary>
+        public MasteringVoice MasteringVoice { get; private set; }
+
+        /// <summary>
         /// Gets the audio clip used as background music for the engine.
         /// </summary>
-        public AeAudioClip? BackgroundMusicSound { get; private set; }
+        public void BackgroundMusicSound() => _engine.Assets.GetAudio("Sounds/Music/Background")?.Play();
         /// <summary>
         /// Gets the audio clip that is played for radar blips.
         /// </summary>
-        public AeAudioClip? RadarBlipsSound { get; private set; }
+        public void RadarBlipsSound() => _engine.Assets.GetAudio("Sounds/Ship/Radar Blips")?.Play();
         /// <summary>
         /// Gets the audio clip that plays when the game has ended. (This IS a Shoutout to Hellfighter by Dracova!!)
         /// </summary>
-        public AeAudioClip? DoorIsAjarSound { get; private set; }
+        public void DoorIsAjarSound() => _engine.Assets.GetAudio("Sounds/Ship/Door Is Ajar")?.Play();
         /// <summary>
         /// Gets the audio clip that is played when a target is locked on.
         /// </summary>
-        public AeAudioClip? LockedOnBlip { get; private set; }
+        public void LockedOnBlip() => _engine.Assets.GetAudio("Sounds/Ship/Locked On")?.Play();
         /// <summary>
         /// General menu click sound. Used for buttons and other UI elements.
         /// </summary>
-        public AeAudioClip? Click { get; private set; }
+        public void Click() => _engine.Assets.GetAudio("Sounds/Other/Click")?.Play();
 
         /// <summary>
         /// Initializes a new instance of the AudioManager class and sets up audio assets when the engine initialization
@@ -42,14 +52,8 @@ namespace Ae.Engine.Manager
         {
             _engine = engine;
 
-            engine.OnInitializationComplete += (AeEngine engine) =>
-            {
-                Click = _engine.Assets.GetAudio("Sounds/Other/Click");
-                DoorIsAjarSound = _engine.Assets.GetAudio("Sounds/Ship/Door Is Ajar");
-                RadarBlipsSound = _engine.Assets.GetAudio("Sounds/Ship/Radar Blips");
-                LockedOnBlip = _engine.Assets.GetAudio("Sounds/Ship/Locked On");
-                BackgroundMusicSound = _engine.Assets.GetAudio("Sounds/Music/Background");
-            };
+            //Create and configure a mastering voice.
+            MasteringVoice = new MasteringVoice(AudioEngine);
         }
 
         /// <summary>

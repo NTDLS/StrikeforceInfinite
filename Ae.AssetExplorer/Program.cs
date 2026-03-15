@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace Ae.AssetExplorer
 {
     internal static class Program

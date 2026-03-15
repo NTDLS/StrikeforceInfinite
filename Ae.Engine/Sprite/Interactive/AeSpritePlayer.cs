@@ -22,58 +22,7 @@ namespace Ae.Engine.Sprite.Interactive
         /// </summary>
         public readonly string BoostResourceName = "SpritePlayerBase:Boost";
 
-        /// <summary>
-        /// Gets the audio clip that is played when ammunition is low.
-        /// </summary>
-        public AeAudioClip? AmmoLowSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that is played when the ammunition is empty.
-        /// </summary>
-        public AeAudioClip? AmmoEmptySound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip used for the ship engine's roar sound effect.
-        /// </summary>
-        public AeAudioClip? ShipEngineRoarSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that represents the idle sound of the ship engine.
-        /// </summary>
-        public AeAudioClip? ShipEngineIdleSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that plays when the ship spawns or is fully repaired, indicating that all systems are operational.
-        /// </summary>
-        public AeAudioClip? AllSystemsGoSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that plays when a shield activation fails.
-        /// </summary>
-        public AeAudioClip? ShieldFailSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that plays when the shield is deactivated.
-        /// </summary>
-        public AeAudioClip? ShieldDownSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that is played when the shield reaches its maximum capacity.
-        /// </summary>
-        public AeAudioClip? ShieldMaxSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that is played when the shield is operating at its nominal state.
-        /// </summary>
-        public AeAudioClip? ShieldNominalSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that is played when one or more systems are failing.
-        /// </summary>
-        public AeAudioClip? SystemsFailingSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that is played when the hull is breached.
-        /// </summary>
-        public AeAudioClip? HullBreachedSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip that is played when integrity is low.
-        /// </summary>
-        public AeAudioClip? IntegrityLowSound { get; private set; }
-        /// <summary>
-        /// Gets the audio clip used for the ship engine's boost sound effect.
-        /// </summary>
-        public AeAudioClip? ShipEngineBoostSound { get; private set; }
+
         /// <summary>
         /// Gets or sets the maximum hull health value for the entity.
         /// </summary>
@@ -99,6 +48,128 @@ namespace Ae.Engine.Sprite.Interactive
         /// </summary>
         public AeSpriteWeapon? SelectedSecondaryWeapon { get; private set; }
 
+        private AeAudioClip? _shipEngineIdleSound;
+        private AeAudioClip? _shipEngineRoarSound;
+        private AeAudioClip? _shipEngineBoostSound;
+
+        /// <summary>
+        /// Plays the audio clip associated with low ammunition status. This method should be called when the player's ammunition
+        /// </summary>
+        public void AmmoLowSound() => Engine.Assets.GetAudio("Sounds/Ship/Ammo Low").Play();
+        /// <summary>
+        /// Plays the audio cue indicating that ship systems are failing.
+        /// </summary>
+        public void SystemsFailingSound() => Engine.Assets.GetAudio("Sounds/Ship/Systems Failing").Play();
+        /// <summary>
+        /// Plays the audio cue associated with a hull breach event.
+        /// </summary>
+        public void HullBreachedSound() => Engine.Assets.GetAudio("Sounds/Ship/Hull Breached").Play();
+        /// <summary>
+        /// Plays the audio cue indicating that the ship's integrity is low.
+        /// </summary>
+        public void IntegrityLowSound() => Engine.Assets.GetAudio("Sounds/Ship/Integrity Low").Play();
+        /// <summary>
+        /// Plays the audio cue indicating that the ship's shield activation has failed.
+        /// </summary>
+        public void ShieldFailSound() => Engine.Assets.GetAudio("Sounds/Ship/Shield Fail").Play();
+        /// <summary>
+        /// Plays the audio cue indicating that the ship's shield has been deactivated.
+        /// </summary>
+        public void ShieldDownSound() => Engine.Assets.GetAudio("Sounds/Ship/Shield Down").Play();
+        /// <summary>
+        /// Plays the audio cue indicating that the ship's shield has reached its maximum capacity.
+        /// </summary>
+        public void ShieldMaxSound() => Engine.Assets.GetAudio("Sounds/Ship/Shield Max").Play();
+        /// <summary>
+        /// Plays the audio cue indicating that the ship's shield is operating normally.
+        /// </summary>
+        public void ShieldNominalSound() => Engine.Assets.GetAudio("Sounds/Ship/Shield Nominal").Play();
+        /// <summary>
+        /// Plays the "All Systems Go" audio cue to indicate that all ship systems are operational.
+        /// </summary>
+        public void AllSystemsGoSound() => Engine.Assets.GetAudio("Sounds/Ship/All Systems Go").Play();
+        /// <summary>
+        /// Plays the sound effect indicating that the ship's ammunition is empty.
+        /// </summary>
+        public void AmmoEmptySound() => Engine.Assets.GetAudio("Sounds/Ship/Ammo Empty").Play();
+
+        /// <summary>
+        /// Plays the ship engine idle sound effect.
+        /// </summary>
+        public void ShipEngineIdleSound()
+        {
+            _shipEngineIdleSound?.Stop();
+            _shipEngineIdleSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Idle");
+            _shipEngineIdleSound.Play();
+        }
+        /// <summary>
+        /// Initiates a fade-out effect on the ship engine idle sound, reducing its volume smoothly over time.
+        /// </summary>
+        public void FadeShipEngineIdleSound()
+        {
+            _shipEngineIdleSound?.Fade();
+            _shipEngineIdleSound = null; //Set to null so that it will be reloaded and played from the beginning next time.
+        }
+        /// <summary>
+        /// Stops playback of the ship engine idle sound effect if it is currently playing.
+        /// </summary>
+        public void StopShipEngineIdleSound()
+        {
+            _shipEngineIdleSound?.Stop();
+            _shipEngineIdleSound = null; //Set to null so that it will be reloaded and played from the beginning next time.
+        }
+
+
+        /// <summary>
+        /// Plays the ship engine roar sound effect.
+        /// </summary>
+        public void ShipEngineRoarSound()
+        {
+            _shipEngineRoarSound ??= Engine.Assets.GetAudio("Sounds/Ship/Engine Roar");
+            _shipEngineRoarSound.Play();
+        }
+        /// <summary>
+        /// Initiates a fade-out effect on the ship engine roar sound, reducing its volume smoothly over time.
+        /// </summary>
+        public void FadeShipEngineRoarSound()
+        {
+            _shipEngineRoarSound?.Fade();
+            _shipEngineRoarSound = null; //Set to null so that it will be reloaded and played from the beginning next time.
+        }
+        /// <summary>
+        /// Stops playback of the ship engine roar sound effect if it is currently playing.
+        /// </summary>
+        public void StopShipEngineRoarSound()
+        {
+            _shipEngineRoarSound?.Stop();
+            _shipEngineRoarSound = null; //Set to null so that it will be reloaded and played from the beginning next time.
+        }
+
+        /// <summary>
+        /// Plays the ship engine boost sound effect.
+        /// </summary>
+        public void ShipEngineBoostSound()
+        {
+            _shipEngineBoostSound ??= Engine.Assets.GetAudio("Sounds/Ship/Engine Boost");
+            _shipEngineBoostSound.Play();
+        }
+        /// <summary>
+        /// Initiates a fade-out effect on the ship engine boost sound, reducing its volume smoothly over time.
+        /// </summary>
+        public void FadeShipEngineBoostSound()
+        {
+            _shipEngineBoostSound?.Fade();
+            _shipEngineBoostSound = null; //Set to null so that it will be reloaded and played from the beginning next time.
+        }
+        /// <summary>
+        /// Stops playback of the ship engine boost sound effect if it is currently playing.
+        /// </summary>
+        public void StopShipEngineBoostSound()
+        {
+            _shipEngineBoostSound?.Stop();
+            _shipEngineBoostSound = null; //Set to null so that it will be reloaded and played from the beginning next time.
+        }
+
         /// <summary>
         /// Initializes a new instance of the AeSpritePlayer class using the specified engine.
         /// </summary>
@@ -121,21 +192,6 @@ namespace Ae.Engine.Sprite.Interactive
             : base(engine, assetKey)
         {
             OnHit += SpritePlayer_OnHit;
-
-            AmmoLowSound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
-            SystemsFailingSound = Engine.Assets.GetAudio("Sounds/Ship/Systems Failing");
-            HullBreachedSound = Engine.Assets.GetAudio("Sounds/Ship/Hull Breached");
-            IntegrityLowSound = Engine.Assets.GetAudio("Sounds/Ship/Integrity Low");
-            ShieldFailSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Fail");
-            ShieldDownSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Down");
-            ShieldMaxSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Max");
-            ShieldNominalSound = Engine.Assets.GetAudio("Sounds/Ship/Shield Nominal");
-            AllSystemsGoSound = Engine.Assets.GetAudio("Sounds/Ship/All Systems Go");
-            AmmoLowSound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Low");
-            AmmoEmptySound = Engine.Assets.GetAudio("Sounds/Ship/Ammo Empty");
-            ShipEngineRoarSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Roar");
-            ShipEngineIdleSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Idle");
-            ShipEngineBoostSound = Engine.Assets.GetAudio("Sounds/Ship/Engine Boost");
 
             Orientation = AeVector.One();
             Throttle = 0;
@@ -195,8 +251,8 @@ namespace Ae.Engine.Sprite.Interactive
             {
                 ThrusterAnimation?.IsVisible = false;
                 BoosterAnimation?.IsVisible = false;
-                ShipEngineIdleSound?.Stop();
-                ShipEngineRoarSound?.Stop();
+                _shipEngineRoarSound?.Stop();
+                _shipEngineRoarSound?.Stop();
             }
         }
 
@@ -275,7 +331,7 @@ namespace Ae.Engine.Sprite.Interactive
         {
             if (ShieldHealth < Engine.Settings.MaxShieldHealth && ShieldHealth + pointsToAdd >= Engine.Settings.MaxShieldHealth)
             {
-                ShieldMaxSound?.Play(); //If we didn't have full shields but now we do, tell the player.
+                ShieldMaxSound(); //If we didn't have full shields but now we do, tell the player.
             }
 
             base.AddShieldHealth(pointsToAdd);
@@ -344,22 +400,22 @@ namespace Ae.Engine.Sprite.Interactive
             {
                 if (ShieldHealth == 0)
                 {
-                    ShieldDownSound?.Play();
+                    ShieldDownSound();
                 }
             }
 
             //This is the hit that took us under the threshold.
             if (HullHealth < 100 && HullHealth + damageAmount > 100)
             {
-                IntegrityLowSound?.Play();
+                IntegrityLowSound();
             }
             else if (HullHealth < 50 && HullHealth + damageAmount > 50)
             {
-                SystemsFailingSound?.Play();
+                SystemsFailingSound();
             }
             else if (HullHealth < 20 && HullHealth + damageAmount > 20)
             {
-                HullBreachedSound?.Play();
+                HullBreachedSound();
             }
         }
 

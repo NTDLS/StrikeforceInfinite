@@ -1,4 +1,5 @@
 ﻿using Ae.Engine.Metadata;
+using SharpDX;
 using SharpDX.Multimedia;
 using SharpDX.XAudio2;
 using System;
@@ -9,103 +10,153 @@ using System.Threading.Tasks;
 namespace Ae.Engine.Audio
 {
     /// <summary>
-    /// A single pre-loaded audio-clip.
+    /// Represents an audio clip asset that can be played, looped, faded, or stopped using the underlying audio engine.
     /// </summary>
+    /// <remarks>An instance of AeAudioClip manages the playback of a specific audio asset loaded from the
+    /// engine's asset system. It supports both one-shot and looping playback modes, as determined by the asset's
+    /// metadata. The class is not thread-safe for concurrent playback operations. Dispose of the instance to release
+    /// any resources associated with looping playback.</remarks>
     [AssetClass("Sound", "", AeBaseAssetType.Sound, true)]
     public class AeAudioClip
+        : IDisposable
     {
-        private readonly XAudio2 _audio = new();
+        /// <summary>
+        /// Gets the instance of the underlying AeEngine used by the class.
+        /// </summary>
+        public AeEngine Engine { get; private set; }
+        private readonly Lock _syncRoot = new();
+
+        private readonly AssetMetadata _metadata;
         private readonly WaveFormat _waveFormat;
-        private readonly AudioBuffer _buffer;
-        private readonly SoundStream _soundStream;
+        private readonly byte[] _audioBytes;
+
         private SourceVoice? _singleSourceVoice;
-        private bool _loopForever;
-        private bool _isPlaying = false; //Only applicable when _loopForever == false;
-        private bool _isFading;
-        internal float InitialVolume { get; private set; }
+        private MemoryStream? _loopStream;
+        private SoundStream? _loopSoundStream;
+        private DataStream? _loopDataStream;
+
+        private bool _isPlaying = false;
+        private bool _isFading = false;
+
+        internal float Volume { get; private set; }
 
         internal void SetVolume(float volume)
         {
+            Volume = volume;
             _singleSourceVoice?.SetVolume(volume);
         }
 
-        internal void SetInitialVolume(float volume)
+        /// <summary>
+        /// Initializes a new instance of the AeAudioClip class using the specified engine and asset key.
+        /// </summary>
+        /// <param name="engine">The audio engine instance used to access assets and audio resources. Cannot be null.</param>
+        /// <param name="assetKey">The key identifying the audio asset to load. Cannot be null or empty.</param>
+        public AeAudioClip(AeEngine engine, string assetKey)
         {
-            InitialVolume = volume;
-        }
+            Engine = engine;
 
-        internal void SetLoopForever(bool loopForever)
-        {
-            _loopForever = loopForever;
-        }
+            var asset = Engine.Assets.GetAsset(assetKey);
+            _metadata = asset.Metadata;
+            Volume = _metadata.SoundVolume ?? 1.0f;
+            _audioBytes = (byte[])asset.Object;
 
-        internal AeAudioClip(Stream stream, float initialVolume = 1, bool loopForever = false)
-        {
-            _loopForever = loopForever;
-            InitialVolume = initialVolume;
+            using var stream = new MemoryStream(_audioBytes, writable: false);
+            using var soundStream = new SoundStream(stream);
 
-            _ = new MasteringVoice(_audio); //Yes, this is required.
-
-            _soundStream = new SoundStream(stream);
-
-            _waveFormat = _soundStream.Format;
-            _buffer = new AudioBuffer
-            {
-                Stream = _soundStream.ToDataStream(),
-                AudioBytes = (int)_soundStream.Length,
-                Flags = BufferFlags.EndOfStream,
-            };
-
-            if (loopForever)
-            {
-                _buffer.LoopCount = 100;
-            }
+            _waveFormat = soundStream.Format;
         }
 
         /// <summary>
-        /// Starts playback of the audio stream. If looping is enabled, playback will continue indefinitely until
-        /// stopped.
+        /// Begins playback of the audio. If the sound is configured to loop, playback will repeat continuously until
+        /// stopped; otherwise, the audio is played once.
         /// </summary>
-        /// <remarks>If playback is already in progress and fading is active, calling this method will
-        /// cancel the fade and restore the initial volume. This method is thread-safe and can be called multiple times
-        /// without causing overlapping playback.</remarks>
+        /// <remarks>If the audio is already playing in loop mode and is currently fading, calling this
+        /// method will cancel the fade and restore the original volume. This method is thread-safe.</remarks>
         public void Play()
         {
-            lock (this)
+            lock (_syncRoot)
             {
-                if (_loopForever == true)
+                if (_metadata.LoopSound == true)
                 {
                     if (_isPlaying)
                     {
                         if (_isFading)
                         {
                             _isFading = false;
-                            _singleSourceVoice?.SetVolume(InitialVolume);
+                            _singleSourceVoice?.SetVolume(Volume);
                         }
 
                         return;
                     }
 
-                    _singleSourceVoice = new SourceVoice(_audio, _waveFormat, true);
-                    _singleSourceVoice.SubmitSourceBuffer(_buffer, _soundStream.DecodedPacketsInfo);
-                    _singleSourceVoice.SetVolume(InitialVolume);
+                    _loopStream = new MemoryStream(_audioBytes, writable: false);
+                    _loopSoundStream = new SoundStream(_loopStream);
+                    _loopDataStream = _loopSoundStream.ToDataStream();
+
+                    var buffer = new AudioBuffer
+                    {
+                        Stream = _loopDataStream,
+                        AudioBytes = (int)_loopSoundStream.Length,
+                        Flags = BufferFlags.EndOfStream,
+                        LoopCount = AudioBuffer.LoopInfinite
+                    };
+
+                    _singleSourceVoice = new SourceVoice(Engine.Audio.AudioEngine, _waveFormat, true);
+                    _singleSourceVoice.SubmitSourceBuffer(buffer, _loopSoundStream.DecodedPacketsInfo);
+                    _singleSourceVoice.SetVolume(Volume);
                     _singleSourceVoice.Start();
+
                     _isPlaying = true;
                     return;
                 }
             }
 
-            var sourceVoice = new SourceVoice(_audio, _waveFormat, true);
-            sourceVoice.SubmitSourceBuffer(_buffer, _soundStream.DecodedPacketsInfo);
-            sourceVoice.SetVolume(InitialVolume);
+            PlayOneShot();
+        }
+
+        private void PlayOneShot()
+        {
+            var oneShotStream = new MemoryStream(_audioBytes, writable: false);
+            var oneShotSoundStream = new SoundStream(oneShotStream);
+            var oneShotDataStream = oneShotSoundStream.ToDataStream();
+
+            var oneShotBuffer = new AudioBuffer
+            {
+                Stream = oneShotDataStream,
+                AudioBytes = (int)oneShotSoundStream.Length,
+                Flags = BufferFlags.EndOfStream
+            };
+
+            var sourceVoice = new SourceVoice(Engine.Audio.AudioEngine, _waveFormat, true);
+            sourceVoice.SubmitSourceBuffer(oneShotBuffer, oneShotSoundStream.DecodedPacketsInfo);
+            sourceVoice.SetVolume(Volume);
             sourceVoice.Start();
+
+            _ = Task.Run(() =>
+            {
+                try
+                {
+                    while (sourceVoice.State.BuffersQueued > 0)
+                    {
+                        Thread.Sleep(10);
+                    }
+                }
+                finally
+                {
+                    sourceVoice.DestroyVoice();
+                    sourceVoice.Dispose();
+                    oneShotDataStream.Dispose();
+                    oneShotSoundStream.Dispose();
+                    oneShotStream.Dispose();
+                }
+            });
         }
 
         /// <summary>
         /// Initiates a fade-out operation if playback is active and no fade is currently in progress.
         /// </summary>
-        /// <remarks>This method starts the fade asynchronously. If a fade is already in progress or
-        /// playback is not active, calling this method has no effect.</remarks>
+        /// <remarks>This method has no effect if playback is not active or a fade operation is already
+        /// running. The fade operation is performed asynchronously.</remarks>
         public void Fade()
         {
             if (_isPlaying && _isFading == false)
@@ -115,52 +166,81 @@ namespace Ae.Engine.Audio
             }
         }
 
-        /// <summary>
-        /// Gradually reduces the volume of the single audio source to zero in a background thread.
-        /// </summary>
-        /// <remarks>This method is intended to be run on a separate thread and will decrement the volume
-        /// in steps until it reaches zero. Once fading is complete, the audio source is stopped. The method assumes
-        /// that the audio source and fading state are properly managed by the caller. This method is not thread-safe
-        /// and should not be called concurrently.</remarks>
         private void FadeThread()
         {
-            float volume;
-
-            if (_singleSourceVoice != null)
+            SourceVoice? voice = _singleSourceVoice;
+            if (voice == null)
             {
-                _singleSourceVoice.GetVolume(out volume);
-
-                while (_isFading && volume > 0)
-                {
-                    volume -= 0.25f;
-                    volume = volume < 0 ? 0 : volume;
-                    _singleSourceVoice.SetVolume(volume);
-                    Thread.Sleep(100);
-                }
-                Stop();
+                return;
             }
+
+            voice.GetVolume(out float volume);
+
+            while (_isFading && volume > 0)
+            {
+                volume -= 0.25f;
+                if (volume < 0)
+                {
+                    volume = 0;
+                }
+
+                voice.SetVolume(volume);
+                Thread.Sleep(100);
+            }
+
+            Stop();
         }
 
         /// <summary>
-        /// Stops audio playback if looping is enabled.
+        /// Stops playback of the looping sound and releases associated resources.
         /// </summary>
-        /// <remarks>This method is intended for use when audio playback is set to loop continuously. It
-        /// does not support stopping overlapped audio scenarios.</remarks>
-        /// <exception cref="Exception">Thrown if the audio is configured for overlapped playback and cannot be stopped using this method.</exception>
+        /// <remarks>This method is intended for use with looping sounds only. If called while a
+        /// non-looping (overlapped) audio is playing, an exception is thrown. After calling this method, the sound
+        /// cannot be resumed and all related resources are disposed.</remarks>
+        /// <exception cref="Exception">Thrown if the current audio is not a looping sound and cannot be stopped using this method.</exception>
         public void Stop()
         {
-            if (_loopForever == true)
+            if (_metadata.LoopSound != true)
+            {
+                throw new Exception("Cannot stop overlapped audio.");
+            }
+
+            lock (_syncRoot)
             {
                 if (_singleSourceVoice != null && _isPlaying)
                 {
                     _singleSourceVoice.Stop();
+                    _singleSourceVoice.FlushSourceBuffers();
+                    _singleSourceVoice.DestroyVoice();
+                    _singleSourceVoice.Dispose();
+                    _singleSourceVoice = null;
                 }
+
+                _loopDataStream?.Dispose();
+                _loopDataStream = null;
+
+                _loopSoundStream?.Dispose();
+                _loopSoundStream = null;
+
+                _loopStream?.Dispose();
+                _loopStream = null;
+
                 _isPlaying = false;
                 _isFading = false;
             }
-            else
+        }
+
+        /// <summary>
+        /// Releases all resources used by the current instance.
+        /// </summary>
+        /// <remarks>If looping sound playback is active, this method stops the playback before releasing
+        /// resources. After calling this method, the instance should not be used.</remarks>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            if (_metadata.LoopSound == true)
             {
-                throw new Exception("Cannot stop overlapped audio.");
+                Stop();
             }
         }
     }

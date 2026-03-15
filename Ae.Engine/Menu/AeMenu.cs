@@ -290,14 +290,14 @@ namespace Ae.Engine.Menu
                     {
                         _lastInputHandled = DateTime.UtcNow;
                         selectedTextInput.Backspace();
-                        Engine.Audio.Click?.Play();
+                        Engine.Audio.Click();
                     }
                     return;
                 }
 
                 if (Engine.Input.TypedString?.Length > 0)
                 {
-                    Engine.Audio.Click?.Play();
+                    Engine.Audio.Click();
                     selectedTextInput.Append(Engine.Input.TypedString);
                 }
             }
@@ -309,7 +309,7 @@ namespace Ae.Engine.Menu
 
             if (Engine.Input.IsKeyPressed(AePlayerKey.Enter))
             {
-                Engine.Audio.Click?.Play();
+                Engine.Audio.Click();
 
                 _lastInputHandled = DateTime.UtcNow;
 
@@ -331,7 +331,7 @@ namespace Ae.Engine.Menu
             }
             else if (Engine.Input.IsKeyPressed(AePlayerKey.Escape))
             {
-                Engine.Audio.Click?.Play();
+                Engine.Audio.Click();
 
                 _lastInputHandled = DateTime.UtcNow;
 
@@ -393,7 +393,7 @@ namespace Ae.Engine.Menu
                                             select o).FirstOrDefault();
                         if (selectedItem != null)
                         {
-                            Engine.Audio.Click?.Play();
+                            Engine.Audio.Click();
 
                             //Menu executions may block execution if run in the same thread. For example, the menu execution may be looking to remove all
                             //  items from the screen and wait for them to be removed. Problem is, the same thread that calls the menuExecution is the same
@@ -450,7 +450,7 @@ namespace Ae.Engine.Menu
                                             select o).FirstOrDefault();
                         if (selectedItem != null)
                         {
-                            Engine.Audio.Click?.Play();
+                            Engine.Audio.Click();
 
                             //Menu executions may block execution if run in the same thread. For example, the menu execution may be looking to remove all
                             //  items from the screen and wait for them to be removed. Problem is, the same thread that calls the menuExecution is the same

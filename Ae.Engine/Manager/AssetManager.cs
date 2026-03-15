@@ -4,6 +4,7 @@ using Ae.Engine.DataModels;
 using Ae.Engine.Helpers;
 using Ae.Engine.Metadata;
 using NTDLS.DelegateThreadPooling;
+using NTDLS.Helpers;
 using NTDLS.SqliteDapperWrapper;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Ae.Engine.Manager
         /// Gets the engine instance used to execute and manage workflow operations.
         /// </summary>
         public AeEngine Engine { get; private set; }
-        private readonly Dictionary<string, AssetContainer> _collection = new();
+        private readonly Dictionary<string, AssetContainer> _collection = new(StringComparer.OrdinalIgnoreCase);
         private readonly SqliteManagedFactory _assetsDatabase;
         private readonly AeCache _cache = new(AeCache.CacheExpirationScheme.Sliding, TimeSpan.FromSeconds(600));
 
@@ -127,19 +128,23 @@ namespace Ae.Engine.Manager
         /// asset's metadata. If the asset is not found or is not an audio clip, a FileNotFoundException is
         /// thrown.</remarks>
         /// <param name="assetKey">The unique identifier for the audio asset to retrieve. Cannot be null or empty.</param>
+        /// <param name="initializationProc">An optional action to initialize the sprite after creation. If provided, this action will be invoked with
         /// <returns>An instance of AeAudioClip representing the requested audio asset. The clip will have its initial volume and
         /// looping behavior set according to the asset's metadata.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the asset with the specified key does not exist or cannot be converted to an audio clip.</exception>
-        public AeAudioClip GetAudio(string assetKey)
+        public AeAudioClip GetAudio(string assetKey, Action<AeAudioClip>? initializationProc = null)
         {
-            if (_collection.TryGetValue(assetKey, out AssetContainer? assetContainer))
+            if (_collection.TryGetValue(assetKey, out AssetContainer? asset))
             {
-                var audioClip = assetContainer.Object as AeAudioClip
-                    ?? throw new FileNotFoundException($"Asset could not be converted to audio: {assetKey}");
-                audioClip.SetInitialVolume(assetContainer.Metadata.SoundVolume ?? 1);
-                audioClip.SetLoopForever(assetContainer.Metadata.LoopSound ?? false);
-                return audioClip;
+                var className = (string.IsNullOrEmpty(asset.ControllerName) ? asset.Metadata.Class : asset.ControllerName)
+                    ?? throw new Exception($"The sprite {assetKey} does not have a class or controller defined in its metadata.");
+
+                var type = AeReflection.GetTypeByName(className);
+                var sprite = (AeAudioClip)Activator.CreateInstance(type, [Engine, assetKey]).EnsureNotNull();
+                initializationProc?.Invoke(sprite);
+                return sprite;
             }
+
             throw new FileNotFoundException($"Asset not found: {assetKey}");
         }
 
@@ -200,13 +205,23 @@ namespace Ae.Engine.Manager
             string? assetDynamicCode = null;
             Type? interfaceType = null;
 
-            if (baseType != AeBaseAssetType.Code
-                && !string.IsNullOrWhiteSpace(assetContainer.Metadata.Class)
-                && !string.IsNullOrWhiteSpace(model.Controller))
+            if (baseType == AeBaseAssetType.Image)
             {
-                //Non-code ("sprite") asset code is the Controller field and Metadata.Class is the base class.
-                assetDynamicCode = model.Controller;
-                interfaceType = typeof(IAeRuntimeCompiledSpriteAsset);
+                if (string.IsNullOrWhiteSpace(assetContainer.Metadata.Class))
+                {
+                    writeLog?.Invoke($"Asset with key: {assetContainer.Key} does not have a class assigned.", AeLoggingLevel.Warning, model.Key);
+                }
+                else if (string.IsNullOrWhiteSpace(model.Controller))
+                {
+                    //writeLog?.Invoke($"Asset with key: {assetContainer.Key} does not have a class assigned.", AeLoggingLevel.Warning, model.Key);
+                    //There is really nothing to compile because this sprite will use the base class as is.
+                }
+                else
+                {
+                    //Non-code ("sprite") asset code is the Controller field and Metadata.Class is the base class.
+                    assetDynamicCode = model.Controller;
+                    interfaceType = typeof(IAeRuntimeCompiledSpriteAsset);
+                }
             }
             else if (baseType == AeBaseAssetType.Code)
             {
@@ -296,6 +311,7 @@ namespace Ae.Engine.Manager
                             {
                                 //This is user code and no base class has been defined. That means that this is not an extension of built in classes.
                                 //This is pure user code and is not meant to be fleshed out with one of our C# templates.
+                                //It is also not instantiated by us and so we do not need to keep track of the compiled class name.
 
                                 assetContainer.ControllerName = null;
                                 assetContainer.Metadata.Class = null;
@@ -303,7 +319,10 @@ namespace Ae.Engine.Manager
                             else
                             {
                                 //Save the name of the class that was compiled for this asset so that it can be instantiated later when the asset is requested.
-                                // Note that this may also simply be inferred if running in debug mode with "injected" assets.
+                                // Note that this may also simply be inferred if running in debug mode with "injected" assets - meaning we know its name by convention
+                                //  from AeRuntimeCompiler.AssetKeyToClassName().
+                                //
+                                //This is the class name that SpriteManager.Create() use when instantiating a sprite from this asset.
                                 assetContainer.ControllerName = AeRuntimeCompiler.AssetKeyToClassName(assetContainer.Metadata.AssetKey);
 
                                 //Causes the type to be cached in SiReflection for later instantiation when the asset is requested.
@@ -402,9 +421,7 @@ namespace Ae.Engine.Manager
                                   ?? throw new Exception($"Failed to deserialize metadata for asset: {model.Key}");
                         var bytes = model.IsCompressed ? CompressionHelper.Decompress(model.Bytes) : model.Bytes;
                         using var stream = new MemoryStream(bytes);
-                        var obj = new AeAudioClip(stream, metaData.SoundVolume ?? 1, metaData.LoopSound ?? false);
-
-                        return new AssetContainer(model.Key, model.BaseType, metaData, obj);
+                        return new AssetContainer(model.Key, model.BaseType, metaData, stream.ToArray());
                     }
                 default:
                     throw new Exception($"Deserialization of the type {model.BaseType} for {model.Key} is not implemented.");

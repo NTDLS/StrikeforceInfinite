@@ -53,7 +53,7 @@ namespace Ae.Engine.Sprite.Interactive
                 if (_isLockedOn == false && value == true)
                 {
                     //TODO: This should not play every loop.
-                    Engine.Audio.LockedOnBlip?.Play();
+                    Engine.Audio.LockedOnBlip();
                 }
                 _isLockedOn = value;
             }

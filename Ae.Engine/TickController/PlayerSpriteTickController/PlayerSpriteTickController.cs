@@ -130,11 +130,11 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
                     {
                         if (Sprite.PrimaryWeapon?.MunitionQuantity == 25)
                         {
-                            Sprite.AmmoLowSound?.Play();
+                            Sprite.AmmoLowSound();
                         }
                         if (Sprite.PrimaryWeapon?.MunitionQuantity == 0)
                         {
-                            Sprite.AmmoEmptySound?.Play();
+                            Sprite.AmmoEmptySound();
                         }
                     }
                 }
@@ -145,11 +145,11 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
                     {
                         if (Sprite.SelectedSecondaryWeapon?.MunitionQuantity == 25)
                         {
-                            Sprite.AmmoLowSound?.Play();
+                            Sprite.AmmoLowSound();
                         }
                         if (Sprite.SelectedSecondaryWeapon?.MunitionQuantity == 0)
                         {
-                            Sprite.AmmoEmptySound?.Play();
+                            Sprite.AmmoEmptySound();
                             Sprite.SelectFirstAvailableUsableSecondaryWeapon();
                         }
                     }
@@ -279,12 +279,12 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
                 #region Sounds and Animation.
 
                 if (_boostForwardVelocity > 0)
-                    Sprite.ShipEngineBoostSound?.Play();
-                else Sprite.ShipEngineBoostSound?.Fade();
+                    Sprite.ShipEngineBoostSound();
+                else Sprite.FadeShipEngineBoostSound();
 
                 if (_forwardVelocity >= throttleFloor)
-                    Sprite.ShipEngineRoarSound?.Play();
-                else Sprite.ShipEngineRoarSound?.Fade();
+                    Sprite.ShipEngineRoarSound();
+                else Sprite.FadeShipEngineRoarSound();
 
                 if (Sprite.ThrusterAnimation != null)
                 {
@@ -337,8 +337,8 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
             Engine.Sprites.RenderRadar = true;
             Sprite.IsVisible = true;
-            Sprite.ShipEngineIdleSound?.Play();
-            Sprite.AllSystemsGoSound?.Play();
+            Sprite.ShipEngineIdleSound();
+            Sprite.AllSystemsGoSound();
         }
 
         /// <summary>
@@ -352,8 +352,8 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = true;
             Engine.Sprites.RenderRadar = true;
             Sprite.IsVisible = true;
-            Sprite.ShipEngineIdleSound?.Play();
-            Sprite.AllSystemsGoSound?.Play();
+            Sprite.ShipEngineIdleSound();
+            Sprite.AllSystemsGoSound();
         }
 
         /// <summary>
@@ -367,8 +367,8 @@ namespace Ae.Engine.TickController.PlayerSpriteTickController
             Engine.Sprites.TextBlocks.PlayerStatsText.IsVisible = false;
             Engine.Sprites.RenderRadar = false;
             Sprite.IsVisible = false;
-            Sprite.ShipEngineIdleSound?.Stop();
-            Sprite.ShipEngineRoarSound?.Stop();
+            Sprite.StopShipEngineIdleSound();
+            Sprite.StopShipEngineRoarSound();
         }
     }
 }
