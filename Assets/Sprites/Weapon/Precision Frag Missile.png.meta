@@ -7,7 +7,7 @@
   "MunitionAssetKeys": [
     "Sprites/Weapon/Munitions/Precision Frag Missile"
   ],
-  "SoundAssetKey": "Sounds/Weapons/Precision Frag Missile",
+  "SoundAssetKeys": ["Sounds/Weapons/Precision Frag Missile"],
   "FireDelayMilliseconds": 800,
   "MaxLockOnAngle": 45,
   "MaxLocks": 1,

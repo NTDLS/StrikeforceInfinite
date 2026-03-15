@@ -7,7 +7,7 @@
   "MunitionAssetKeys": [
     "Sprites/Weapon/Munitions/Scuttle Missile"
   ],
-  "SoundAssetKey": "Sounds/Weapons/Scuttle Missile",
+  "SoundAssetKeys": ["Sounds/Weapons/Scuttle Missile"],
   "FireDelayMilliseconds": 1000,
   "MaxLockOnAngle": 40,
   "MaxLocks": 2,

@@ -7,6 +7,6 @@
   "MunitionAssetKeys": [
     "Sprites/Weapon/Munitions/Thunderstrike Missile"
   ],
-  "SoundAssetKey": "Sounds/Weapons/Thunderstrike Missile",
+  "SoundAssetKeys": ["Sounds/Weapons/Thunderstrike Missile"],
   "FireDelayMilliseconds": 250
 }

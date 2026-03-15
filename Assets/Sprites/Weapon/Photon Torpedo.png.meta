@@ -7,6 +7,6 @@
   "MunitionAssetKeys": [
     "Sprites/Weapon/Munitions/Photon Torpedo"
   ],
-  "SoundAssetKey": "Sounds/Weapons/Photon Torpedo",
+  "SoundAssetKeys": ["Sounds/Weapons/Photon Torpedo"],
   "FireDelayMilliseconds": 1000
 }

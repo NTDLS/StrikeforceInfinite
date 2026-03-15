@@ -7,6 +7,6 @@
   "MunitionAssetKeys": [
     "Sprites/Weapon/Munitions/Blunderbuss"
   ],
-  "SoundAssetKey": "Sounds/Weapons/Blunderbuss",
+  "SoundAssetKeys": ["Sounds/Weapons/Blunderbuss"],
   "FireDelayMilliseconds": 250
 }

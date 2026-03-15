@@ -7,6 +7,6 @@
   "MunitionAssetKeys": [
     "Sprites/Weapon/Munitions/Vulcan Cannon"
   ],
-  "SoundAssetKey": "Sounds/Weapons/Vulcan Cannon",
+  "SoundAssetKeys": ["Sounds/Weapons/Vulcan Cannon"],
   "FireDelayMilliseconds": 25
 }

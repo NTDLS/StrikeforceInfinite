@@ -7,7 +7,7 @@
   "MunitionAssetKeys": [
     "Sprites/Weapon/Munitions/Scrams Missile"
   ],
-  "SoundAssetKey": "Sounds/Weapons/Scrams Missile",
+  "SoundAssetKeys": ["Sounds/Weapons/Scrams Missile"],
   "FireDelayMilliseconds": 500,
   "MaxLockOnAngle": 50,
   "MaxLocks": 8,
