@@ -104,11 +104,7 @@ namespace Ae.Engine.TickController.UnvectoredTickController
         /// the internal manager. Use the returned object to configure or manipulate the indicator as needed.</remarks>
         /// <returns>An instance of AeSpriteRadarPositionIndicator representing the newly added radar position indicator sprite.</returns>
         public AeSpriteRadarPositionIndicator Add()
-        {
-            var obj = new AeSpriteRadarPositionIndicator(Engine, "Sprites/Radar Indicator/16x16");
-            _manager.Insert(obj);
-            return obj;
-        }
+            => _manager.Add<AeSpriteRadarPositionIndicator>("Sprites/Radar Indicator/16x16");
 
         #endregion
     }
