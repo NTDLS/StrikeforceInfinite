@@ -74,9 +74,9 @@ namespace Ae.Engine.Audio
         /// method will cancel the fade and restore the original volume. This method is thread-safe.</remarks>
         public void Play()
         {
-            lock (_syncRoot)
+            if (_metadata.LoopSound == true)
             {
-                if (_metadata.LoopSound == true)
+                lock (_syncRoot)
                 {
                     if (_isPlaying)
                     {
@@ -116,6 +116,8 @@ namespace Ae.Engine.Audio
 
         private void PlayOneShot()
         {
+            _isPlaying = true;
+
             var oneShotStream = new MemoryStream(_audioBytes, writable: false);
             var oneShotSoundStream = new SoundStream(oneShotStream);
             var oneShotDataStream = oneShotSoundStream.ToDataStream();
@@ -140,6 +142,7 @@ namespace Ae.Engine.Audio
                     {
                         Thread.Sleep(10);
                     }
+                    _isPlaying = false;
                 }
                 finally
                 {
@@ -157,38 +160,36 @@ namespace Ae.Engine.Audio
         /// </summary>
         /// <remarks>This method has no effect if playback is not active or a fade operation is already
         /// running. The fade operation is performed asynchronously.</remarks>
-        public void Fade()
+        public void Fade(float fadeDecrements = 0.25f, int fadeDelayMilliseconds = 100)
         {
             if (_isPlaying && _isFading == false)
             {
                 _isFading = true;
-                Task.Run(FadeThread);
-            }
-        }
-
-        private void FadeThread()
-        {
-            SourceVoice? voice = _singleSourceVoice;
-            if (voice == null)
-            {
-                return;
-            }
-
-            voice.GetVolume(out float volume);
-
-            while (_isFading && volume > 0)
-            {
-                volume -= 0.25f;
-                if (volume < 0)
+                Task.Run(() =>
                 {
-                    volume = 0;
-                }
+                    var voice = _singleSourceVoice;
+                    if (voice == null)
+                    {
+                        return;
+                    }
 
-                voice.SetVolume(volume);
-                Thread.Sleep(100);
+                    voice.GetVolume(out float volume);
+
+                    while (_isFading && volume > 0)
+                    {
+                        volume -= fadeDecrements;
+                        if (volume < 0)
+                        {
+                            volume = 0;
+                        }
+
+                        voice.SetVolume(volume);
+                        Thread.Sleep(fadeDelayMilliseconds);
+                    }
+
+                    Stop();
+                });
             }
-
-            Stop();
         }
 
         /// <summary>

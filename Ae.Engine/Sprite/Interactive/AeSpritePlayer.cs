@@ -267,7 +267,7 @@ namespace Ae.Engine.Sprite.Interactive
         /// <remarks>This method should be called when the player's location changes to ensure that
         /// related animations remain synchronized with the new position. The player's position itself is not modified;
         /// only the animation offsets are updated.</remarks>
-        //The player position does not change, only the background offset changes... hmmmm. :/
+        //The player position does not change, only the background offset changes... so this really doesn't get called.
         public override void LocationChanged() => UpdateThrustAnimationPositions();
 
         /// <summary>
