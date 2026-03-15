@@ -1,3 +1,4 @@
 {
-  "AssetKey": "Sprites/SkyBox/3"
+  "AssetKey": "Sprites/SkyBox/3",
+  "Class": "AeSpriteSkyBox"
 }

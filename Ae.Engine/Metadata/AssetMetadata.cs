@@ -387,8 +387,8 @@ namespace Ae.Engine.Metadata
         /// <remarks>Each key corresponds to a sound asset file used for audio playback with the sprite.
         /// The array may be null or empty if no sound assets are assigned.</remarks>
         [AssetMetadata("Sound Asset", "The sound asset file for the sprite.",
-            AePropertyEditorGroup.Audio, AePropertyEditorType.String,
-            applicableTo: [typeof(AeSprite)]/*, requireAssignableFrom: typeof(SpriteSound)*/)]
+            AePropertyEditorGroup.Audio, AePropertyEditorType.MultipleSpritePicker,
+            applicableTo: [typeof(AeSprite)], requireAssignableFrom: typeof(AeAudioClip))]
         public string[]? SoundAssetKeys { get; set; }
 
         /// <summary>

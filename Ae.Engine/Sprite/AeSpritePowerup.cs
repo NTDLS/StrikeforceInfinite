@@ -1,4 +1,5 @@
-﻿using Ae.Engine.Mathematics;
+﻿using Ae.Engine.Helpers;
+using Ae.Engine.Mathematics;
 using Ae.Engine.Metadata;
 using Ae.Engine.Sprite.Base;
 using System;
@@ -70,7 +71,7 @@ namespace Ae.Engine.Sprite
         /// after execution.</remarks>
         public override void Explode()
         {
-            Engine.Assets.GetAudio("Sounds/Powerup/PowerUp1").Play();
+            Sounds?.OneOf()?.Play();
             QueueForDelete();
         }
 
@@ -90,7 +91,8 @@ namespace Ae.Engine.Sprite
             }
             else if (AgeInMilliseconds > TimeToLive)
             {
-                Explode();
+                //base explode does not have the power-up sound.
+                base.Explode();
             }
         }
     }

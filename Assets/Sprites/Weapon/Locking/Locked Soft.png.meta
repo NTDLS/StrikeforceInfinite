@@ -1,3 +1,4 @@
 {
-  "AssetKey": "Sprites/Weapon/Locking/Locked Soft"
+  "AssetKey": "Sprites/Weapon/Locking/Locked Soft",
+  "Class": "AeSpriteMinimalBitmap"
 }

@@ -1,3 +1,7 @@
 {
-  "AssetKey": "Sprites/PowerUp/Repair/0"
+  "AssetKey": "Sprites/PowerUp/Repair/0",
+  "Class": "AeSpritePowerup",
+  "SoundAssetKeys": [
+    "Sounds/PowerUp/PowerUp1"
+  ]
 }

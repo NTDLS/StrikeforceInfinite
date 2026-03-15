@@ -1,3 +1,4 @@
 {
-  "AssetKey": "Sprites/Radar Indicator/32x32"
+  "AssetKey": "Sprites/Radar Indicator/32x32",
+  "Class": "AeSpriteMinimalBitmap"
 }

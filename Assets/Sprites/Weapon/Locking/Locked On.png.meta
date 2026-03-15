@@ -1,3 +1,4 @@
 {
-  "AssetKey": "Sprites/Weapon/Locking/Locked On"
+  "AssetKey": "Sprites/Weapon/Locking/Locked On",
+  "Class": "AeSpriteMinimalBitmap"
 }

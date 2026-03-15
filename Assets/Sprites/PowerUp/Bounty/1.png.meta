@@ -1,3 +1,7 @@
 {
-  "AssetKey": "Sprites/PowerUp/Bounty/1"
+  "AssetKey": "Sprites/PowerUp/Bounty/1",
+  "Class": "AeSpritePowerup",
+  "SoundAssetKeys": [
+    "Sounds/PowerUp/PowerUp1"
+  ]
 }

@@ -93,7 +93,6 @@ namespace Ae.Engine.Sprite.Base
                 }
             }
 
-
             // Set standard variables here:
             Speed = AeRandom.Between(Metadata.Speed, 0);
             Throttle = Metadata.Throttle ?? 1; //We assume a throttle of 100% becasuse this is a factor of speed - I dont want to require throttle when speed is specified.

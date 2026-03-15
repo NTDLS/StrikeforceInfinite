@@ -1,5 +1,6 @@
 {
   "AssetKey": "Sprites/Debug",
+  "Class": "AeSpriteDebug",
   "Speed": {
     "Min": 0,
     "Max": 0
