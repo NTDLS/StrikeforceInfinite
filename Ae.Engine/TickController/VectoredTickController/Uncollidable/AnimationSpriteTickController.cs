@@ -52,7 +52,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
         /// </summary>
         public void Insert(AeSpriteAnimation animation, AeSprite defaultPosition)
         {
-            animation.Location = defaultPosition.Location.Clone();
+            animation.Location = defaultPosition.Location;
             SpriteManager.Insert(animation);
         }
 
@@ -64,7 +64,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Micro Fire Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
             {
-                sprite.Location = positionOf.Location.Clone();
+                sprite.Location = positionOf.Location;
             });
         }
 
@@ -76,7 +76,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Small Fire Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
             {
-                sprite.Location = positionOf.Location.Clone();
+                sprite.Location = positionOf.Location;
             });
         }
 
@@ -88,7 +88,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Medium Fire Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
             {
-                sprite.Location = positionOf.Location.Clone();
+                sprite.Location = positionOf.Location;
             });
         }
 
@@ -100,7 +100,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Large Fire Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
             {
-                sprite.Location = positionOf.Location.Clone();
+                sprite.Location = positionOf.Location;
             });
         }
 
@@ -112,7 +112,7 @@ namespace Ae.Engine.TickController.VectoredTickController.Uncollidable
             var assetKeys = Engine.Assets.GetAssetKeysInPath("Sprites/Animation/Explode/Energy Explosions");
             Add(assetKeys.OneOf(), (sprite) =>
             {
-                sprite.Location = positionOf.Location.Clone();
+                sprite.Location = positionOf.Location;
             });
         }
     }

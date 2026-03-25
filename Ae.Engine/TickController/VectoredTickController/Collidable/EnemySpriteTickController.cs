@@ -47,23 +47,5 @@ namespace Ae.Engine.TickController.VectoredTickController.Collidable
                 Engine.MultiplayLobby?.ActionBuffer.RecordMotion(sprite.GetMultiPlayActionVector());
             }
         }
-
-        /*
-        #region Tightly-typed Pass through factory methods to SpriteManager.
-
-        public SpriteEnemyBase Create(string assetKey, Action<SpriteEnemyBase>? initializationProc = null)
-            => SpriteManager.Create<SpriteEnemyBase>(assetKey, initializationProc);
-
-        public SpriteEnemyBase Add(string assetKey, Action<SpriteEnemyBase>? initializationProc = null)
-            => SpriteManager.Add<SpriteEnemyBase>(assetKey, initializationProc);
-
-        public void Insert(SpriteEnemyBase sprite)
-             => SpriteManager.Insert(sprite);
-
-        public SpriteEnemyBase Add(SharpDX.Direct2D1.Bitmap bitmap, Action<SpriteEnemyBase>? initializationProc = null)
-            => SpriteManager.Add<SpriteEnemyBase>(bitmap, initializationProc);
-
-        #endregion
-        */
     }
 }
