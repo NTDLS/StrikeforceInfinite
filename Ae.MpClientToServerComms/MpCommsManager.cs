@@ -103,7 +103,7 @@ namespace Ae.MpClientToServerComms
         /// <param name="situationName">The name of the situation to apply to the lobby. Cannot be null or empty.</param>
         /// <returns>A reply object containing the result of the situation update operation for the lobby.</returns>
         public SetSituationQueryReply SetSituation(Guid LobbyId, string situationName)
-            => _rmClient.Query(new SetSituationQuery(LobbyId, situationName)).EnsureQuerySuccess();
+            => _rmClient.Query(new SetSituationQuery(LobbyId, situationName));
 
         /// <summary>
         /// Starts a new game session for the specified lobby.
@@ -113,7 +113,7 @@ namespace Ae.MpClientToServerComms
         /// <returns>A reply object containing the result of the start game operation. The reply indicates whether the game was
         /// successfully started.</returns>
         public StartGameQueryReply StartGame(Guid LobbyId)
-            => _rmClient.Query(new StartGameQuery(LobbyId)).EnsureQuerySuccess();
+            => _rmClient.Query(new StartGameQuery(LobbyId));
 
         /// <summary>
         /// Starts a new server session and returns the result of the session initialization.
@@ -121,7 +121,7 @@ namespace Ae.MpClientToServerComms
         /// <returns>A <see cref="StartServerSessionQueryReply"/> containing information about the newly started server session.
         /// The reply includes session details and status information.</returns>
         public StartServerSessionQueryReply StartServerSession()
-            => _rmClient.Query(new StartServerSessionQuery()).EnsureQuerySuccess();
+            => _rmClient.Query(new StartServerSessionQuery());
 
         /// <summary>
         /// Creates a new lobby with the specified name and maximum number of players.
@@ -130,7 +130,7 @@ namespace Ae.MpClientToServerComms
         /// <param name="maxPlayers">The maximum number of players allowed in the lobby. Must be greater than zero.</param>
         /// <returns>A reply object containing the result of the lobby creation request.</returns>
         public CreateLobbyQueryReply CreateLobby(string lobbyName, int maxPlayers)
-            => _rmClient.Query(new CreateLobbyQuery(lobbyName, maxPlayers)).EnsureQuerySuccess();
+            => _rmClient.Query(new CreateLobbyQuery(lobbyName, maxPlayers));
 
         /// <summary>
         /// Retrieves a paged list of lobbies for the specified page number.
@@ -139,7 +139,7 @@ namespace Ae.MpClientToServerComms
         /// <returns>A reply object containing the lobbies for the requested page. The reply includes paging information and the
         /// list of lobbies for the specified page.</returns>
         public GetLobbiesPagedQueryReply GetLobbiesPaged(int pageNumber)
-            => _rmClient.Query(new GetLobbiesPagedQuery(pageNumber)).EnsureQuerySuccess();
+            => _rmClient.Query(new GetLobbiesPagedQuery(pageNumber));
 
         /// <summary>
         /// Attempts to join the specified lobby and returns the result of the join operation.
@@ -148,7 +148,7 @@ namespace Ae.MpClientToServerComms
         /// <returns>A JoinLobbyQueryReply containing the outcome of the join request. The reply includes information about the
         /// lobby and the user's join status.</returns>
         public JoinLobbyQueryReply JoinLobby(Guid lobbyId)
-            => _rmClient.Query(new JoinLobbyQuery(lobbyId)).EnsureQuerySuccess();
+            => _rmClient.Query(new JoinLobbyQuery(lobbyId));
 
         /// <summary>
         /// Attaches a datagram endpoint to the specified session.

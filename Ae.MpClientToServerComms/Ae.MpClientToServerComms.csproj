@@ -54,7 +54,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="NTDLS.DatagramMessaging" Version="1.9.0" />
-		<PackageReference Include="NTDLS.ReliableMessaging" Version="3.2.13" />
+		<PackageReference Include="NTDLS.ReliableMessaging" Version="3.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>
